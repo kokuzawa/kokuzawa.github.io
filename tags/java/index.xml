@@ -6,10 +6,219 @@
     <description>Recent content in Java on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 22 Dec 2013 09:20:55 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 25 Dec 2014 01:30:39 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>java.util.Objectsを使おう</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/12/25/java-dot-util-dot-objectswoshi-ikonasou/</link>
+      <pubDate>Thu, 25 Dec 2014 01:30:39 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/12/25/java-dot-util-dot-objectswoshi-ikonasou/</guid>
+      <description>この記事はJava Advent Calendar 2014の25日目です。
+昨日は@smogamiさんの「LombokとLombok-pg： Javaコードを減量する魔法のスパイス」でした。
+今年も様々な面白い記事がアップされました。 そんな楽しかった25日間も今日で最終日です。 最終日なのですが、ちょっと地味にJava7で追加されたjava.util.Objectsについて書きたいと思います。
+java.util.Objectsクラスでは今までありそうでなかった便利なユーティリティメソッドが用意されています。 Java7の時点では下記のメソッドが定義されています。
+ static  int compare(T a, T b, Comparator&amp;lt;? super T&amp;gt; c) static boolean deepEquals(Object a, Object b) static boolean equals(Object a, Object b) static int hash(Object&amp;hellip; values) static int hashCode(Object o) static  T requireNonNull(T obj) static  T requireNonNull(T obj, String message) static String toString(Object o) static String toString(Object o, String nullDefault)  詳細はJavadocを参照してもらうとして、 私はrequireNonNullメソッドをよく利用しています。 いろいろなプロジェクトでメソッドの引数チェックの方法がマチマチだったのが、 このメソッドのおかげで引数チェック方法が統一できたのが画期的でした。 Lombokの@NonNullアノテーションでチェックすればいいじゃない？という話もありますが&amp;hellip;(^^;</description>
+    </item>
+    
+    <item>
+      <title>[JSF-2.3]FacesContextをInjectする</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</link>
+      <pubDate>Tue, 23 Dec 2014 15:02:06 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</guid>
+      <description>JSF-2.3の新しい機能として、UIViewRoot, ViewMap, ApplicationMap, ExternalContext, FacesContextがInjectできるようになります。 この記事ではFacesContextの古い取得方法であるFacesContext.getCurrentInstance()と、 Injectを利用した取得方法のサンプルを記載します。
+サンプルでは画面のボタンをクリックすると、&amp;lt;h:messages/&amp;gt;タグとFacesContext.addMessage(String, FacesMessage)を利用して 同じ画面上にインフォメーションメッセージを表示します。
+最初にFacesContextの古い取得方法を利用したManaged Beanです。
+import javax.enterprise.context.RequestScoped; import javax.faces.application.FacesMessage; import javax.faces.context.FacesContext; import javax.inject.Inject; import javax.inject.Named; @Named @RequestScoped public class IndexBean { public void doClick() { final FacesContext context = FacesContext.getCurrentInstance(); context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, &amp;quot;summary&amp;quot;, &amp;quot;detail&amp;quot;)); } }  次にInjectを利用してFacesContextを取得するManaged Beanです。
+import javax.enterprise.context.RequestScoped; import javax.faces.application.FacesMessage; import javax.faces.context.FacesContext; import javax.inject.Inject; import javax.inject.Named; @Named @RequestScoped public class IndexBean { @Inject private FacesContext context; public void doClick() { context.</description>
+    </item>
+    
+    <item>
+      <title>RESTEasyとSpringの連携</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</link>
+      <pubDate>Sat, 20 Dec 2014 10:22:07 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
+      <description>Java EE Advent Calendar 2014の20日の記事です。
+昨日は@yoshioteradaさんの「Java EE 8 の新機能概要のご紹介」でした。
+明日は@suke_masaさんです。
+Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思ったところが始まりです。 サーバーがWildFlyだからRESTEasyが含まれているので、JerseyではなくRESTEasyを使えば良いのだけれども、 アプリ内でJersey MultiPartを使っているのでひとまずバージョンアップを試みたのですが、 いろいろ問題があって結局RESTEasyに置き換えました。
+実際の運用はTomcatを使っているので、Tomcatでも動作する設定を考慮しています。 なので、WildFlyオンリーで考えた場合は不要な設定があるかもしれません。
+環境  OS: Mac OSX Yosemite 10.10 Java: Java™ SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  pom.xml 下記のdiendencyが必要です。JettisonじゃなくてJacksonを使いたいのでそのdependencyも追加しています。 あとファイルアップロードも使いたいので、resteasy-multipart-providerも入れています。 resteasy-springに依存してRESTEasyのコアライブラリは入るので定義の必要ありません。 Tomcatの場合、サーバにはJAX-RSの実装は入っていないのでscopeはcompileを指定します。 WildFlyの場合はscopeをcompileにすると起動時にエラーが発生するのでprovidedを指定します。 これは既にRESTEasyがサーバに含まれているから。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-servlet-initializer&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-multipart-provider&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-jackson-provider&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-spring&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  web.xml web.xml には下記を追加します。 url-pattarnが/*以外の場合はresteasy.</description>
+    </item>
+    
+    <item>
+      <title>JavaFXでMarkdownエディタを作る</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</link>
+      <pubDate>Sat, 06 Dec 2014 06:42:41 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</guid>
+      <description>この記事は JavaFX Advent Calendar 2014 の6日目です。
+昨日はsoutokuさんのJavaFX:WYSIWYGエディタを作るでした。
+明日は@backpaper0さんです。
+JavaFX 楽しいですよね。
+JavaFXには標準でWebページを表示するためのWebViewクラスがあり、これを使えばいろいろなことができます。 今回はこのWebViewクラスを使ってMarkdownエディタを作ってみることにします。 MarkdownといえばGitHubとかでも利用している人が多いかと思いますが、文書を記述するための軽量マークアップ言語です。 Markdownでテキストを入力し、それをパースしてWebViewに表示するという簡単な動作をするアプリケーションです。
+環境  OS: Mac OSX Yosemite 10.10 メモリ: 4GB Java: Java SE Runtime Environment (build 1.8.0-b132) markdown4j-2.2-cj-1.0  Markdownのパースにはmarkdown4jを使うことにしました。
+実際に動かしてみる 実際に動作している動画です。
+ FXMLで外枠を作る 外枠を作るのはFXMLで書けばよいので簡単です。 IntelliJ IDEA 14 を使っているのでインラインScene Builderも使えますが&amp;hellip;という状態なので スタンドアロンのScene Builderを使いました。 ささっと作ったFXMLは以下のようになりました。
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;?import javafx.scene.control.*?&amp;gt; &amp;lt;?import javafx.scene.layout.*?&amp;gt; &amp;lt;?import javafx.scene.text.TextFlow?&amp;gt; &amp;lt;BorderPane maxHeight=&amp;quot;-Infinity&amp;quot; maxWidth=&amp;quot;-Infinity&amp;quot; minHeight=&amp;quot;-Infinity&amp;quot; minWidth=&amp;quot;-Infinity&amp;quot; prefHeight=&amp;quot;400.0&amp;quot; prefWidth=&amp;quot;600.0&amp;quot; xmlns=&amp;quot;http://javafx.com/javafx/8&amp;quot; xmlns:fx=&amp;quot;http://javafx.com/fxml/1&amp;quot; fx:controller=&amp;quot;sample.Controller&amp;quot;&amp;gt; &amp;lt;center&amp;gt; &amp;lt;SplitPane dividerPositions=&amp;quot;0.5&amp;quot; orientation=&amp;quot;VERTICAL&amp;quot; prefHeight=&amp;quot;200.</description>
+    </item>
+    
+    <item>
+      <title>FlexとJavaFXでREST-APIを呼び出す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</link>
+      <pubDate>Mon, 03 Nov 2014 17:12:02 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
+      <description>FlexとJavaFXからREST-APIを呼び出してみました。
+環境  OS: Mac OSX Yosemite 10.10 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
+import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&amp;quot;/hello&amp;quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&amp;quot;string&amp;quot;) String string) { return String.format(&amp;quot;Hello %s!&amp;quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。
+画面構成を管理するMXMLです。
+Main.mxml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;s:WindowedApplication xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot; xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot; xmlns:local=&amp;quot;*&amp;quot; title=&amp;quot;Hello World&amp;quot; width=&amp;quot;230&amp;quot; height=&amp;quot;80&amp;quot;&amp;gt; &amp;lt;fx:Declarations&amp;gt; &amp;lt;local:Controller id=&amp;quot;controller&amp;quot;/&amp;gt; &amp;lt;/fx:Declarations&amp;gt; &amp;lt;s:VGroup paddingBottom=&amp;quot;10&amp;quot; paddingLeft=&amp;quot;10&amp;quot; paddingRight=&amp;quot;10&amp;quot; paddingTop=&amp;quot;10&amp;quot; gap=&amp;quot;10&amp;quot; minHeight=&amp;quot;0&amp;quot;&amp;gt; &amp;lt;s:HGroup&amp;gt; &amp;lt;s:TextInput id=&amp;quot;stringField&amp;quot;/&amp;gt; &amp;lt;s:Button label=&amp;quot;Button&amp;quot; click=&amp;quot;{controller.</description>
+    </item>
+    
+    <item>
+      <title>JSFのCSRF対策</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/10/08/jsffalsecsrfdui-ce/</link>
+      <pubDate>Wed, 08 Oct 2014 02:29:57 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/10/08/jsffalsecsrfdui-ce/</guid>
+      <description>だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。 そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、 JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのように防げるのかを確認してみます。
+環境  OS: Mac OSX 10.9.4 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  アプリを作る CSRFの脆弱性がある、といわれても具体例がないとなかなかイメージするのが難しいかもしれません。 そこで、ここでは実際に攻撃を受けるアプリを作り、脆弱性を露呈されてみたいと思います。 コードの構成は下記のようになります。
+JSFCSRFSample +- src | +- main | | +- java | | +- org.katsumi.bean | | +- FormBean.java | +- webapp | +- index.xhtml | +- result.xhtml | +- warning.xhtml | +- WEB-INF | +- jboss-web.xml | +- faces-config.xml | +- web.xml +- pom.</description>
+    </item>
+    
+    <item>
+      <title>Javaで文書検索をする (Apache Solr)</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</link>
+      <pubDate>Sun, 07 Sep 2014 22:04:16 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</guid>
+      <description>前回 Apache Solrに対してJavaで文書登録をして、APIでその結果が取得できるところまでやってみました。 今回はAPIではなく、登録した文書をJavaで検索してみようと思います。
+環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot™ 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Javaで文書検索 文書登録時と同じく、Apache Solrjが必要です。 ライブラリの取得方法は前回を参照して頂くとして、早速サンプルコードです。
+import org.apache.solr.client.solrj.SolrQuery; import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.solrj.impl.HttpSolrServer; import org.apache.solr.client.solrj.response.QueryResponse; import org.apache.solr.common.SolrDocument; import org.apache.solr.common.SolrDocumentList; public class SolrClient { public static void main(String... args) throws Exception { final SolrServer solr = new HttpSolrServer(&amp;quot;http://localhost:8983/solr/collection1&amp;quot;); final SolrQuery solrQuery = new SolrQuery(); solrQuery.set(&amp;quot;q&amp;quot;, &amp;quot;ストリーム&amp;quot;); final QueryResponse response = solr.</description>
+    </item>
+    
+    <item>
+      <title>Apache solrで全文検索に触れる</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</link>
+      <pubDate>Fri, 05 Sep 2014 00:12:34 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</guid>
+      <description>Javaで簡単に全文検索を体験するには Apache Solr (ソーラー)が便利です。
+今回は現時点での最新バージョンである 4.10.0 を利用して全文検索を体験したいと思います。
+環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot&amp;trade; 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Solrを起動する SolrはWebアプリケーションの形になっています。 ZIPファイルをダウンロードして解凍すると、distフォルダにWARファイルが入っているので、 これをアプリケーションサーバにデプロイすれば良さそうですが、 今回はexampleフォルダにあるstart.jarを単独起動させます。
+java -jar start.jar  起動するとログが出力されて分かるのですが、Jettyを内包しているようです。 数秒で起動するので、下記URLにアクセスして起動していることを確認します。
+http://localhost:8983/solr/  文書登録 Solrを紹介しているサイトを確認すると、XMLファイルを読み込ませてインデックスを作成する例が多く見つかります。 ですが、実際の業務としてはOfficeファイルやPDFなどのファイルの内容をインデックス化したいという要求の方が多いので、 XMLではなく、それらのファイルを読み込ませてインデックスを作ってみることにします。 おそらく起動したSolr管理画面からもファイルの登録ができると思うのですが、 今回はJavaで書いたプログラムからファイルの登録を実行します。
+JavaからSolrにアクセスするにはApache Solrjというライブラリが必要です。 これはMavenに登録されているのでそこから取得します。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.solr&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;solr-solrj&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.10.0&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;compile&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt;  SolrjからPDFファイルを登録するサンプルコードです。
+import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.solrj.impl.HttpSolrServer; import org.apache.solr.client.solrj.request.AbstractUpdateRequest; import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest; import java.io.File; public class App { public static void main(String.</description>
+    </item>
+    
+    <item>
+      <title>WildFlyでJdbcRealm</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</link>
+      <pubDate>Sat, 23 Aug 2014 15:50:18 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
+      <description>今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。
+WildFly の設定 WildFly 8.0.0.Final に JDBCRealm を構築します。
+まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。
+Security Domain を追加します。 追加は WildFly の GUI コンソールから行います。 追加する Security Domain は Name: app, Cache Type: default です。
+追加した Security Domain を開き、Login Module を追加します。 追加する Login Modile は Code: Database, Flg: required です。
+追加した Login Module に Module Option を追加します。
+追加する Module Option は下記表になります。 dsJndiName で指定するのは事前に登録した Datasource です。
+   Key Value     dsJndiName java:/jdbc/realmSample   hashAlgorithm SHA-256   hashEncoding HEX   principalsQuery SELECT password FROM accounts WHERE email = ?</description>
+    </item>
+    
+    <item>
+      <title>Jenkins用のpom.xmlの基本設定</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</link>
+      <pubDate>Sat, 24 May 2014 16:30:10 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</guid>
+      <description>だんだんと暑くなってきた先週、Java7 を導入できることになって大喜びして IntelliJ IDEA の Inspect Code を使って Java7 に対応するコードに一括変換をした月曜日、 今年は良い夏を迎えられそうだと思っていたら、OS が Java7 をサポートしてなくてコードを Java6 にダウングレードするという、モチベーションがだだ下がりな作業したところです。
+ただ Java6 にダウングレードするというものやってられないので、 Eclipse の Web アプリ構成のプロジェクトを Maven 構成のプロジェクトに置き換えようと考えました。 Maven 構成に変えるのはフォルダの位置を変更するだけなのでとても簡単で、 かつ、ライブラリはビルド時に取得してくれるから、今までのように VCS に jar ファイルも一緒にコミットする必要がなくなり、 アプリのリソース自体も小さくなってチェックアウト（クローン）が速くできるようになったりなどメリットが一杯です。
+ビルドに ant を使っているので、Jenkins 上でも ant で動作させています。 今度は Maven を使うようにするので、Maven 用に設定を書き換える必要があります。 やりたいことは、ユニットテスト、カバレッジ、PMD、CPD、Findbugs を実行することです。 ant での設定は下記の本を参考にすると簡単なのですが、この本は Maven の設定に詳しくありません。
+ そこで色々なサイトを参考に自分で pom.xml を構築しようとしたのですが、 記述が古かったり、書き方もまちまち、さらには Maven Plugin のバージョンで動作が変わってしまったりなど、 どれを参考にしたら良いのか判断が難しい。 あーでもない、こーでもないとやっているうちに、ユニットテスト、カバレッジ、PMD、CPD、Findbugs を 実行できるようになったので公開したいと思います。
+pom.xml の完全なファイルはこちら。
+指定したテストケースだけ実行 &amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;maven-surefire-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.</description>
+    </item>
+    
+    <item>
+      <title>Derby does not start</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/03/09/derby-does-not-start/</link>
+      <pubDate>Sun, 09 Mar 2014 14:43:26 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/03/09/derby-does-not-start/</guid>
+      <description> Java8を入れたらGlassFishに付属しているDerbyが起動できなくなっていたので、下記を$JAVA_HONE/jre/lib/security/java.policyに追記しました。
+permission java.net.SocketPermission &amp;quot;localhost:1527&amp;quot;, &amp;quot;listen,resolve&amp;quot;;  参考  Java7u51以降でApache Derbyのネットワークサーバを使う場合の設定  </description>
+    </item>
+    
+    <item>
+      <title>How to set the value in ValueChangeListener</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</link>
+      <pubDate>Wed, 12 Feb 2014 00:58:25 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</guid>
+      <description>JSFには値が変更されたことをハンドリングするためのイベントとしてValueChangeEventが用意されています。 このイベントは、コンポーネントのValueChangeListenerによって発行されます。 ValueChangEventを利用してテキストフィールドに入力された値の検証を行っているのですが、 値が不正だった場合に、エラーを表示するのではなく正常な値を設定したい場合があります。
+このとき、単純にValueChangeListenerの中でテキストフィールドのプロパティに値を設定しても、画面には反映されません。 これは、ValueChangeEventがJSFのライフサイクルのUpdate Model Valuesフェーズの前に呼ばれるからであり、 ValueChangeListenerで設定した値はUpdate Model Valuesフェーズで入力値によって上書きされてしまうからです。
+これを解決するには、ValueChangeListenerにおいて、ちょっとした工夫が必要です。 以下にその例を示します。
+public void valueChangeListener(ValueChangeEvent event) { if (event.getPhaseId() == PhaseId.UPDATE_MODEL_VALUES) { property = &amp;quot;9:00&amp;quot;; } else { String value = (String) event.getNewValue(); if (false == value.matches(&amp;quot;([0-9]{1,2}|1[0-9]|2[0-3]):[0-5][0-9]&amp;quot;) { event.setPhaseId(PhaseId.UPDATE_MODEL_VALUES); event.queue(); } } }  この例では、時間の入力に対する検証を行い、不正な値が入力された場合にデフォルト値である「9:00」を設定しています。 値の検証をUpdate Model Valuesフェーズの前に実施し、値が不正である場合には、ValueChangeEventをUpdate Model Valuesフェーズにエンキューします。 このようにすることで、Update Model Valuesフェーズでもう一度ValueChangeListenerが呼び出されます。 二度ValueChangeListenerが呼ばれることになるので、イベントのフェーズIDを判定し、 Update Model Valuesフェーズで呼ばれた場合にデフォルト値を設定することで画面にその値を反映させます。
+JSFは、ライフサイクルを知っていないと対処が難しい場合があるのがちょっといけてないですね&amp;hellip;。 というわけで何かの参考になれば幸いです。
+Enjoy !</description>
+    </item>
+    
+    <item>
+      <title>Examples to FizzBuzz of Java8</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/02/10/examples-to-fizzbuzz-of-java8/</link>
+      <pubDate>Mon, 10 Feb 2014 23:25:24 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/02/10/examples-to-fizzbuzz-of-java8/</guid>
+      <description>業務では未だJava6だし、Java7自体いつ導入されるか分からないし、Java8を本格的に使うようになるのはすごい先だと思うけど、 Java8を触っている時間がほとんどなくて、Lambdaの構文自体を忘れてしまいそうなので、ちょっとリハビリでFizzBuzzを書いた。
+FizzBuzzとはこれのことです。
+CODING HORROR:
+ Write a program that prints the numbers from 1 to 100. But for multiples of three print &amp;ldquo;Fizz&amp;rdquo; instead of the number and for the multiples of five print &amp;ldquo;Buzz&amp;rdquo;. For numbers which are multiples of both three and five print &amp;ldquo;FizzBuzz&amp;rdquo;.
+ コードは下記になります。
+ Enjoy !</description>
+    </item>
+    
+    <item>
+      <title>EclipseLinkでの一意制約例外</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/01/31/entityexistsexception/</link>
+      <pubDate>Fri, 31 Jan 2014 22:52:45 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/01/31/entityexistsexception/</guid>
+      <description>@kikutaro_さんのブログで、 EclipseLinkの一意制約例外について書かれた 「EclipseLinkで一意制約の例外を拾ってみたけど…」 の記事が Twitterで言及されていたので、ちょっと読んでたらjavax.persistence.EntityExistsExceptionがスローされないってあって、 あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。
+で、まあググると確かにスローされないって言っている人が沢山いたけど、 やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。
+（コードにはlombokを適用してます）
+persistence.xml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;persistence xmlns=&amp;quot;http://java.sun.com/xml/ns/persistence&amp;quot; version=&amp;quot;2.0&amp;quot;&amp;gt; &amp;lt;persistence-unit name=&amp;quot;testPU&amp;quot; transaction-type=&amp;quot;RESOURCE_LOCAL&amp;quot;&amp;gt; &amp;lt;provider&amp;gt;org.eclipse.persistence.jpa.PersistenceProvider&amp;lt;/provider&amp;gt; &amp;lt;class&amp;gt;entity.Account&amp;lt;/class&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.driver&amp;quot; value=&amp;quot;org.apache.derby.jdbc.ClientDriver&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.url&amp;quot; value=&amp;quot;jdbc:derby://localhost/test;create=true&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.user&amp;quot; value=&amp;quot;APP&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.password&amp;quot; value=&amp;quot;APP&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;eclipselink.ddl-generation&amp;quot; value=&amp;quot;drop-and-create-tables&amp;quot;/&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;/persistence-unit&amp;gt; &amp;lt;/persistence&amp;gt;  Account.java:
+@Entity @NoArgsConstructor @RequiredArgsConstructor public class Account { @Getter @NonNull @Id private Long id; @Getter @Setter @NonNull private String name; }  AccountTest.java:
+@Test(expected = EntityExistsException.class) public void testPersist() throws Exception { Account account = new Account(1L, &amp;quot;名前&amp;quot;); em.</description>
+    </item>
+    
+    <item>
+      <title>java7u51 Web Startセキュリティアップデートの回避方法</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/01/16/java7u51-web-start-security-update-workaround/</link>
+      <pubDate>Thu, 16 Jan 2014 07:08:26 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/01/16/java7u51-web-start-security-update-workaround/</guid>
+      <description>1月14日にJava7u51がリリースされました。 このアップデートによってセキュリティが強化されて、署名のないアプレットが起動できなくなりました。 また署名があっても、ユーザ独自の署名の場合ではその証明書をクライアントにインポートしておかないと、 同じく起動することができないようです。
+あまり頻繁に行う作業ではないので、手順をまとめておきたいと思います。
+1. MANIFEST.MFの編集 jarファイル内のMANIFEST.MFに下記を追記します。
+Permissions: all-permissions  Mavenを利用している場合は、下記をpom.xmlに追加することで、 ビルド時にMANIFEST.MFに追加することができます。
+&amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;maven-jar-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.4&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;archive&amp;gt; &amp;lt;manifestEntries&amp;gt; &amp;lt;Permissions&amp;gt;all-permissions&amp;lt;/Permissions&amp;gt; &amp;lt;Codebase&amp;gt;*&amp;lt;/Codebase&amp;gt; &amp;lt;/manifestEntries&amp;gt; &amp;lt;/archive&amp;gt; &amp;lt;/configuration&amp;gt; &amp;lt;/plugin&amp;gt; &amp;lt;/plugins&amp;gt; &amp;lt;/build&amp;gt;  Antであれば下記で同様のことができます。
+&amp;lt;target name=&amp;quot;dist&amp;quot;&amp;gt; &amp;lt;jar destfile=&amp;quot;${basedir}/out/sample.jar&amp;quot; basedir=&amp;quot;${basedir}/out/classes/&amp;quot;&amp;gt; &amp;lt;manifest&amp;gt; &amp;lt;attribute name=&amp;quot;Permissions&amp;quot; value=&amp;quot;all-permissions&amp;quot;/&amp;gt; &amp;lt;attribute name=&amp;quot;Codebase&amp;quot; value=&amp;quot;*&amp;quot;/&amp;gt; &amp;lt;/manifest&amp;gt; &amp;lt;/jar&amp;gt; &amp;lt;/target&amp;gt;  2. jnlpファイルの編集 jnlpファイルに下記を追記します。
+&amp;lt;security&amp;gt; &amp;lt;all-permissions/&amp;gt; &amp;lt;/security&amp;gt;  3. keystoreの生成 keystoreを生成します。[]内は任意の文字列を指定します。
+keytool -selfcert -alias [sample] -genkey -keystore [sample.keystore] -validity [3650]  4. 証明書の生成 keytool -export -keystore [sample.</description>
+    </item>
     
     <item>
       <title>JAX-RSで複数ファイルをアップロードするには</title>

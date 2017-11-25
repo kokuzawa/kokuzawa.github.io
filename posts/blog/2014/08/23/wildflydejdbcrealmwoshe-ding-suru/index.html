@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>WildFlyでJdbcRealm</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="WildFlyでJdbcRealm" />
+<meta property="og:description" content="今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。
+WildFly の設定 WildFly 8.0.0.Final に JDBCRealm を構築します。
+まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。
+Security Domain を追加します。 追加は WildFly の GUI コンソールから行います。 追加する Security Domain は Name: app, Cache Type: default です。
+追加した Security Domain を開き、Login Module を追加します。 追加する Login Modile は Code: Database, Flg: required です。
+追加した Login Module に Module Option を追加します。
+追加する Module Option は下記表になります。 dsJndiName で指定するのは事前に登録した Datasource です。
+   Key Value     dsJndiName java:/jdbc/realmSample   hashAlgorithm SHA-256   hashEncoding HEX   principalsQuery SELECT password FROM accounts WHERE email = ?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/" />
+
+
+
+<meta property="article:published_time" content="2014-08-23T15:50:18&#43;09:00"/>
+
+<meta property="article:modified_time" content="2014-08-23T15:50:18&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="WildFlyでJdbcRealm">
+<meta itemprop="description" content="今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。
+WildFly の設定 WildFly 8.0.0.Final に JDBCRealm を構築します。
+まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。
+Security Domain を追加します。 追加は WildFly の GUI コンソールから行います。 追加する Security Domain は Name: app, Cache Type: default です。
+追加した Security Domain を開き、Login Module を追加します。 追加する Login Modile は Code: Database, Flg: required です。
+追加した Login Module に Module Option を追加します。
+追加する Module Option は下記表になります。 dsJndiName で指定するのは事前に登録した Datasource です。
+   Key Value     dsJndiName java:/jdbc/realmSample   hashAlgorithm SHA-256   hashEncoding HEX   principalsQuery SELECT password FROM accounts WHERE email = ?">
+
+
+<meta itemprop="datePublished" content="2014-08-23T15:50:18&#43;09:00" />
+<meta itemprop="dateModified" content="2014-08-23T15:50:18&#43;09:00" />
+<meta itemprop="wordCount" content="158">
+
+
+
+<meta itemprop="keywords" content="Java,JavaEE,WildFly," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="WildFlyでJdbcRealm"/>
+<meta name="twitter:description" content="今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。
+WildFly の設定 WildFly 8.0.0.Final に JDBCRealm を構築します。
+まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。
+Security Domain を追加します。 追加は WildFly の GUI コンソールから行います。 追加する Security Domain は Name: app, Cache Type: default です。
+追加した Security Domain を開き、Login Module を追加します。 追加する Login Modile は Code: Database, Flg: required です。
+追加した Login Module に Module Option を追加します。
+追加する Module Option は下記表になります。 dsJndiName で指定するのは事前に登録した Datasource です。
+   Key Value     dsJndiName java:/jdbc/realmSample   hashAlgorithm SHA-256   hashEncoding HEX   principalsQuery SELECT password FROM accounts WHERE email = ?"/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>WildFlyでJdbcRealm</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        August 23, 2014
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/javaee">JavaEE</a>
+            
+                <a href="https://kokuzawa.github.io/tags/wildfly">WildFly</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。</p>
+
+<!-- MORE -->
+
+<h2 id="wildfly-の設定">WildFly の設定</h2>
+
+<p>WildFly 8.0.0.Final に JDBCRealm を構築します。<br />
+まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。</p>
+
+<p><img src="https://kokuzawa.github.io/images/post_image_28.png" alt="" /></p>
+
+<p>Security Domain を追加します。
+追加は WildFly の GUI コンソールから行います。
+追加する Security Domain は Name: app, Cache Type: default です。</p>
+
+<p><img src="https://kokuzawa.github.io/images/post_image_29.png" alt="" /></p>
+
+<p>追加した Security Domain を開き、Login Module を追加します。
+追加する Login Modile は Code: Database, Flg: required です。</p>
+
+<p><img src="https://kokuzawa.github.io/images/post_image_30.png" alt="" /></p>
+
+<p>追加した Login Module に Module Option を追加します。</p>
+
+<p><img src="https://kokuzawa.github.io/images/post_image_31.png" alt="" /></p>
+
+<p>追加する Module Option は下記表になります。
+dsJndiName で指定するのは事前に登録した Datasource です。</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Key</th>
+<th align="left">Value</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td align="left">dsJndiName</td>
+<td align="left">java:/jdbc/realmSample</td>
+</tr>
+
+<tr>
+<td align="left">hashAlgorithm</td>
+<td align="left">SHA-256</td>
+</tr>
+
+<tr>
+<td align="left">hashEncoding</td>
+<td align="left">HEX</td>
+</tr>
+
+<tr>
+<td align="left">principalsQuery</td>
+<td align="left">SELECT password FROM accounts WHERE email = ?</td>
+</tr>
+
+<tr>
+<td align="left">rolesQuery</td>
+<td align="left">SELECT r.rolename, &lsquo;Roles&rsquo; FROM roles r, accounts a WHERE r.accountid = a.accountid AND a.email = ?</td>
+</tr>
+</tbody>
+</table>
+
+<h2 id="データの投入">データの投入</h2>
+
+<p>最初に作ったテーブルにデータを投入します。
+パスワードに設定するのは、SHA256で暗号化、HEXエンコードした文字列です。
+ここでは &lsquo;test&rsquo; という文字列をパスワードにしています。</p>
+
+<pre><code class="language-sql">INSERT INTO accounts (email, password) VALUES ('hoge', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
+INSERT INTO roles (rolename, accountid) VALUES ('MEMBER', 1);
+</code></pre>
+
+<h2 id="jboss-web-xml-の設定">jboss-web.xml の設定</h2>
+
+<p>追加した Security Domain を利用するために、jboss-web.xml へ Security Domain を指定します。</p>
+
+<pre><code class="language-xml">&lt;security-domain&gt;app&lt;/security-domain&gt;
+</code></pre>
+
+<h2 id="web-xml-の設定">web.xml の設定</h2>
+
+<p>BASIC認証が行われるように web.xml を設定します。</p>
+
+<pre><code class="language-xml">&lt;security-role&gt;
+    &lt;role-name&gt;MEMBER&lt;/role-name&gt;
+&lt;/security-role&gt;
+
+&lt;security-constraint&gt;
+    &lt;web-resource-collection&gt;
+        &lt;web-resource-name&gt;Member Resource&lt;/web-resource-name&gt;
+        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
+    &lt;/web-resource-collection&gt;
+    &lt;auth-constraint&gt;
+        &lt;role-name&gt;MEMBER&lt;/role-name&gt;
+    &lt;/auth-constraint&gt;
+&lt;/security-constraint&gt;
+
+&lt;login-config&gt;
+    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
+    &lt;realm-name&gt;Authentication&lt;/realm-name&gt;
+&lt;/login-config&gt;
+</code></pre>
+
+<p>これですべての設定が完了です。
+WildFly にアプリをデプロイしてアクセスするとBASIC認証のダイアログが表示されると思います。
+そこで事前に登録したアカウント情報を入力すると認証に成功するはずです。</p>
+
+<hr />
+
+<ul>
+<li>Oct 28, 2014 脱字修正</li>
+</ul>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fposts%2fblog%2f2014%2f08%2f23%2fwildflydejdbcrealmwoshe-ding-suru%2f - WildFly%e3%81%a7JdbcRealm by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/25/java-dot-util-dot-objectswoshi-ikonasou/">java.util.Objectsを使おう<aside class="dates">Dec 25 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/">[JSF-2.3]FacesContextをInjectする<aside class="dates">Dec 23 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/">RESTEasyとSpringの連携<aside class="dates">Dec 20 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/">JavaFXでMarkdownエディタを作る<aside class="dates">Dec 6 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/">FlexとJavaFXでREST-APIを呼び出す<aside class="dates">Nov 3 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/10/08/jsffalsecsrfdui-ce/">JSFのCSRF対策<aside class="dates">Oct 8 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/">Javaで文書検索をする (Apache Solr)<aside class="dates">Sep 7 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/">Apache solrで全文検索に触れる<aside class="dates">Sep 5 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/">Jenkins用のpom.xmlの基本設定<aside class="dates">May 24 2014</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

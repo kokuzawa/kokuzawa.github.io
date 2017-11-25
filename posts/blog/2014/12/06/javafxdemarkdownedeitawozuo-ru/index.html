@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>JavaFXでMarkdownエディタを作る</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="JavaFXでMarkdownエディタを作る" />
+<meta property="og:description" content="この記事は JavaFX Advent Calendar 2014 の6日目です。
+昨日はsoutokuさんのJavaFX:WYSIWYGエディタを作るでした。
+明日は@backpaper0さんです。
+JavaFX 楽しいですよね。
+JavaFXには標準でWebページを表示するためのWebViewクラスがあり、これを使えばいろいろなことができます。 今回はこのWebViewクラスを使ってMarkdownエディタを作ってみることにします。 MarkdownといえばGitHubとかでも利用している人が多いかと思いますが、文書を記述するための軽量マークアップ言語です。 Markdownでテキストを入力し、それをパースしてWebViewに表示するという簡単な動作をするアプリケーションです。
+環境  OS: Mac OSX Yosemite 10.10 メモリ: 4GB Java: Java SE Runtime Environment (build 1.8.0-b132) markdown4j-2.2-cj-1.0  Markdownのパースにはmarkdown4jを使うことにしました。
+実際に動かしてみる 実際に動作している動画です。
+ FXMLで外枠を作る 外枠を作るのはFXMLで書けばよいので簡単です。 IntelliJ IDEA 14 を使っているのでインラインScene Builderも使えますが&hellip;という状態なので スタンドアロンのScene Builderを使いました。 ささっと作ったFXMLは以下のようになりました。
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;?import javafx.scene.control.*?&gt; &lt;?import javafx.scene.layout.*?&gt; &lt;?import javafx.scene.text.TextFlow?&gt; &lt;BorderPane maxHeight=&quot;-Infinity&quot; maxWidth=&quot;-Infinity&quot; minHeight=&quot;-Infinity&quot; minWidth=&quot;-Infinity&quot; prefHeight=&quot;400.0&quot; prefWidth=&quot;600.0&quot; xmlns=&quot;http://javafx.com/javafx/8&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot; fx:controller=&quot;sample.Controller&quot;&gt; &lt;center&gt; &lt;SplitPane dividerPositions=&quot;0.5&quot; orientation=&quot;VERTICAL&quot; prefHeight=&quot;200." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/" />
+
+
+
+<meta property="article:published_time" content="2014-12-06T06:42:41&#43;09:00"/>
+
+<meta property="article:modified_time" content="2014-12-06T06:42:41&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="JavaFXでMarkdownエディタを作る">
+<meta itemprop="description" content="この記事は JavaFX Advent Calendar 2014 の6日目です。
+昨日はsoutokuさんのJavaFX:WYSIWYGエディタを作るでした。
+明日は@backpaper0さんです。
+JavaFX 楽しいですよね。
+JavaFXには標準でWebページを表示するためのWebViewクラスがあり、これを使えばいろいろなことができます。 今回はこのWebViewクラスを使ってMarkdownエディタを作ってみることにします。 MarkdownといえばGitHubとかでも利用している人が多いかと思いますが、文書を記述するための軽量マークアップ言語です。 Markdownでテキストを入力し、それをパースしてWebViewに表示するという簡単な動作をするアプリケーションです。
+環境  OS: Mac OSX Yosemite 10.10 メモリ: 4GB Java: Java SE Runtime Environment (build 1.8.0-b132) markdown4j-2.2-cj-1.0  Markdownのパースにはmarkdown4jを使うことにしました。
+実際に動かしてみる 実際に動作している動画です。
+ FXMLで外枠を作る 外枠を作るのはFXMLで書けばよいので簡単です。 IntelliJ IDEA 14 を使っているのでインラインScene Builderも使えますが&hellip;という状態なので スタンドアロンのScene Builderを使いました。 ささっと作ったFXMLは以下のようになりました。
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;?import javafx.scene.control.*?&gt; &lt;?import javafx.scene.layout.*?&gt; &lt;?import javafx.scene.text.TextFlow?&gt; &lt;BorderPane maxHeight=&quot;-Infinity&quot; maxWidth=&quot;-Infinity&quot; minHeight=&quot;-Infinity&quot; minWidth=&quot;-Infinity&quot; prefHeight=&quot;400.0&quot; prefWidth=&quot;600.0&quot; xmlns=&quot;http://javafx.com/javafx/8&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot; fx:controller=&quot;sample.Controller&quot;&gt; &lt;center&gt; &lt;SplitPane dividerPositions=&quot;0.5&quot; orientation=&quot;VERTICAL&quot; prefHeight=&quot;200.">
+
+
+<meta itemprop="datePublished" content="2014-12-06T06:42:41&#43;09:00" />
+<meta itemprop="dateModified" content="2014-12-06T06:42:41&#43;09:00" />
+<meta itemprop="wordCount" content="281">
+
+
+
+<meta itemprop="keywords" content="Java,JavaFX," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="JavaFXでMarkdownエディタを作る"/>
+<meta name="twitter:description" content="この記事は JavaFX Advent Calendar 2014 の6日目です。
+昨日はsoutokuさんのJavaFX:WYSIWYGエディタを作るでした。
+明日は@backpaper0さんです。
+JavaFX 楽しいですよね。
+JavaFXには標準でWebページを表示するためのWebViewクラスがあり、これを使えばいろいろなことができます。 今回はこのWebViewクラスを使ってMarkdownエディタを作ってみることにします。 MarkdownといえばGitHubとかでも利用している人が多いかと思いますが、文書を記述するための軽量マークアップ言語です。 Markdownでテキストを入力し、それをパースしてWebViewに表示するという簡単な動作をするアプリケーションです。
+環境  OS: Mac OSX Yosemite 10.10 メモリ: 4GB Java: Java SE Runtime Environment (build 1.8.0-b132) markdown4j-2.2-cj-1.0  Markdownのパースにはmarkdown4jを使うことにしました。
+実際に動かしてみる 実際に動作している動画です。
+ FXMLで外枠を作る 外枠を作るのはFXMLで書けばよいので簡単です。 IntelliJ IDEA 14 を使っているのでインラインScene Builderも使えますが&hellip;という状態なので スタンドアロンのScene Builderを使いました。 ささっと作ったFXMLは以下のようになりました。
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;?import javafx.scene.control.*?&gt; &lt;?import javafx.scene.layout.*?&gt; &lt;?import javafx.scene.text.TextFlow?&gt; &lt;BorderPane maxHeight=&quot;-Infinity&quot; maxWidth=&quot;-Infinity&quot; minHeight=&quot;-Infinity&quot; minWidth=&quot;-Infinity&quot; prefHeight=&quot;400.0&quot; prefWidth=&quot;600.0&quot; xmlns=&quot;http://javafx.com/javafx/8&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot; fx:controller=&quot;sample.Controller&quot;&gt; &lt;center&gt; &lt;SplitPane dividerPositions=&quot;0.5&quot; orientation=&quot;VERTICAL&quot; prefHeight=&quot;200."/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>JavaFXでMarkdownエディタを作る</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        December 6, 2014
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/javafx">JavaFX</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>この記事は <a href="http://www.adventar.org/calendars/380">JavaFX Advent Calendar 2014</a> の6日目です。<br />
+昨日は<a href="http://www.adventar.org/users/5558">soutoku</a>さんの<a href="http://soutoku.hatenablog.com/entry/2014/12/05/013342">JavaFX:WYSIWYGエディタを作る</a>でした。<br />
+明日は<a href="https://twitter.com/backpaper0">@backpaper0</a>さんです。</p>
+
+<p>JavaFX 楽しいですよね。</p>
+
+<p>JavaFXには標準でWebページを表示するためのWebViewクラスがあり、これを使えばいろいろなことができます。
+今回はこのWebViewクラスを使ってMarkdownエディタを作ってみることにします。
+MarkdownといえばGitHubとかでも利用している人が多いかと思いますが、文書を記述するための軽量マークアップ言語です。
+Markdownでテキストを入力し、それをパースしてWebViewに表示するという簡単な動作をするアプリケーションです。</p>
+
+<!-- MORE -->
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>OS: Mac OSX Yosemite 10.10</li>
+<li>メモリ: 4GB</li>
+<li>Java: Java SE Runtime Environment (build 1.8.0-b132)</li>
+<li>markdown4j-2.2-cj-1.0</li>
+</ul>
+
+<p>Markdownのパースには<a href="https://code.google.com/p/markdown4j/">markdown4j</a>を使うことにしました。</p>
+
+<h2 id="実際に動かしてみる">実際に動かしてみる</h2>
+
+<p>実際に動作している動画です。</p>
+
+<iframe width="420" height="315" src="https://www.youtube.com/embed/zjFR_In-gik" frameborder="0" allowfullscreen></iframe>
+
+<h2 id="fxmlで外枠を作る">FXMLで外枠を作る</h2>
+
+<p>外枠を作るのはFXMLで書けばよいので簡単です。
+IntelliJ IDEA 14 を使っているのでインラインScene Builderも使えますが&hellip;という状態なので
+スタンドアロンのScene Builderを使いました。
+ささっと作ったFXMLは以下のようになりました。</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+
+&lt;?import javafx.scene.control.*?&gt;
+&lt;?import javafx.scene.layout.*?&gt;
+&lt;?import javafx.scene.text.TextFlow?&gt;
+&lt;BorderPane maxHeight=&quot;-Infinity&quot;
+            maxWidth=&quot;-Infinity&quot;
+            minHeight=&quot;-Infinity&quot;
+            minWidth=&quot;-Infinity&quot;
+            prefHeight=&quot;400.0&quot;
+            prefWidth=&quot;600.0&quot;
+            xmlns=&quot;http://javafx.com/javafx/8&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot;
+	    fx:controller=&quot;sample.Controller&quot;&gt;
+   &lt;center&gt;
+      &lt;SplitPane dividerPositions=&quot;0.5&quot;
+                 orientation=&quot;VERTICAL&quot;
+                 prefHeight=&quot;200.0&quot;
+                 prefWidth=&quot;160.0&quot;
+                 BorderPane.alignment=&quot;CENTER&quot;&gt;
+        &lt;items&gt;
+          &lt;AnchorPane minHeight=&quot;0.0&quot; minWidth=&quot;0.0&quot; prefHeight=&quot;100.0&quot; prefWidth=&quot;160.0&quot;&gt;
+               &lt;children&gt;
+                  &lt;TextArea fx:id=&quot;textArea&quot;
+		            prefHeight=&quot;200.0&quot;
+                            prefWidth=&quot;200.0&quot;
+                            AnchorPane.bottomAnchor=&quot;0.0&quot;
+                            AnchorPane.leftAnchor=&quot;0.0&quot;
+                            AnchorPane.rightAnchor=&quot;0.0&quot;
+                            AnchorPane.topAnchor=&quot;0.0&quot;&gt;
+		  &lt;/TextArea&gt;
+               &lt;/children&gt;
+               &lt;padding&gt;
+                  &lt;Insets bottom=&quot;5.0&quot; left=&quot;5.0&quot; right=&quot;5.0&quot; top=&quot;5.0&quot; /&gt;
+               &lt;/padding&gt;
+            &lt;/AnchorPane&gt;
+          &lt;AnchorPane minHeight=&quot;0.0&quot; minWidth=&quot;0.0&quot; prefHeight=&quot;100.0&quot; prefWidth=&quot;160.0&quot;&gt;
+               &lt;children&gt;
+                  &lt;WebView fx:id=&quot;webView&quot;
+                           prefHeight=&quot;200.0&quot; 
+                           prefWidth=&quot;200.0&quot; 
+                           AnchorPane.bottomAnchor=&quot;0.0&quot; 
+                           AnchorPane.leftAnchor=&quot;0.0&quot; 
+                           AnchorPane.rightAnchor=&quot;0.0&quot; 
+                           AnchorPane.topAnchor=&quot;0.0&quot; /&gt;
+               &lt;/children&gt;
+               &lt;padding&gt;
+                  &lt;Insets bottom=&quot;5.0&quot; left=&quot;5.0&quot; right=&quot;5.0&quot; top=&quot;5.0&quot; /&gt;
+               &lt;/padding&gt;
+            &lt;/AnchorPane&gt;
+        &lt;/items&gt;
+      &lt;/SplitPane&gt;
+   &lt;/center&gt;
+   &lt;top&gt;
+      &lt;MenuBar BorderPane.alignment=&quot;CENTER&quot;&gt;
+        &lt;menus&gt;
+          &lt;Menu mnemonicParsing=&quot;false&quot; text=&quot;File&quot;&gt;
+            &lt;items&gt;
+              &lt;MenuItem mnemonicParsing=&quot;false&quot; text=&quot;Close&quot; /&gt;
+            &lt;/items&gt;
+          &lt;/Menu&gt;
+          &lt;Menu mnemonicParsing=&quot;false&quot; text=&quot;Edit&quot;&gt;
+            &lt;items&gt;
+              &lt;MenuItem mnemonicParsing=&quot;false&quot; text=&quot;Delete&quot; /&gt;
+            &lt;/items&gt;
+          &lt;/Menu&gt;
+          &lt;Menu mnemonicParsing=&quot;false&quot; text=&quot;Help&quot;&gt;
+            &lt;items&gt;
+              &lt;MenuItem mnemonicParsing=&quot;false&quot; text=&quot;About&quot; /&gt;
+            &lt;/items&gt;
+          &lt;/Menu&gt;
+        &lt;/menus&gt;
+      &lt;/MenuBar&gt;
+   &lt;/top&gt;
+&lt;/BorderPane&gt;
+</code></pre>
+
+<p>BorderPaneのtopに配置しているMenuBarは飾りです (^^;<br />
+本体はBorderPaneのcenterにSplitPaneを配置し、上半分にTextArea、下半分にWebViewを表示します。</p>
+
+<h2 id="コントローラを作る">コントローラを作る</h2>
+
+<p>この画面を操作するためのコントローラクラスを作ります。
+コントローラがやることは、TextAreaに入力された値をパースしてWebViewに表示することです。
+今回はTextAreaにイベントを張って、イベント発生毎にWebViewの内容を書き換える方法ではなく、
+TextAreaのテキストプロパティにChangeListenerを設定し、値の変化を検知してWebViewを書き換えるようにします。
+本当はWebView側にコンテンツをバインドできるプロパティが存在すればバインドを使いたいところです。</p>
+
+<pre><code class="language-java">package sample;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
+import javafx.scene.web.WebView;
+import org.markdown4j.Markdown4jProcessor;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class Controller implements Initializable
+{
+    @FXML
+    private TextArea textArea;
+
+    @FXML
+    private WebView webView;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources)
+    {
+        textArea.textProperty().addListener((observable, oldValue, newValue) -&gt; {
+            try {
+                webView.getEngine().loadContent(new Markdown4jProcessor().process(newValue));
+            }
+            catch (StringIndexOutOfBoundsException | IOException e) {
+                webView.getEngine().loadContent(newValue);
+            }
+        });
+    }
+}
+</code></pre>
+
+<p>ChangeListenerを設定するためには<code>TextArea#textProperty()</code>メソッドからStringPropertyを取得し、
+そのプロパティの持つ<code>addListener</code>を使用します。
+値の変更を検知するとChangeListenerのchangedメソッドがコールされるので、
+ここでWebViewに対してHTMLを設定するようにします。
+入力された文字列は<code>Markdown4jProcessor#process(String)</code>メソッドを経由してHTMLに変換されます。</p>
+
+<p><code>WebView#loadContent(String)</code>メソッドには<code>WebView#loadContent(String, String)</code>という引数を２つ取るメソッドも存在します。
+引数が２つのほうは、第二引数にコンテンツタイプを指定できます。引数が１つのほうは内部で引数が２つメソッドを呼び出しいて、
+第二引数には&rdquo;text/html&rdquo;を渡しています。ですので、デフォルトではHTMLを表示することになりますね。</p>
+
+<h2 id="まとめとちょっと考察">まとめとちょっと考察</h2>
+
+<p>これでシンプルなMarkdownエディタができました。
+実は、ChangeListenerの代わりにInvalidationListenerを使うこともできます。
+ChangeListenerとInvalidationListenerの違いは下記のサイトを参考にさせてもらいました。</p>
+
+<ul>
+<li><a href="http://skrb.hatenablog.com/entry/2013/09/08/174826">JavaFX in the Box:JavaFX Hands on Lab</a></li>
+<li><a href="http://d.hatena.ne.jp/nodamushi/20141012/1413136054">プログラムdeタマゴ:JavaFXのInvalidationListenerやChangeListenerやObservableListやBindingについて</a></li>
+</ul>
+
+<pre><code class="language-java">textArea.textProperty().addListener(observable -&gt; {
+    final String value = ((StringProperty) observable).get();
+    try {
+        webView.getEngine().loadContent(new Markdown4jProcessor().process(value));
+    }
+    catch (StringIndexOutOfBoundsException | IOException e) {
+        webView.getEngine().loadContent(value);
+    }
+});
+</code></pre>
+
+<p>ただ、InvalidationListenerを使うと次のような問題が発生します。</p>
+
+<p>日本語入力においてChangeListenerだと確定前文字が入力された場合だけイベントが呼ばれるのですが、
+InvalidationListenerだと確定前文字が入力された時と入力文字を確定した場合の2度イベントが発生します。
+正確には、一回の値変更でイベントが2度発生するので計4回のイベントを受け取る形です。
+確定前文字と入力文字を確定した時の文字は同じものであるため2回目のイベントが無駄になってしまいます。
+使い方がまずいのかもしれないのですが、ChangeListenerを使ったほうが無難な様子です。</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fposts%2fblog%2f2014%2f12%2f06%2fjavafxdemarkdownedeitawozuo-ru%2f - JavaFX%e3%81%a7Markdown%e3%82%a8%e3%83%87%e3%82%a3%e3%82%bf%e3%82%92%e4%bd%9c%e3%82%8b by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/25/java-dot-util-dot-objectswoshi-ikonasou/">java.util.Objectsを使おう<aside class="dates">Dec 25 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/">[JSF-2.3]FacesContextをInjectする<aside class="dates">Dec 23 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/">RESTEasyとSpringの連携<aside class="dates">Dec 20 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/">FlexとJavaFXでREST-APIを呼び出す<aside class="dates">Nov 3 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/10/08/jsffalsecsrfdui-ce/">JSFのCSRF対策<aside class="dates">Oct 8 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/">Javaで文書検索をする (Apache Solr)<aside class="dates">Sep 7 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/">Apache solrで全文検索に触れる<aside class="dates">Sep 5 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/">WildFlyでJdbcRealm<aside class="dates">Aug 23 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/">Jenkins用のpom.xmlの基本設定<aside class="dates">May 24 2014</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

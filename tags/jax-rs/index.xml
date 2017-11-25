@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jax Rs on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/jax-rs/</link>
+    <description>Recent content in Jax Rs on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sat, 20 Dec 2014 10:22:07 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/jax-rs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>RESTEasyとSpringの連携</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</link>
+      <pubDate>Sat, 20 Dec 2014 10:22:07 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
+      <description>Java EE Advent Calendar 2014の20日の記事です。
+昨日は@yoshioteradaさんの「Java EE 8 の新機能概要のご紹介」でした。
+明日は@suke_masaさんです。
+Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思ったところが始まりです。 サーバーがWildFlyだからRESTEasyが含まれているので、JerseyではなくRESTEasyを使えば良いのだけれども、 アプリ内でJersey MultiPartを使っているのでひとまずバージョンアップを試みたのですが、 いろいろ問題があって結局RESTEasyに置き換えました。
+実際の運用はTomcatを使っているので、Tomcatでも動作する設定を考慮しています。 なので、WildFlyオンリーで考えた場合は不要な設定があるかもしれません。
+環境  OS: Mac OSX Yosemite 10.10 Java: Java™ SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  pom.xml 下記のdiendencyが必要です。JettisonじゃなくてJacksonを使いたいのでそのdependencyも追加しています。 あとファイルアップロードも使いたいので、resteasy-multipart-providerも入れています。 resteasy-springに依存してRESTEasyのコアライブラリは入るので定義の必要ありません。 Tomcatの場合、サーバにはJAX-RSの実装は入っていないのでscopeはcompileを指定します。 WildFlyの場合はscopeをcompileにすると起動時にエラーが発生するのでprovidedを指定します。 これは既にRESTEasyがサーバに含まれているから。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-servlet-initializer&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-multipart-provider&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-jackson-provider&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-spring&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  web.xml web.xml には下記を追加します。 url-pattarnが/*以外の場合はresteasy.</description>
+    </item>
+    
+    <item>
+      <title>FlexとJavaFXでREST-APIを呼び出す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</link>
+      <pubDate>Mon, 03 Nov 2014 17:12:02 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
+      <description>FlexとJavaFXからREST-APIを呼び出してみました。
+環境  OS: Mac OSX Yosemite 10.10 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
+import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&amp;quot;/hello&amp;quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&amp;quot;string&amp;quot;) String string) { return String.format(&amp;quot;Hello %s!&amp;quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。
+画面構成を管理するMXMLです。
+Main.mxml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;s:WindowedApplication xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot; xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot; xmlns:local=&amp;quot;*&amp;quot; title=&amp;quot;Hello World&amp;quot; width=&amp;quot;230&amp;quot; height=&amp;quot;80&amp;quot;&amp;gt; &amp;lt;fx:Declarations&amp;gt; &amp;lt;local:Controller id=&amp;quot;controller&amp;quot;/&amp;gt; &amp;lt;/fx:Declarations&amp;gt; &amp;lt;s:VGroup paddingBottom=&amp;quot;10&amp;quot; paddingLeft=&amp;quot;10&amp;quot; paddingRight=&amp;quot;10&amp;quot; paddingTop=&amp;quot;10&amp;quot; gap=&amp;quot;10&amp;quot; minHeight=&amp;quot;0&amp;quot;&amp;gt; &amp;lt;s:HGroup&amp;gt; &amp;lt;s:TextInput id=&amp;quot;stringField&amp;quot;/&amp;gt; &amp;lt;s:Button label=&amp;quot;Button&amp;quot; click=&amp;quot;{controller.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,10 +6,41 @@
     <description>Recent content in Javafx on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 08 Dec 2013 00:15:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 06 Dec 2014 06:42:41 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/javafx/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JavaFXでMarkdownエディタを作る</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</link>
+      <pubDate>Sat, 06 Dec 2014 06:42:41 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</guid>
+      <description>この記事は JavaFX Advent Calendar 2014 の6日目です。
+昨日はsoutokuさんのJavaFX:WYSIWYGエディタを作るでした。
+明日は@backpaper0さんです。
+JavaFX 楽しいですよね。
+JavaFXには標準でWebページを表示するためのWebViewクラスがあり、これを使えばいろいろなことができます。 今回はこのWebViewクラスを使ってMarkdownエディタを作ってみることにします。 MarkdownといえばGitHubとかでも利用している人が多いかと思いますが、文書を記述するための軽量マークアップ言語です。 Markdownでテキストを入力し、それをパースしてWebViewに表示するという簡単な動作をするアプリケーションです。
+環境  OS: Mac OSX Yosemite 10.10 メモリ: 4GB Java: Java SE Runtime Environment (build 1.8.0-b132) markdown4j-2.2-cj-1.0  Markdownのパースにはmarkdown4jを使うことにしました。
+実際に動かしてみる 実際に動作している動画です。
+ FXMLで外枠を作る 外枠を作るのはFXMLで書けばよいので簡単です。 IntelliJ IDEA 14 を使っているのでインラインScene Builderも使えますが&amp;hellip;という状態なので スタンドアロンのScene Builderを使いました。 ささっと作ったFXMLは以下のようになりました。
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;?import javafx.scene.control.*?&amp;gt; &amp;lt;?import javafx.scene.layout.*?&amp;gt; &amp;lt;?import javafx.scene.text.TextFlow?&amp;gt; &amp;lt;BorderPane maxHeight=&amp;quot;-Infinity&amp;quot; maxWidth=&amp;quot;-Infinity&amp;quot; minHeight=&amp;quot;-Infinity&amp;quot; minWidth=&amp;quot;-Infinity&amp;quot; prefHeight=&amp;quot;400.0&amp;quot; prefWidth=&amp;quot;600.0&amp;quot; xmlns=&amp;quot;http://javafx.com/javafx/8&amp;quot; xmlns:fx=&amp;quot;http://javafx.com/fxml/1&amp;quot; fx:controller=&amp;quot;sample.Controller&amp;quot;&amp;gt; &amp;lt;center&amp;gt; &amp;lt;SplitPane dividerPositions=&amp;quot;0.5&amp;quot; orientation=&amp;quot;VERTICAL&amp;quot; prefHeight=&amp;quot;200.</description>
+    </item>
+    
+    <item>
+      <title>FlexとJavaFXでREST-APIを呼び出す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</link>
+      <pubDate>Mon, 03 Nov 2014 17:12:02 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
+      <description>FlexとJavaFXからREST-APIを呼び出してみました。
+環境  OS: Mac OSX Yosemite 10.10 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
+import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&amp;quot;/hello&amp;quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&amp;quot;string&amp;quot;) String string) { return String.format(&amp;quot;Hello %s!&amp;quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。
+画面構成を管理するMXMLです。
+Main.mxml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;s:WindowedApplication xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot; xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot; xmlns:local=&amp;quot;*&amp;quot; title=&amp;quot;Hello World&amp;quot; width=&amp;quot;230&amp;quot; height=&amp;quot;80&amp;quot;&amp;gt; &amp;lt;fx:Declarations&amp;gt; &amp;lt;local:Controller id=&amp;quot;controller&amp;quot;/&amp;gt; &amp;lt;/fx:Declarations&amp;gt; &amp;lt;s:VGroup paddingBottom=&amp;quot;10&amp;quot; paddingLeft=&amp;quot;10&amp;quot; paddingRight=&amp;quot;10&amp;quot; paddingTop=&amp;quot;10&amp;quot; gap=&amp;quot;10&amp;quot; minHeight=&amp;quot;0&amp;quot;&amp;gt; &amp;lt;s:HGroup&amp;gt; &amp;lt;s:TextInput id=&amp;quot;stringField&amp;quot;/&amp;gt; &amp;lt;s:Button label=&amp;quot;Button&amp;quot; click=&amp;quot;{controller.</description>
+    </item>
     
     <item>
       <title>IntelliJ IDEA 13で作るJavaFXアプリケーション</title>

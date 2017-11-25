@@ -6,10 +6,24 @@
     <description>Recent content in Maven on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 15 Oct 2013 00:16:00 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 24 May 2014 16:30:10 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/maven/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Jenkins用のpom.xmlの基本設定</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</link>
+      <pubDate>Sat, 24 May 2014 16:30:10 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</guid>
+      <description>だんだんと暑くなってきた先週、Java7 を導入できることになって大喜びして IntelliJ IDEA の Inspect Code を使って Java7 に対応するコードに一括変換をした月曜日、 今年は良い夏を迎えられそうだと思っていたら、OS が Java7 をサポートしてなくてコードを Java6 にダウングレードするという、モチベーションがだだ下がりな作業したところです。
+ただ Java6 にダウングレードするというものやってられないので、 Eclipse の Web アプリ構成のプロジェクトを Maven 構成のプロジェクトに置き換えようと考えました。 Maven 構成に変えるのはフォルダの位置を変更するだけなのでとても簡単で、 かつ、ライブラリはビルド時に取得してくれるから、今までのように VCS に jar ファイルも一緒にコミットする必要がなくなり、 アプリのリソース自体も小さくなってチェックアウト（クローン）が速くできるようになったりなどメリットが一杯です。
+ビルドに ant を使っているので、Jenkins 上でも ant で動作させています。 今度は Maven を使うようにするので、Maven 用に設定を書き換える必要があります。 やりたいことは、ユニットテスト、カバレッジ、PMD、CPD、Findbugs を実行することです。 ant での設定は下記の本を参考にすると簡単なのですが、この本は Maven の設定に詳しくありません。
+ そこで色々なサイトを参考に自分で pom.xml を構築しようとしたのですが、 記述が古かったり、書き方もまちまち、さらには Maven Plugin のバージョンで動作が変わってしまったりなど、 どれを参考にしたら良いのか判断が難しい。 あーでもない、こーでもないとやっているうちに、ユニットテスト、カバレッジ、PMD、CPD、Findbugs を 実行できるようになったので公開したいと思います。
+pom.xml の完全なファイルはこちら。
+指定したテストケースだけ実行 &amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;maven-surefire-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.</description>
+    </item>
     
     <item>
       <title>springframeworkのjarファイル一式をダウンロードするには？</title>

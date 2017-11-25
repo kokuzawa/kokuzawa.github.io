@@ -6,10 +6,25 @@
     <description>Recent content in Jpa on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 03 Nov 2013 01:39:00 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 31 Jan 2014 22:52:45 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/jpa/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>EclipseLinkでの一意制約例外</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/01/31/entityexistsexception/</link>
+      <pubDate>Fri, 31 Jan 2014 22:52:45 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/01/31/entityexistsexception/</guid>
+      <description>@kikutaro_さんのブログで、 EclipseLinkの一意制約例外について書かれた 「EclipseLinkで一意制約の例外を拾ってみたけど…」 の記事が Twitterで言及されていたので、ちょっと読んでたらjavax.persistence.EntityExistsExceptionがスローされないってあって、 あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。
+で、まあググると確かにスローされないって言っている人が沢山いたけど、 やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。
+（コードにはlombokを適用してます）
+persistence.xml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;persistence xmlns=&amp;quot;http://java.sun.com/xml/ns/persistence&amp;quot; version=&amp;quot;2.0&amp;quot;&amp;gt; &amp;lt;persistence-unit name=&amp;quot;testPU&amp;quot; transaction-type=&amp;quot;RESOURCE_LOCAL&amp;quot;&amp;gt; &amp;lt;provider&amp;gt;org.eclipse.persistence.jpa.PersistenceProvider&amp;lt;/provider&amp;gt; &amp;lt;class&amp;gt;entity.Account&amp;lt;/class&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.driver&amp;quot; value=&amp;quot;org.apache.derby.jdbc.ClientDriver&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.url&amp;quot; value=&amp;quot;jdbc:derby://localhost/test;create=true&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.user&amp;quot; value=&amp;quot;APP&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.password&amp;quot; value=&amp;quot;APP&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;eclipselink.ddl-generation&amp;quot; value=&amp;quot;drop-and-create-tables&amp;quot;/&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;/persistence-unit&amp;gt; &amp;lt;/persistence&amp;gt;  Account.java:
+@Entity @NoArgsConstructor @RequiredArgsConstructor public class Account { @Getter @NonNull @Id private Long id; @Getter @Setter @NonNull private String name; }  AccountTest.java:
+@Test(expected = EntityExistsException.class) public void testPersist() throws Exception { Account account = new Account(1L, &amp;quot;名前&amp;quot;); em.</description>
+    </item>
     
     <item>
       <title>JUnitでJPAのテスト</title>

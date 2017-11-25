@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Wildfly on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/wildfly/</link>
+    <description>Recent content in Wildfly on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 23 Dec 2014 15:02:06 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/wildfly/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[JSF-2.3]FacesContextをInjectする</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</link>
+      <pubDate>Tue, 23 Dec 2014 15:02:06 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</guid>
+      <description>JSF-2.3の新しい機能として、UIViewRoot, ViewMap, ApplicationMap, ExternalContext, FacesContextがInjectできるようになります。 この記事ではFacesContextの古い取得方法であるFacesContext.getCurrentInstance()と、 Injectを利用した取得方法のサンプルを記載します。
+サンプルでは画面のボタンをクリックすると、&amp;lt;h:messages/&amp;gt;タグとFacesContext.addMessage(String, FacesMessage)を利用して 同じ画面上にインフォメーションメッセージを表示します。
+最初にFacesContextの古い取得方法を利用したManaged Beanです。
+import javax.enterprise.context.RequestScoped; import javax.faces.application.FacesMessage; import javax.faces.context.FacesContext; import javax.inject.Inject; import javax.inject.Named; @Named @RequestScoped public class IndexBean { public void doClick() { final FacesContext context = FacesContext.getCurrentInstance(); context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, &amp;quot;summary&amp;quot;, &amp;quot;detail&amp;quot;)); } }  次にInjectを利用してFacesContextを取得するManaged Beanです。
+import javax.enterprise.context.RequestScoped; import javax.faces.application.FacesMessage; import javax.faces.context.FacesContext; import javax.inject.Inject; import javax.inject.Named; @Named @RequestScoped public class IndexBean { @Inject private FacesContext context; public void doClick() { context.</description>
+    </item>
+    
+    <item>
+      <title>WildFlyでJdbcRealm</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</link>
+      <pubDate>Sat, 23 Aug 2014 15:50:18 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
+      <description>今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。
+WildFly の設定 WildFly 8.0.0.Final に JDBCRealm を構築します。
+まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。
+Security Domain を追加します。 追加は WildFly の GUI コンソールから行います。 追加する Security Domain は Name: app, Cache Type: default です。
+追加した Security Domain を開き、Login Module を追加します。 追加する Login Modile は Code: Database, Flg: required です。
+追加した Login Module に Module Option を追加します。
+追加する Module Option は下記表になります。 dsJndiName で指定するのは事前に登録した Datasource です。
+   Key Value     dsJndiName java:/jdbc/realmSample   hashAlgorithm SHA-256   hashEncoding HEX   principalsQuery SELECT password FROM accounts WHERE email = ?</description>
+    </item>
+    
+  </channel>
+</rss>

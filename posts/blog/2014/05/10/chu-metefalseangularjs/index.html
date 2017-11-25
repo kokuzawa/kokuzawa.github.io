@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>初めてのAnglarJS</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="初めてのAnglarJS" />
+<meta property="og:description" content="AngularJS &#43; JAX-RS &#43; JPA でアプリを作ってます。 今回 AngularJS を初めて使っているんですがとても便利ですね。 どの辺りがと言われると、具体的に答えられるほど使い込んでいないので答えに窮するのですが、 今分かっている範囲では、テストが簡単にできるのが良い感じです。
+基本 AngularJS を利用するためには当たり前ですが、jsファイルを呼び出す必要があります。 これは AngularJS の公式サイトからダウンロードできるので、そこから取得しました。 ダウンロードしたファイルを任意の場所に配置し、下記を head タグの間に追加します。
+&lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;  あと、下記の ng-app を忘れずに html タグに追加します。 これは、このページが AngularJS のページだよと宣言するためのディレクティブだそうです。
+&lt;html ng-app&gt;  初期値の設定 AngularJS は ng-repeat というディレクティブを利用することで繰り返し処理をすることができます。 繰り返し処理で出力するデータは下記のように ng-init を利用して初期値を設定することができます。 まあ、下記のコードだと繰り返し処理をさせる意味はあまりないのですが&hellip;。
+&lt;html ng-app&gt; &lt;head&gt; &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt; &lt;/head&gt; &lt;body&gt; &lt;div ng-init=&quot;names = [&#39;Taro&#39;, &#39;Jiro&#39;, &#39;Hanako&#39;]&quot;&gt; &lt;div ng-repeat=&quot;name in names&quot;&gt; {{name}} &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;  これを実行すると以下のような画面が表示されます。
+Taro Jiro Hanako  とても簡単です。 ここで表示している Taro, Jiro, Hanako の値を API から取得して表示しようとした場合は下記のようなコードになります。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/posts/blog/2014/05/10/chu-metefalseangularjs/" />
+
+
+
+<meta property="article:published_time" content="2014-05-10T18:50:20&#43;09:00"/>
+
+<meta property="article:modified_time" content="2014-05-10T18:50:20&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="初めてのAnglarJS">
+<meta itemprop="description" content="AngularJS &#43; JAX-RS &#43; JPA でアプリを作ってます。 今回 AngularJS を初めて使っているんですがとても便利ですね。 どの辺りがと言われると、具体的に答えられるほど使い込んでいないので答えに窮するのですが、 今分かっている範囲では、テストが簡単にできるのが良い感じです。
+基本 AngularJS を利用するためには当たり前ですが、jsファイルを呼び出す必要があります。 これは AngularJS の公式サイトからダウンロードできるので、そこから取得しました。 ダウンロードしたファイルを任意の場所に配置し、下記を head タグの間に追加します。
+&lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;  あと、下記の ng-app を忘れずに html タグに追加します。 これは、このページが AngularJS のページだよと宣言するためのディレクティブだそうです。
+&lt;html ng-app&gt;  初期値の設定 AngularJS は ng-repeat というディレクティブを利用することで繰り返し処理をすることができます。 繰り返し処理で出力するデータは下記のように ng-init を利用して初期値を設定することができます。 まあ、下記のコードだと繰り返し処理をさせる意味はあまりないのですが&hellip;。
+&lt;html ng-app&gt; &lt;head&gt; &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt; &lt;/head&gt; &lt;body&gt; &lt;div ng-init=&quot;names = [&#39;Taro&#39;, &#39;Jiro&#39;, &#39;Hanako&#39;]&quot;&gt; &lt;div ng-repeat=&quot;name in names&quot;&gt; {{name}} &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;  これを実行すると以下のような画面が表示されます。
+Taro Jiro Hanako  とても簡単です。 ここで表示している Taro, Jiro, Hanako の値を API から取得して表示しようとした場合は下記のようなコードになります。">
+
+
+<meta itemprop="datePublished" content="2014-05-10T18:50:20&#43;09:00" />
+<meta itemprop="dateModified" content="2014-05-10T18:50:20&#43;09:00" />
+<meta itemprop="wordCount" content="137">
+
+
+
+<meta itemprop="keywords" content="AngularJS," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="初めてのAnglarJS"/>
+<meta name="twitter:description" content="AngularJS &#43; JAX-RS &#43; JPA でアプリを作ってます。 今回 AngularJS を初めて使っているんですがとても便利ですね。 どの辺りがと言われると、具体的に答えられるほど使い込んでいないので答えに窮するのですが、 今分かっている範囲では、テストが簡単にできるのが良い感じです。
+基本 AngularJS を利用するためには当たり前ですが、jsファイルを呼び出す必要があります。 これは AngularJS の公式サイトからダウンロードできるので、そこから取得しました。 ダウンロードしたファイルを任意の場所に配置し、下記を head タグの間に追加します。
+&lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;  あと、下記の ng-app を忘れずに html タグに追加します。 これは、このページが AngularJS のページだよと宣言するためのディレクティブだそうです。
+&lt;html ng-app&gt;  初期値の設定 AngularJS は ng-repeat というディレクティブを利用することで繰り返し処理をすることができます。 繰り返し処理で出力するデータは下記のように ng-init を利用して初期値を設定することができます。 まあ、下記のコードだと繰り返し処理をさせる意味はあまりないのですが&hellip;。
+&lt;html ng-app&gt; &lt;head&gt; &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt; &lt;/head&gt; &lt;body&gt; &lt;div ng-init=&quot;names = [&#39;Taro&#39;, &#39;Jiro&#39;, &#39;Hanako&#39;]&quot;&gt; &lt;div ng-repeat=&quot;name in names&quot;&gt; {{name}} &lt;/div&gt; &lt;/div&gt; &lt;/body&gt; &lt;/html&gt;  これを実行すると以下のような画面が表示されます。
+Taro Jiro Hanako  とても簡単です。 ここで表示している Taro, Jiro, Hanako の値を API から取得して表示しようとした場合は下記のようなコードになります。"/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>初めてのAnglarJS</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        May 10, 2014
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/angularjs">AngularJS</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>AngularJS + JAX-RS + JPA でアプリを作ってます。
+今回 AngularJS を初めて使っているんですがとても便利ですね。
+どの辺りがと言われると、具体的に答えられるほど使い込んでいないので答えに窮するのですが、
+今分かっている範囲では、テストが簡単にできるのが良い感じです。</p>
+
+<!-- MORE -->
+
+<h2 id="基本">基本</h2>
+
+<p>AngularJS を利用するためには当たり前ですが、jsファイルを呼び出す必要があります。
+これは AngularJS の<a href="https://angularjs.org">公式サイト</a>からダウンロードできるので、そこから取得しました。
+ダウンロードしたファイルを任意の場所に配置し、下記を <code>head</code> タグの間に追加します。</p>
+
+<pre><code class="language-html">&lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+</code></pre>
+
+<p>あと、下記の <code>ng-app</code> を忘れずに <code>html</code> タグに追加します。
+これは、このページが AngularJS のページだよと宣言するためのディレクティブだそうです。</p>
+
+<pre><code class="language-html">&lt;html ng-app&gt;
+</code></pre>
+
+<h2 id="初期値の設定">初期値の設定</h2>
+
+<p>AngularJS は <code>ng-repeat</code> というディレクティブを利用することで繰り返し処理をすることができます。
+繰り返し処理で出力するデータは下記のように <code>ng-init</code> を利用して初期値を設定することができます。
+まあ、下記のコードだと繰り返し処理をさせる意味はあまりないのですが&hellip;。</p>
+
+<pre><code class="language-html">&lt;html ng-app&gt;
+  &lt;head&gt;
+    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div ng-init=&quot;names = ['Taro', 'Jiro', 'Hanako']&quot;&gt;
+      &lt;div ng-repeat=&quot;name in names&quot;&gt;
+        {{name}}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>これを実行すると以下のような画面が表示されます。</p>
+
+<pre><code>Taro
+Jiro
+Hanako
+</code></pre>
+
+<p>とても簡単です。
+ここで表示している Taro, Jiro, Hanako の値を API から取得して表示しようとした場合は下記のようなコードになります。</p>
+
+<p>{% raw %}</p>
+
+<pre><code class="language-html">&lt;html ng-app=&quot;myApp&quot;&gt;
+  &lt;head&gt;
+    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
+    &lt;script src=&quot;angular-resource.js&quot;&gt;&lt;/script&gt;
+    &lt;script&gt;
+      var myApp = angular.module('myApp', ['ngResource']);
+
+      myApp.factory('testService', ['$resource', function($resource)
+      {
+        return $resource('/test/rest/names', {query: {method: 'GET', isArray: true}});
+      }]);
+
+      myApp.controller('myCtrl', ['testService', '$scope', function(testService, $scope)
+      {
+        $scope.names = testService.query();
+      }]);
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;div ng-controller=&quot;myCtrl&quot;&gt;
+      &lt;div ng-repeat=&quot;name in names&quot;&gt;
+        {{name}}
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>{% endraw %}</p>
+
+<h3 id="参考">参考</h3>
+
+<p>以下のサイトを参考にしました。</p>
+
+<ul>
+<li><a href="https://angularjs.org">AngularJS 公式サイト</a></li>
+<li><a href="http://dotinstall.com/lessons/basic_angularjs">ドットインストール - AngularJS入門</a></li>
+</ul>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fposts%2fblog%2f2014%2f05%2f10%2fchu-metefalseangularjs%2f - %e5%88%9d%e3%82%81%e3%81%a6%e3%81%aeAnglarJS by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/25/java-dot-util-dot-objectswoshi-ikonasou/">java.util.Objectsを使おう<aside class="dates">Dec 25 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/">[JSF-2.3]FacesContextをInjectする<aside class="dates">Dec 23 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/">RESTEasyとSpringの連携<aside class="dates">Dec 20 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/">JavaFXでMarkdownエディタを作る<aside class="dates">Dec 6 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/">FlexとJavaFXでREST-APIを呼び出す<aside class="dates">Nov 3 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/10/08/jsffalsecsrfdui-ce/">JSFのCSRF対策<aside class="dates">Oct 8 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/">Javaで文書検索をする (Apache Solr)<aside class="dates">Sep 7 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/">Apache solrで全文検索に触れる<aside class="dates">Sep 5 2014</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/">WildFlyでJdbcRealm<aside class="dates">Aug 23 2014</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

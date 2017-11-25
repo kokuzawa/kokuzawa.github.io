@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Web Start on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/web-start/</link>
+    <description>Recent content in Web Start on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Thu, 16 Jan 2014 07:08:26 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/web-start/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>java7u51 Web Startセキュリティアップデートの回避方法</title>
+      <link>https://kokuzawa.github.io/posts/blog/2014/01/16/java7u51-web-start-security-update-workaround/</link>
+      <pubDate>Thu, 16 Jan 2014 07:08:26 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2014/01/16/java7u51-web-start-security-update-workaround/</guid>
+      <description>1月14日にJava7u51がリリースされました。 このアップデートによってセキュリティが強化されて、署名のないアプレットが起動できなくなりました。 また署名があっても、ユーザ独自の署名の場合ではその証明書をクライアントにインポートしておかないと、 同じく起動することができないようです。
+あまり頻繁に行う作業ではないので、手順をまとめておきたいと思います。
+1. MANIFEST.MFの編集 jarファイル内のMANIFEST.MFに下記を追記します。
+Permissions: all-permissions  Mavenを利用している場合は、下記をpom.xmlに追加することで、 ビルド時にMANIFEST.MFに追加することができます。
+&amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;maven-jar-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.4&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;archive&amp;gt; &amp;lt;manifestEntries&amp;gt; &amp;lt;Permissions&amp;gt;all-permissions&amp;lt;/Permissions&amp;gt; &amp;lt;Codebase&amp;gt;*&amp;lt;/Codebase&amp;gt; &amp;lt;/manifestEntries&amp;gt; &amp;lt;/archive&amp;gt; &amp;lt;/configuration&amp;gt; &amp;lt;/plugin&amp;gt; &amp;lt;/plugins&amp;gt; &amp;lt;/build&amp;gt;  Antであれば下記で同様のことができます。
+&amp;lt;target name=&amp;quot;dist&amp;quot;&amp;gt; &amp;lt;jar destfile=&amp;quot;${basedir}/out/sample.jar&amp;quot; basedir=&amp;quot;${basedir}/out/classes/&amp;quot;&amp;gt; &amp;lt;manifest&amp;gt; &amp;lt;attribute name=&amp;quot;Permissions&amp;quot; value=&amp;quot;all-permissions&amp;quot;/&amp;gt; &amp;lt;attribute name=&amp;quot;Codebase&amp;quot; value=&amp;quot;*&amp;quot;/&amp;gt; &amp;lt;/manifest&amp;gt; &amp;lt;/jar&amp;gt; &amp;lt;/target&amp;gt;  2. jnlpファイルの編集 jnlpファイルに下記を追記します。
+&amp;lt;security&amp;gt; &amp;lt;all-permissions/&amp;gt; &amp;lt;/security&amp;gt;  3. keystoreの生成 keystoreを生成します。[]内は任意の文字列を指定します。
+keytool -selfcert -alias [sample] -genkey -keystore [sample.keystore] -validity [3650]  4. 証明書の生成 keytool -export -keystore [sample.</description>
+    </item>
+    
+  </channel>
+</rss>
