@@ -1,0 +1,8 @@
+---
+date: 2017-11-25T22:00:04+09:00
+title: "About"
+menu: "main"
+draft: false
+---
+
+I’m Programmer. I love Java and Swift, IntelliJ IDEA, Pokemon, My family, and so on.

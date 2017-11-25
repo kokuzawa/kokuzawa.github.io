@@ -1,3 +1,4 @@
+# Site settings
 baseURL = "https://kokuzawa.github.io/"
 canonifyurls = true
 languageCode = "ja-jp"
@@ -9,3 +10,8 @@ disqusShortname = "Katsumii"
 name = "Katsumi Kokuzawa"
 bio = "Programmer"
 twitter = "kokuzawa"
+socialIconStyle = "circle"
+
+[social]
+github = "https://github.com/kokuzawa"
+twitter = "https://www.twitter.com/kokuzawa"
