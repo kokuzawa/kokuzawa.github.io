@@ -6,10 +6,64 @@
     <description>Recent content in Wildfly on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Tue, 23 Dec 2014 15:02:06 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 25 Dec 2015 20:50:08 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/wildfly/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JdbcRealm with WildFly 9.0.1.Final</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</link>
+      <pubDate>Fri, 25 Dec 2015 20:50:08 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
+      <description>以前、「WildFlyでJdbcRealm」 という記事を書きました。 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、 忘れないようにメモしておきます。
+差分 WildFly 8.0.0.Finalの時の設定:
+&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt; &amp;lt;authentication&amp;gt; &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt; &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;HEX&amp;quot;/&amp;gt; &amp;lt;/login-module&amp;gt; &amp;lt;/authentication&amp;gt; &amp;lt;/security-domain&amp;gt;  WildFly 9.0.1.Finalの設定:
+&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt; &amp;lt;authentication&amp;gt; &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt; &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?</description>
+    </item>
+    
+    <item>
+      <title>WildFly SwarmでEJBを試す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</link>
+      <pubDate>Sun, 22 Nov 2015 22:33:53 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
+      <description>WildFly Swarmを試すのも今日で３回目です。 だんだんと実装方法に慣れてきました。 この辺で当初の目的であったWildFly SwarmでEJBを使ってみたいと思います。 EJBが使えないのならSpring Bootで全然構わないわけで、 EJBが使えるかどうかはとても大事なところです。
+EJBを組み込む EJBのモジュールを組み込みます。 よくよく考えてみると、EJBだけでは動きを確認するのが大変なので、 リクエストの受け口だけはJAXRSで作ります。 なので、JAXRSのモジュールも合わせて組み込みます。
+また、JAXRSのリソースから@InjectでEJBをDIするにはWeldも必要です。 そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。
+&amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs-weld&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-ejb&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt;  EJBを使ったアプリケーションを作る まずはEJBです。
+package org.katsumi.ejb; import javax.ejb.Stateless; @Stateless public class HelloEjb { public String say() { return &amp;quot;Hello!&amp;quot;; } }  EJBを呼び出すRESTリソースです。
+package org.katsumi.ejb; import javax.inject.Inject; import javax.ws.rs.GET; import javax.ws.rs.Path; @Path(&amp;quot;/hello&amp;quot;) public class HelloResource { @Inject private HelloEjb helloEjb; @GET public String hello() { return helloEjb.</description>
+    </item>
+    
+    <item>
+      <title>WildFly SwarmでJSFを試す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</link>
+      <pubDate>Mon, 16 Nov 2015 22:58:09 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
+      <description>昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。
+JSFを組み込む 仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。 あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jsf&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JSFアプリケーションを作る JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、 動くことが分かれば良いのでXHTMLファイルだけを作るだけにします。
+&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt; &amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xmlns:h=&amp;quot;http://xmlns.jcp.org/jsf/html&amp;quot;&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h:outputText value=&amp;quot;Hello JSF!&amp;quot;/&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;  あと、JAXRSの時と違い、web.xmlを作る必要があります。
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&amp;quot; version=&amp;quot;3.1&amp;quot;&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;javax.faces.PROJECT_STAGE&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;Development&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;javax.faces.webapp.FacesServlet&amp;lt;/servlet-class&amp;gt; &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt; &amp;lt;/servlet&amp;gt; &amp;lt;servlet-mapping&amp;gt; &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt; &amp;lt;url-pattern&amp;gt;*.xhtml&amp;lt;/url-pattern&amp;gt; &amp;lt;/servlet-mapping&amp;gt; &amp;lt;/web-app&amp;gt;  動かす JAXRSの時と同じく、mainメソッドから実行するため、mainメソッドを持つクラスを作ります。 今回はJAXRSArchiveではなく、WARArchieをデプロイします。
+package org.katsumi.jsf; import org.</description>
+    </item>
+    
+    <item>
+      <title>WildFly SwarmでJAXRSを試す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
+      <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
+      <description>WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、 自分の必要なモジュールを取り込んで利用する形になるようです。
+JAXRSを組み込む 今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。 2015年11月時点での最新バージョンは1.0.0.Alpha5です。 pom.xmlに下記のdependencyを追加します。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;dependency&amp;gt;  これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）
+JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、 下記のpluginもpom.xmlに追加します。
+&amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;executions&amp;gt; &amp;lt;execution&amp;gt; &amp;lt;goals&amp;gt; &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt; &amp;lt;/goals&amp;gt; &amp;lt;/execution&amp;gt; &amp;lt;/executions&amp;gt; &amp;lt;/plugin&amp;gt;  JAXRSアプリケーションを作る WildFly Swarmの設定が一通り終わったので、次はJAXRSアプリケーションを作ります。 特別なことはなく、普通のJAXRSアプリケーションです。
+package org.katsumi; import javax.ws.rs.ApplicationPath; import javax.ws.rs.core.Application; @ApplicationPath(&amp;quot;/rest&amp;quot;) public class MyApplication extends Application { }  package org.katsumi; import javax.ws.rs.GET; import javax.ws.rs.Path; @Path(&amp;quot;/hello&amp;quot;) public class HelloResource { @GET public String hello() { return &amp;quot;Hello World!</description>
+    </item>
     
     <item>
       <title>[JSF-2.3]FacesContextをInjectする</title>

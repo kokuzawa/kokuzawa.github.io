@@ -6,10 +6,60 @@
     <description>Recent content in Jax Rs on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 20 Dec 2014 10:22:07 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 20 Dec 2015 10:32:29 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/jax-rs/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Server Sent Events</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</link>
+      <pubDate>Sun, 20 Dec 2015 10:32:29 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</guid>
+      <description>これは JavaEE Advent Calendar 2015 の20日目の記事です。
+昨日は@yumix_hさんの「「帰ってきたGlassFish Users Group Japan勉強会」の未発表資料」でした。
+明日は@emaggameさんです。
+Server Sent Eventsとは Server Sent Events (SSE) はサーバから送られたイベントという意味の通り、push型のデータ通信を行うことができます。 これはHTML5で追加された新機能です。 同じくpush型のデータ通信を行う方法としてWebsocketがありますが、WebsocketがHTTPとは別のプロトコルで通信をするのに対し、 SSEではHTTPプロトコルを利用します。そのため、既存のHTTPを利用した通信との互換性が高いというメリットがある反面、 Websocketのような双方向の通信を行うことはできません。 HTTPプロトコルでpush通信を実現するため、SSEではサーバからのレスポンスを受けても接続を終了せずに継続させます。 こうすることで、サーバ側からのデータを継続して受信することを実現します。 このようにSSEはHTTPプロトコルで接続を行うのですが、クライアントがSSEだと認識できるデータを送ってもらう必要があります。 そこで、サーバはMIMEタイプにtext/event-streamを設定する必要があります。
+JavaEE8にSSEのサポートが入るようですが、一足先にJAX-RSのRIであるJerseyでこの機能を試すことができます。
+Server Sent Eventsを試す 今回実行した環境は下記の通りです。
+ OS: Mac OSX 10.11.1 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27) APサーバ: GlasshFish-4.1.1 ブラウザ: Safari-9.0.1  実際のコードはGithubにあるので、 コードを見れば分かる方は以降の実装の説明を読むより、 そちらを見ていただいた方が早いかと思います。
+sandbox/sse-example
+実装の説明 Mavenを利用しているので、最初に下記のDependencyを追加します。 2015/12/10時点のMaven Centralの最新版は2.22.1のようです。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.jersey.media&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jersey-media-sse&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.22.1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  サーバ側のリソースはMIMEタイプにtext/event-streamを設定する他に、 org.glassfish.jersey.media.sse.EventOutputを返却する必要があります。
+@GET @Produces(SseFeature.SERVER_SENT_EVENTS) public EventOutput getServerSentEvents() { .</description>
+    </item>
+    
+    <item>
+      <title>JAX-RSでStreamを扱う</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/10/15/stream-in-jaxrs/</link>
+      <pubDate>Thu, 15 Oct 2015 02:44:04 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/10/15/stream-in-jaxrs/</guid>
+      <description>JAX-RSでExcelファイルをダウンロードする際にストリームを直接触る必要があって、 どうすればストリームにアクセスできるかちょっと調べてみました。 Excelファイルの生成にはApache POIを使っています。
+Apache POIでExcelファイルを生成する場合、下記のようなコードを書きます。
+final Workbook wb = new HSSFWorkbook(); final FileOutputStream fileOut = new FileOutputStream(&amp;quot;workbook.xls&amp;quot;); wb.write(fileOut); fileOut.close();  生成したファイルをファイルとして保存せずにServletでダウンロードしようとした場合、 そのコードは下記のようにHttpServletResponse#getOutputStream()でアウトプットストリームを取得し、 レスポンスボディに対してストリーミング処理をすることになります。
+final Workbook wb = new HSSFWorkbook(); final FileOutputStream fileOut = new FileOutputStream(response.getOutputStream()); wb.write(fileOut); fileOut.close();  ここからが本題です。
+JAX-RSでファイルをダウンロードするにはどうしたら良いのか。
+通常のファイルの場合は下記のようなコードを書くことで実現できます。
+final File file = new File(&amp;quot;workbook.xls&amp;quot;); return Response.ok(file).build();  Servletでのダウンロードのように、 レスポンスボディに対してストリーミング処理をする場合はjavax.ws.rs.core.StreamingOutputクラスを利用します。 そのコードは下記のようになります。
+final Workbook wb = new HSSFWorkbook(); final StreamingOutput so = out -&amp;gt; wb.write(out); return Response.ok(stream).build();  </description>
+    </item>
+    
+    <item>
+      <title>Googleのテキスト読み上げAPIを組み込む（その２）</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/05/07/continue-translate-google/</link>
+      <pubDate>Thu, 07 May 2015 15:34:12 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/05/07/continue-translate-google/</guid>
+      <description>先日書いたコードがiOSのSafariで上手く動きませんでした。
+Googleのテキスト読み上げAPIを組み込む
+子供向けなのでiPhoneまたはiPadで音声が再生されないと困ります。 いろいろ調べたけれど、JavaScriptから呼び出す方法がわからないので 勝手知ったるJavaの世界に取り込んでiOSのSafariでも音声が再生されるようにしました。
+下記がそのコードです。
+@Path(&amp;quot;/tts&amp;quot;) public class TTSResource { @GET @Produces(&amp;quot;audio/mpeg&amp;quot;) public Response textToSpeech(@QueryParam(&amp;quot;text&amp;quot;) String text) throws IOException { final URL url = new URL(&amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=&amp;quot; + text); final URLConnection connection = url.openConnection(); connection.setRequestProperty(&amp;quot;User-Agent&amp;quot;, &amp;quot;Mozilla&amp;quot;); return Response.ok(connection.getInputStream()).build(); } }  JAX-RSでGoogle Translateの結果をそのままレスポンスとして返すようにしています。 User-Agentを指定していないと上手く動きません。 ここで気がついたのですがUser-Agentで振る舞いが変わるようなので、 もしかしたらiOSからのアクセスの場合にもUser-Agentを偽装できれば音声が再生されるのかもしれないです。
+先日の記事にも書きましたがクライアント側（javaScript）は下記のようになります。
+&amp;lt;h:outputScript&amp;gt; function play() { var voice = new Audio(); voice.src = &amp;quot;${request.contextPath}/rest/tts?text=one&amp;quot;; voice.play(); } &amp;lt;/h:outputScript&amp;gt; &amp;lt;a href=&amp;quot;javascript:play()&amp;quot;&amp;gt;音声&amp;lt;/a&amp;gt;  </description>
+    </item>
     
     <item>
       <title>RESTEasyとSpringの連携</title>

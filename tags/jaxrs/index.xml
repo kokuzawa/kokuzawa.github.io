@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jaxrs on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/jaxrs/</link>
+    <description>Recent content in Jaxrs on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sat, 14 Nov 2015 16:08:44 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/jaxrs/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>WildFly SwarmでJAXRSを試す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
+      <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
+      <description>WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、 自分の必要なモジュールを取り込んで利用する形になるようです。
+JAXRSを組み込む 今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。 2015年11月時点での最新バージョンは1.0.0.Alpha5です。 pom.xmlに下記のdependencyを追加します。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;dependency&amp;gt;  これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）
+JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、 下記のpluginもpom.xmlに追加します。
+&amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;executions&amp;gt; &amp;lt;execution&amp;gt; &amp;lt;goals&amp;gt; &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt; &amp;lt;/goals&amp;gt; &amp;lt;/execution&amp;gt; &amp;lt;/executions&amp;gt; &amp;lt;/plugin&amp;gt;  JAXRSアプリケーションを作る WildFly Swarmの設定が一通り終わったので、次はJAXRSアプリケーションを作ります。 特別なことはなく、普通のJAXRSアプリケーションです。
+package org.katsumi; import javax.ws.rs.ApplicationPath; import javax.ws.rs.core.Application; @ApplicationPath(&amp;quot;/rest&amp;quot;) public class MyApplication extends Application { }  package org.katsumi; import javax.ws.rs.GET; import javax.ws.rs.Path; @Path(&amp;quot;/hello&amp;quot;) public class HelloResource { @GET public String hello() { return &amp;quot;Hello World!</description>
+    </item>
+    
+  </channel>
+</rss>

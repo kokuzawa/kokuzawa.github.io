@@ -6,10 +6,30 @@
     <description>Recent content in Javafx on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 06 Dec 2014 06:42:41 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 10 Dec 2015 10:10:10 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/javafx/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JavaFXのUIをJUnit形式でテストする</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/12/10/testfx/</link>
+      <pubDate>Thu, 10 Dec 2015 10:10:10 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/12/10/testfx/</guid>
+      <description>Java Advent Calendar 2015と JavaFX Advent Calendar 2015の10日目の記事です。
+昨日は下記のお二人でした。
+ Java Advent Calendarは@namihira_kさんの 「パフォーマンスを意識したJavaコーディング」 JavaFX Advent Calendarは@skrbさんの 「Interpolator で補間」  明日は下記のお二人です。
+ Java Advent Calendarは@bitter_foxさん JavaFX Advent Calendarは@y_q1mさん  TestFXを知る 先月ダウンロードしたJava Magazine vol23に面白い記事が載っていました。 テストについて特集された中の、TestFXによるJavaFXのテストについての記事です。 TestFXはJavaFXのユーザ・インターフェースをJUnitベースでテストするためのAPIということで、 JUnitで書いたロジック通りにユーザ・インターフェースのテストが実施されます。 単純にロジックをなぞるだけではなく、実際にユーザ・インターフェースを操作した結果を判定してくれるようです。 これは、実際にテストを実行した際に、JavaFXのアプリ上でマウスカーソルが自動的に動いてボタンをクリックしたりすることからもわかります。
+普段のプロジェクトでは、残念ながらJavaFXではなくFlexを使っているのですが、 ユーザ・インターフェース周りのテストの仕組みはあってもなかなか思ったようなテストができていないのが現実です。 TestFXはJUnitの延長上でテストができそうなので期待できそうです。
+内容を説明する前に、実際に実行した際の動画を記録しました。 動画だと自動で動いているのかわからないと思いますが、 テスト起動後には何も操作をしていません。
+ アプリの説明 テストに使ったアプリは、ラベルとボタンのあるシンプルなものです。 ボタンをクリックすることで、ラベルに「Hello World!」と表示します。
+実際のコードは下記にあります。
+https://github.com/kokuzawa/javafx-test
+TestFXを設定 Mavenプロジェクトでは下記のDependencyを追加します。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.loadui&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;testFx&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.1.2&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt;  テストを書く 対象のテストクラスは、TestFXを使うためにorg.loadui.testfx.GuiTestクラスを継承します。 org.loadui.testfx.GuiTestクラスはgetRootNode()メソッドを持ち、そのメソッドでテストしたい画面のFXMLをロードします。
+package org.katsumi; import javafx.fxml.FXMLLoader; import javafx.scene.Node; import javafx.</description>
+    </item>
     
     <item>
       <title>JavaFXでMarkdownエディタを作る</title>

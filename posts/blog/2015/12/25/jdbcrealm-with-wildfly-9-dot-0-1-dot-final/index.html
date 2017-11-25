@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>JdbcRealm with WildFly 9.0.1.Final</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="JdbcRealm with WildFly 9.0.1.Final" />
+<meta property="og:description" content="以前、「WildFlyでJdbcRealm」 という記事を書きました。 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、 忘れないようにメモしておきます。
+差分 WildFly 8.0.0.Finalの時の設定:
+&lt;security-domain name=&quot;app&quot; cache-type=&quot;default&quot;&gt; &lt;authentication&gt; &lt;login-module name=&quot;app_auth&quot; code=&quot;Database&quot; flag=&quot;required&quot;&gt; &lt;module-option name=&quot;dsJndiName&quot; value=&quot;java:jboss/datasources/ExampleDS&quot;/&gt; &lt;module-option name=&quot;principalsQuery&quot; value=&quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&quot;/&gt; &lt;module-option name=&quot;rolesQuery&quot; value=&quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&quot;/&gt; &lt;module-option name=&quot;hashAlgorithm&quot; value=&quot;SHA-256&quot;/&gt; &lt;module-option name=&quot;hashEncoding&quot; value=&quot;HEX&quot;/&gt; &lt;/login-module&gt; &lt;/authentication&gt; &lt;/security-domain&gt;  WildFly 9.0.1.Finalの設定:
+&lt;security-domain name=&quot;app&quot; cache-type=&quot;default&quot;&gt; &lt;authentication&gt; &lt;login-module name=&quot;app_auth&quot; code=&quot;Database&quot; flag=&quot;required&quot;&gt; &lt;module-option name=&quot;dsJndiName&quot; value=&quot;java:jboss/datasources/ExampleDS&quot;/&gt; &lt;module-option name=&quot;principalsQuery&quot; value=&quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/" />
+
+
+
+<meta property="article:published_time" content="2015-12-25T20:50:08&#43;09:00"/>
+
+<meta property="article:modified_time" content="2015-12-25T20:50:08&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="JdbcRealm with WildFly 9.0.1.Final">
+<meta itemprop="description" content="以前、「WildFlyでJdbcRealm」 という記事を書きました。 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、 忘れないようにメモしておきます。
+差分 WildFly 8.0.0.Finalの時の設定:
+&lt;security-domain name=&quot;app&quot; cache-type=&quot;default&quot;&gt; &lt;authentication&gt; &lt;login-module name=&quot;app_auth&quot; code=&quot;Database&quot; flag=&quot;required&quot;&gt; &lt;module-option name=&quot;dsJndiName&quot; value=&quot;java:jboss/datasources/ExampleDS&quot;/&gt; &lt;module-option name=&quot;principalsQuery&quot; value=&quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&quot;/&gt; &lt;module-option name=&quot;rolesQuery&quot; value=&quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&quot;/&gt; &lt;module-option name=&quot;hashAlgorithm&quot; value=&quot;SHA-256&quot;/&gt; &lt;module-option name=&quot;hashEncoding&quot; value=&quot;HEX&quot;/&gt; &lt;/login-module&gt; &lt;/authentication&gt; &lt;/security-domain&gt;  WildFly 9.0.1.Finalの設定:
+&lt;security-domain name=&quot;app&quot; cache-type=&quot;default&quot;&gt; &lt;authentication&gt; &lt;login-module name=&quot;app_auth&quot; code=&quot;Database&quot; flag=&quot;required&quot;&gt; &lt;module-option name=&quot;dsJndiName&quot; value=&quot;java:jboss/datasources/ExampleDS&quot;/&gt; &lt;module-option name=&quot;principalsQuery&quot; value=&quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?">
+
+
+<meta itemprop="datePublished" content="2015-12-25T20:50:08&#43;09:00" />
+<meta itemprop="dateModified" content="2015-12-25T20:50:08&#43;09:00" />
+<meta itemprop="wordCount" content="139">
+
+
+
+<meta itemprop="keywords" content="Java,WildFly,JavaEE," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="JdbcRealm with WildFly 9.0.1.Final"/>
+<meta name="twitter:description" content="以前、「WildFlyでJdbcRealm」 という記事を書きました。 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、 忘れないようにメモしておきます。
+差分 WildFly 8.0.0.Finalの時の設定:
+&lt;security-domain name=&quot;app&quot; cache-type=&quot;default&quot;&gt; &lt;authentication&gt; &lt;login-module name=&quot;app_auth&quot; code=&quot;Database&quot; flag=&quot;required&quot;&gt; &lt;module-option name=&quot;dsJndiName&quot; value=&quot;java:jboss/datasources/ExampleDS&quot;/&gt; &lt;module-option name=&quot;principalsQuery&quot; value=&quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&quot;/&gt; &lt;module-option name=&quot;rolesQuery&quot; value=&quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&quot;/&gt; &lt;module-option name=&quot;hashAlgorithm&quot; value=&quot;SHA-256&quot;/&gt; &lt;module-option name=&quot;hashEncoding&quot; value=&quot;HEX&quot;/&gt; &lt;/login-module&gt; &lt;/authentication&gt; &lt;/security-domain&gt;  WildFly 9.0.1.Finalの設定:
+&lt;security-domain name=&quot;app&quot; cache-type=&quot;default&quot;&gt; &lt;authentication&gt; &lt;login-module name=&quot;app_auth&quot; code=&quot;Database&quot; flag=&quot;required&quot;&gt; &lt;module-option name=&quot;dsJndiName&quot; value=&quot;java:jboss/datasources/ExampleDS&quot;/&gt; &lt;module-option name=&quot;principalsQuery&quot; value=&quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?"/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>JdbcRealm with WildFly 9.0.1.Final</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        December 25, 2015
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/wildfly">WildFly</a>
+            
+                <a href="https://kokuzawa.github.io/tags/javaee">JavaEE</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>以前、「<a href="http://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/">WildFlyでJdbcRealm</a>」 という記事を書きました。
+これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。
+大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、
+忘れないようにメモしておきます。</p>
+
+<!-- MORE -->
+
+<h2 id="差分">差分</h2>
+
+<p>WildFly 8.0.0.Finalの時の設定:</p>
+
+<pre><code class="language-xml">&lt;security-domain name=&quot;app&quot; cache-type=&quot;default&quot;&gt;
+    &lt;authentication&gt;
+        &lt;login-module name=&quot;app_auth&quot; code=&quot;Database&quot; flag=&quot;required&quot;&gt;
+            &lt;module-option name=&quot;dsJndiName&quot; value=&quot;java:jboss/datasources/ExampleDS&quot;/&gt;
+            &lt;module-option name=&quot;principalsQuery&quot; value=&quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&quot;/&gt;
+            &lt;module-option name=&quot;rolesQuery&quot; value=&quot;SELECT r.ROLENAME, 'Roles' FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&quot;/&gt;
+            &lt;module-option name=&quot;hashAlgorithm&quot; value=&quot;SHA-256&quot;/&gt;
+            &lt;module-option name=&quot;hashEncoding&quot; value=&quot;HEX&quot;/&gt;
+        &lt;/login-module&gt;
+    &lt;/authentication&gt;
+&lt;/security-domain&gt;
+</code></pre>
+
+<p>WildFly 9.0.1.Finalの設定:</p>
+
+<pre><code class="language-xml">&lt;security-domain name=&quot;app&quot; cache-type=&quot;default&quot;&gt;
+    &lt;authentication&gt;
+        &lt;login-module name=&quot;app_auth&quot; code=&quot;Database&quot; flag=&quot;required&quot;&gt;
+            &lt;module-option name=&quot;dsJndiName&quot; value=&quot;java:jboss/datasources/ExampleDS&quot;/&gt;
+            &lt;module-option name=&quot;principalsQuery&quot; value=&quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&quot;/&gt;
+            &lt;module-option name=&quot;rolesQuery&quot; value=&quot;SELECT r.ROLENAME, 'Roles' FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&quot;/&gt;
+            &lt;module-option name=&quot;hashAlgorithm&quot; value=&quot;SHA-256&quot;/&gt;
+            &lt;module-option name=&quot;hashEncoding&quot; value=&quot;base64&quot;/&gt;
+        &lt;/login-module&gt;
+    &lt;/authentication&gt;
+&lt;/security-domain&gt;
+</code></pre>
+
+<p>違いは module-option の hashEncoding の値。
+8.0.0.Finalの時は<code>HEX</code>であり、9.0.1.Finalでは<code>base64</code>にしています。
+これはパスワードのハッシュエンコーディングの形式を指定している部分なのですが、
+9.0.1.FinalではHEXを認識していない模様。
+なので、DBに登録するパスワードのハッシュ文字列も設定に合わせて<code>HEX</code>から<code>base64</code>に変更します。</p>
+
+<h2 id="パスワードのハッシュ文字列生成方法">パスワードのハッシュ文字列生成方法</h2>
+
+<p>WildFlyには<code>base64</code>のハッシュ文字列を生成するモジュールが入っているようです。
+以下のコマンドで指定文字列のBase64ハッシュ値を取得することができます。</p>
+
+<pre><code>java -cp $JBOSS_HOME/modules/system/layers/base/org/picketbox/main/picketbox-4.9.2.Final.jar org.jboss.security.Base64Encoder [任意文字列] SHA-256
+</code></pre>
+
+<h2 id="参考サイト">参考サイト</h2>
+
+<ul>
+<li><a href="http://blog.eisele.net/2015/01/jdbc-realm-wildfly820-primefaces51.html">JDBC Realm and Form Based Authentication with WildFly 8.2.0.Final, Primefaces 5.1 and MySQL 5</a></li>
+</ul>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fposts%2fblog%2f2015%2f12%2f25%2fjdbcrealm-with-wildfly-9-dot-0-1-dot-final%2f - JdbcRealm%20with%20WildFly%209.0.1.Final by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/">Server Sent Events<aside class="dates">Dec 20 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2015/12/10/testfx/">JavaFXのUIをJUnit形式でテストする<aside class="dates">Dec 10 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/">WildFly SwarmでEJBを試す<aside class="dates">Nov 22 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/">WildFly SwarmでJSFを試す<aside class="dates">Nov 16 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/">WildFly SwarmでJAXRSを試す<aside class="dates">Nov 14 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2015/10/15/stream-in-jaxrs/">JAX-RSでStreamを扱う<aside class="dates">Oct 15 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2015/05/07/continue-translate-google/">Googleのテキスト読み上げAPIを組み込む（その２）<aside class="dates">May 7 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2015/05/03/translate-google/">Googleのテキスト読み上げAPIを組み込む<aside class="dates">May 3 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/">web.xmlのバージョン別DTD・XSDの宣言方法<aside class="dates">Apr 7 2015</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

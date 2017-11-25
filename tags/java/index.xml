@@ -6,10 +6,171 @@
     <description>Recent content in Java on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 25 Dec 2014 01:30:39 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 25 Dec 2015 20:50:08 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JdbcRealm with WildFly 9.0.1.Final</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</link>
+      <pubDate>Fri, 25 Dec 2015 20:50:08 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
+      <description>以前、「WildFlyでJdbcRealm」 という記事を書きました。 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、 忘れないようにメモしておきます。
+差分 WildFly 8.0.0.Finalの時の設定:
+&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt; &amp;lt;authentication&amp;gt; &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt; &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;HEX&amp;quot;/&amp;gt; &amp;lt;/login-module&amp;gt; &amp;lt;/authentication&amp;gt; &amp;lt;/security-domain&amp;gt;  WildFly 9.0.1.Finalの設定:
+&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt; &amp;lt;authentication&amp;gt; &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt; &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?</description>
+    </item>
+    
+    <item>
+      <title>Server Sent Events</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</link>
+      <pubDate>Sun, 20 Dec 2015 10:32:29 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</guid>
+      <description>これは JavaEE Advent Calendar 2015 の20日目の記事です。
+昨日は@yumix_hさんの「「帰ってきたGlassFish Users Group Japan勉強会」の未発表資料」でした。
+明日は@emaggameさんです。
+Server Sent Eventsとは Server Sent Events (SSE) はサーバから送られたイベントという意味の通り、push型のデータ通信を行うことができます。 これはHTML5で追加された新機能です。 同じくpush型のデータ通信を行う方法としてWebsocketがありますが、WebsocketがHTTPとは別のプロトコルで通信をするのに対し、 SSEではHTTPプロトコルを利用します。そのため、既存のHTTPを利用した通信との互換性が高いというメリットがある反面、 Websocketのような双方向の通信を行うことはできません。 HTTPプロトコルでpush通信を実現するため、SSEではサーバからのレスポンスを受けても接続を終了せずに継続させます。 こうすることで、サーバ側からのデータを継続して受信することを実現します。 このようにSSEはHTTPプロトコルで接続を行うのですが、クライアントがSSEだと認識できるデータを送ってもらう必要があります。 そこで、サーバはMIMEタイプにtext/event-streamを設定する必要があります。
+JavaEE8にSSEのサポートが入るようですが、一足先にJAX-RSのRIであるJerseyでこの機能を試すことができます。
+Server Sent Eventsを試す 今回実行した環境は下記の通りです。
+ OS: Mac OSX 10.11.1 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27) APサーバ: GlasshFish-4.1.1 ブラウザ: Safari-9.0.1  実際のコードはGithubにあるので、 コードを見れば分かる方は以降の実装の説明を読むより、 そちらを見ていただいた方が早いかと思います。
+sandbox/sse-example
+実装の説明 Mavenを利用しているので、最初に下記のDependencyを追加します。 2015/12/10時点のMaven Centralの最新版は2.22.1のようです。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.jersey.media&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jersey-media-sse&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.22.1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  サーバ側のリソースはMIMEタイプにtext/event-streamを設定する他に、 org.glassfish.jersey.media.sse.EventOutputを返却する必要があります。
+@GET @Produces(SseFeature.SERVER_SENT_EVENTS) public EventOutput getServerSentEvents() { .</description>
+    </item>
+    
+    <item>
+      <title>JavaFXのUIをJUnit形式でテストする</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/12/10/testfx/</link>
+      <pubDate>Thu, 10 Dec 2015 10:10:10 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/12/10/testfx/</guid>
+      <description>Java Advent Calendar 2015と JavaFX Advent Calendar 2015の10日目の記事です。
+昨日は下記のお二人でした。
+ Java Advent Calendarは@namihira_kさんの 「パフォーマンスを意識したJavaコーディング」 JavaFX Advent Calendarは@skrbさんの 「Interpolator で補間」  明日は下記のお二人です。
+ Java Advent Calendarは@bitter_foxさん JavaFX Advent Calendarは@y_q1mさん  TestFXを知る 先月ダウンロードしたJava Magazine vol23に面白い記事が載っていました。 テストについて特集された中の、TestFXによるJavaFXのテストについての記事です。 TestFXはJavaFXのユーザ・インターフェースをJUnitベースでテストするためのAPIということで、 JUnitで書いたロジック通りにユーザ・インターフェースのテストが実施されます。 単純にロジックをなぞるだけではなく、実際にユーザ・インターフェースを操作した結果を判定してくれるようです。 これは、実際にテストを実行した際に、JavaFXのアプリ上でマウスカーソルが自動的に動いてボタンをクリックしたりすることからもわかります。
+普段のプロジェクトでは、残念ながらJavaFXではなくFlexを使っているのですが、 ユーザ・インターフェース周りのテストの仕組みはあってもなかなか思ったようなテストができていないのが現実です。 TestFXはJUnitの延長上でテストができそうなので期待できそうです。
+内容を説明する前に、実際に実行した際の動画を記録しました。 動画だと自動で動いているのかわからないと思いますが、 テスト起動後には何も操作をしていません。
+ アプリの説明 テストに使ったアプリは、ラベルとボタンのあるシンプルなものです。 ボタンをクリックすることで、ラベルに「Hello World!」と表示します。
+実際のコードは下記にあります。
+https://github.com/kokuzawa/javafx-test
+TestFXを設定 Mavenプロジェクトでは下記のDependencyを追加します。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.loadui&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;testFx&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.1.2&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt;  テストを書く 対象のテストクラスは、TestFXを使うためにorg.loadui.testfx.GuiTestクラスを継承します。 org.loadui.testfx.GuiTestクラスはgetRootNode()メソッドを持ち、そのメソッドでテストしたい画面のFXMLをロードします。
+package org.katsumi; import javafx.fxml.FXMLLoader; import javafx.scene.Node; import javafx.</description>
+    </item>
+    
+    <item>
+      <title>WildFly SwarmでEJBを試す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</link>
+      <pubDate>Sun, 22 Nov 2015 22:33:53 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
+      <description>WildFly Swarmを試すのも今日で３回目です。 だんだんと実装方法に慣れてきました。 この辺で当初の目的であったWildFly SwarmでEJBを使ってみたいと思います。 EJBが使えないのならSpring Bootで全然構わないわけで、 EJBが使えるかどうかはとても大事なところです。
+EJBを組み込む EJBのモジュールを組み込みます。 よくよく考えてみると、EJBだけでは動きを確認するのが大変なので、 リクエストの受け口だけはJAXRSで作ります。 なので、JAXRSのモジュールも合わせて組み込みます。
+また、JAXRSのリソースから@InjectでEJBをDIするにはWeldも必要です。 そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。
+&amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs-weld&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-ejb&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt;  EJBを使ったアプリケーションを作る まずはEJBです。
+package org.katsumi.ejb; import javax.ejb.Stateless; @Stateless public class HelloEjb { public String say() { return &amp;quot;Hello!&amp;quot;; } }  EJBを呼び出すRESTリソースです。
+package org.katsumi.ejb; import javax.inject.Inject; import javax.ws.rs.GET; import javax.ws.rs.Path; @Path(&amp;quot;/hello&amp;quot;) public class HelloResource { @Inject private HelloEjb helloEjb; @GET public String hello() { return helloEjb.</description>
+    </item>
+    
+    <item>
+      <title>WildFly SwarmでJSFを試す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</link>
+      <pubDate>Mon, 16 Nov 2015 22:58:09 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
+      <description>昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。
+JSFを組み込む 仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。 あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jsf&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JSFアプリケーションを作る JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、 動くことが分かれば良いのでXHTMLファイルだけを作るだけにします。
+&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt; &amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xmlns:h=&amp;quot;http://xmlns.jcp.org/jsf/html&amp;quot;&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h:outputText value=&amp;quot;Hello JSF!&amp;quot;/&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;  あと、JAXRSの時と違い、web.xmlを作る必要があります。
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&amp;quot; version=&amp;quot;3.1&amp;quot;&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;javax.faces.PROJECT_STAGE&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;Development&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;javax.faces.webapp.FacesServlet&amp;lt;/servlet-class&amp;gt; &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt; &amp;lt;/servlet&amp;gt; &amp;lt;servlet-mapping&amp;gt; &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt; &amp;lt;url-pattern&amp;gt;*.xhtml&amp;lt;/url-pattern&amp;gt; &amp;lt;/servlet-mapping&amp;gt; &amp;lt;/web-app&amp;gt;  動かす JAXRSの時と同じく、mainメソッドから実行するため、mainメソッドを持つクラスを作ります。 今回はJAXRSArchiveではなく、WARArchieをデプロイします。
+package org.katsumi.jsf; import org.</description>
+    </item>
+    
+    <item>
+      <title>WildFly SwarmでJAXRSを試す</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
+      <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
+      <description>WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、 自分の必要なモジュールを取り込んで利用する形になるようです。
+JAXRSを組み込む 今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。 2015年11月時点での最新バージョンは1.0.0.Alpha5です。 pom.xmlに下記のdependencyを追加します。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;dependency&amp;gt;  これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）
+JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、 下記のpluginもpom.xmlに追加します。
+&amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;executions&amp;gt; &amp;lt;execution&amp;gt; &amp;lt;goals&amp;gt; &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt; &amp;lt;/goals&amp;gt; &amp;lt;/execution&amp;gt; &amp;lt;/executions&amp;gt; &amp;lt;/plugin&amp;gt;  JAXRSアプリケーションを作る WildFly Swarmの設定が一通り終わったので、次はJAXRSアプリケーションを作ります。 特別なことはなく、普通のJAXRSアプリケーションです。
+package org.katsumi; import javax.ws.rs.ApplicationPath; import javax.ws.rs.core.Application; @ApplicationPath(&amp;quot;/rest&amp;quot;) public class MyApplication extends Application { }  package org.katsumi; import javax.ws.rs.GET; import javax.ws.rs.Path; @Path(&amp;quot;/hello&amp;quot;) public class HelloResource { @GET public String hello() { return &amp;quot;Hello World!</description>
+    </item>
+    
+    <item>
+      <title>JAX-RSでStreamを扱う</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/10/15/stream-in-jaxrs/</link>
+      <pubDate>Thu, 15 Oct 2015 02:44:04 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/10/15/stream-in-jaxrs/</guid>
+      <description>JAX-RSでExcelファイルをダウンロードする際にストリームを直接触る必要があって、 どうすればストリームにアクセスできるかちょっと調べてみました。 Excelファイルの生成にはApache POIを使っています。
+Apache POIでExcelファイルを生成する場合、下記のようなコードを書きます。
+final Workbook wb = new HSSFWorkbook(); final FileOutputStream fileOut = new FileOutputStream(&amp;quot;workbook.xls&amp;quot;); wb.write(fileOut); fileOut.close();  生成したファイルをファイルとして保存せずにServletでダウンロードしようとした場合、 そのコードは下記のようにHttpServletResponse#getOutputStream()でアウトプットストリームを取得し、 レスポンスボディに対してストリーミング処理をすることになります。
+final Workbook wb = new HSSFWorkbook(); final FileOutputStream fileOut = new FileOutputStream(response.getOutputStream()); wb.write(fileOut); fileOut.close();  ここからが本題です。
+JAX-RSでファイルをダウンロードするにはどうしたら良いのか。
+通常のファイルの場合は下記のようなコードを書くことで実現できます。
+final File file = new File(&amp;quot;workbook.xls&amp;quot;); return Response.ok(file).build();  Servletでのダウンロードのように、 レスポンスボディに対してストリーミング処理をする場合はjavax.ws.rs.core.StreamingOutputクラスを利用します。 そのコードは下記のようになります。
+final Workbook wb = new HSSFWorkbook(); final StreamingOutput so = out -&amp;gt; wb.write(out); return Response.ok(stream).build();  </description>
+    </item>
+    
+    <item>
+      <title>Googleのテキスト読み上げAPIを組み込む（その２）</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/05/07/continue-translate-google/</link>
+      <pubDate>Thu, 07 May 2015 15:34:12 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/05/07/continue-translate-google/</guid>
+      <description>先日書いたコードがiOSのSafariで上手く動きませんでした。
+Googleのテキスト読み上げAPIを組み込む
+子供向けなのでiPhoneまたはiPadで音声が再生されないと困ります。 いろいろ調べたけれど、JavaScriptから呼び出す方法がわからないので 勝手知ったるJavaの世界に取り込んでiOSのSafariでも音声が再生されるようにしました。
+下記がそのコードです。
+@Path(&amp;quot;/tts&amp;quot;) public class TTSResource { @GET @Produces(&amp;quot;audio/mpeg&amp;quot;) public Response textToSpeech(@QueryParam(&amp;quot;text&amp;quot;) String text) throws IOException { final URL url = new URL(&amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=&amp;quot; + text); final URLConnection connection = url.openConnection(); connection.setRequestProperty(&amp;quot;User-Agent&amp;quot;, &amp;quot;Mozilla&amp;quot;); return Response.ok(connection.getInputStream()).build(); } }  JAX-RSでGoogle Translateの結果をそのままレスポンスとして返すようにしています。 User-Agentを指定していないと上手く動きません。 ここで気がついたのですがUser-Agentで振る舞いが変わるようなので、 もしかしたらiOSからのアクセスの場合にもUser-Agentを偽装できれば音声が再生されるのかもしれないです。
+先日の記事にも書きましたがクライアント側（javaScript）は下記のようになります。
+&amp;lt;h:outputScript&amp;gt; function play() { var voice = new Audio(); voice.src = &amp;quot;${request.contextPath}/rest/tts?text=one&amp;quot;; voice.play(); } &amp;lt;/h:outputScript&amp;gt; &amp;lt;a href=&amp;quot;javascript:play()&amp;quot;&amp;gt;音声&amp;lt;/a&amp;gt;  </description>
+    </item>
+    
+    <item>
+      <title>Googleのテキスト読み上げAPIを組み込む</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/05/03/translate-google/</link>
+      <pubDate>Sun, 03 May 2015 22:12:37 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/05/03/translate-google/</guid>
+      <description>子供用の英単語帳Webアプリを作っています。 単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、 Googleが提供しているテキスト読み上げAPIというのを見つけました。
+使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。 この例ではoneという単語を読み上げてくれます。
+http://translate.google.com/translate_tts?tl=en&amp;amp;q=one  これをHTMLに組み込みます。 HTMLで音声を再生するためにはaudioタグを利用します。 下記のように組み込むことで音声を再生するためのコントロールを表示することができます。
+&amp;lt;video src=&amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot; controls /&amp;gt;  こんな感じになります。
+実際のアプリはJSF-2.2でFaceletを利用しています。 このタグを組み込んだ場合、最初の一回目は正しく再生されますが 2回目以降が再生されません。 なぜダメなのか結局分からなかったのですが、 UI的にはaudioコントロールを表示したくなかったので、 タグを埋め込むのではなくJavaScriptで再生するようにしました。
+&amp;lt;script&amp;gt; function play() { var audio = document.createElement(&amp;quot;audio&amp;quot;); audio.src = &amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot;; audio.play(); } &amp;lt;/script&amp;gt; &amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;play()&amp;quot;&amp;gt;再生&amp;lt;/a&amp;gt;  この場合audioコントロールは表示されないのですが、 再生リンクをクリックするたびに正しく再生されます。</description>
+    </item>
+    
+    <item>
+      <title>web.xmlのバージョン別DTD・XSDの宣言方法</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</link>
+      <pubDate>Tue, 07 Apr 2015 23:24:07 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</guid>
+      <description>JavaでWebアプリを作る場合、Mavenのmaven-archetype-webappテンプレートを利用しています。 非常に便利なのですが、Servlet 3.1が出ている今、 生成されたwe.xmlがServlet 2.3の記述になっていてちょっと古すぎます。 そのため、毎回テンプレートから生成したあとにweb.xmlを書き換えなければなりません。 このちょっと面倒な作業を楽にするためにバージョン毎の宣言方法をメモしておきます。
+Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
+&amp;lt;!DOCTYPE web-app PUBLIC &amp;quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&amp;quot; &amp;quot;http://java.sun.com/dtd/web-app_2_3.dtd&amp;quot; &amp;gt; &amp;lt;web-app&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 2.4 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app version=&amp;quot;2.4&amp;quot; xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot; &amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 2.5 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot; version=&amp;quot;2.5&amp;quot;&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 3.0 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&amp;quot; version=&amp;quot;3.0&amp;quot;&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 3.1 現時点で最新のバージョンです。 このバージョンからネームスペースがjava.sun.comからxmlns.jcp.orgに変わるんですね。感慨深い。
+&amp;lt;?xml version=&amp;quot;1.</description>
+    </item>
+    
+    <item>
+      <title>Deprecated org.hibernate.ejb.HibernatePersistence</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</link>
+      <pubDate>Tue, 27 Jan 2015 23:46:21 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</guid>
+      <description>どのバージョンからなのかはわからないが、Hibernate-4.3.8.Finalではpersistence.xmlのproviderに記載するHibernateのプロバイダクラスがdeprecatedになっていた。
+&amp;lt;provider&amp;gt;org.hibernate.ejb.HibernatePersistence&amp;lt;/provider&amp;gt;  上記を下記に置き換える必要がある。
+&amp;lt;provider&amp;gt;org.hibernate.jpa.HibernatePersistenceProvider&amp;lt;/provider&amp;gt;  </description>
+    </item>
     
     <item>
       <title>java.util.Objectsを使おう</title>

@@ -6,10 +6,22 @@
     <description>Recent content in Maven on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 24 May 2014 16:30:10 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 07 Apr 2015 23:24:07 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/maven/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>web.xmlのバージョン別DTD・XSDの宣言方法</title>
+      <link>https://kokuzawa.github.io/posts/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</link>
+      <pubDate>Tue, 07 Apr 2015 23:24:07 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</guid>
+      <description>JavaでWebアプリを作る場合、Mavenのmaven-archetype-webappテンプレートを利用しています。 非常に便利なのですが、Servlet 3.1が出ている今、 生成されたwe.xmlがServlet 2.3の記述になっていてちょっと古すぎます。 そのため、毎回テンプレートから生成したあとにweb.xmlを書き換えなければなりません。 このちょっと面倒な作業を楽にするためにバージョン毎の宣言方法をメモしておきます。
+Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
+&amp;lt;!DOCTYPE web-app PUBLIC &amp;quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&amp;quot; &amp;quot;http://java.sun.com/dtd/web-app_2_3.dtd&amp;quot; &amp;gt; &amp;lt;web-app&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 2.4 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app version=&amp;quot;2.4&amp;quot; xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot; &amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 2.5 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot; version=&amp;quot;2.5&amp;quot;&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 3.0 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&amp;quot; version=&amp;quot;3.0&amp;quot;&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 3.1 現時点で最新のバージョンです。 このバージョンからネームスペースがjava.sun.comからxmlns.jcp.orgに変わるんですね。感慨深い。
+&amp;lt;?xml version=&amp;quot;1.</description>
+    </item>
     
     <item>
       <title>Jenkins用のpom.xmlの基本設定</title>
