@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Angular2 on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/angular2/</link>
+    <description>Recent content in Angular2 on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Wed, 28 Dec 2016 11:02:35 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/angular2/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>PrimeNGを組み込む</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/28/primeng/</link>
+      <pubDate>Wed, 28 Dec 2016 11:02:35 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/28/primeng/</guid>
+      <description>昨日、 Angular2 アプリを IntelliJ IDEA で動かすところまでやってみました。 今日は本来の目的である PrimeNG を使ってみます。
+PrimeNG とは JSF の実装の一つである PrimeFaces と同じところが作っている Angular2 用の Rich UI Components です。 PrimeFaces とほぼ同じ（まだ PrimeNG の方が少ない）コンポーネント群を Angular2 から利用できるプロダクトです。 現在の最新バージョンは 1.1.2 です。
+PrimeNG のインストール PrimeNG の Setup に書いてありますが、 プロジェクトフォルダで下記コマンドを実行します。
+$npm install primeng --save  PrimeNG を組み込む PrimeNG のインストールはできたので昨日作ったアプリに PrimeNG を組み込んでみます。 まず、PrimeNG 用の css が用意されているのでそれを追加します。 css の定義を index.html に書いてみたのですが、 表示された画面で確認すると css ファイルが見つからない状態となります。 色々試行錯誤した結果、src/style.css ファイルに下記を追加することで期待した css が読み込まれることが分かりました。
+@import url(&#39;../node_modules/primeng/resources/themes/omega/theme.css&#39;); @import url(&#39;../node_modules/primeng/resources/primeng.min.css&#39;);  読み込まれるというは正確ではなく、インポートした css が style.</description>
+    </item>
+    
+    <item>
+      <title>IntelliJ IDEAでAngular2アプリを動かす</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/</link>
+      <pubDate>Wed, 28 Dec 2016 00:39:11 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/</guid>
+      <description>Angular2のアプリをIntelliJ IDEAで動かすまでの試行錯誤の記録です。
+環境  macOS Sierra IntelliJ IDEA 2016.3  Angular2のインストール Angular2を動かすのにはNode.jsが必要なので、最初にNode.jsをインストールします。 macOSの場合、homebrewでnodebrewを入れるのが良さそうです。 nodebrewはNode.jsのバージョン管理システムだそうです。
+$brew install nodebrew  nodebrewインストール直後だと、カレントのNode.jsが選択されていないため、 Node.jsのコマンドを打ってもそんなコマンドはないと怒られてしまいます。 そこで、カレントのNode.jsを選択します。 選択方法ですが、まずインストールされているNode.jsのバージョンを知る必要があるので、 下記コマンドを実行し、バージョンリストを表示します。
+$nodebrew list  バージョンが表示されたら、利用したいバージョンを指定した下記コマンドを実行します。 私の環境ではv7.3.0がインストールされていたので、これをカレントにします。
+$nodebrew use v7.3.0  これでNode.jsが使えるようになりました。
+次に目的のAngular2をインストールするわけですが、 ここではコマンドラインツールであるangular-cliをインストールします。 インストールはnpm(Node Package Manager)を使います。
+$npm install -g angular-cli  これでAngular2アプリを作る準備ができました。
+Angular2アプリを作る 早速アプリを作りたいのですが、IntelliJ IDEAではAngularプロジェクトを作るメニューはありません。 プラグイン等であるのかもしれませんが、プレーンな状態ではできないので、 Angular-cliを使って雛形のプロジェクトを作成します。 プロジェクトを作りたいフォルダに移動して下記コマンドを実行します。
+$ng new angular-start  これで雛形のアプリが作成されました。 angular-startフォルダに移動して下記コマンドを実行すると、http://localhost:4200/で最初の画面が表示されます。
+$ng serve  IntelliJ IDEAに読み込む ここまでの作業でAngular2の動作するアプリはできましたが、 IntelliJ IDEAでの編集はまだできません。 IntelliJ IDEAで編集するために下記手順でプロジェクトを読み込みます。
+ File -&amp;gt; New -&amp;gt; Project from Existing Sources&amp;hellip; を選択してangular-startフォルダを選択する Import ProjectダイアログでCreate Project from existing sourcesを選択してNextボタンをクリックする 以降は何も変更せず、Nextボタンをクリックする Finishボタンが表示されたらそれをクリックする  これでソースの読み込みは完了しました。</description>
+    </item>
+    
+  </channel>
+</rss>

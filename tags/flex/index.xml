@@ -6,10 +6,20 @@
     <description>Recent content in Flex on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 27 May 2013 01:12:00 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 12 Feb 2016 23:53:41 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/flex/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Apache Flex カスタムヘッダでセキュリティエラー</title>
+      <link>https://kokuzawa.github.io/blog/2016/02/12/apache-flex-kasutamuhetudadesekiyuriteiera/</link>
+      <pubDate>Fri, 12 Feb 2016 23:53:41 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/02/12/apache-flex-kasutamuhetudadesekiyuriteiera/</guid>
+      <description>ちょっと前の話だけれども、 Apache Flex でHTTPリクエストを投げる際にカスタムヘッダを設定するとセキュリティエラーが発生するようになった。 詳細は下記。
+https://bugbase.adobe.com/index.cfm?event=bug&amp;amp;id=3759971</description>
+    </item>
     
     <item>
       <title>how to cancel drag-and-drop on esc key</title>

@@ -6,10 +6,41 @@
     <description>Recent content in Intellij Idea on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 01 Apr 2013 22:35:00 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 28 Dec 2016 00:39:11 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/intellij-idea/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>IntelliJ IDEAでAngular2アプリを動かす</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/</link>
+      <pubDate>Wed, 28 Dec 2016 00:39:11 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/</guid>
+      <description>Angular2のアプリをIntelliJ IDEAで動かすまでの試行錯誤の記録です。
+環境  macOS Sierra IntelliJ IDEA 2016.3  Angular2のインストール Angular2を動かすのにはNode.jsが必要なので、最初にNode.jsをインストールします。 macOSの場合、homebrewでnodebrewを入れるのが良さそうです。 nodebrewはNode.jsのバージョン管理システムだそうです。
+$brew install nodebrew  nodebrewインストール直後だと、カレントのNode.jsが選択されていないため、 Node.jsのコマンドを打ってもそんなコマンドはないと怒られてしまいます。 そこで、カレントのNode.jsを選択します。 選択方法ですが、まずインストールされているNode.jsのバージョンを知る必要があるので、 下記コマンドを実行し、バージョンリストを表示します。
+$nodebrew list  バージョンが表示されたら、利用したいバージョンを指定した下記コマンドを実行します。 私の環境ではv7.3.0がインストールされていたので、これをカレントにします。
+$nodebrew use v7.3.0  これでNode.jsが使えるようになりました。
+次に目的のAngular2をインストールするわけですが、 ここではコマンドラインツールであるangular-cliをインストールします。 インストールはnpm(Node Package Manager)を使います。
+$npm install -g angular-cli  これでAngular2アプリを作る準備ができました。
+Angular2アプリを作る 早速アプリを作りたいのですが、IntelliJ IDEAではAngularプロジェクトを作るメニューはありません。 プラグイン等であるのかもしれませんが、プレーンな状態ではできないので、 Angular-cliを使って雛形のプロジェクトを作成します。 プロジェクトを作りたいフォルダに移動して下記コマンドを実行します。
+$ng new angular-start  これで雛形のアプリが作成されました。 angular-startフォルダに移動して下記コマンドを実行すると、http://localhost:4200/で最初の画面が表示されます。
+$ng serve  IntelliJ IDEAに読み込む ここまでの作業でAngular2の動作するアプリはできましたが、 IntelliJ IDEAでの編集はまだできません。 IntelliJ IDEAで編集するために下記手順でプロジェクトを読み込みます。
+ File -&amp;gt; New -&amp;gt; Project from Existing Sources&amp;hellip; を選択してangular-startフォルダを選択する Import ProjectダイアログでCreate Project from existing sourcesを選択してNextボタンをクリックする 以降は何も変更せず、Nextボタンをクリックする Finishボタンが表示されたらそれをクリックする  これでソースの読み込みは完了しました。</description>
+    </item>
+    
+    <item>
+      <title>IntelliJ IDEAからDocker上のWildFlyでデバッグする</title>
+      <link>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</link>
+      <pubDate>Sun, 28 Feb 2016 01:56:31 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</guid>
+      <description>IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、 デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。 Docker上にコンテナを起動できる環境はできている前提になります。
+環境  OS: Mac OSX 10.11.3 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27) メモリ: 16GB Docker version 1.9.1  アプリの準備 どんなアプリでも良いのですが最終的な生成物はwarファイルにします。 今回はMavenプロジェクトで下記のようなフォルダ構成にします。
+docker-wildfly-example/ ├── Dockerfile ├── container_settings.json ├── docker-wildfly-example.iml ├── pom.xml └── src └── main ├── java │ └── org │ └── katsumi │ └── HelloBean.java └── webapp ├── WEB-INF │ └── web.xml └── index.xhtml  肝心なDockerfileの内容は下記のようになります。
+# WildFlyのイメージを取得 FROM jboss/wildfly:latest # MAINTAINER MAINTAINER Katsumi # アプリケーションのデプロイ COPY target/docker-wildfly-example.</description>
+    </item>
     
     <item>
       <title>Edit breakpoint of the IntelliJ IDEA</title>

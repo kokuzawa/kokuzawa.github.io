@@ -27,6 +27,175 @@ brewを使ってHugoをインストールします。
     </item>
     
     <item>
+      <title>JSF 2.3 の Websocket を試す</title>
+      <link>https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/</link>
+      <pubDate>Thu, 12 Jan 2017 00:29:21 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/</guid>
+      <description>JSF 2.3 では新しい機能として Websocket が追加されます。
+JSF 2.3 はまだリリースされていませんが、先日 JSF 2.3-m09 が公開されたので、 これを使って Websocket を試してみようと思います。
+環境  macOS Sierra Java&amp;trade; SE Runtime Environment (build 1.8.0_91-b14) WildFly 10.1.0.Final Payara Server 4.1.1.164  はじめに 今回やったことは下記に書いてあることそのままです。
+http://blog.payara.fish/jsf-2.3-the-websocket-quickstart-under-payara-server
+ボタンをクリックすることでサーバサイドから時間を取得してそれを表示するアプリを作ります。 アプリの作り方は上記サイトを見てもらえばわかると思うので、ここでは上記のサイトには書かれていない、 JavaEE8に対応していない現状のAPサーバで JSF 2.3 を有効にする方法について説明します。
+WildFly 10.1.0.Final で試す まず、普段利用している WildFly で動かそうとしてみました。 WildFly で JSF 2.3 を有効にするためには、WildFly が内包する JSF を無効にする必要があります。 無効にする方法は、下記の記述をした WEB-INF/jboss-deployment-structure.xml を用意します。
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;jboss-deployment-structure xmlns=&amp;quot;urn:jboss:deployment-structure:1.2&amp;quot;&amp;gt; &amp;lt;deployment&amp;gt; &amp;lt;exclude-subsystems&amp;gt; &amp;lt;subsystem name=&amp;quot;jsf&amp;quot;/&amp;gt; &amp;lt;/exclude-subsystems&amp;gt; &amp;lt;/deployment&amp;gt; &amp;lt;/jboss-deployment-structure&amp;gt;  JSF 2.</description>
+    </item>
+    
+    <item>
+      <title>PrimeNGを組み込む</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/28/primeng/</link>
+      <pubDate>Wed, 28 Dec 2016 11:02:35 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/28/primeng/</guid>
+      <description>昨日、 Angular2 アプリを IntelliJ IDEA で動かすところまでやってみました。 今日は本来の目的である PrimeNG を使ってみます。
+PrimeNG とは JSF の実装の一つである PrimeFaces と同じところが作っている Angular2 用の Rich UI Components です。 PrimeFaces とほぼ同じ（まだ PrimeNG の方が少ない）コンポーネント群を Angular2 から利用できるプロダクトです。 現在の最新バージョンは 1.1.2 です。
+PrimeNG のインストール PrimeNG の Setup に書いてありますが、 プロジェクトフォルダで下記コマンドを実行します。
+$npm install primeng --save  PrimeNG を組み込む PrimeNG のインストールはできたので昨日作ったアプリに PrimeNG を組み込んでみます。 まず、PrimeNG 用の css が用意されているのでそれを追加します。 css の定義を index.html に書いてみたのですが、 表示された画面で確認すると css ファイルが見つからない状態となります。 色々試行錯誤した結果、src/style.css ファイルに下記を追加することで期待した css が読み込まれることが分かりました。
+@import url(&#39;../node_modules/primeng/resources/themes/omega/theme.css&#39;); @import url(&#39;../node_modules/primeng/resources/primeng.min.css&#39;);  読み込まれるというは正確ではなく、インポートした css が style.</description>
+    </item>
+    
+    <item>
+      <title>IntelliJ IDEAでAngular2アプリを動かす</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/</link>
+      <pubDate>Wed, 28 Dec 2016 00:39:11 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/</guid>
+      <description>Angular2のアプリをIntelliJ IDEAで動かすまでの試行錯誤の記録です。
+環境  macOS Sierra IntelliJ IDEA 2016.3  Angular2のインストール Angular2を動かすのにはNode.jsが必要なので、最初にNode.jsをインストールします。 macOSの場合、homebrewでnodebrewを入れるのが良さそうです。 nodebrewはNode.jsのバージョン管理システムだそうです。
+$brew install nodebrew  nodebrewインストール直後だと、カレントのNode.jsが選択されていないため、 Node.jsのコマンドを打ってもそんなコマンドはないと怒られてしまいます。 そこで、カレントのNode.jsを選択します。 選択方法ですが、まずインストールされているNode.jsのバージョンを知る必要があるので、 下記コマンドを実行し、バージョンリストを表示します。
+$nodebrew list  バージョンが表示されたら、利用したいバージョンを指定した下記コマンドを実行します。 私の環境ではv7.3.0がインストールされていたので、これをカレントにします。
+$nodebrew use v7.3.0  これでNode.jsが使えるようになりました。
+次に目的のAngular2をインストールするわけですが、 ここではコマンドラインツールであるangular-cliをインストールします。 インストールはnpm(Node Package Manager)を使います。
+$npm install -g angular-cli  これでAngular2アプリを作る準備ができました。
+Angular2アプリを作る 早速アプリを作りたいのですが、IntelliJ IDEAではAngularプロジェクトを作るメニューはありません。 プラグイン等であるのかもしれませんが、プレーンな状態ではできないので、 Angular-cliを使って雛形のプロジェクトを作成します。 プロジェクトを作りたいフォルダに移動して下記コマンドを実行します。
+$ng new angular-start  これで雛形のアプリが作成されました。 angular-startフォルダに移動して下記コマンドを実行すると、http://localhost:4200/で最初の画面が表示されます。
+$ng serve  IntelliJ IDEAに読み込む ここまでの作業でAngular2の動作するアプリはできましたが、 IntelliJ IDEAでの編集はまだできません。 IntelliJ IDEAで編集するために下記手順でプロジェクトを読み込みます。
+ File -&amp;gt; New -&amp;gt; Project from Existing Sources&amp;hellip; を選択してangular-startフォルダを選択する Import ProjectダイアログでCreate Project from existing sourcesを選択してNextボタンをクリックする 以降は何も変更せず、Nextボタンをクリックする Finishボタンが表示されたらそれをクリックする  これでソースの読み込みは完了しました。</description>
+    </item>
+    
+    <item>
+      <title>Dialog of PrimeFaces</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/</link>
+      <pubDate>Sun, 25 Dec 2016 15:10:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/</guid>
+      <description>この記事はJava EE Advent Calendar 2016の25日目です。
+昨日は@kikutaroさんの「実はJava EEに含まれるJavaMailについて」でした。
+現在業務でJSFを使っています。 導入当初はRIであるMojarraのみを利用しようと考えていたのですが、 業務アプリで多い、ツリーやグリッドで数多くのアクションを実装しなければならず、 一つ一つをJavaScriptで実装していくには時間が足りないという判断のもとに、 それらを簡易に実現できるPrimeFacesを利用することにしました。 採用を決定した段階での最新バージョンはPrimeFaces-6.0です。 PrimeFacesは充実したコンポーネント群を持っているので、 必要なコンポーネントはほぼ見つけることができるかと思います。
+さて、今回はその中でダイアログコンポーネントについて説明します。 PrimeFacesのDemoを見るとわかるのですが、 このダイアログコンポーネントを表示するための方法が二通り用意されています。
+一つ目は静的にダイアログを表示する方法です。
+XHTML:
+&amp;lt;p:dialog widgetVar=&amp;quot;sampleDialog&amp;quot;&amp;gt; ... &amp;lt;/p:dialog&amp;gt; &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplete=&amp;quot;PF(&#39;sampleDialog&#39;).show()&amp;quot;/&amp;gt;  二つ目の方法は動的にダイアログを表示する方法です。
+ManagedBean:
+public void onShowDialog() { RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;); }  XHTML:
+&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;  二つ目の方法は指定したXHTMLをiframe内に表示して、それをダイアログとして表示してくれます。 一つ目の方法と異なり、 ダイアログ内のコンテンツを別XHTMLに分けることができるのでコードの見通しが良くなるかと思います。 また、表示時にダイアログのオプションを指定することができますが、 何も指定しないと、モーダレス、リサイズ可能、コンテンツが640pxで固定されたダイアログが表示されます。 ダイアログをリサイズしてもコンテンツが640pxで固定されているので、追従して広がることがありません。 もし、リサイズに合わせてコンテンツも追従するようにしたければ、 表示時に下記のようなオプションを付与します。
+public void onShowDialog() { final Map&amp;lt;String, Object&amp;gt; options = new HashMap&amp;lt;&amp;gt;(); options.put(&amp;quot;width&amp;quot;, 640); options.put(&amp;quot;contentWidth&amp;quot;, &amp;quot;100%&amp;quot;); RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, options, null); }  このようにすることで、ダイアログの初期表示の幅は640px、コンテンツの幅は100%となり、 コンテンツがリサイズに追従するようになります。</description>
+    </item>
+    
+    <item>
+      <title>HttpURLConnectionで嵌った話</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/15/httpurlconnection/</link>
+      <pubDate>Thu, 15 Dec 2016 00:03:24 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/15/httpurlconnection/</guid>
+      <description>この記事はJava Advent Calendar 2016の15日目です。
+昨日はenkさんの「JGiven で 100% Pure Java BDD（導入編）」でした。
+HttpURLConnectionにはgetInputStreamとgetErrorStreamというサーバからのレスポンスを受け取るためのメソッドが用意されています。 この二つのメソッドのうち、getErrorStreamのJavadocを見ると下記のように記載されています。
+ 接続が失敗したが、それにもかかわらずサーバーから有用なデータを送信されてきた場合に、エラー・ストリームを返します。典型的な例としては、HTTPサーバーが404で応答し、それによって接続内でFileNotFoundExceptionがスローされたが、そのサーバーから対処策を含むHTMLヘルプ・ページが送信されてきた、といった場合です。
+ これを読むと少なくともステータスコードが404の場合にはエラーストリームが取得できそうな気がするのですが、 実際のところインプットストリームで返却するのかエラーストリームで返却するのか明確に仕様が決まっているわけではないらしく、 接続先のサーバの実装に依存し、取得できたりできなかったりします。
+インプットストリームで返却されたのかエラーストリームで返却されたのか、 事前に判定するための方法が用意されているわけでもないため、 実際には下記のようなコードでストリームを取得する必要がありそうです。 インプットストリームが取れない場合はIOExceptionが発生、 エラーストリームが取れない場合はnullが返却されます。
+エラーストリームが取れない場合にインプットストリームを取得:
+InputStream stream = connection.getErrorStream(); if (null = stream) { stream = connection.getInputStream(); }  インプットストリームが取れない場合にエラーストリームを取得:
+InputStream stream; try { stream = connection.getInputStream(); } catch (IOException e) { stream = connection.getErrorStream(); }  実際の問題 JAX-RSクライアントライブラリのresteasy-client 3.0.10が持つクラス、 org.jboss.resteasy.client.jaxrs.engines.URLConnectionEngineを利用した際、 サーバが4xxのステータスコードを返却するとNullPointerExceptionが発生します。 URLConnectionEngineの該当箇所のコードは下記のようになっています。
+@Override protected InputStream getInputStream() { if (stream == null) { try { stream = (status &amp;lt; 300) ?</description>
+    </item>
+    
+    <item>
+      <title>remoteCommand in Composite</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/</link>
+      <pubDate>Wed, 14 Dec 2016 01:28:24 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/</guid>
+      <description>JSFにはcompositeというカスタムコンポーネントを作るための仕組みがあります。 PrimeFaces-6.0にはManagedBeanのメソッドを呼び出すためのremoteCommandというコンポーネントがあります。 この二つを使ってカスタムコンポーネントを作ったところ、ManagedBeanのメソッドが呼ばれないという問題が発生しました。
+まず、JSFのcomposite機能を使って下記のような二つのコンポーネントを作りました。
+sample1.xhtml:
+&amp;lt;composite:implementation&amp;gt; &amp;lt;p:tree&amp;gt; &amp;lt;p:ajax event=&amp;quot;select&amp;quot; oncomplate=&amp;quot;afterSelected()&amp;quot;/&amp;gt; &amp;lt;/p:tree&amp;gt; &amp;lt;p:remoteCommand name=&amp;quot;afterSelected&amp;quot; actionListener=&amp;quot;#{bean.method1}&amp;quot;/&amp;gt; &amp;lt;/composite:implementation&amp;gt;  sample2.xhtml:
+&amp;lt;composite:implementation&amp;gt; &amp;lt;p:tree&amp;gt; &amp;lt;p:ajax event=&amp;quot;select&amp;quot; oncomplate=&amp;quot;afterSelected()&amp;quot;/&amp;gt; &amp;lt;/p:tree&amp;gt; &amp;lt;p:remoteCommand name=&amp;quot;afterSelected&amp;quot; actionListener=&amp;quot;#{bean.method2}&amp;quot;/&amp;gt; &amp;lt;/composite:implementation&amp;gt;  そしてこれらを一つのXHTMLに組み込みます。
+main.xhtml:
+&amp;lt;my:sample1/&amp;gt; &amp;lt;my:sample2/&amp;gt;  sample1側のツリーノードを選択した際にbean.method1が呼ばれることを想定していたのですが、 呼ばれることなく画面がリフレッシュされました。それぞれのカスタムコンポーネント内の remoteCommandのnameの値が重複していると、エラーが発生することなくメソッドが呼ばれないという現象が発生します。
+当たり前と言えば当たり前なのですが、 似たようなコンポーネントを作るとやらかしてしまいそうなので注意しないと。</description>
+    </item>
+    
+    <item>
+      <title>FreeMarkerでinterpolation部分をそのまま出力</title>
+      <link>https://kokuzawa.github.io/blog/2016/10/20/java-freemarker-noparse/</link>
+      <pubDate>Thu, 20 Oct 2016 13:41:21 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/10/20/java-freemarker-noparse/</guid>
+      <description> FreeMarker-2.3.23でinterpolation部分をそのまま出力したい。
+ただし、テンプレート文字列部分はユーザが自由に入力ができて、さらに、それがFreeMarkerのテンプレートだとは認識していない場合を想定。 つまり、ユーザが${hello}と入力したら、出力結果は${hello}となって欲しい。 調べてみると、下記のようにinterpolation部分を${r&amp;quot;...&amp;quot;}で括ればそのまま出力されるみたい。
+TEMPLATE:
+${r&amp;quot;${hello}&amp;quot;}  OUTPUT:
+${hello}  ということは、ユーザの入力した文字列からinterpolation部分を抽出して、${r&amp;quot;...&amp;quot;}で括るように置換してあげればよさそうだけど、 ユーザが${helloとしか入力しない場合に置換できないし、interpolation部分だけでなく、 &amp;lt;#if&amp;gt;などの制御タグもそのまま出力しなければならないので、この方法はあまり現実的ではなさそう。 で、FreeMarkerのマニュアルを眺めてみると、noparseという項があってそれをみたら「あ、これだ！」となった。 下記のように書くとそのまま出力される。
+TEMPLATE:
+&amp;lt;#noparse&amp;gt; &amp;lt;#if greet&amp;gt; ${hello} &amp;lt;/#if&amp;gt; &amp;lt;/#noparse&amp;gt;  OUTPUT:
+&amp;lt;#if greet&amp;gt; ${hello} &amp;lt;/#if&amp;gt;  これならユーザが入力した部分を&amp;lt;#noparse&amp;gt;で括ってしまえばいいだけなので簡単。
+参考サイト  How to output ${expression} in Freemarker without it being interpreted? FreeMarker.org#noparse  </description>
+    </item>
+    
+    <item>
+      <title>java.sql.Timestamp の振る舞い</title>
+      <link>https://kokuzawa.github.io/blog/2016/06/27/java-sql-timestamp/</link>
+      <pubDate>Mon, 27 Jun 2016 23:41:21 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/06/27/java-sql-timestamp/</guid>
+      <description>Java6 と Java8 で振る舞いが変わっていたのでメモ。
+Java6 では下記コードがエラーにならず結果が出力されます。
+System.out.println(java.sql.Timestamp.valueOf(&amp;quot;2016-13-01&amp;quot;)); // 2017-01-01  ところが Java8 だと下記のエラーが発生します。
+Exception in thread &amp;quot;main&amp;quot; java.lang.IllegalArgumentException: Timestamp format must be yyyy-mm-dd hh:mm:ss[.fffffffff] at java.sql.Timestamp.valueOf(Timestamp.java:204)  もちろん存在しない日付、例えば 2016-12-32 などを指定した場合にもエラーとなります。 Java6 から Java7 になる際に java.sql.Timestamp に対してかなりの数のバグフィックスが行われたようで、 おそらくその修正のどこかで振る舞いが変わったのだと思います。</description>
+    </item>
+    
+    <item>
+      <title>IntelliJ IDEAからDocker上のWildFlyでデバッグする</title>
+      <link>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</link>
+      <pubDate>Sun, 28 Feb 2016 01:56:31 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</guid>
+      <description>IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、 デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。 Docker上にコンテナを起動できる環境はできている前提になります。
+環境  OS: Mac OSX 10.11.3 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27) メモリ: 16GB Docker version 1.9.1  アプリの準備 どんなアプリでも良いのですが最終的な生成物はwarファイルにします。 今回はMavenプロジェクトで下記のようなフォルダ構成にします。
+docker-wildfly-example/ ├── Dockerfile ├── container_settings.json ├── docker-wildfly-example.iml ├── pom.xml └── src └── main ├── java │ └── org │ └── katsumi │ └── HelloBean.java └── webapp ├── WEB-INF │ └── web.xml └── index.xhtml  肝心なDockerfileの内容は下記のようになります。
+# WildFlyのイメージを取得 FROM jboss/wildfly:latest # MAINTAINER MAINTAINER Katsumi # アプリケーションのデプロイ COPY target/docker-wildfly-example.</description>
+    </item>
+    
+    <item>
+      <title>Apache Flex カスタムヘッダでセキュリティエラー</title>
+      <link>https://kokuzawa.github.io/blog/2016/02/12/apache-flex-kasutamuhetudadesekiyuriteiera/</link>
+      <pubDate>Fri, 12 Feb 2016 23:53:41 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/02/12/apache-flex-kasutamuhetudadesekiyuriteiera/</guid>
+      <description>ちょっと前の話だけれども、 Apache Flex でHTTPリクエストを投げる際にカスタムヘッダを設定するとセキュリティエラーが発生するようになった。 詳細は下記。
+https://bugbase.adobe.com/index.cfm?event=bug&amp;amp;id=3759971</description>
+    </item>
+    
+    <item>
+      <title>Dockerで始めるVMを利用した開発</title>
+      <link>https://kokuzawa.github.io/blog/2016/02/11/dockerdeshi-meruvmwoli-yong-sitakai-fa/</link>
+      <pubDate>Thu, 11 Feb 2016 16:49:26 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/02/11/dockerdeshi-meruvmwoli-yong-sitakai-fa/</guid>
+      <description>結構前からDockerの事を聞いていてそれは仮想化技術だと認識していました。 なんで今まで触ってこなかったのかというと仮想化環境を作るにはそれなりの マシンスペックが必要なのだろうと。つまり貧弱なマシンを使っている僕には関係ない。 自宅のMac Book Proが壊れて新しくなったり、 会社のPCのスペックが上がったりしたのでこれは触りどきかと思って今手をつけてみたわけです。 というわけでまさに触り始めなわけで開発まではたどり着いていません。タイトル嘘という方向で。
+最初に何をしたかというと、DockerToolBoxというやつをインストールしました。 Homebrewでも入れられるみたいですがどこかのサイトにHomebrewで入れるとなかなか最新にならないよという 至極まっとうな記載があったのでひとまず最新がいいなあと思い、インストールモジュールをダウンロードしてみました。
+これ、インストールすると目に見えて分かるのは３つのソフトがインストールされるということです。
+ Docker Quickstart Terminal Kitematic (Beta) VirtualBox  もしかしたら見えないところに他のソフトがインストールされているのかもしれませんが、 まだよくわかっていません。
+最初にDocker Quickstart Terminalを起動します。 これはOSXのターミナルが起動します。ここの中でCUIで操作するようです。 で、ちょっとハマったのは起動したターミナルに別タブを開いてそこでDockerの起動とかしようとしても 仮想マシンに接続できないようで理解するまで時間がかかりました。
+Docker Quickstart Terminalを起動すると仮想マシンがdefaultという名前で起動します。 これはVirtualBoxを起動するとわかります。 今のところVirtualBoxを使って何かするということはなさそうだという理解です。 このdefaultの仮想マシンですが、間違ってログアウトしてしまったらログインのIDとパスワードがわからなくて難儀しました。 どうやらCore Linuxというものを使っているらしくそれのデフォルトのIDとパスワードでログインできるようです。 こういうDockerとは直接関係ない機能を試してみたくなるところが僕の悪いところで、 Dockerそのものをまだちゃんと触れていない状態です。
+Kitematicはいろいろな人がアップしたDockerイメージが登録されているDockerHubというところへの アクセスをGUI経由でできるソフトのようです。 Dockerイメージとかもうよくわからないので、この本を買ってちゃんと勉強することにしました。
+  
+まだ最初の方しか読んでいませんが、 ざっくり言うとMavenみたいな感じですね！多分。
+というわけでこれからしばらくはDockerを使ってみたいと思っています。</description>
+    </item>
+    
+    <item>
       <title>JdbcRealm with WildFly 9.0.1.Final</title>
       <link>https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</link>
       <pubDate>Fri, 25 Dec 2015 20:50:08 +0900</pubDate>

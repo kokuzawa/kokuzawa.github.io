@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>remoteCommand in Composite</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="remoteCommand in Composite" />
+<meta property="og:description" content="JSFにはcompositeというカスタムコンポーネントを作るための仕組みがあります。 PrimeFaces-6.0にはManagedBeanのメソッドを呼び出すためのremoteCommandというコンポーネントがあります。 この二つを使ってカスタムコンポーネントを作ったところ、ManagedBeanのメソッドが呼ばれないという問題が発生しました。
+まず、JSFのcomposite機能を使って下記のような二つのコンポーネントを作りました。
+sample1.xhtml:
+&lt;composite:implementation&gt; &lt;p:tree&gt; &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt; &lt;/p:tree&gt; &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method1}&quot;/&gt; &lt;/composite:implementation&gt;  sample2.xhtml:
+&lt;composite:implementation&gt; &lt;p:tree&gt; &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt; &lt;/p:tree&gt; &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method2}&quot;/&gt; &lt;/composite:implementation&gt;  そしてこれらを一つのXHTMLに組み込みます。
+main.xhtml:
+&lt;my:sample1/&gt; &lt;my:sample2/&gt;  sample1側のツリーノードを選択した際にbean.method1が呼ばれることを想定していたのですが、 呼ばれることなく画面がリフレッシュされました。それぞれのカスタムコンポーネント内の remoteCommandのnameの値が重複していると、エラーが発生することなくメソッドが呼ばれないという現象が発生します。
+当たり前と言えば当たり前なのですが、 似たようなコンポーネントを作るとやらかしてしまいそうなので注意しないと。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/" />
+
+
+
+<meta property="article:published_time" content="2016-12-14T01:28:24&#43;09:00"/>
+
+<meta property="article:modified_time" content="2016-12-14T01:28:24&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="remoteCommand in Composite">
+<meta itemprop="description" content="JSFにはcompositeというカスタムコンポーネントを作るための仕組みがあります。 PrimeFaces-6.0にはManagedBeanのメソッドを呼び出すためのremoteCommandというコンポーネントがあります。 この二つを使ってカスタムコンポーネントを作ったところ、ManagedBeanのメソッドが呼ばれないという問題が発生しました。
+まず、JSFのcomposite機能を使って下記のような二つのコンポーネントを作りました。
+sample1.xhtml:
+&lt;composite:implementation&gt; &lt;p:tree&gt; &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt; &lt;/p:tree&gt; &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method1}&quot;/&gt; &lt;/composite:implementation&gt;  sample2.xhtml:
+&lt;composite:implementation&gt; &lt;p:tree&gt; &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt; &lt;/p:tree&gt; &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method2}&quot;/&gt; &lt;/composite:implementation&gt;  そしてこれらを一つのXHTMLに組み込みます。
+main.xhtml:
+&lt;my:sample1/&gt; &lt;my:sample2/&gt;  sample1側のツリーノードを選択した際にbean.method1が呼ばれることを想定していたのですが、 呼ばれることなく画面がリフレッシュされました。それぞれのカスタムコンポーネント内の remoteCommandのnameの値が重複していると、エラーが発生することなくメソッドが呼ばれないという現象が発生します。
+当たり前と言えば当たり前なのですが、 似たようなコンポーネントを作るとやらかしてしまいそうなので注意しないと。">
+
+
+<meta itemprop="datePublished" content="2016-12-14T01:28:24&#43;09:00" />
+<meta itemprop="dateModified" content="2016-12-14T01:28:24&#43;09:00" />
+<meta itemprop="wordCount" content="35">
+
+
+
+<meta itemprop="keywords" content="Java,JSF," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="remoteCommand in Composite"/>
+<meta name="twitter:description" content="JSFにはcompositeというカスタムコンポーネントを作るための仕組みがあります。 PrimeFaces-6.0にはManagedBeanのメソッドを呼び出すためのremoteCommandというコンポーネントがあります。 この二つを使ってカスタムコンポーネントを作ったところ、ManagedBeanのメソッドが呼ばれないという問題が発生しました。
+まず、JSFのcomposite機能を使って下記のような二つのコンポーネントを作りました。
+sample1.xhtml:
+&lt;composite:implementation&gt; &lt;p:tree&gt; &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt; &lt;/p:tree&gt; &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method1}&quot;/&gt; &lt;/composite:implementation&gt;  sample2.xhtml:
+&lt;composite:implementation&gt; &lt;p:tree&gt; &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt; &lt;/p:tree&gt; &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method2}&quot;/&gt; &lt;/composite:implementation&gt;  そしてこれらを一つのXHTMLに組み込みます。
+main.xhtml:
+&lt;my:sample1/&gt; &lt;my:sample2/&gt;  sample1側のツリーノードを選択した際にbean.method1が呼ばれることを想定していたのですが、 呼ばれることなく画面がリフレッシュされました。それぞれのカスタムコンポーネント内の remoteCommandのnameの値が重複していると、エラーが発生することなくメソッドが呼ばれないという現象が発生します。
+当たり前と言えば当たり前なのですが、 似たようなコンポーネントを作るとやらかしてしまいそうなので注意しないと。"/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>remoteCommand in Composite</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        December 14, 2016
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/jsf">JSF</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        <p>JSFにはcompositeというカスタムコンポーネントを作るための仕組みがあります。
+PrimeFaces-6.0にはManagedBeanのメソッドを呼び出すためのremoteCommandというコンポーネントがあります。
+この二つを使ってカスタムコンポーネントを作ったところ、ManagedBeanのメソッドが呼ばれないという問題が発生しました。</p>
+
+<!-- more -->
+
+<p>まず、JSFのcomposite機能を使って下記のような二つのコンポーネントを作りました。</p>
+
+<p>sample1.xhtml:</p>
+
+<pre><code class="language-xml">&lt;composite:implementation&gt;
+  &lt;p:tree&gt;
+    &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt;
+  &lt;/p:tree&gt;
+  &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method1}&quot;/&gt;
+&lt;/composite:implementation&gt;
+</code></pre>
+
+<p>sample2.xhtml:</p>
+
+<pre><code class="language-xml">&lt;composite:implementation&gt;
+  &lt;p:tree&gt;
+    &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt;
+  &lt;/p:tree&gt;
+  &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method2}&quot;/&gt;
+&lt;/composite:implementation&gt;
+</code></pre>
+
+<p>そしてこれらを一つのXHTMLに組み込みます。</p>
+
+<p>main.xhtml:</p>
+
+<pre><code class="language-xml">&lt;my:sample1/&gt;
+&lt;my:sample2/&gt;
+</code></pre>
+
+<p>sample1側のツリーノードを選択した際に<code>bean.method1</code>が呼ばれることを想定していたのですが、
+呼ばれることなく画面がリフレッシュされました。それぞれのカスタムコンポーネント内の
+remoteCommandのnameの値が重複していると、エラーが発生することなくメソッドが呼ばれないという現象が発生します。</p>
+
+<p>当たり前と言えば当たり前なのですが、
+似たようなコンポーネントを作るとやらかしてしまいそうなので注意しないと。</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2016%2f12%2f14%2fremotecommand-in-composite%2f - remoteCommand%20in%20Composite by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">JSF 2.3 の Websocket を試す<aside class="dates">Jan 12 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2016/12/28/primeng/">PrimeNGを組み込む<aside class="dates">Dec 28 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/">IntelliJ IDEAでAngular2アプリを動かす<aside class="dates">Dec 28 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/">Dialog of PrimeFaces<aside class="dates">Dec 25 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2016/12/15/httpurlconnection/">HttpURLConnectionで嵌った話<aside class="dates">Dec 15 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2016/10/20/java-freemarker-noparse/">FreeMarkerでinterpolation部分をそのまま出力<aside class="dates">Oct 20 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2016/06/27/java-sql-timestamp/">java.sql.Timestamp の振る舞い<aside class="dates">Jun 27 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/">IntelliJ IDEAからDocker上のWildFlyでデバッグする<aside class="dates">Feb 28 2016</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2016/02/12/apache-flex-kasutamuhetudadesekiyuriteiera/">Apache Flex カスタムヘッダでセキュリティエラー<aside class="dates">Feb 12 2016</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

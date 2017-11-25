@@ -6,10 +6,60 @@
     <description>Recent content in Jsf on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Mon, 16 Nov 2015 22:58:09 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 12 Jan 2017 00:29:21 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/jsf/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JSF 2.3 の Websocket を試す</title>
+      <link>https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/</link>
+      <pubDate>Thu, 12 Jan 2017 00:29:21 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/</guid>
+      <description>JSF 2.3 では新しい機能として Websocket が追加されます。
+JSF 2.3 はまだリリースされていませんが、先日 JSF 2.3-m09 が公開されたので、 これを使って Websocket を試してみようと思います。
+環境  macOS Sierra Java&amp;trade; SE Runtime Environment (build 1.8.0_91-b14) WildFly 10.1.0.Final Payara Server 4.1.1.164  はじめに 今回やったことは下記に書いてあることそのままです。
+http://blog.payara.fish/jsf-2.3-the-websocket-quickstart-under-payara-server
+ボタンをクリックすることでサーバサイドから時間を取得してそれを表示するアプリを作ります。 アプリの作り方は上記サイトを見てもらえばわかると思うので、ここでは上記のサイトには書かれていない、 JavaEE8に対応していない現状のAPサーバで JSF 2.3 を有効にする方法について説明します。
+WildFly 10.1.0.Final で試す まず、普段利用している WildFly で動かそうとしてみました。 WildFly で JSF 2.3 を有効にするためには、WildFly が内包する JSF を無効にする必要があります。 無効にする方法は、下記の記述をした WEB-INF/jboss-deployment-structure.xml を用意します。
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;jboss-deployment-structure xmlns=&amp;quot;urn:jboss:deployment-structure:1.2&amp;quot;&amp;gt; &amp;lt;deployment&amp;gt; &amp;lt;exclude-subsystems&amp;gt; &amp;lt;subsystem name=&amp;quot;jsf&amp;quot;/&amp;gt; &amp;lt;/exclude-subsystems&amp;gt; &amp;lt;/deployment&amp;gt; &amp;lt;/jboss-deployment-structure&amp;gt;  JSF 2.</description>
+    </item>
+    
+    <item>
+      <title>Dialog of PrimeFaces</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/</link>
+      <pubDate>Sun, 25 Dec 2016 15:10:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/</guid>
+      <description>この記事はJava EE Advent Calendar 2016の25日目です。
+昨日は@kikutaroさんの「実はJava EEに含まれるJavaMailについて」でした。
+現在業務でJSFを使っています。 導入当初はRIであるMojarraのみを利用しようと考えていたのですが、 業務アプリで多い、ツリーやグリッドで数多くのアクションを実装しなければならず、 一つ一つをJavaScriptで実装していくには時間が足りないという判断のもとに、 それらを簡易に実現できるPrimeFacesを利用することにしました。 採用を決定した段階での最新バージョンはPrimeFaces-6.0です。 PrimeFacesは充実したコンポーネント群を持っているので、 必要なコンポーネントはほぼ見つけることができるかと思います。
+さて、今回はその中でダイアログコンポーネントについて説明します。 PrimeFacesのDemoを見るとわかるのですが、 このダイアログコンポーネントを表示するための方法が二通り用意されています。
+一つ目は静的にダイアログを表示する方法です。
+XHTML:
+&amp;lt;p:dialog widgetVar=&amp;quot;sampleDialog&amp;quot;&amp;gt; ... &amp;lt;/p:dialog&amp;gt; &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplete=&amp;quot;PF(&#39;sampleDialog&#39;).show()&amp;quot;/&amp;gt;  二つ目の方法は動的にダイアログを表示する方法です。
+ManagedBean:
+public void onShowDialog() { RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;); }  XHTML:
+&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;  二つ目の方法は指定したXHTMLをiframe内に表示して、それをダイアログとして表示してくれます。 一つ目の方法と異なり、 ダイアログ内のコンテンツを別XHTMLに分けることができるのでコードの見通しが良くなるかと思います。 また、表示時にダイアログのオプションを指定することができますが、 何も指定しないと、モーダレス、リサイズ可能、コンテンツが640pxで固定されたダイアログが表示されます。 ダイアログをリサイズしてもコンテンツが640pxで固定されているので、追従して広がることがありません。 もし、リサイズに合わせてコンテンツも追従するようにしたければ、 表示時に下記のようなオプションを付与します。
+public void onShowDialog() { final Map&amp;lt;String, Object&amp;gt; options = new HashMap&amp;lt;&amp;gt;(); options.put(&amp;quot;width&amp;quot;, 640); options.put(&amp;quot;contentWidth&amp;quot;, &amp;quot;100%&amp;quot;); RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, options, null); }  このようにすることで、ダイアログの初期表示の幅は640px、コンテンツの幅は100%となり、 コンテンツがリサイズに追従するようになります。</description>
+    </item>
+    
+    <item>
+      <title>remoteCommand in Composite</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/</link>
+      <pubDate>Wed, 14 Dec 2016 01:28:24 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/</guid>
+      <description>JSFにはcompositeというカスタムコンポーネントを作るための仕組みがあります。 PrimeFaces-6.0にはManagedBeanのメソッドを呼び出すためのremoteCommandというコンポーネントがあります。 この二つを使ってカスタムコンポーネントを作ったところ、ManagedBeanのメソッドが呼ばれないという問題が発生しました。
+まず、JSFのcomposite機能を使って下記のような二つのコンポーネントを作りました。
+sample1.xhtml:
+&amp;lt;composite:implementation&amp;gt; &amp;lt;p:tree&amp;gt; &amp;lt;p:ajax event=&amp;quot;select&amp;quot; oncomplate=&amp;quot;afterSelected()&amp;quot;/&amp;gt; &amp;lt;/p:tree&amp;gt; &amp;lt;p:remoteCommand name=&amp;quot;afterSelected&amp;quot; actionListener=&amp;quot;#{bean.method1}&amp;quot;/&amp;gt; &amp;lt;/composite:implementation&amp;gt;  sample2.xhtml:
+&amp;lt;composite:implementation&amp;gt; &amp;lt;p:tree&amp;gt; &amp;lt;p:ajax event=&amp;quot;select&amp;quot; oncomplate=&amp;quot;afterSelected()&amp;quot;/&amp;gt; &amp;lt;/p:tree&amp;gt; &amp;lt;p:remoteCommand name=&amp;quot;afterSelected&amp;quot; actionListener=&amp;quot;#{bean.method2}&amp;quot;/&amp;gt; &amp;lt;/composite:implementation&amp;gt;  そしてこれらを一つのXHTMLに組み込みます。
+main.xhtml:
+&amp;lt;my:sample1/&amp;gt; &amp;lt;my:sample2/&amp;gt;  sample1側のツリーノードを選択した際にbean.method1が呼ばれることを想定していたのですが、 呼ばれることなく画面がリフレッシュされました。それぞれのカスタムコンポーネント内の remoteCommandのnameの値が重複していると、エラーが発生することなくメソッドが呼ばれないという現象が発生します。
+当たり前と言えば当たり前なのですが、 似たようなコンポーネントを作るとやらかしてしまいそうなので注意しないと。</description>
+    </item>
     
     <item>
       <title>WildFly SwarmでJSFを試す</title>

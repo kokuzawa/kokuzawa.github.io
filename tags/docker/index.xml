@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Docker on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/docker/</link>
+    <description>Recent content in Docker on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 28 Feb 2016 01:56:31 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>IntelliJ IDEAからDocker上のWildFlyでデバッグする</title>
+      <link>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</link>
+      <pubDate>Sun, 28 Feb 2016 01:56:31 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</guid>
+      <description>IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、 デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。 Docker上にコンテナを起動できる環境はできている前提になります。
+環境  OS: Mac OSX 10.11.3 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27) メモリ: 16GB Docker version 1.9.1  アプリの準備 どんなアプリでも良いのですが最終的な生成物はwarファイルにします。 今回はMavenプロジェクトで下記のようなフォルダ構成にします。
+docker-wildfly-example/ ├── Dockerfile ├── container_settings.json ├── docker-wildfly-example.iml ├── pom.xml └── src └── main ├── java │ └── org │ └── katsumi │ └── HelloBean.java └── webapp ├── WEB-INF │ └── web.xml └── index.xhtml  肝心なDockerfileの内容は下記のようになります。
+# WildFlyのイメージを取得 FROM jboss/wildfly:latest # MAINTAINER MAINTAINER Katsumi # アプリケーションのデプロイ COPY target/docker-wildfly-example.</description>
+    </item>
+    
+    <item>
+      <title>Dockerで始めるVMを利用した開発</title>
+      <link>https://kokuzawa.github.io/blog/2016/02/11/dockerdeshi-meruvmwoli-yong-sitakai-fa/</link>
+      <pubDate>Thu, 11 Feb 2016 16:49:26 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/02/11/dockerdeshi-meruvmwoli-yong-sitakai-fa/</guid>
+      <description>結構前からDockerの事を聞いていてそれは仮想化技術だと認識していました。 なんで今まで触ってこなかったのかというと仮想化環境を作るにはそれなりの マシンスペックが必要なのだろうと。つまり貧弱なマシンを使っている僕には関係ない。 自宅のMac Book Proが壊れて新しくなったり、 会社のPCのスペックが上がったりしたのでこれは触りどきかと思って今手をつけてみたわけです。 というわけでまさに触り始めなわけで開発まではたどり着いていません。タイトル嘘という方向で。
+最初に何をしたかというと、DockerToolBoxというやつをインストールしました。 Homebrewでも入れられるみたいですがどこかのサイトにHomebrewで入れるとなかなか最新にならないよという 至極まっとうな記載があったのでひとまず最新がいいなあと思い、インストールモジュールをダウンロードしてみました。
+これ、インストールすると目に見えて分かるのは３つのソフトがインストールされるということです。
+ Docker Quickstart Terminal Kitematic (Beta) VirtualBox  もしかしたら見えないところに他のソフトがインストールされているのかもしれませんが、 まだよくわかっていません。
+最初にDocker Quickstart Terminalを起動します。 これはOSXのターミナルが起動します。ここの中でCUIで操作するようです。 で、ちょっとハマったのは起動したターミナルに別タブを開いてそこでDockerの起動とかしようとしても 仮想マシンに接続できないようで理解するまで時間がかかりました。
+Docker Quickstart Terminalを起動すると仮想マシンがdefaultという名前で起動します。 これはVirtualBoxを起動するとわかります。 今のところVirtualBoxを使って何かするということはなさそうだという理解です。 このdefaultの仮想マシンですが、間違ってログアウトしてしまったらログインのIDとパスワードがわからなくて難儀しました。 どうやらCore Linuxというものを使っているらしくそれのデフォルトのIDとパスワードでログインできるようです。 こういうDockerとは直接関係ない機能を試してみたくなるところが僕の悪いところで、 Dockerそのものをまだちゃんと触れていない状態です。
+Kitematicはいろいろな人がアップしたDockerイメージが登録されているDockerHubというところへの アクセスをGUI経由でできるソフトのようです。 Dockerイメージとかもうよくわからないので、この本を買ってちゃんと勉強することにしました。
+  
+まだ最初の方しか読んでいませんが、 ざっくり言うとMavenみたいな感じですね！多分。
+というわけでこれからしばらくはDockerを使ってみたいと思っています。</description>
+    </item>
+    
+  </channel>
+</rss>

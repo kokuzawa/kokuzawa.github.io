@@ -6,10 +6,22 @@
     <description>Recent content in Wildfly on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 25 Dec 2015 20:50:08 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 28 Feb 2016 01:56:31 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/wildfly/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>IntelliJ IDEAからDocker上のWildFlyでデバッグする</title>
+      <link>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</link>
+      <pubDate>Sun, 28 Feb 2016 01:56:31 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</guid>
+      <description>IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、 デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。 Docker上にコンテナを起動できる環境はできている前提になります。
+環境  OS: Mac OSX 10.11.3 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27) メモリ: 16GB Docker version 1.9.1  アプリの準備 どんなアプリでも良いのですが最終的な生成物はwarファイルにします。 今回はMavenプロジェクトで下記のようなフォルダ構成にします。
+docker-wildfly-example/ ├── Dockerfile ├── container_settings.json ├── docker-wildfly-example.iml ├── pom.xml └── src └── main ├── java │ └── org │ └── katsumi │ └── HelloBean.java └── webapp ├── WEB-INF │ └── web.xml └── index.xhtml  肝心なDockerfileの内容は下記のようになります。
+# WildFlyのイメージを取得 FROM jboss/wildfly:latest # MAINTAINER MAINTAINER Katsumi # アプリケーションのデプロイ COPY target/docker-wildfly-example.</description>
+    </item>
     
     <item>
       <title>JdbcRealm with WildFly 9.0.1.Final</title>

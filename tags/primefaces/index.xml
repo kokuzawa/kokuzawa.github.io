@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Primefaces on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/primefaces/</link>
+    <description>Recent content in Primefaces on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 25 Dec 2016 15:10:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/primefaces/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Dialog of PrimeFaces</title>
+      <link>https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/</link>
+      <pubDate>Sun, 25 Dec 2016 15:10:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/</guid>
+      <description>この記事はJava EE Advent Calendar 2016の25日目です。
+昨日は@kikutaroさんの「実はJava EEに含まれるJavaMailについて」でした。
+現在業務でJSFを使っています。 導入当初はRIであるMojarraのみを利用しようと考えていたのですが、 業務アプリで多い、ツリーやグリッドで数多くのアクションを実装しなければならず、 一つ一つをJavaScriptで実装していくには時間が足りないという判断のもとに、 それらを簡易に実現できるPrimeFacesを利用することにしました。 採用を決定した段階での最新バージョンはPrimeFaces-6.0です。 PrimeFacesは充実したコンポーネント群を持っているので、 必要なコンポーネントはほぼ見つけることができるかと思います。
+さて、今回はその中でダイアログコンポーネントについて説明します。 PrimeFacesのDemoを見るとわかるのですが、 このダイアログコンポーネントを表示するための方法が二通り用意されています。
+一つ目は静的にダイアログを表示する方法です。
+XHTML:
+&amp;lt;p:dialog widgetVar=&amp;quot;sampleDialog&amp;quot;&amp;gt; ... &amp;lt;/p:dialog&amp;gt; &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplete=&amp;quot;PF(&#39;sampleDialog&#39;).show()&amp;quot;/&amp;gt;  二つ目の方法は動的にダイアログを表示する方法です。
+ManagedBean:
+public void onShowDialog() { RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;); }  XHTML:
+&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;  二つ目の方法は指定したXHTMLをiframe内に表示して、それをダイアログとして表示してくれます。 一つ目の方法と異なり、 ダイアログ内のコンテンツを別XHTMLに分けることができるのでコードの見通しが良くなるかと思います。 また、表示時にダイアログのオプションを指定することができますが、 何も指定しないと、モーダレス、リサイズ可能、コンテンツが640pxで固定されたダイアログが表示されます。 ダイアログをリサイズしてもコンテンツが640pxで固定されているので、追従して広がることがありません。 もし、リサイズに合わせてコンテンツも追従するようにしたければ、 表示時に下記のようなオプションを付与します。
+public void onShowDialog() { final Map&amp;lt;String, Object&amp;gt; options = new HashMap&amp;lt;&amp;gt;(); options.put(&amp;quot;width&amp;quot;, 640); options.put(&amp;quot;contentWidth&amp;quot;, &amp;quot;100%&amp;quot;); RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, options, null); }  このようにすることで、ダイアログの初期表示の幅は640px、コンテンツの幅は100%となり、 コンテンツがリサイズに追従するようになります。</description>
+    </item>
+    
+  </channel>
+</rss>
