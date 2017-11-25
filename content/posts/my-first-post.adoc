@@ -1,0 +1,75 @@
+---
+title: "Hugoで始めるブログ生活"
+date: 2017-11-24T01:56:46+09:00
+tags: ["hugo"]
+draft: false
+---
+
+== Step 1: Hugoをインストール
+
+macOSでHomebrewがインストールされていることが前提です。 +
+brewを使ってHugoをインストールします。
+
+----
+$ brew install hugo
+----
+
+asciidoc形式で記事を書くつもりなので、asciidoctorもインストールします。
+
+----
+$ brew install asciidoctor
+----
+
+== Step 2: サイトを作る
+
+Hugoをインストールしたら、はじめにサイトを作ります。
+
+----
+$ hugo new site hugo-quickstart
+----
+
+[NOTE]
+カレントフォルダに `hugo-quickstart` フォルダが作られます。
+
+== Step 3: テーマを追加
+
+Hugoの https://themes.gohugo.io[テーマサイト] から好きなテーマを選んで追加します。
+個人的にCactusというテーマが気に入ったのでこれを取得します。
+
+----
+$ cd hugo-quickstart/themes
+$ git clone https://github.com/digitalcraftsman/hugo-cactus-theme.git
+----
+
+テーマを追加したら、そのテーマを使うことを宣言しなければなりません。
+
+.config.toml
+----
+theme = "hugo-cactus-theme"
+----
+
+さらにこのテーマは下記の設定も追記しないとダメなようです。
+
+.config.toml
+----
+[params]
+name = "Katsumi Kokuzawa"
+bio = "Programmer"
+----
+
+== Step 4: 記事を追加
+
+記事ファイルを追加します。
+
+----
+$ hugo new posts/my-first-post.adoc
+----
+
+追加した記事は `hugo server` をドラフトモードで起動することで確認できます。
+
+----
+$ hugo server -D
+----
+
+起動したら http://localhost:1313/ にアクセスします。
+

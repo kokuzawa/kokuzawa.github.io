@@ -1,0 +1,11 @@
+baseURL = "https://kokuzawa.github.io/"
+canonifyurls = true
+languageCode = "ja-jp"
+title = "Katsumi Kokuzawa's Blog"
+theme = "hugo-cactus-theme"
+disqusShortname = "Katsumii"
+
+[params]
+name = "Katsumi Kokuzawa"
+bio = "Programmer"
+twitter = "kokuzawa"
