@@ -13,10 +13,10 @@
     
     <item>
       <title>WildFly SwarmでEJBを試す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</link>
+      <link>https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</link>
       <pubDate>Sun, 22 Nov 2015 22:33:53 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
       <description>WildFly Swarmを試すのも今日で３回目です。 だんだんと実装方法に慣れてきました。 この辺で当初の目的であったWildFly SwarmでEJBを使ってみたいと思います。 EJBが使えないのならSpring Bootで全然構わないわけで、 EJBが使えるかどうかはとても大事なところです。
 EJBを組み込む EJBのモジュールを組み込みます。 よくよく考えてみると、EJBだけでは動きを確認するのが大変なので、 リクエストの受け口だけはJAXRSで作ります。 なので、JAXRSのモジュールも合わせて組み込みます。
 また、JAXRSのリソースから@InjectでEJBをDIするにはWeldも必要です。 そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。

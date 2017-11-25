@@ -13,10 +13,10 @@
     
     <item>
       <title>Point-to-Point on JMS</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</link>
+      <link>https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/</link>
       <pubDate>Sat, 15 Dec 2012 15:50:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/</guid>
       <description>JavaEE Advent Calendar 2012の15日目のエントリーです。
 昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
 明日は@akirakoyasuさんです。

@@ -13,10 +13,10 @@
     
     <item>
       <title>java7u51 Web Startセキュリティアップデートの回避方法</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/01/16/java7u51-web-start-security-update-workaround/</link>
+      <link>https://kokuzawa.github.io/blog/2014/01/16/java7u51-web-start-security-update-workaround/</link>
       <pubDate>Thu, 16 Jan 2014 07:08:26 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/01/16/java7u51-web-start-security-update-workaround/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/01/16/java7u51-web-start-security-update-workaround/</guid>
       <description>1月14日にJava7u51がリリースされました。 このアップデートによってセキュリティが強化されて、署名のないアプレットが起動できなくなりました。 また署名があっても、ユーザ独自の署名の場合ではその証明書をクライアントにインポートしておかないと、 同じく起動することができないようです。
 あまり頻繁に行う作業ではないので、手順をまとめておきたいと思います。
 1. MANIFEST.MFの編集 jarファイル内のMANIFEST.MFに下記を追記します。

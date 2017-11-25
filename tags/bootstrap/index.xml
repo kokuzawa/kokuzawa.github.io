@@ -13,10 +13,10 @@
     
     <item>
       <title>BootstrapのRemote Modal</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/11/13/bootstrapfalseremote-modal/</link>
+      <link>https://kokuzawa.github.io/blog/2013/11/13/bootstrapfalseremote-modal/</link>
       <pubDate>Wed, 13 Nov 2013 03:55:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/11/13/bootstrapfalseremote-modal/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/11/13/bootstrapfalseremote-modal/</guid>
       <description>bootstrap-3.0.2のRemote Modalの書き方がやっと分かった。
 今までは.modal-bodyだけが書き変わっていたのに、バージョン3以降は中身が全部書き変わるみたい。
 つまり呼び出し元はこれだけでいい。
@@ -29,10 +29,10 @@ $(&#39;#myModal&#39;).on(&#39;hidden.bs.modal&#39;, function() { $(this).removeD
     
     <item>
       <title>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</link>
+      <link>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</link>
       <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</guid>
       <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
 (Bootstrapのalert alert-errorを適用)
 これに対してTableレイアウトは以下のような出力になります。

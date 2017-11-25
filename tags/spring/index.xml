@@ -13,10 +13,10 @@
     
     <item>
       <title>springframeworkのjarファイル一式をダウンロードするには？</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</link>
+      <link>https://kokuzawa.github.io/blog/2013/10/15/springframework/</link>
       <pubDate>Tue, 15 Oct 2013 00:16:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/10/15/springframework/</guid>
       <description>久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。 サイトは今風になって素敵なんだけど。
 MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。 Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。 Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。
 Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。 maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。

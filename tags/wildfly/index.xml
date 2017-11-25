@@ -13,10 +13,10 @@
     
     <item>
       <title>JdbcRealm with WildFly 9.0.1.Final</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</link>
+      <link>https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</link>
       <pubDate>Fri, 25 Dec 2015 20:50:08 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
       <description>以前、「WildFlyでJdbcRealm」 という記事を書きました。 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、 忘れないようにメモしておきます。
 差分 WildFly 8.0.0.Finalの時の設定:
 &amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt; &amp;lt;authentication&amp;gt; &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt; &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;HEX&amp;quot;/&amp;gt; &amp;lt;/login-module&amp;gt; &amp;lt;/authentication&amp;gt; &amp;lt;/security-domain&amp;gt;  WildFly 9.0.1.Finalの設定:
@@ -25,10 +25,10 @@
     
     <item>
       <title>WildFly SwarmでEJBを試す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</link>
+      <link>https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</link>
       <pubDate>Sun, 22 Nov 2015 22:33:53 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
       <description>WildFly Swarmを試すのも今日で３回目です。 だんだんと実装方法に慣れてきました。 この辺で当初の目的であったWildFly SwarmでEJBを使ってみたいと思います。 EJBが使えないのならSpring Bootで全然構わないわけで、 EJBが使えるかどうかはとても大事なところです。
 EJBを組み込む EJBのモジュールを組み込みます。 よくよく考えてみると、EJBだけでは動きを確認するのが大変なので、 リクエストの受け口だけはJAXRSで作ります。 なので、JAXRSのモジュールも合わせて組み込みます。
 また、JAXRSのリソースから@InjectでEJBをDIするにはWeldも必要です。 そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。
@@ -39,10 +39,10 @@ package org.katsumi.ejb; import javax.inject.Inject; import javax.ws.rs.GET; imp
     
     <item>
       <title>WildFly SwarmでJSFを試す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</link>
+      <link>https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</link>
       <pubDate>Mon, 16 Nov 2015 22:58:09 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
       <description>昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。
 JSFを組み込む 仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。 あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。
 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jsf&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JSFアプリケーションを作る JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、 動くことが分かれば良いのでXHTMLファイルだけを作るだけにします。
@@ -53,10 +53,10 @@ package org.katsumi.jsf; import org.</description>
     
     <item>
       <title>WildFly SwarmでJAXRSを試す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
+      <link>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
       <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
       <description>WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、 自分の必要なモジュールを取り込んで利用する形になるようです。
 JAXRSを組み込む 今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。 2015年11月時点での最新バージョンは1.0.0.Alpha5です。 pom.xmlに下記のdependencyを追加します。
 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;dependency&amp;gt;  これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）
@@ -67,10 +67,10 @@ package org.katsumi; import javax.ws.rs.ApplicationPath; import javax.ws.rs.core
     
     <item>
       <title>[JSF-2.3]FacesContextをInjectする</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</link>
       <pubDate>Tue, 23 Dec 2014 15:02:06 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</guid>
       <description>JSF-2.3の新しい機能として、UIViewRoot, ViewMap, ApplicationMap, ExternalContext, FacesContextがInjectできるようになります。 この記事ではFacesContextの古い取得方法であるFacesContext.getCurrentInstance()と、 Injectを利用した取得方法のサンプルを記載します。
 サンプルでは画面のボタンをクリックすると、&amp;lt;h:messages/&amp;gt;タグとFacesContext.addMessage(String, FacesMessage)を利用して 同じ画面上にインフォメーションメッセージを表示します。
 最初にFacesContextの古い取得方法を利用したManaged Beanです。
@@ -80,10 +80,10 @@ import javax.enterprise.context.RequestScoped; import javax.faces.application.Fa
     
     <item>
       <title>WildFlyでJdbcRealm</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</link>
       <pubDate>Sat, 23 Aug 2014 15:50:18 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
       <description>今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。
 WildFly の設定 WildFly 8.0.0.Final に JDBCRealm を構築します。
 まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。

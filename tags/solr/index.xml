@@ -13,10 +13,10 @@
     
     <item>
       <title>Javaで文書検索をする (Apache Solr)</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</link>
       <pubDate>Sun, 07 Sep 2014 22:04:16 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</guid>
       <description>前回 Apache Solrに対してJavaで文書登録をして、APIでその結果が取得できるところまでやってみました。 今回はAPIではなく、登録した文書をJavaで検索してみようと思います。
 環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot™ 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Javaで文書検索 文書登録時と同じく、Apache Solrjが必要です。 ライブラリの取得方法は前回を参照して頂くとして、早速サンプルコードです。
 import org.apache.solr.client.solrj.SolrQuery; import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.solrj.impl.HttpSolrServer; import org.apache.solr.client.solrj.response.QueryResponse; import org.apache.solr.common.SolrDocument; import org.apache.solr.common.SolrDocumentList; public class SolrClient { public static void main(String... args) throws Exception { final SolrServer solr = new HttpSolrServer(&amp;quot;http://localhost:8983/solr/collection1&amp;quot;); final SolrQuery solrQuery = new SolrQuery(); solrQuery.set(&amp;quot;q&amp;quot;, &amp;quot;ストリーム&amp;quot;); final QueryResponse response = solr.</description>
@@ -24,10 +24,10 @@ import org.apache.solr.client.solrj.SolrQuery; import org.apache.solr.client.sol
     
     <item>
       <title>Apache solrで全文検索に触れる</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</link>
       <pubDate>Fri, 05 Sep 2014 00:12:34 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</guid>
       <description>Javaで簡単に全文検索を体験するには Apache Solr (ソーラー)が便利です。
 今回は現時点での最新バージョンである 4.10.0 を利用して全文検索を体験したいと思います。
 環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot&amp;trade; 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Solrを起動する SolrはWebアプリケーションの形になっています。 ZIPファイルをダウンロードして解凍すると、distフォルダにWARファイルが入っているので、 これをアプリケーションサーバにデプロイすれば良さそうですが、 今回はexampleフォルダにあるstart.jarを単独起動させます。

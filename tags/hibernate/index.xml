@@ -13,10 +13,10 @@
     
     <item>
       <title>Deprecated org.hibernate.ejb.HibernatePersistence</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</link>
+      <link>https://kokuzawa.github.io/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</link>
       <pubDate>Tue, 27 Jan 2015 23:46:21 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</guid>
       <description>どのバージョンからなのかはわからないが、Hibernate-4.3.8.Finalではpersistence.xmlのproviderに記載するHibernateのプロバイダクラスがdeprecatedになっていた。
 &amp;lt;provider&amp;gt;org.hibernate.ejb.HibernatePersistence&amp;lt;/provider&amp;gt;  上記を下記に置き換える必要がある。
 &amp;lt;provider&amp;gt;org.hibernate.jpa.HibernatePersistenceProvider&amp;lt;/provider&amp;gt;  </description>

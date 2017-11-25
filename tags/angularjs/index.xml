@@ -13,10 +13,10 @@
     
     <item>
       <title>初めてのAnglarJS</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/05/10/chu-metefalseangularjs/</link>
+      <link>https://kokuzawa.github.io/blog/2014/05/10/chu-metefalseangularjs/</link>
       <pubDate>Sat, 10 May 2014 18:50:20 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/05/10/chu-metefalseangularjs/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/05/10/chu-metefalseangularjs/</guid>
       <description>AngularJS + JAX-RS + JPA でアプリを作ってます。 今回 AngularJS を初めて使っているんですがとても便利ですね。 どの辺りがと言われると、具体的に答えられるほど使い込んでいないので答えに窮するのですが、 今分かっている範囲では、テストが簡単にできるのが良い感じです。
 基本 AngularJS を利用するためには当たり前ですが、jsファイルを呼び出す必要があります。 これは AngularJS の公式サイトからダウンロードできるので、そこから取得しました。 ダウンロードしたファイルを任意の場所に配置し、下記を head タグの間に追加します。
 &amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;  あと、下記の ng-app を忘れずに html タグに追加します。 これは、このページが AngularJS のページだよと宣言するためのディレクティブだそうです。

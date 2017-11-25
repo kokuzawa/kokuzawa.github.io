@@ -13,10 +13,10 @@
     
     <item>
       <title>Googleのテキスト読み上げAPIを組み込む</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/05/03/translate-google/</link>
+      <link>https://kokuzawa.github.io/blog/2015/05/03/translate-google/</link>
       <pubDate>Sun, 03 May 2015 22:12:37 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/05/03/translate-google/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/05/03/translate-google/</guid>
       <description>子供用の英単語帳Webアプリを作っています。 単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、 Googleが提供しているテキスト読み上げAPIというのを見つけました。
 使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。 この例ではoneという単語を読み上げてくれます。
 http://translate.google.com/translate_tts?tl=en&amp;amp;q=one  これをHTMLに組み込みます。 HTMLで音声を再生するためにはaudioタグを利用します。 下記のように組み込むことで音声を再生するためのコントロールを表示することができます。

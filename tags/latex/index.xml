@@ -13,10 +13,10 @@
     
     <item>
       <title>はじめてのLATEX</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/11/24/hazimetefalselatex/</link>
+      <link>https://kokuzawa.github.io/blog/2012/11/24/hazimetefalselatex/</link>
       <pubDate>Sat, 24 Nov 2012 01:25:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/11/24/hazimetefalselatex/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/11/24/hazimetefalselatex/</guid>
       <description>LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。 何がきっかけだったのかすっかり忘れてしまったけど、今日LaTeXを使ってみようと思い立ち、利用するための環境設定を色々と調べたので、その記録を書き記しておこうと思う。
 LaTeXって何？  LATEX（ラテック、ラテフ、レイテック、レイテックス）とは、レスリー・ランポート (英: Leslie Lamport) によって開発されたテキストベースの組版処理システムである。電子組版ソフトウェア TEX にマクロパッケージを組み込むことによって構築されており、単体の TEX に比べて、より手軽に組版を行うことができるようになっている。なお、LATEX を基にアスキーが日本語処理に対応させたものとして日本語 LATEX が、さらに縦組み処理にも対応させたものとして pLATEX がある。
  Wikipediaによれば、組版処理システムということらしい。Wordとかの所謂文書スタイルを制御するものと考えれば良さそう。 ただ、これだけではLaTeXが一体なんなのかがぼんやりとしか分からない。 やっぱり実際に触ってみた方が良さそうだ。

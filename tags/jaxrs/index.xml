@@ -13,10 +13,10 @@
     
     <item>
       <title>WildFly SwarmでJAXRSを試す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
+      <link>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
       <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
       <description>WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、 自分の必要なモジュールを取り込んで利用する形になるようです。
 JAXRSを組み込む 今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。 2015年11月時点での最新バージョンは1.0.0.Alpha5です。 pom.xmlに下記のdependencyを追加します。
 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;dependency&amp;gt;  これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）

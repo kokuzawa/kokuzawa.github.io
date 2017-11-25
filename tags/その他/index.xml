@@ -13,10 +13,10 @@
     
     <item>
       <title>Aizu Online Judge</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/01/08/aizu-online-judge/</link>
+      <link>https://kokuzawa.github.io/blog/2015/01/08/aizu-online-judge/</link>
       <pubDate>Thu, 08 Jan 2015 23:39:37 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/01/08/aizu-online-judge/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/01/08/aizu-online-judge/</guid>
       <description>面白いサイトを見つけた。アルゴリズムに対する問題があり、その回答を評価してくれる。
 対応言語は C, Java, D, Ruby, Python, PHP, JavaScript がある。
 http://judge.u-aizu.ac.jp/onlinejudge/index.jsp</description>

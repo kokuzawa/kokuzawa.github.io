@@ -13,10 +13,10 @@
     
     <item>
       <title>Derby does not start</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/03/09/derby-does-not-start/</link>
+      <link>https://kokuzawa.github.io/blog/2014/03/09/derby-does-not-start/</link>
       <pubDate>Sun, 09 Mar 2014 14:43:26 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/03/09/derby-does-not-start/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/03/09/derby-does-not-start/</guid>
       <description> Java8を入れたらGlassFishに付属しているDerbyが起動できなくなっていたので、下記を$JAVA_HONE/jre/lib/security/java.policyに追記しました。
 permission java.net.SocketPermission &amp;quot;localhost:1527&amp;quot;, &amp;quot;listen,resolve&amp;quot;;  参考  Java7u51以降でApache Derbyのネットワークサーバを使う場合の設定  </description>
     </item>

@@ -13,10 +13,10 @@
     
     <item>
       <title>JavaFXのUIをJUnit形式でテストする</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/12/10/testfx/</link>
+      <link>https://kokuzawa.github.io/blog/2015/12/10/testfx/</link>
       <pubDate>Thu, 10 Dec 2015 10:10:10 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/12/10/testfx/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/12/10/testfx/</guid>
       <description>Java Advent Calendar 2015と JavaFX Advent Calendar 2015の10日目の記事です。
 昨日は下記のお二人でした。
  Java Advent Calendarは@namihira_kさんの 「パフォーマンスを意識したJavaコーディング」 JavaFX Advent Calendarは@skrbさんの 「Interpolator で補間」  明日は下記のお二人です。
@@ -33,10 +33,10 @@ package org.katsumi; import javafx.fxml.FXMLLoader; import javafx.scene.Node; im
     
     <item>
       <title>JavaFXでMarkdownエディタを作る</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</link>
       <pubDate>Sat, 06 Dec 2014 06:42:41 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</guid>
       <description>この記事は JavaFX Advent Calendar 2014 の6日目です。
 昨日はsoutokuさんのJavaFX:WYSIWYGエディタを作るでした。
 明日は@backpaper0さんです。
@@ -50,10 +50,10 @@ JavaFXには標準でWebページを表示するためのWebViewクラスがあ�
     
     <item>
       <title>FlexとJavaFXでREST-APIを呼び出す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</link>
+      <link>https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</link>
       <pubDate>Mon, 03 Nov 2014 17:12:02 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
       <description>FlexとJavaFXからREST-APIを呼び出してみました。
 環境  OS: Mac OSX Yosemite 10.10 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
 import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&amp;quot;/hello&amp;quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&amp;quot;string&amp;quot;) String string) { return String.format(&amp;quot;Hello %s!&amp;quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。
@@ -64,10 +64,10 @@ Main.mxml:
     
     <item>
       <title>IntelliJ IDEA 13で作るJavaFXアプリケーション</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/</link>
+      <link>https://kokuzawa.github.io/blog/2013/12/08/javafx-on-intellij-idea/</link>
       <pubDate>Sun, 08 Dec 2013 00:15:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/12/08/javafx-on-intellij-idea/</guid>
       <description>この記事は、JavaFX Advent Calendar 2013の8日目です。
 昨日は@aoetkさんのListViewやTableViewのセルをカスタマイズする方法でした。
 明日は@sk44_さんです。
@@ -87,10 +87,10 @@ package sample; import javafx.</description>
     
     <item>
       <title>バブルソートをJavaFXで可視化</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/09/05/run-javafx/</link>
+      <link>https://kokuzawa.github.io/blog/2013/09/05/run-javafx/</link>
       <pubDate>Thu, 05 Sep 2013 03:15:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/09/05/run-javafx/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/09/05/run-javafx/</guid>
       <description>『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。 作るのはそれほど難しい話ではないので、ちょっとした解説を加えつつ紹介しようと思う。
 実行モジュールもあとで提示するので確認して頂ければ幸い。
 IDEはIntelliJ IDEAを使った。IntelliJ IDEAにはJavaFXモジュール用のプロジェクトを作ることができるのでそれを利用する。 ビルドすると親切なことにjarファイルだけでなく、JNLPやHTMLファイルを生成してくれるので非常に便利。
@@ -106,10 +106,10 @@ path.setStrokeWidth(3.0); path.setStroke(Color.GRAY); currentPath.setStrokeWidth
     
     <item>
       <title>OpenJFXをコンパイルしようとして挫折した記録</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</link>
+      <link>https://kokuzawa.github.io/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</link>
       <pubDate>Fri, 07 Dec 2012 21:05:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</guid>
       <description>JavaFX Advent Calendar 2012の7日目のエントリーです。
 昨日は@fukai_yasさんの「AppletでFXMLを使って罠にハマる」です。
 明日は@btnrougeさんです。

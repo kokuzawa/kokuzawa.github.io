@@ -13,10 +13,10 @@
     
     <item>
       <title>JdbcRealm with WildFly 9.0.1.Final</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</link>
+      <link>https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</link>
       <pubDate>Fri, 25 Dec 2015 20:50:08 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
       <description>以前、「WildFlyでJdbcRealm」 という記事を書きました。 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、 忘れないようにメモしておきます。
 差分 WildFly 8.0.0.Finalの時の設定:
 &amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt; &amp;lt;authentication&amp;gt; &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt; &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;HEX&amp;quot;/&amp;gt; &amp;lt;/login-module&amp;gt; &amp;lt;/authentication&amp;gt; &amp;lt;/security-domain&amp;gt;  WildFly 9.0.1.Finalの設定:
@@ -25,10 +25,10 @@
     
     <item>
       <title>Server Sent Events</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</link>
+      <link>https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/</link>
       <pubDate>Sun, 20 Dec 2015 10:32:29 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/</guid>
       <description>これは JavaEE Advent Calendar 2015 の20日目の記事です。
 昨日は@yumix_hさんの「「帰ってきたGlassFish Users Group Japan勉強会」の未発表資料」でした。
 明日は@emaggameさんです。
@@ -44,10 +44,10 @@ sandbox/sse-example
     
     <item>
       <title>JavaFXのUIをJUnit形式でテストする</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/12/10/testfx/</link>
+      <link>https://kokuzawa.github.io/blog/2015/12/10/testfx/</link>
       <pubDate>Thu, 10 Dec 2015 10:10:10 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/12/10/testfx/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/12/10/testfx/</guid>
       <description>Java Advent Calendar 2015と JavaFX Advent Calendar 2015の10日目の記事です。
 昨日は下記のお二人でした。
  Java Advent Calendarは@namihira_kさんの 「パフォーマンスを意識したJavaコーディング」 JavaFX Advent Calendarは@skrbさんの 「Interpolator で補間」  明日は下記のお二人です。
@@ -64,10 +64,10 @@ package org.katsumi; import javafx.fxml.FXMLLoader; import javafx.scene.Node; im
     
     <item>
       <title>WildFly SwarmでEJBを試す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</link>
+      <link>https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</link>
       <pubDate>Sun, 22 Nov 2015 22:33:53 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
       <description>WildFly Swarmを試すのも今日で３回目です。 だんだんと実装方法に慣れてきました。 この辺で当初の目的であったWildFly SwarmでEJBを使ってみたいと思います。 EJBが使えないのならSpring Bootで全然構わないわけで、 EJBが使えるかどうかはとても大事なところです。
 EJBを組み込む EJBのモジュールを組み込みます。 よくよく考えてみると、EJBだけでは動きを確認するのが大変なので、 リクエストの受け口だけはJAXRSで作ります。 なので、JAXRSのモジュールも合わせて組み込みます。
 また、JAXRSのリソースから@InjectでEJBをDIするにはWeldも必要です。 そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。
@@ -78,10 +78,10 @@ package org.katsumi.ejb; import javax.inject.Inject; import javax.ws.rs.GET; imp
     
     <item>
       <title>WildFly SwarmでJSFを試す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</link>
+      <link>https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</link>
       <pubDate>Mon, 16 Nov 2015 22:58:09 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
       <description>昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。
 JSFを組み込む 仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。 あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。
 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jsf&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JSFアプリケーションを作る JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、 動くことが分かれば良いのでXHTMLファイルだけを作るだけにします。
@@ -92,10 +92,10 @@ package org.katsumi.jsf; import org.</description>
     
     <item>
       <title>WildFly SwarmでJAXRSを試す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
+      <link>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
       <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
       <description>WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、 自分の必要なモジュールを取り込んで利用する形になるようです。
 JAXRSを組み込む 今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。 2015年11月時点での最新バージョンは1.0.0.Alpha5です。 pom.xmlに下記のdependencyを追加します。
 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;dependency&amp;gt;  これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）
@@ -106,10 +106,10 @@ package org.katsumi; import javax.ws.rs.ApplicationPath; import javax.ws.rs.core
     
     <item>
       <title>JAX-RSでStreamを扱う</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/10/15/stream-in-jaxrs/</link>
+      <link>https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/</link>
       <pubDate>Thu, 15 Oct 2015 02:44:04 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/10/15/stream-in-jaxrs/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/</guid>
       <description>JAX-RSでExcelファイルをダウンロードする際にストリームを直接触る必要があって、 どうすればストリームにアクセスできるかちょっと調べてみました。 Excelファイルの生成にはApache POIを使っています。
 Apache POIでExcelファイルを生成する場合、下記のようなコードを書きます。
 final Workbook wb = new HSSFWorkbook(); final FileOutputStream fileOut = new FileOutputStream(&amp;quot;workbook.xls&amp;quot;); wb.write(fileOut); fileOut.close();  生成したファイルをファイルとして保存せずにServletでダウンロードしようとした場合、 そのコードは下記のようにHttpServletResponse#getOutputStream()でアウトプットストリームを取得し、 レスポンスボディに対してストリーミング処理をすることになります。
@@ -122,10 +122,10 @@ final Workbook wb = new HSSFWorkbook(); final StreamingOutput so = out -&amp;gt;
     
     <item>
       <title>Googleのテキスト読み上げAPIを組み込む（その２）</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/05/07/continue-translate-google/</link>
+      <link>https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/</link>
       <pubDate>Thu, 07 May 2015 15:34:12 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/05/07/continue-translate-google/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/</guid>
       <description>先日書いたコードがiOSのSafariで上手く動きませんでした。
 Googleのテキスト読み上げAPIを組み込む
 子供向けなのでiPhoneまたはiPadで音声が再生されないと困ります。 いろいろ調べたけれど、JavaScriptから呼び出す方法がわからないので 勝手知ったるJavaの世界に取り込んでiOSのSafariでも音声が再生されるようにしました。
@@ -137,10 +137,10 @@ Googleのテキスト読み上げAPIを組み込む
     
     <item>
       <title>Googleのテキスト読み上げAPIを組み込む</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/05/03/translate-google/</link>
+      <link>https://kokuzawa.github.io/blog/2015/05/03/translate-google/</link>
       <pubDate>Sun, 03 May 2015 22:12:37 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/05/03/translate-google/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/05/03/translate-google/</guid>
       <description>子供用の英単語帳Webアプリを作っています。 単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、 Googleが提供しているテキスト読み上げAPIというのを見つけました。
 使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。 この例ではoneという単語を読み上げてくれます。
 http://translate.google.com/translate_tts?tl=en&amp;amp;q=one  これをHTMLに組み込みます。 HTMLで音声を再生するためにはaudioタグを利用します。 下記のように組み込むことで音声を再生するためのコントロールを表示することができます。
@@ -151,10 +151,10 @@ http://translate.google.com/translate_tts?tl=en&amp;amp;q=one  これをHTMLに�
     
     <item>
       <title>web.xmlのバージョン別DTD・XSDの宣言方法</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</link>
+      <link>https://kokuzawa.github.io/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</link>
       <pubDate>Tue, 07 Apr 2015 23:24:07 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</guid>
       <description>JavaでWebアプリを作る場合、Mavenのmaven-archetype-webappテンプレートを利用しています。 非常に便利なのですが、Servlet 3.1が出ている今、 生成されたwe.xmlがServlet 2.3の記述になっていてちょっと古すぎます。 そのため、毎回テンプレートから生成したあとにweb.xmlを書き換えなければなりません。 このちょっと面倒な作業を楽にするためにバージョン毎の宣言方法をメモしておきます。
 Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
 &amp;lt;!DOCTYPE web-app PUBLIC &amp;quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&amp;quot; &amp;quot;http://java.sun.com/dtd/web-app_2_3.dtd&amp;quot; &amp;gt; &amp;lt;web-app&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 2.4 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app version=&amp;quot;2.4&amp;quot; xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot; &amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 2.5 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot; version=&amp;quot;2.5&amp;quot;&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 3.0 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&amp;quot; version=&amp;quot;3.0&amp;quot;&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 3.1 現時点で最新のバージョンです。 このバージョンからネームスペースがjava.sun.comからxmlns.jcp.orgに変わるんですね。感慨深い。
@@ -163,10 +163,10 @@ Servlet 2.3 maven-archetype-webappテンプレートで生成されるもので�
     
     <item>
       <title>Deprecated org.hibernate.ejb.HibernatePersistence</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</link>
+      <link>https://kokuzawa.github.io/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</link>
       <pubDate>Tue, 27 Jan 2015 23:46:21 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</guid>
       <description>どのバージョンからなのかはわからないが、Hibernate-4.3.8.Finalではpersistence.xmlのproviderに記載するHibernateのプロバイダクラスがdeprecatedになっていた。
 &amp;lt;provider&amp;gt;org.hibernate.ejb.HibernatePersistence&amp;lt;/provider&amp;gt;  上記を下記に置き換える必要がある。
 &amp;lt;provider&amp;gt;org.hibernate.jpa.HibernatePersistenceProvider&amp;lt;/provider&amp;gt;  </description>
@@ -174,10 +174,10 @@ Servlet 2.3 maven-archetype-webappテンプレートで生成されるもので�
     
     <item>
       <title>java.util.Objectsを使おう</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/12/25/java-dot-util-dot-objectswoshi-ikonasou/</link>
+      <link>https://kokuzawa.github.io/blog/2014/12/25/java-dot-util-dot-objectswoshi-ikonasou/</link>
       <pubDate>Thu, 25 Dec 2014 01:30:39 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/12/25/java-dot-util-dot-objectswoshi-ikonasou/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/12/25/java-dot-util-dot-objectswoshi-ikonasou/</guid>
       <description>この記事はJava Advent Calendar 2014の25日目です。
 昨日は@smogamiさんの「LombokとLombok-pg： Javaコードを減量する魔法のスパイス」でした。
 今年も様々な面白い記事がアップされました。 そんな楽しかった25日間も今日で最終日です。 最終日なのですが、ちょっと地味にJava7で追加されたjava.util.Objectsについて書きたいと思います。
@@ -187,10 +187,10 @@ java.util.Objectsクラスでは今までありそうでなかった便利なユ
     
     <item>
       <title>[JSF-2.3]FacesContextをInjectする</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</link>
       <pubDate>Tue, 23 Dec 2014 15:02:06 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</guid>
       <description>JSF-2.3の新しい機能として、UIViewRoot, ViewMap, ApplicationMap, ExternalContext, FacesContextがInjectできるようになります。 この記事ではFacesContextの古い取得方法であるFacesContext.getCurrentInstance()と、 Injectを利用した取得方法のサンプルを記載します。
 サンプルでは画面のボタンをクリックすると、&amp;lt;h:messages/&amp;gt;タグとFacesContext.addMessage(String, FacesMessage)を利用して 同じ画面上にインフォメーションメッセージを表示します。
 最初にFacesContextの古い取得方法を利用したManaged Beanです。
@@ -200,10 +200,10 @@ import javax.enterprise.context.RequestScoped; import javax.faces.application.Fa
     
     <item>
       <title>RESTEasyとSpringの連携</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</link>
+      <link>https://kokuzawa.github.io/blog/2014/12/20/resteasytospringfalselian-xi/</link>
       <pubDate>Sat, 20 Dec 2014 10:22:07 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
       <description>Java EE Advent Calendar 2014の20日の記事です。
 昨日は@yoshioteradaさんの「Java EE 8 の新機能概要のご紹介」でした。
 明日は@suke_masaさんです。
@@ -215,10 +215,10 @@ Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思った
     
     <item>
       <title>JavaFXでMarkdownエディタを作る</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</link>
       <pubDate>Sat, 06 Dec 2014 06:42:41 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</guid>
       <description>この記事は JavaFX Advent Calendar 2014 の6日目です。
 昨日はsoutokuさんのJavaFX:WYSIWYGエディタを作るでした。
 明日は@backpaper0さんです。
@@ -232,10 +232,10 @@ JavaFXには標準でWebページを表示するためのWebViewクラスがあ�
     
     <item>
       <title>FlexとJavaFXでREST-APIを呼び出す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</link>
+      <link>https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</link>
       <pubDate>Mon, 03 Nov 2014 17:12:02 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
       <description>FlexとJavaFXからREST-APIを呼び出してみました。
 環境  OS: Mac OSX Yosemite 10.10 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
 import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&amp;quot;/hello&amp;quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&amp;quot;string&amp;quot;) String string) { return String.format(&amp;quot;Hello %s!&amp;quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。
@@ -246,10 +246,10 @@ Main.mxml:
     
     <item>
       <title>JSFのCSRF対策</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/10/08/jsffalsecsrfdui-ce/</link>
+      <link>https://kokuzawa.github.io/blog/2014/10/08/jsffalsecsrfdui-ce/</link>
       <pubDate>Wed, 08 Oct 2014 02:29:57 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/10/08/jsffalsecsrfdui-ce/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/10/08/jsffalsecsrfdui-ce/</guid>
       <description>だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。 そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、 JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのように防げるのかを確認してみます。
 環境  OS: Mac OSX 10.9.4 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  アプリを作る CSRFの脆弱性がある、といわれても具体例がないとなかなかイメージするのが難しいかもしれません。 そこで、ここでは実際に攻撃を受けるアプリを作り、脆弱性を露呈されてみたいと思います。 コードの構成は下記のようになります。
 JSFCSRFSample +- src | +- main | | +- java | | +- org.katsumi.bean | | +- FormBean.java | +- webapp | +- index.xhtml | +- result.xhtml | +- warning.xhtml | +- WEB-INF | +- jboss-web.xml | +- faces-config.xml | +- web.xml +- pom.</description>
@@ -257,10 +257,10 @@ JSFCSRFSample +- src | +- main | | +- java | | +- org.katsumi.bean | | +- FormBe
     
     <item>
       <title>Javaで文書検索をする (Apache Solr)</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</link>
       <pubDate>Sun, 07 Sep 2014 22:04:16 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</guid>
       <description>前回 Apache Solrに対してJavaで文書登録をして、APIでその結果が取得できるところまでやってみました。 今回はAPIではなく、登録した文書をJavaで検索してみようと思います。
 環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot™ 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Javaで文書検索 文書登録時と同じく、Apache Solrjが必要です。 ライブラリの取得方法は前回を参照して頂くとして、早速サンプルコードです。
 import org.apache.solr.client.solrj.SolrQuery; import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.solrj.impl.HttpSolrServer; import org.apache.solr.client.solrj.response.QueryResponse; import org.apache.solr.common.SolrDocument; import org.apache.solr.common.SolrDocumentList; public class SolrClient { public static void main(String... args) throws Exception { final SolrServer solr = new HttpSolrServer(&amp;quot;http://localhost:8983/solr/collection1&amp;quot;); final SolrQuery solrQuery = new SolrQuery(); solrQuery.set(&amp;quot;q&amp;quot;, &amp;quot;ストリーム&amp;quot;); final QueryResponse response = solr.</description>
@@ -268,10 +268,10 @@ import org.apache.solr.client.solrj.SolrQuery; import org.apache.solr.client.sol
     
     <item>
       <title>Apache solrで全文検索に触れる</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</link>
       <pubDate>Fri, 05 Sep 2014 00:12:34 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</guid>
       <description>Javaで簡単に全文検索を体験するには Apache Solr (ソーラー)が便利です。
 今回は現時点での最新バージョンである 4.10.0 を利用して全文検索を体験したいと思います。
 環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot&amp;trade; 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Solrを起動する SolrはWebアプリケーションの形になっています。 ZIPファイルをダウンロードして解凍すると、distフォルダにWARファイルが入っているので、 これをアプリケーションサーバにデプロイすれば良さそうですが、 今回はexampleフォルダにあるstart.jarを単独起動させます。
@@ -284,10 +284,10 @@ import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.so
     
     <item>
       <title>WildFlyでJdbcRealm</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</link>
       <pubDate>Sat, 23 Aug 2014 15:50:18 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
       <description>今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。
 WildFly の設定 WildFly 8.0.0.Final に JDBCRealm を構築します。
 まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。
@@ -300,10 +300,10 @@ Security Domain を追加します。 追加は WildFly の GUI コンソール�
     
     <item>
       <title>Jenkins用のpom.xmlの基本設定</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</link>
+      <link>https://kokuzawa.github.io/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</link>
       <pubDate>Sat, 24 May 2014 16:30:10 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</guid>
       <description>だんだんと暑くなってきた先週、Java7 を導入できることになって大喜びして IntelliJ IDEA の Inspect Code を使って Java7 に対応するコードに一括変換をした月曜日、 今年は良い夏を迎えられそうだと思っていたら、OS が Java7 をサポートしてなくてコードを Java6 にダウングレードするという、モチベーションがだだ下がりな作業したところです。
 ただ Java6 にダウングレードするというものやってられないので、 Eclipse の Web アプリ構成のプロジェクトを Maven 構成のプロジェクトに置き換えようと考えました。 Maven 構成に変えるのはフォルダの位置を変更するだけなのでとても簡単で、 かつ、ライブラリはビルド時に取得してくれるから、今までのように VCS に jar ファイルも一緒にコミットする必要がなくなり、 アプリのリソース自体も小さくなってチェックアウト（クローン）が速くできるようになったりなどメリットが一杯です。
 ビルドに ant を使っているので、Jenkins 上でも ant で動作させています。 今度は Maven を使うようにするので、Maven 用に設定を書き換える必要があります。 やりたいことは、ユニットテスト、カバレッジ、PMD、CPD、Findbugs を実行することです。 ant での設定は下記の本を参考にすると簡単なのですが、この本は Maven の設定に詳しくありません。
@@ -314,20 +314,20 @@ pom.xml の完全なファイルはこちら。
     
     <item>
       <title>Derby does not start</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/03/09/derby-does-not-start/</link>
+      <link>https://kokuzawa.github.io/blog/2014/03/09/derby-does-not-start/</link>
       <pubDate>Sun, 09 Mar 2014 14:43:26 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/03/09/derby-does-not-start/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/03/09/derby-does-not-start/</guid>
       <description> Java8を入れたらGlassFishに付属しているDerbyが起動できなくなっていたので、下記を$JAVA_HONE/jre/lib/security/java.policyに追記しました。
 permission java.net.SocketPermission &amp;quot;localhost:1527&amp;quot;, &amp;quot;listen,resolve&amp;quot;;  参考  Java7u51以降でApache Derbyのネットワークサーバを使う場合の設定  </description>
     </item>
     
     <item>
       <title>How to set the value in ValueChangeListener</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</link>
+      <link>https://kokuzawa.github.io/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</link>
       <pubDate>Wed, 12 Feb 2014 00:58:25 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</guid>
       <description>JSFには値が変更されたことをハンドリングするためのイベントとしてValueChangeEventが用意されています。 このイベントは、コンポーネントのValueChangeListenerによって発行されます。 ValueChangEventを利用してテキストフィールドに入力された値の検証を行っているのですが、 値が不正だった場合に、エラーを表示するのではなく正常な値を設定したい場合があります。
 このとき、単純にValueChangeListenerの中でテキストフィールドのプロパティに値を設定しても、画面には反映されません。 これは、ValueChangeEventがJSFのライフサイクルのUpdate Model Valuesフェーズの前に呼ばれるからであり、 ValueChangeListenerで設定した値はUpdate Model Valuesフェーズで入力値によって上書きされてしまうからです。
 これを解決するには、ValueChangeListenerにおいて、ちょっとした工夫が必要です。 以下にその例を示します。
@@ -338,10 +338,10 @@ Enjoy !</description>
     
     <item>
       <title>Examples to FizzBuzz of Java8</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/02/10/examples-to-fizzbuzz-of-java8/</link>
+      <link>https://kokuzawa.github.io/blog/2014/02/10/examples-to-fizzbuzz-of-java8/</link>
       <pubDate>Mon, 10 Feb 2014 23:25:24 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/02/10/examples-to-fizzbuzz-of-java8/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/02/10/examples-to-fizzbuzz-of-java8/</guid>
       <description>業務では未だJava6だし、Java7自体いつ導入されるか分からないし、Java8を本格的に使うようになるのはすごい先だと思うけど、 Java8を触っている時間がほとんどなくて、Lambdaの構文自体を忘れてしまいそうなので、ちょっとリハビリでFizzBuzzを書いた。
 FizzBuzzとはこれのことです。
 CODING HORROR:
@@ -352,10 +352,10 @@ CODING HORROR:
     
     <item>
       <title>EclipseLinkでの一意制約例外</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/01/31/entityexistsexception/</link>
+      <link>https://kokuzawa.github.io/blog/2014/01/31/entityexistsexception/</link>
       <pubDate>Fri, 31 Jan 2014 22:52:45 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/01/31/entityexistsexception/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/01/31/entityexistsexception/</guid>
       <description>@kikutaro_さんのブログで、 EclipseLinkの一意制約例外について書かれた 「EclipseLinkで一意制約の例外を拾ってみたけど…」 の記事が Twitterで言及されていたので、ちょっと読んでたらjavax.persistence.EntityExistsExceptionがスローされないってあって、 あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。
 で、まあググると確かにスローされないって言っている人が沢山いたけど、 やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。
 （コードにはlombokを適用してます）
@@ -367,10 +367,10 @@ persistence.xml:
     
     <item>
       <title>java7u51 Web Startセキュリティアップデートの回避方法</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/01/16/java7u51-web-start-security-update-workaround/</link>
+      <link>https://kokuzawa.github.io/blog/2014/01/16/java7u51-web-start-security-update-workaround/</link>
       <pubDate>Thu, 16 Jan 2014 07:08:26 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/01/16/java7u51-web-start-security-update-workaround/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/01/16/java7u51-web-start-security-update-workaround/</guid>
       <description>1月14日にJava7u51がリリースされました。 このアップデートによってセキュリティが強化されて、署名のないアプレットが起動できなくなりました。 また署名があっても、ユーザ独自の署名の場合ではその証明書をクライアントにインポートしておかないと、 同じく起動することができないようです。
 あまり頻繁に行う作業ではないので、手順をまとめておきたいと思います。
 1. MANIFEST.MFの編集 jarファイル内のMANIFEST.MFに下記を追記します。
@@ -383,10 +383,10 @@ keytool -selfcert -alias [sample] -genkey -keystore [sample.keystore] -validity 
     
     <item>
       <title>JAX-RSで複数ファイルをアップロードするには</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/</link>
+      <link>https://kokuzawa.github.io/blog/2013/12/22/jaxrs-upload-multiple-files/</link>
       <pubDate>Sun, 22 Dec 2013 09:20:55 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/12/22/jaxrs-upload-multiple-files/</guid>
       <description>この記事はJava Advent Calendar 2013の22日目の記事です。
 昨日は@nagaseyasuhitoさんの「mvn siteのtips三連発」でした。
 明日は monzou さんです。
@@ -402,10 +402,10 @@ package org.katsumi.resources; import org.glassfish.jersey.media.multipart.FormD
     
     <item>
       <title>JSF 2.2 でさらに便利になったMarkupを使ってみよう</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/</link>
+      <link>https://kokuzawa.github.io/blog/2013/12/18/jsf-2-dot-2-markup/</link>
       <pubDate>Tue, 17 Dec 2013 00:12:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/12/18/jsf-2-dot-2-markup/</guid>
       <description>この記事は、Java EE Advent Calendar 2013の18日目の記事です。
 昨日は @yumix_h さんの私がJava EE開発の現場から学んだことでした。
 明日は誕生日の @aoetk さんです。
@@ -427,10 +427,10 @@ JSF 2.2 jsfc属性でJSFコンポーネントをHTMLとして認識させるの�
     
     <item>
       <title>IntelliJ IDEA 13で作るJavaFXアプリケーション</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/</link>
+      <link>https://kokuzawa.github.io/blog/2013/12/08/javafx-on-intellij-idea/</link>
       <pubDate>Sun, 08 Dec 2013 00:15:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/12/08/javafx-on-intellij-idea/</guid>
       <description>この記事は、JavaFX Advent Calendar 2013の8日目です。
 昨日は@aoetkさんのListViewやTableViewのセルをカスタマイズする方法でした。
 明日は@sk44_さんです。
@@ -450,10 +450,10 @@ package sample; import javafx.</description>
     
     <item>
       <title>JUnitでJPAのテスト</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/</link>
+      <link>https://kokuzawa.github.io/blog/2013/11/03/unit-test-of-jpa/</link>
       <pubDate>Sun, 03 Nov 2013 01:39:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/11/03/unit-test-of-jpa/</guid>
       <description>JPAで作ったデータアクセスクラスのテストをJUnitで作る際に、EntityManagerの扱いが問題になってきます。 プロダクトコードだと、PersistenceUnitのtransactionTypeをJTAとするため、 この設定のままユニットテストを実行には、APサーバが起動している必要があります。 この状態だとJenkinsに食わせたりするときに色々大変だし、 そもそもテスト用にはデータベースを別にしたいので、設定をテスト時だけ書き直す必要が出てきて面倒です。 そこでプロダクトコードとテストコードで参照するPersistenceUnitを変更するようにしてみました。
 ファイル構成 ファイルは下記のように、プロダクトコードとテストコード用にそれぞれpersistence.xmlを用意します。
 root └ src ├ main │ ├ java │ │ ├ Account.java │ │ └ AccountFacade.java │ └ resources │ └ META-INF │ └ persistence.xml └ test ├ java │ └ AccountFacadeTest.java └ resources └ META-INF └ persistence.xml  プロダクトコードのpersistence.xmlはこんな感じ。 transaction-typeをJTAにしているので、jta-data-sourceにAPサーバで設定したデータソース名を指定しています。
@@ -463,10 +463,10 @@ persistence.xml:
     
     <item>
       <title>springframeworkのjarファイル一式をダウンロードするには？</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</link>
+      <link>https://kokuzawa.github.io/blog/2013/10/15/springframework/</link>
       <pubDate>Tue, 15 Oct 2013 00:16:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/10/15/springframework/</guid>
       <description>久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。 サイトは今風になって素敵なんだけど。
 MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。 Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。 Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。
 Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。 maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。
@@ -479,10 +479,10 @@ pom.xml:
     
     <item>
       <title>JDBCRealmのパッケージが変更 #glassfish-4</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</link>
+      <link>https://kokuzawa.github.io/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</link>
       <pubDate>Sun, 30 Jun 2013 11:09:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</guid>
       <description>GlassFish-4.0からJDBCRealmクラスのパッケージが変更になった。
 今までのパッケージは下記の通り。
 com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm  GlassFish-4.0からは下記のパッケージとなる。
@@ -491,10 +491,10 @@ com.sun.enterprise.security.ee.auth.realm.jdbc.JDBCRealm  Embeddedとして利�
     
     <item>
       <title>JavaEE 7 リリース！</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/</link>
+      <link>https://kokuzawa.github.io/blog/2013/06/14/javaee7-release/</link>
       <pubDate>Fri, 14 Jun 2013 01:53:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/06/14/javaee7-release/</guid>
       <description>JavaEE 7 がというかGlassFish 4 がリリースされた。
 会社でテストサーバとして使っているのは、GlassFish 3.1.2.2 なので早速入れ替えてみた。 余談だが運用サーバはTomcatなので、どちらかというとテストサーバの方が性能が良い。
 で、意気揚々と起動してみた訳なのだが、起動できない。
@@ -514,10 +514,10 @@ Administration Guide:
     
     <item>
       <title>JSF2.0でCSSリソース内の画像を読み込む</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</link>
+      <link>https://kokuzawa.github.io/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</link>
       <pubDate>Mon, 10 Jun 2013 03:10:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</guid>
       <description> JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。
 Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。
 フォルダ構成は次のようになっています。（Mavenです）
@@ -530,10 +530,10 @@ background-image:url(&amp;quot;#{resource[&#39;img/glyphicons-halflings.png&#39;
     
     <item>
       <title>cookie on java web start (JWS)</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/06/07/cookie-on-jnlp/</link>
+      <link>https://kokuzawa.github.io/blog/2013/06/07/cookie-on-jnlp/</link>
       <pubDate>Fri, 07 Jun 2013 01:41:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/06/07/cookie-on-jnlp/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/06/07/cookie-on-jnlp/</guid>
       <description>今更感がありますが、JWSでのcookieの扱い、というかjsessionidの扱いについて。
 JWSからサーバへの最初のアクセスでjsessionidの指定が無いと、サーバでjsessionidが発行されます。 すると、JWSからのそれ以降のアクセスには、その生成されたjsessionidがcookieとしてサーバに送信されます。 これは良く出来た仕組みで、プログラマが意識しなくてもセッションを継続することが可能になります。 ただ、自動でjsessionidを送信してしまうため、意図したセッションを継続させることが出来ないことがあります。
 任意のjsessionidを送信したい 前提として以下のことが成り立っているとします。
@@ -551,10 +551,10 @@ enjoy!</description>
     
     <item>
       <title>jersey on glassfish-4</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/03/24/jersey-on-glassfish4/</link>
+      <link>https://kokuzawa.github.io/blog/2013/03/24/jersey-on-glassfish4/</link>
       <pubDate>Sun, 24 Mar 2013 12:32:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/03/24/jersey-on-glassfish4/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/03/24/jersey-on-glassfish4/</guid>
       <description>GlassFish-4を使ってみたらJerseyのパッケージが変わってた。 GlassFish-3.1.2.2までは以下のようにcom.sunパッケージにあるJerseyのサーブレットがロードできていたけど、
 &amp;lt;servlet-name&amp;gt;jersey-serlvet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;com.sun.jersey.spi.container.servlet.ServletContainer&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt;  GlassFish-4ではcom.sunパッケージにJerseyはなく、org.glassfishのパッケージとなっている。
 &amp;lt;servlet-name&amp;gt;jersey-serlvet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;org.glassfish.jersey.servlet.ServletContainer&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt;  </description>
@@ -562,10 +562,10 @@ enjoy!</description>
     
     <item>
       <title>Performance of JPA</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</link>
+      <link>https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/</link>
       <pubDate>Sun, 27 Jan 2013 12:08:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/</guid>
       <description> JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
 数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
 アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
@@ -581,10 +581,10 @@ em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエン�
     
     <item>
       <title>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</link>
+      <link>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</link>
       <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</guid>
       <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
 (Bootstrapのalert alert-errorを適用)
 これに対してTableレイアウトは以下のような出力になります。
@@ -597,10 +597,10 @@ alert.xhtml:
     
     <item>
       <title>Point-to-Point on JMS</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</link>
+      <link>https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/</link>
       <pubDate>Sat, 15 Dec 2012 15:50:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/</guid>
       <description>JavaEE Advent Calendar 2012の15日目のエントリーです。
 昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
 明日は@akirakoyasuさんです。
@@ -614,10 +614,10 @@ package jp.co.baykraft.jmsexample; import com.sun.messaging.ConnectionConfigurat
     
     <item>
       <title>WiiRemoteJで遊ぼう on OSX 10.8.7</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</link>
+      <link>https://kokuzawa.github.io/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</link>
       <pubDate>Tue, 11 Dec 2012 01:46:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</guid>
       <description>Java Advent Calendar 2012の11日目のエントリーです。
 昨日は@cero_tさんです。
 明日は@snuffkinさんです。
@@ -633,10 +633,10 @@ import java.io.IOException; import java.util.logging.Level; import java.util.log
     
     <item>
       <title>OpenJFXをコンパイルしようとして挫折した記録</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</link>
+      <link>https://kokuzawa.github.io/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</link>
       <pubDate>Fri, 07 Dec 2012 21:05:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</guid>
       <description>JavaFX Advent Calendar 2012の7日目のエントリーです。
 昨日は@fukai_yasさんの「AppletでFXMLを使って罠にハマる」です。
 明日は@btnrougeさんです。
@@ -651,10 +651,10 @@ OpenJFXをビルドする Project SandboxはOpenJFXのSandboxプロジェクト�
     
     <item>
       <title>GlassFish3.1.2へのデプロイ時のエラー</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</link>
+      <link>https://kokuzawa.github.io/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</link>
       <pubDate>Sat, 10 Nov 2012 07:44:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</guid>
       <description>java.util.concurrent.ExecutionException: com.sun.faces.config.ConfigurationException: Unable to parse document &amp;lsquo;bundle://213.0:1/com/sun/faces/jsf-ri-runtime.xml&amp;rsquo;: DTD factory class org.apache.xerces.impl.dv.dtd.DTDDVFactoryImpl does not extend from DTDDVFactory.
  JSFを利用していると発生しているようなので、warファイル内のjavax.faces-2.1.4.jarを取り除いて再度デプロイ。でも変化なし。 （JSFのライブラリはGlassFishに含まれている。バージョンはわからないけど）
 何度か再デプロイをしていると起動できるので、それほど真剣に調べていなかったけど、本腰をいれて調べてみることにした。
@@ -666,10 +666,10 @@ OpenJFXをビルドする Project SandboxはOpenJFXのSandboxプロジェクト�
     
     <item>
       <title>複合キーを使ったOrderBy</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</link>
+      <link>https://kokuzawa.github.io/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</link>
       <pubDate>Wed, 07 Nov 2012 00:56:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</guid>
       <description>JPAで複合キークラスを使ってOrderByをやろうとしたら、メタデータの設定方法が分からなかったんだけど、分かってみれば簡単な話だった。
 複合キーって何？ JPAのエンティティには複数の@Idアノテーションが付与できないので、DBのテーブルに主キーが複数ある場合はその主キーをひとまとめにしたクラスを作成する。エンティティ上では、@EmbeddedIdアノテーションを付与すれば、その作成クラスを主キーとして指定できる。これを複合キーといって、実際には下記のようなクラス構成となる。（EntityPK.javaが複合キー）
 @Entity public class Entity { @EmbeddedId private EntityPK entityPK; public EntityPK getEntityPK() { return entityPK; } }  @Embeddable public class EntityPK implements Serializable { @Column private Integer key1; @Column private Integer key2; }  CriteriaQueryでSQLを構築 この複合キーがあるエンティティに対してCriteriaQueryを使ってSQLを構築する。

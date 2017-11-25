@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>JAX-RSで複数ファイルをアップロードするには</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="JAX-RSで複数ファイルをアップロードするには" />
+<meta property="og:description" content="この記事はJava Advent Calendar 2013の22日目の記事です。
+昨日は@nagaseyasuhitoさんの「mvn siteのtips三連発」でした。
+明日は monzou さんです。
+ファイルアップロードを実現するために何を使っていますか？
+私はもっぱらJAX-RSを使っています。
+ファイルアップロードはAX-RSの仕様には含まれていないのですが、ほとんどの実装でサポートされているようです。 その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。
+今回利用したJerseyはGlassFish4に含まれているものを利用します。
+ライブラリとしては以下のjarになります。
+&lt;dependency&gt; &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt; &lt;artifactId&gt;jersey-media-multipart&lt;/artifactId&gt; &lt;version&gt;2.4.1&lt;/version&gt; &lt;/dependency&gt;  さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。
+&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;/&gt; &lt;title&gt;JAX-RS upload multiple files example&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;form enctype=&quot;multipart/form-data&quot; method=&quot;post&quot; action=&quot;rest/upload/multipleFiles&quot;&gt; &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt; &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt; &lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt; &lt;/form&gt; &lt;/body&gt; &lt;/html&gt;  で、実際にリクエストを受け取るJavaのコード。
+package org.katsumi.resources; import org.glassfish.jersey.media.multipart.FormDataBodyPart; import org.glassfish.jersey.media.multipart.FormDataParam; import javax.ws.rs.Consumes; import javax.ws.rs.POST; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/blog/2013/12/22/jaxrs-upload-multiple-files/" />
+
+
+
+<meta property="article:published_time" content="2013-12-22T09:20:55&#43;09:00"/>
+
+<meta property="article:modified_time" content="2013-12-22T09:20:55&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="JAX-RSで複数ファイルをアップロードするには">
+<meta itemprop="description" content="この記事はJava Advent Calendar 2013の22日目の記事です。
+昨日は@nagaseyasuhitoさんの「mvn siteのtips三連発」でした。
+明日は monzou さんです。
+ファイルアップロードを実現するために何を使っていますか？
+私はもっぱらJAX-RSを使っています。
+ファイルアップロードはAX-RSの仕様には含まれていないのですが、ほとんどの実装でサポートされているようです。 その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。
+今回利用したJerseyはGlassFish4に含まれているものを利用します。
+ライブラリとしては以下のjarになります。
+&lt;dependency&gt; &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt; &lt;artifactId&gt;jersey-media-multipart&lt;/artifactId&gt; &lt;version&gt;2.4.1&lt;/version&gt; &lt;/dependency&gt;  さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。
+&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;/&gt; &lt;title&gt;JAX-RS upload multiple files example&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;form enctype=&quot;multipart/form-data&quot; method=&quot;post&quot; action=&quot;rest/upload/multipleFiles&quot;&gt; &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt; &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt; &lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt; &lt;/form&gt; &lt;/body&gt; &lt;/html&gt;  で、実際にリクエストを受け取るJavaのコード。
+package org.katsumi.resources; import org.glassfish.jersey.media.multipart.FormDataBodyPart; import org.glassfish.jersey.media.multipart.FormDataParam; import javax.ws.rs.Consumes; import javax.ws.rs.POST; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.">
+
+
+<meta itemprop="datePublished" content="2013-12-22T09:20:55&#43;09:00" />
+<meta itemprop="dateModified" content="2013-12-22T09:20:55&#43;09:00" />
+<meta itemprop="wordCount" content="186">
+
+
+
+<meta itemprop="keywords" content="Java,JavaEE," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="JAX-RSで複数ファイルをアップロードするには"/>
+<meta name="twitter:description" content="この記事はJava Advent Calendar 2013の22日目の記事です。
+昨日は@nagaseyasuhitoさんの「mvn siteのtips三連発」でした。
+明日は monzou さんです。
+ファイルアップロードを実現するために何を使っていますか？
+私はもっぱらJAX-RSを使っています。
+ファイルアップロードはAX-RSの仕様には含まれていないのですが、ほとんどの実装でサポートされているようです。 その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。
+今回利用したJerseyはGlassFish4に含まれているものを利用します。
+ライブラリとしては以下のjarになります。
+&lt;dependency&gt; &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt; &lt;artifactId&gt;jersey-media-multipart&lt;/artifactId&gt; &lt;version&gt;2.4.1&lt;/version&gt; &lt;/dependency&gt;  さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。
+&lt;!DOCTYPE html&gt; &lt;html&gt; &lt;head&gt; &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;/&gt; &lt;title&gt;JAX-RS upload multiple files example&lt;/title&gt; &lt;/head&gt; &lt;body&gt; &lt;form enctype=&quot;multipart/form-data&quot; method=&quot;post&quot; action=&quot;rest/upload/multipleFiles&quot;&gt; &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt; &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt; &lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt; &lt;/form&gt; &lt;/body&gt; &lt;/html&gt;  で、実際にリクエストを受け取るJavaのコード。
+package org.katsumi.resources; import org.glassfish.jersey.media.multipart.FormDataBodyPart; import org.glassfish.jersey.media.multipart.FormDataParam; import javax.ws.rs.Consumes; import javax.ws.rs.POST; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax."/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>JAX-RSで複数ファイルをアップロードするには</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        December 22, 2013
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/javaee">JavaEE</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>この記事は<a href="http://www.adventar.org/calendars/145">Java Advent Calendar 2013</a>の22日目の記事です。<br />
+昨日は<a href="https://twitter.com/nagaseyasuhito">@nagaseyasuhito</a>さんの「<a href="http://www.nagaseyasuhito.net/2013/12/21/368/">mvn siteのtips三連発</a>」でした。<br />
+明日は monzou さんです。</p>
+
+<p>ファイルアップロードを実現するために何を使っていますか？<br />
+私はもっぱらJAX-RSを使っています。</p>
+
+<p>ファイルアップロードはAX-RSの仕様には含まれていないのですが、ほとんどの実装でサポートされているようです。
+その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。</p>
+
+<p>今回利用したJerseyはGlassFish4に含まれているものを利用します。<br />
+ライブラリとしては以下のjarになります。</p>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
+    &lt;artifactId&gt;jersey-media-multipart&lt;/artifactId&gt;
+    &lt;version&gt;2.4.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;/&gt;
+    &lt;title&gt;JAX-RS upload multiple files example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form enctype=&quot;multipart/form-data&quot; method=&quot;post&quot; action=&quot;rest/upload/multipleFiles&quot;&gt;
+        &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt;
+        &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>で、実際にリクエストを受け取るJavaのコード。</p>
+
+<pre><code class="language-java">package org.katsumi.resources;
+
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+/**
+ * 複数ファイルのアップロードサンプル
+ * @author Katsumi
+ * @since 2013/12/21
+ */
+@Path(&quot;/upload&quot;)
+public class Upload
+{
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path(&quot;/multipleFiles&quot;)
+    public String upload(@FormDataParam(&quot;file&quot;)List&lt;FormDataBodyPart&gt; bodyParts) throws IOException
+    {
+        for (FormDataBodyPart part : bodyParts) {
+            Files.copy(part.getValueAs(InputStream.class),
+                    Paths.get(&quot;/Users/Katsumi/Downloads&quot;, part.getFormDataContentDisposition().getFileName()));
+        }
+        return &quot;finish!!&quot;;
+    }
+}
+</code></pre>
+
+<p>fileフィールドの値は、@FormDataParam(&ldquo;file&rdquo;)アノテーションを引数につけることで受け取ることができます。
+また、今回は複数のファイルを受け取るので、引数の方を<code>java.util.List</code>にしています。
+<code>FormDataBodyPart</code>に実際のファイルの情報が含まれているので、ここから必要なものを取り出します。</p>
+
+<p>ネットで検索すると、ファイルのアップロードを受け取る際に、
+<code>InputStream</code>と<code>FormDataContentDisposition</code>の2つをパラメータとして受け取るサンプルが良く見つかりますが、
+<code>FormDataBodyPart</code>にはこの2つの情報が含まれているので、こちらを利用した方が良いのではないかと思います。</p>
+
+<p>ちなみに、<code>FormDataBodyPart</code>から<code>InputStream</code>を取り出すには<code>getValueAs(InputStream.class)</code>を利用します。<br />
+ここがちょっと分かりにくいところかもしれません。</p>
+
+<p>あと、このコードだと、日本語ファイル名の場合に文字化けしてしまうので適切なエンコードが必要になりますが、
+文字コードの変換部分は今回の本質的な部分ではないので割愛します。</p>
+
+<p>もう一点、今回の実装で注意する部分があります。<br />
+JAX-RSのリソースクラスをweb.xmlで登録しているのですが、マルチパートを処理するに当たり登録対象として
+<code>org.glassfish.jersey.media.multipart.MultiPartFeature</code>クラスを含める必要あるようです。
+ですので、web.xmlの該当部分は下記のような宣言としています。</p>
+
+<pre><code class="language-xml">&lt;servlet&gt;
+    &lt;servlet-name&gt;MyApplication&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;jersey.config.server.provider.classnames&lt;/param-name&gt;
+        &lt;param-value&gt;
+            org.katsumi.resources.Upload,
+            org.glassfish.jersey.media.multipart.MultiPartFeature
+        &lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/servlet&gt;
+</code></pre>
+
+<p>完全なコードは<a href="https://bitbucket.org/kokuzawa/jaxrs-rs-upload-multiple-files/src">Bitbacket</a>にアップしています。</p>
+
+<h2 id="ちょっと発展">ちょっと発展</h2>
+
+<p>HTML5ではファイルインプットフィールドにmultiple属性が追加されました。<br />
+これを使うと、一つのファイルフィールドで複数のファイルを設定できるようになります。</p>
+
+<p>HTMLをmultipleに変更します。</p>
+
+<pre><code class="language-html">&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;/&gt;
+    &lt;title&gt;JAX-RS upload multiple files example&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;form enctype=&quot;multipart/form-data&quot; method=&quot;post&quot; 
+          action=&quot;rest/upload/multipleFiles&quot;&gt;
+        &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot; multiple=&quot;multiple&quot;/&gt;&lt;/div&gt;
+        &lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;
+    &lt;/form&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+
+<p>ファイルを複数選択します。</p>
+
+<p><img src="https://kokuzawa.github.io/images/post_image_27.png" alt="" /></p>
+
+<p>Uploadボタンをクリックするとファイルが無事アップロードできました。
+Javaのコードの修正は必要ないですね。当たり前と言えば当たり前なのですが&hellip; :P</p>
+
+<p>ファイルアップロードというと面倒な処理を書かないといけないと思うかもしれませんが、
+JAX-RSというかJerseyを利用すると、このように簡単にアップロードを行うことができます。</p>
+
+<p>皆さんも試してみてはいかがでしょうか？</p>
+
+<p>Enjoy!</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2013%2f12%2f22%2fjaxrs-upload-multiple-files%2f - JAX-RS%e3%81%a7%e8%a4%87%e6%95%b0%e3%83%95%e3%82%a1%e3%82%a4%e3%83%ab%e3%82%92%e3%82%a2%e3%83%83%e3%83%97%e3%83%ad%e3%83%bc%e3%83%89%e3%81%99%e3%82%8b%e3%81%ab%e3%81%af by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/">JdbcRealm with WildFly 9.0.1.Final<aside class="dates">Dec 25 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/">Server Sent Events<aside class="dates">Dec 20 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/10/testfx/">JavaFXのUIをJUnit形式でテストする<aside class="dates">Dec 10 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/">WildFly SwarmでEJBを試す<aside class="dates">Nov 22 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/">WildFly SwarmでJSFを試す<aside class="dates">Nov 16 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/">WildFly SwarmでJAXRSを試す<aside class="dates">Nov 14 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/">JAX-RSでStreamを扱う<aside class="dates">Oct 15 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/">Googleのテキスト読み上げAPIを組み込む（その２）<aside class="dates">May 7 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/03/translate-google/">Googleのテキスト読み上げAPIを組み込む<aside class="dates">May 3 2015</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

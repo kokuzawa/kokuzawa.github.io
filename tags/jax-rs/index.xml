@@ -13,10 +13,10 @@
     
     <item>
       <title>Server Sent Events</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</link>
+      <link>https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/</link>
       <pubDate>Sun, 20 Dec 2015 10:32:29 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/</guid>
       <description>これは JavaEE Advent Calendar 2015 の20日目の記事です。
 昨日は@yumix_hさんの「「帰ってきたGlassFish Users Group Japan勉強会」の未発表資料」でした。
 明日は@emaggameさんです。
@@ -32,10 +32,10 @@ sandbox/sse-example
     
     <item>
       <title>JAX-RSでStreamを扱う</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/10/15/stream-in-jaxrs/</link>
+      <link>https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/</link>
       <pubDate>Thu, 15 Oct 2015 02:44:04 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/10/15/stream-in-jaxrs/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/</guid>
       <description>JAX-RSでExcelファイルをダウンロードする際にストリームを直接触る必要があって、 どうすればストリームにアクセスできるかちょっと調べてみました。 Excelファイルの生成にはApache POIを使っています。
 Apache POIでExcelファイルを生成する場合、下記のようなコードを書きます。
 final Workbook wb = new HSSFWorkbook(); final FileOutputStream fileOut = new FileOutputStream(&amp;quot;workbook.xls&amp;quot;); wb.write(fileOut); fileOut.close();  生成したファイルをファイルとして保存せずにServletでダウンロードしようとした場合、 そのコードは下記のようにHttpServletResponse#getOutputStream()でアウトプットストリームを取得し、 レスポンスボディに対してストリーミング処理をすることになります。
@@ -48,10 +48,10 @@ final Workbook wb = new HSSFWorkbook(); final StreamingOutput so = out -&amp;gt;
     
     <item>
       <title>Googleのテキスト読み上げAPIを組み込む（その２）</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/05/07/continue-translate-google/</link>
+      <link>https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/</link>
       <pubDate>Thu, 07 May 2015 15:34:12 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/05/07/continue-translate-google/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/</guid>
       <description>先日書いたコードがiOSのSafariで上手く動きませんでした。
 Googleのテキスト読み上げAPIを組み込む
 子供向けなのでiPhoneまたはiPadで音声が再生されないと困ります。 いろいろ調べたけれど、JavaScriptから呼び出す方法がわからないので 勝手知ったるJavaの世界に取り込んでiOSのSafariでも音声が再生されるようにしました。
@@ -63,10 +63,10 @@ Googleのテキスト読み上げAPIを組み込む
     
     <item>
       <title>RESTEasyとSpringの連携</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</link>
+      <link>https://kokuzawa.github.io/blog/2014/12/20/resteasytospringfalselian-xi/</link>
       <pubDate>Sat, 20 Dec 2014 10:22:07 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
       <description>Java EE Advent Calendar 2014の20日の記事です。
 昨日は@yoshioteradaさんの「Java EE 8 の新機能概要のご紹介」でした。
 明日は@suke_masaさんです。
@@ -78,10 +78,10 @@ Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思った
     
     <item>
       <title>FlexとJavaFXでREST-APIを呼び出す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</link>
+      <link>https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</link>
       <pubDate>Mon, 03 Nov 2014 17:12:02 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
       <description>FlexとJavaFXからREST-APIを呼び出してみました。
 環境  OS: Mac OSX Yosemite 10.10 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
 import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&amp;quot;/hello&amp;quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&amp;quot;string&amp;quot;) String string) { return String.format(&amp;quot;Hello %s!&amp;quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。

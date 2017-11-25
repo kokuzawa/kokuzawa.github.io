@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>Performance of JPA</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="Performance of JPA" />
+<meta property="og:description" content=" JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
+数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
+アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
+コード 検証に利用するコードは下記の通り。 Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、 永続化されたBookエンティティのうち、bookname=&#39;name1&#39;のレコードを抽出する。 また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。
+ 検証 まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。 約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。 簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、 tachされたエンティティの数が増加すると、それに比例して劣化していく。
+次に改善後の結果。 約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。
+改善方法 では、何をすれば改善するのか。 結論から言えば、エンティティをdetachすれば良い。 detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。 そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、 あとでEclipseLinkのソースコードを確認してみようと思う。 ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。
+検証コードでは、ループ内の最後に下記2行を追加した。
+em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。 ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、 片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。
+ちなみにflushやclearに関しては次の本が詳しい。
+ " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/" />
+
+
+
+<meta property="article:published_time" content="2013-01-27T12:08:00&#43;09:00"/>
+
+<meta property="article:modified_time" content="2013-01-27T12:08:00&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Performance of JPA">
+<meta itemprop="description" content=" JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
+数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
+アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
+コード 検証に利用するコードは下記の通り。 Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、 永続化されたBookエンティティのうち、bookname=&#39;name1&#39;のレコードを抽出する。 また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。
+ 検証 まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。 約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。 簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、 tachされたエンティティの数が増加すると、それに比例して劣化していく。
+次に改善後の結果。 約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。
+改善方法 では、何をすれば改善するのか。 結論から言えば、エンティティをdetachすれば良い。 detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。 そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、 あとでEclipseLinkのソースコードを確認してみようと思う。 ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。
+検証コードでは、ループ内の最後に下記2行を追加した。
+em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。 ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、 片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。
+ちなみにflushやclearに関しては次の本が詳しい。
+ ">
+
+
+<meta itemprop="datePublished" content="2013-01-27T12:08:00&#43;09:00" />
+<meta itemprop="dateModified" content="2013-01-27T12:08:00&#43;09:00" />
+<meta itemprop="wordCount" content="34">
+
+
+
+<meta itemprop="keywords" content="Java,JavaEE,JPA,EclipseLink," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Performance of JPA"/>
+<meta name="twitter:description" content=" JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
+数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
+アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
+コード 検証に利用するコードは下記の通り。 Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、 永続化されたBookエンティティのうち、bookname=&#39;name1&#39;のレコードを抽出する。 また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。
+ 検証 まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。 約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。 簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、 tachされたエンティティの数が増加すると、それに比例して劣化していく。
+次に改善後の結果。 約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。
+改善方法 では、何をすれば改善するのか。 結論から言えば、エンティティをdetachすれば良い。 detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。 そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、 あとでEclipseLinkのソースコードを確認してみようと思う。 ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。
+検証コードでは、ループ内の最後に下記2行を追加した。
+em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。 ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、 片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。
+ちなみにflushやclearに関しては次の本が詳しい。
+ "/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Performance of JPA</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        January 27, 2013
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/javaee">JavaEE</a>
+            
+                <a href="https://kokuzawa.github.io/tags/jpa">JPA</a>
+            
+                <a href="https://kokuzawa.github.io/tags/eclipselink">EclipseLink</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。
+サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、
+ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。</p>
+
+<p>数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、
+想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。
+そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。</p>
+
+<h2 id="アプリ構成">アプリ構成</h2>
+
+<p>JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。</p>
+
+<h2 id="コード">コード</h2>
+
+<p>検証に利用するコードは下記の通り。
+Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、
+永続化されたBookエンティティのうち、<code>bookname='name1'</code>のレコードを抽出する。
+また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。</p>
+
+<script src="https://gist.github.com/kokuzawa/4646983.js"></script>
+
+<h2 id="検証">検証</h2>
+
+<p>まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。
+約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。
+簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、
+tachされたエンティティの数が増加すると、それに比例して劣化していく。</p>
+
+<p><img src="https://kokuzawa.github.io/images/post_image_4.png" alt="" /></p>
+
+<p>次に改善後の結果。
+約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。</p>
+
+<p><img src="https://kokuzawa.github.io/images/post_image_5.png" alt="" /></p>
+
+<h2 id="改善方法">改善方法</h2>
+
+<p>では、何をすれば改善するのか。
+結論から言えば、エンティティをdetachすれば良い。
+detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。
+そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、
+あとでEclipseLinkのソースコードを確認してみようと思う。
+ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。</p>
+
+<p>検証コードでは、ループ内の最後に下記2行を追加した。</p>
+
+<pre><code class="language-java">em.flush();
+em.clear();
+</code></pre>
+
+<p><code>em.flush()</code>を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。
+ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、
+片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。</p>
+
+<p>ちなみにflushやclearに関しては次の本が詳しい。</p>
+
+<iframe src="http://rcm-jp.amazon.co.jp/e/cm?lt1=_blank&bc1=FFFFFF&IS2=1&bg1=FFFFFF&fc1=000000&lc1=0000FF&t=moonwhaleblog-22&o=9&p=8&l=as1&m=amazon&f=ifr&ref=qf_sp_asin_til&asins=4798124605" style="width:120px;height:240px;" scrolling="no" marginwidth="0" marginheight="0" frameborder="0"></iframe>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2013%2f01%2f27%2fperformance-of-jpa%2f - Performance%20of%20JPA by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/">JdbcRealm with WildFly 9.0.1.Final<aside class="dates">Dec 25 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/">Server Sent Events<aside class="dates">Dec 20 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/10/testfx/">JavaFXのUIをJUnit形式でテストする<aside class="dates">Dec 10 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/">WildFly SwarmでEJBを試す<aside class="dates">Nov 22 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/">WildFly SwarmでJSFを試す<aside class="dates">Nov 16 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/">WildFly SwarmでJAXRSを試す<aside class="dates">Nov 14 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/">JAX-RSでStreamを扱う<aside class="dates">Oct 15 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/">Googleのテキスト読み上げAPIを組み込む（その２）<aside class="dates">May 7 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/03/translate-google/">Googleのテキスト読み上げAPIを組み込む<aside class="dates">May 3 2015</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

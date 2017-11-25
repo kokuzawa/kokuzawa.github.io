@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>EclipseLinkでの一意制約例外</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="EclipseLinkでの一意制約例外" />
+<meta property="og:description" content="@kikutaro_さんのブログで、 EclipseLinkの一意制約例外について書かれた 「EclipseLinkで一意制約の例外を拾ってみたけど…」 の記事が Twitterで言及されていたので、ちょっと読んでたらjavax.persistence.EntityExistsExceptionがスローされないってあって、 あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。
+で、まあググると確かにスローされないって言っている人が沢山いたけど、 やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。
+（コードにはlombokを適用してます）
+persistence.xml:
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot; version=&quot;2.0&quot;&gt; &lt;persistence-unit name=&quot;testPU&quot; transaction-type=&quot;RESOURCE_LOCAL&quot;&gt; &lt;provider&gt;org.eclipse.persistence.jpa.PersistenceProvider&lt;/provider&gt; &lt;class&gt;entity.Account&lt;/class&gt; &lt;properties&gt; &lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.apache.derby.jdbc.ClientDriver&quot;/&gt; &lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:derby://localhost/test;create=true&quot;/&gt; &lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;APP&quot;/&gt; &lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;APP&quot;/&gt; &lt;property name=&quot;eclipselink.ddl-generation&quot; value=&quot;drop-and-create-tables&quot;/&gt; &lt;/properties&gt; &lt;/persistence-unit&gt; &lt;/persistence&gt;  Account.java:
+@Entity @NoArgsConstructor @RequiredArgsConstructor public class Account { @Getter @NonNull @Id private Long id; @Getter @Setter @NonNull private String name; }  AccountTest.java:
+@Test(expected = EntityExistsException.class) public void testPersist() throws Exception { Account account = new Account(1L, &quot;名前&quot;); em." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/blog/2014/01/31/entityexistsexception/" />
+
+
+
+<meta property="article:published_time" content="2014-01-31T22:52:45&#43;09:00"/>
+
+<meta property="article:modified_time" content="2014-01-31T22:52:45&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="EclipseLinkでの一意制約例外">
+<meta itemprop="description" content="@kikutaro_さんのブログで、 EclipseLinkの一意制約例外について書かれた 「EclipseLinkで一意制約の例外を拾ってみたけど…」 の記事が Twitterで言及されていたので、ちょっと読んでたらjavax.persistence.EntityExistsExceptionがスローされないってあって、 あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。
+で、まあググると確かにスローされないって言っている人が沢山いたけど、 やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。
+（コードにはlombokを適用してます）
+persistence.xml:
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot; version=&quot;2.0&quot;&gt; &lt;persistence-unit name=&quot;testPU&quot; transaction-type=&quot;RESOURCE_LOCAL&quot;&gt; &lt;provider&gt;org.eclipse.persistence.jpa.PersistenceProvider&lt;/provider&gt; &lt;class&gt;entity.Account&lt;/class&gt; &lt;properties&gt; &lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.apache.derby.jdbc.ClientDriver&quot;/&gt; &lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:derby://localhost/test;create=true&quot;/&gt; &lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;APP&quot;/&gt; &lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;APP&quot;/&gt; &lt;property name=&quot;eclipselink.ddl-generation&quot; value=&quot;drop-and-create-tables&quot;/&gt; &lt;/properties&gt; &lt;/persistence-unit&gt; &lt;/persistence&gt;  Account.java:
+@Entity @NoArgsConstructor @RequiredArgsConstructor public class Account { @Getter @NonNull @Id private Long id; @Getter @Setter @NonNull private String name; }  AccountTest.java:
+@Test(expected = EntityExistsException.class) public void testPersist() throws Exception { Account account = new Account(1L, &quot;名前&quot;); em.">
+
+
+<meta itemprop="datePublished" content="2014-01-31T22:52:45&#43;09:00" />
+<meta itemprop="dateModified" content="2014-01-31T22:52:45&#43;09:00" />
+<meta itemprop="wordCount" content="208">
+
+
+
+<meta itemprop="keywords" content="Java,JPA," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="EclipseLinkでの一意制約例外"/>
+<meta name="twitter:description" content="@kikutaro_さんのブログで、 EclipseLinkの一意制約例外について書かれた 「EclipseLinkで一意制約の例外を拾ってみたけど…」 の記事が Twitterで言及されていたので、ちょっと読んでたらjavax.persistence.EntityExistsExceptionがスローされないってあって、 あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。
+で、まあググると確かにスローされないって言っている人が沢山いたけど、 やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。
+（コードにはlombokを適用してます）
+persistence.xml:
+&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot; version=&quot;2.0&quot;&gt; &lt;persistence-unit name=&quot;testPU&quot; transaction-type=&quot;RESOURCE_LOCAL&quot;&gt; &lt;provider&gt;org.eclipse.persistence.jpa.PersistenceProvider&lt;/provider&gt; &lt;class&gt;entity.Account&lt;/class&gt; &lt;properties&gt; &lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.apache.derby.jdbc.ClientDriver&quot;/&gt; &lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:derby://localhost/test;create=true&quot;/&gt; &lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;APP&quot;/&gt; &lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;APP&quot;/&gt; &lt;property name=&quot;eclipselink.ddl-generation&quot; value=&quot;drop-and-create-tables&quot;/&gt; &lt;/properties&gt; &lt;/persistence-unit&gt; &lt;/persistence&gt;  Account.java:
+@Entity @NoArgsConstructor @RequiredArgsConstructor public class Account { @Getter @NonNull @Id private Long id; @Getter @Setter @NonNull private String name; }  AccountTest.java:
+@Test(expected = EntityExistsException.class) public void testPersist() throws Exception { Account account = new Account(1L, &quot;名前&quot;); em."/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>EclipseLinkでの一意制約例外</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        January 31, 2014
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/jpa">JPA</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        <p><a href="https://twitter.com/kikutaro_">@kikutaro_</a>さんのブログで、
+EclipseLinkの一意制約例外について書かれた
+「<a href="http://kikutaro777.hatenablog.com/entry/2013/04/24/225439">EclipseLinkで一意制約の例外を拾ってみたけど…</a>」
+の記事が Twitterで言及されていたので、ちょっと読んでたら<code>javax.persistence.EntityExistsException</code>がスローされないってあって、
+あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。</p>
+
+<!-- MORE -->
+
+<p>で、まあググると確かにスローされないって言っている人が沢山いたけど、
+やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。<br />
+（コードにはlombokを適用してます）</p>
+
+<p><strong>persistence.xml:</strong></p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot; version=&quot;2.0&quot;&gt;
+    &lt;persistence-unit name=&quot;testPU&quot; transaction-type=&quot;RESOURCE_LOCAL&quot;&gt;
+        &lt;provider&gt;org.eclipse.persistence.jpa.PersistenceProvider&lt;/provider&gt;
+        &lt;class&gt;entity.Account&lt;/class&gt;
+        &lt;properties&gt;
+            &lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.apache.derby.jdbc.ClientDriver&quot;/&gt;
+            &lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:derby://localhost/test;create=true&quot;/&gt;
+            &lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;APP&quot;/&gt;
+            &lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;APP&quot;/&gt;
+            &lt;property name=&quot;eclipselink.ddl-generation&quot; value=&quot;drop-and-create-tables&quot;/&gt;
+        &lt;/properties&gt;
+    &lt;/persistence-unit&gt;
+&lt;/persistence&gt;
+</code></pre>
+
+<p><strong>Account.java:</strong></p>
+
+<pre><code class="language-java">@Entity
+@NoArgsConstructor
+@RequiredArgsConstructor
+public class Account
+{
+    @Getter
+    @NonNull
+    @Id
+    private Long id;
+
+    @Getter @Setter
+    @NonNull
+    private String name;
+}
+</code></pre>
+
+<p><strong>AccountTest.java:</strong></p>
+
+<pre><code class="language-java">@Test(expected = EntityExistsException.class)
+public void testPersist() throws Exception
+{
+    Account account = new Account(1L, &quot;名前&quot;);
+    em.persist(account);
+}
+</code></pre>
+
+<p>accountテーブルには事前にid=1のデータを投入。<br />
+この状態で実行すると下記のようなエラーがでる。確かに<code>EntityExistsException</code>はスローされない。</p>
+
+<pre><code>javax.persistence.PersistenceException: Exception [EclipseLink-4002] (Eclipse Persistence Services - 2.5.1.v20130918-f2b9fc5): org.eclipse.persistence.exceptions.DatabaseException
+Internal Exception: java.sql.SQLIntegrityConstraintViolationException: このステートメントは、ユニークまたは主キー制約、または 'ACCOUNT' 上で定義された 'SQL140131234011701' によって識別されるユニーク索引において重複キー値の原因となる可能性があったため、打ち切られました。
+Error Code: -1
+Call: INSERT INTO account (ID, NAME) VALUES (?, ?)
+</code></pre>
+
+<p>うーん、仕様としては存在しているのだから、何かが間違っているのか&hellip;<br />
+わからないので、EclipseLinkのコードを追ってみることに。</p>
+
+<p><strong>org.eclipse.persistence.internal.jpa.EntityManagerImpl.java:</strong></p>
+
+<pre><code class="language-java">try {
+    getActivePersistenceContext(checkForTransaction(false)).registerNewObjectForPersist(entity, new IdentityHashMap());
+} catch (RuntimeException exception) {
+    if (exception instanceof ValidationException) {
+        throw new EntityExistsException(exception.getLocalizedMessage(), exception);
+    }
+    throw exception;
+}
+</code></pre>
+
+<p>コードを見る限り、<code>EntityManager#persist()</code>で<code>EntityExistsException</code>をスローしているように見える。
+この<code>ValidationException</code>とは何なのか？どこから来たんだろう&hellip;。
+というわけでここからどんどん辿って行くと、最終的にフラグが立っている場合にチェックしていることが分かる。
+で、そのフラグがどこで立つのかをさらに辿って行くと、<code>eclipselink.validate-existence</code>というプロパティを参照している様子。</p>
+
+<p>ああ、これはpersistence.xmlで設定できるやつだ、ということで下記をpersistence.xmlに設定する。</p>
+
+<pre><code class="language-xml">&lt;property name=&quot;eclipselink.validate-existence&quot; value=&quot;true&quot;/&gt;
+</code></pre>
+
+<p>もう一回実行してみた。</p>
+
+<pre><code>javax.persistence.EntityExistsException: 
+Exception Description: Cannot persist detached object [Account(id=1, name=名前)]. 
+Class&gt; entity.Account Primary Key&gt; 1
+</code></pre>
+
+<p>でた！確証を得るためにEclipseLinkのドキュメントを見てみる。</p>
+
+<p><strong><a href="http://www.eclipse.org/eclipselink/documentation/2.5/jpa/extensions/p_validate_existence.htm">EclipseLink</a></strong>:</p>
+
+<blockquote>
+<p>Use the eclipselink.validate-existence persistence property configures to specify if EclipseLink should verify an object&rsquo;s existence on persist().</p>
+</blockquote>
+
+<p>「eclipselink.validate-existenceプロパティを使用して、EclipseLinkがpersist()でオブジェクトの存在を検証するかどうかを指定します。」
+ということなのでこれで合っているようだけど、デフォルトがfalseなので検証しないようだ。
+ただ、ちょっと気になるのは使用方法の部分、</p>
+
+<blockquote>
+<p>EclipseLink will throw an error if a validated object is not in the persistence context.</p>
+</blockquote>
+
+<p>not in the persistence context ってことは存在しない場合にエラーがスローされるの？<br />
+この記述あってるのかなぁ？英語は得意じゃないので解釈が間違っているのかもしれない。
+あ、persistence context に存在しないってことは、DBに存在していてfindしていなければエラーになるってことかな。</p>
+
+<p>Enjoy !</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2014%2f01%2f31%2fentityexistsexception%2f - EclipseLink%e3%81%a7%e3%81%ae%e4%b8%80%e6%84%8f%e5%88%b6%e7%b4%84%e4%be%8b%e5%a4%96 by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/">JdbcRealm with WildFly 9.0.1.Final<aside class="dates">Dec 25 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/">Server Sent Events<aside class="dates">Dec 20 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/10/testfx/">JavaFXのUIをJUnit形式でテストする<aside class="dates">Dec 10 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/">WildFly SwarmでEJBを試す<aside class="dates">Nov 22 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/">WildFly SwarmでJSFを試す<aside class="dates">Nov 16 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/">WildFly SwarmでJAXRSを試す<aside class="dates">Nov 14 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/">JAX-RSでStreamを扱う<aside class="dates">Oct 15 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/">Googleのテキスト読み上げAPIを組み込む（その２）<aside class="dates">May 7 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/03/translate-google/">Googleのテキスト読み上げAPIを組み込む<aside class="dates">May 3 2015</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

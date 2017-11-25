@@ -13,10 +13,10 @@
     
     <item>
       <title>JdbcRealm with WildFly 9.0.1.Final</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</link>
+      <link>https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</link>
       <pubDate>Fri, 25 Dec 2015 20:50:08 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
       <description>以前、「WildFlyでJdbcRealm」 という記事を書きました。 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、 忘れないようにメモしておきます。
 差分 WildFly 8.0.0.Finalの時の設定:
 &amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt; &amp;lt;authentication&amp;gt; &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt; &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;HEX&amp;quot;/&amp;gt; &amp;lt;/login-module&amp;gt; &amp;lt;/authentication&amp;gt; &amp;lt;/security-domain&amp;gt;  WildFly 9.0.1.Finalの設定:
@@ -25,10 +25,10 @@
     
     <item>
       <title>Server Sent Events</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</link>
+      <link>https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/</link>
       <pubDate>Sun, 20 Dec 2015 10:32:29 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/12/20/server-sent-events/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/</guid>
       <description>これは JavaEE Advent Calendar 2015 の20日目の記事です。
 昨日は@yumix_hさんの「「帰ってきたGlassFish Users Group Japan勉強会」の未発表資料」でした。
 明日は@emaggameさんです。
@@ -44,10 +44,10 @@ sandbox/sse-example
     
     <item>
       <title>RESTEasyとSpringの連携</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</link>
+      <link>https://kokuzawa.github.io/blog/2014/12/20/resteasytospringfalselian-xi/</link>
       <pubDate>Sat, 20 Dec 2014 10:22:07 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
       <description>Java EE Advent Calendar 2014の20日の記事です。
 昨日は@yoshioteradaさんの「Java EE 8 の新機能概要のご紹介」でした。
 明日は@suke_masaさんです。
@@ -59,10 +59,10 @@ Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思った
     
     <item>
       <title>WildFlyでJdbcRealm</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</link>
       <pubDate>Sat, 23 Aug 2014 15:50:18 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
       <description>今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。
 WildFly の設定 WildFly 8.0.0.Final に JDBCRealm を構築します。
 まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。
@@ -75,10 +75,10 @@ Security Domain を追加します。 追加は WildFly の GUI コンソール�
     
     <item>
       <title>JAX-RSで複数ファイルをアップロードするには</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/</link>
+      <link>https://kokuzawa.github.io/blog/2013/12/22/jaxrs-upload-multiple-files/</link>
       <pubDate>Sun, 22 Dec 2013 09:20:55 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/12/22/jaxrs-upload-multiple-files/</guid>
       <description>この記事はJava Advent Calendar 2013の22日目の記事です。
 昨日は@nagaseyasuhitoさんの「mvn siteのtips三連発」でした。
 明日は monzou さんです。
@@ -94,10 +94,10 @@ package org.katsumi.resources; import org.glassfish.jersey.media.multipart.FormD
     
     <item>
       <title>JavaEE 7 リリース！</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/</link>
+      <link>https://kokuzawa.github.io/blog/2013/06/14/javaee7-release/</link>
       <pubDate>Fri, 14 Jun 2013 01:53:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/06/14/javaee7-release/</guid>
       <description>JavaEE 7 がというかGlassFish 4 がリリースされた。
 会社でテストサーバとして使っているのは、GlassFish 3.1.2.2 なので早速入れ替えてみた。 余談だが運用サーバはTomcatなので、どちらかというとテストサーバの方が性能が良い。
 で、意気揚々と起動してみた訳なのだが、起動できない。
@@ -117,10 +117,10 @@ Administration Guide:
     
     <item>
       <title>Performance of JPA</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</link>
+      <link>https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/</link>
       <pubDate>Sun, 27 Jan 2013 12:08:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/</guid>
       <description> JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
 数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
 アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
@@ -136,10 +136,10 @@ em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエン�
     
     <item>
       <title>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</link>
+      <link>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</link>
       <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</guid>
       <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
 (Bootstrapのalert alert-errorを適用)
 これに対してTableレイアウトは以下のような出力になります。
@@ -152,10 +152,10 @@ alert.xhtml:
     
     <item>
       <title>Point-to-Point on JMS</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</link>
+      <link>https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/</link>
       <pubDate>Sat, 15 Dec 2012 15:50:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/</guid>
       <description>JavaEE Advent Calendar 2012の15日目のエントリーです。
 昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
 明日は@akirakoyasuさんです。

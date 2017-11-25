@@ -13,10 +13,10 @@
     
     <item>
       <title>Hugoで始めるブログ生活</title>
-      <link>https://kokuzawa.github.io/posts/my-first-post/</link>
+      <link>https://kokuzawa.github.io/blog/2017/11/24/my-first-post/</link>
       <pubDate>Fri, 24 Nov 2017 01:56:46 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/my-first-post/</guid>
+      <guid>https://kokuzawa.github.io/blog/2017/11/24/my-first-post/</guid>
       <description>Step 1: Hugoをインストール macOSでHomebrewがインストールされていることが前提です。
 brewを使ってHugoをインストールします。
  $ brew install hugo   asciidoc形式で記事を書くつもりなので、asciidoctorもインストールします。

@@ -13,10 +13,10 @@
     
     <item>
       <title>OSXのアイコンキャッシュに悩む</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/02/01/osxfalseaikonkiyatusiyuninao-mu/</link>
+      <link>https://kokuzawa.github.io/blog/2015/02/01/osxfalseaikonkiyatusiyuninao-mu/</link>
       <pubDate>Sun, 01 Feb 2015 13:20:12 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/02/01/osxfalseaikonkiyatusiyuninao-mu/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/02/01/osxfalseaikonkiyatusiyuninao-mu/</guid>
       <description>自宅でのOfficeソフトですが、普段はApache OpenOfficeを使っています。 久しぶりに起動したら最新版へのダウンロードアイコンが表示されていたので、 アップデートをしようとOpenOfficeのサイトを開きました。 すると、それはなんかこう残念なデザインのサイトのままで、 じゃあLibreOfficeの方はどうなんだろうと覗いてみると、 すっきりした個人的に好みなサイトデザインでした。 ソフトウェアの品質には関係がないとわかっていたのですが、 それでもLibreOfficeの方が良さそうだなと思わせてもらうには十分だったので、 これを機会にApache OpenOfficeからLibreOfficeに置き換えることにしました。
 インストール まず、インストールされているApache OpenOfficeをゴミ箱へ捨てます。 そのあと、ダウンロードしておいたLibreOfficeのdmgを起動して、 アプリをApplicationフォルダにコピーします。 これでインストールが完了しました。
 使ってみる 早速スプレットシートを起動してファイルを作成して保存すると、 なぜかファイルのアイコンがOpenOfficeのままになっています。 「情報を見る」で確認すると、アイコンはOpenOfficeなんですが、 プレビューの部分はLibreOfficeになっています。 この時点で、キャッシュが悪さしているのだろうとは思ったのですが、 どうやって直したものかかなり悩みました。
@@ -29,10 +29,10 @@
     
     <item>
       <title>WiiRemoteJで遊ぼう on OSX 10.8.7</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</link>
+      <link>https://kokuzawa.github.io/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</link>
       <pubDate>Tue, 11 Dec 2012 01:46:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</guid>
       <description>Java Advent Calendar 2012の11日目のエントリーです。
 昨日は@cero_tさんです。
 明日は@snuffkinさんです。
@@ -48,10 +48,10 @@ import java.io.IOException; import java.util.logging.Level; import java.util.log
     
     <item>
       <title>はじめてのLATEX</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/11/24/hazimetefalselatex/</link>
+      <link>https://kokuzawa.github.io/blog/2012/11/24/hazimetefalselatex/</link>
       <pubDate>Sat, 24 Nov 2012 01:25:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/11/24/hazimetefalselatex/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/11/24/hazimetefalselatex/</guid>
       <description>LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。 何がきっかけだったのかすっかり忘れてしまったけど、今日LaTeXを使ってみようと思い立ち、利用するための環境設定を色々と調べたので、その記録を書き記しておこうと思う。
 LaTeXって何？  LATEX（ラテック、ラテフ、レイテック、レイテックス）とは、レスリー・ランポート (英: Leslie Lamport) によって開発されたテキストベースの組版処理システムである。電子組版ソフトウェア TEX にマクロパッケージを組み込むことによって構築されており、単体の TEX に比べて、より手軽に組版を行うことができるようになっている。なお、LATEX を基にアスキーが日本語処理に対応させたものとして日本語 LATEX が、さらに縦組み処理にも対応させたものとして pLATEX がある。
  Wikipediaによれば、組版処理システムということらしい。Wordとかの所謂文書スタイルを制御するものと考えれば良さそう。 ただ、これだけではLaTeXが一体なんなのかがぼんやりとしか分からない。 やっぱり実際に触ってみた方が良さそうだ。

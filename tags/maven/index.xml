@@ -13,10 +13,10 @@
     
     <item>
       <title>web.xmlのバージョン別DTD・XSDの宣言方法</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</link>
+      <link>https://kokuzawa.github.io/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</link>
       <pubDate>Tue, 07 Apr 2015 23:24:07 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/</guid>
       <description>JavaでWebアプリを作る場合、Mavenのmaven-archetype-webappテンプレートを利用しています。 非常に便利なのですが、Servlet 3.1が出ている今、 生成されたwe.xmlがServlet 2.3の記述になっていてちょっと古すぎます。 そのため、毎回テンプレートから生成したあとにweb.xmlを書き換えなければなりません。 このちょっと面倒な作業を楽にするためにバージョン毎の宣言方法をメモしておきます。
 Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
 &amp;lt;!DOCTYPE web-app PUBLIC &amp;quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&amp;quot; &amp;quot;http://java.sun.com/dtd/web-app_2_3.dtd&amp;quot; &amp;gt; &amp;lt;web-app&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 2.4 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app version=&amp;quot;2.4&amp;quot; xmlns=&amp;quot;http://java.sun.com/xml/ns/j2ee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&amp;quot; &amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 2.5 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&amp;quot; version=&amp;quot;2.5&amp;quot;&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 3.0 &amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://java.sun.com/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&amp;quot; version=&amp;quot;3.0&amp;quot;&amp;gt; &amp;lt;/web-app&amp;gt;  Servlet 3.1 現時点で最新のバージョンです。 このバージョンからネームスペースがjava.sun.comからxmlns.jcp.orgに変わるんですね。感慨深い。
@@ -25,10 +25,10 @@ Servlet 2.3 maven-archetype-webappテンプレートで生成されるもので�
     
     <item>
       <title>Jenkins用のpom.xmlの基本設定</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</link>
+      <link>https://kokuzawa.github.io/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</link>
       <pubDate>Sat, 24 May 2014 16:30:10 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</guid>
       <description>だんだんと暑くなってきた先週、Java7 を導入できることになって大喜びして IntelliJ IDEA の Inspect Code を使って Java7 に対応するコードに一括変換をした月曜日、 今年は良い夏を迎えられそうだと思っていたら、OS が Java7 をサポートしてなくてコードを Java6 にダウングレードするという、モチベーションがだだ下がりな作業したところです。
 ただ Java6 にダウングレードするというものやってられないので、 Eclipse の Web アプリ構成のプロジェクトを Maven 構成のプロジェクトに置き換えようと考えました。 Maven 構成に変えるのはフォルダの位置を変更するだけなのでとても簡単で、 かつ、ライブラリはビルド時に取得してくれるから、今までのように VCS に jar ファイルも一緒にコミットする必要がなくなり、 アプリのリソース自体も小さくなってチェックアウト（クローン）が速くできるようになったりなどメリットが一杯です。
 ビルドに ant を使っているので、Jenkins 上でも ant で動作させています。 今度は Maven を使うようにするので、Maven 用に設定を書き換える必要があります。 やりたいことは、ユニットテスト、カバレッジ、PMD、CPD、Findbugs を実行することです。 ant での設定は下記の本を参考にすると簡単なのですが、この本は Maven の設定に詳しくありません。
@@ -39,10 +39,10 @@ pom.xml の完全なファイルはこちら。
     
     <item>
       <title>springframeworkのjarファイル一式をダウンロードするには？</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</link>
+      <link>https://kokuzawa.github.io/blog/2013/10/15/springframework/</link>
       <pubDate>Tue, 15 Oct 2013 00:16:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/10/15/springframework/</guid>
       <description>久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。 サイトは今風になって素敵なんだけど。
 MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。 Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。 Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。
 Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。 maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>Point-to-Point on JMS</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="Point-to-Point on JMS" />
+<meta property="og:description" content="JavaEE Advent Calendar 2012の15日目のエントリーです。
+昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
+明日は@akirakoyasuさんです。
+普段は使わないJMSを使う おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。 世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。 分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。 おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。
+そんな事もあって、JMSの知識が皆無だったわけですが、 JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。
+必要なもの  GlassFish-3.1.2.2 jms-api-1.1-rev-1.jar  &lt;dependency&gt; &lt;groupId&gt;javax.jms&lt;/groupId&gt; &lt;artifactId&gt;jms-api&lt;/artifactId&gt; &lt;version&gt;1.1-rev-1&lt;/version&gt; &lt;/dependency&gt;   imq-4.5.2.jar  &lt;dependency&gt; &lt;groupId&gt;org.glassfish.mq&lt;/groupId&gt; &lt;artifactId&gt;imq&lt;/artifactId&gt; &lt;version&gt;4.5.2&lt;/version&gt; &lt;/dependency&gt;  JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、 今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。 また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、 こちらも容易に入手可能です。
+事前準備 GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、 ポートへのアクセスを許可する必要があるかもしれません。
+メッセージプロデューサーを作る メッセージを送信するプロデューサーを作ります。
+package jp.co.baykraft.jmsexample; import com.sun.messaging.ConnectionConfiguration; import com.sun.messaging.QueueConnectionFactory; import javax.jms.JMSException; import javax.jms.Queue; import javax.jms.QueueConnection; import javax.jms.QueueSender; import javax.jms.QueueSession; import javax." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/" />
+
+
+
+<meta property="article:published_time" content="2012-12-15T15:50:00&#43;09:00"/>
+
+<meta property="article:modified_time" content="2012-12-15T15:50:00&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Point-to-Point on JMS">
+<meta itemprop="description" content="JavaEE Advent Calendar 2012の15日目のエントリーです。
+昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
+明日は@akirakoyasuさんです。
+普段は使わないJMSを使う おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。 世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。 分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。 おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。
+そんな事もあって、JMSの知識が皆無だったわけですが、 JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。
+必要なもの  GlassFish-3.1.2.2 jms-api-1.1-rev-1.jar  &lt;dependency&gt; &lt;groupId&gt;javax.jms&lt;/groupId&gt; &lt;artifactId&gt;jms-api&lt;/artifactId&gt; &lt;version&gt;1.1-rev-1&lt;/version&gt; &lt;/dependency&gt;   imq-4.5.2.jar  &lt;dependency&gt; &lt;groupId&gt;org.glassfish.mq&lt;/groupId&gt; &lt;artifactId&gt;imq&lt;/artifactId&gt; &lt;version&gt;4.5.2&lt;/version&gt; &lt;/dependency&gt;  JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、 今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。 また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、 こちらも容易に入手可能です。
+事前準備 GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、 ポートへのアクセスを許可する必要があるかもしれません。
+メッセージプロデューサーを作る メッセージを送信するプロデューサーを作ります。
+package jp.co.baykraft.jmsexample; import com.sun.messaging.ConnectionConfiguration; import com.sun.messaging.QueueConnectionFactory; import javax.jms.JMSException; import javax.jms.Queue; import javax.jms.QueueConnection; import javax.jms.QueueSender; import javax.jms.QueueSession; import javax.">
+
+
+<meta itemprop="datePublished" content="2012-12-15T15:50:00&#43;09:00" />
+<meta itemprop="dateModified" content="2012-12-15T15:50:00&#43;09:00" />
+<meta itemprop="wordCount" content="238">
+
+
+
+<meta itemprop="keywords" content="Java,JavaEE,GlassFish,JMS," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Point-to-Point on JMS"/>
+<meta name="twitter:description" content="JavaEE Advent Calendar 2012の15日目のエントリーです。
+昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
+明日は@akirakoyasuさんです。
+普段は使わないJMSを使う おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。 世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。 分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。 おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。
+そんな事もあって、JMSの知識が皆無だったわけですが、 JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。
+必要なもの  GlassFish-3.1.2.2 jms-api-1.1-rev-1.jar  &lt;dependency&gt; &lt;groupId&gt;javax.jms&lt;/groupId&gt; &lt;artifactId&gt;jms-api&lt;/artifactId&gt; &lt;version&gt;1.1-rev-1&lt;/version&gt; &lt;/dependency&gt;   imq-4.5.2.jar  &lt;dependency&gt; &lt;groupId&gt;org.glassfish.mq&lt;/groupId&gt; &lt;artifactId&gt;imq&lt;/artifactId&gt; &lt;version&gt;4.5.2&lt;/version&gt; &lt;/dependency&gt;  JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、 今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。 また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、 こちらも容易に入手可能です。
+事前準備 GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、 ポートへのアクセスを許可する必要があるかもしれません。
+メッセージプロデューサーを作る メッセージを送信するプロデューサーを作ります。
+package jp.co.baykraft.jmsexample; import com.sun.messaging.ConnectionConfiguration; import com.sun.messaging.QueueConnectionFactory; import javax.jms.JMSException; import javax.jms.Queue; import javax.jms.QueueConnection; import javax.jms.QueueSender; import javax.jms.QueueSession; import javax."/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Point-to-Point on JMS</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        December 15, 2012
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/javaee">JavaEE</a>
+            
+                <a href="https://kokuzawa.github.io/tags/glassfish">GlassFish</a>
+            
+                <a href="https://kokuzawa.github.io/tags/jms">JMS</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p><a href="http://atnd.org/events/33783">JavaEE Advent Calendar 2012</a>の15日目のエントリーです。<br />
+昨日は<a href="https://twitter.com/yoshioterada">@yoshioterada</a>さんの<a href="http://yoshio3.com/2012/12/14/javaee7-websocket-client-with-javafx/">Java EE 7 WebSocket Client Sample Application with JavaFX</a>です。<br />
+明日は<a href="https://twitter.com/akirakoyasu">@akirakoyasu</a>さんです。</p>
+
+<h2 id="普段は使わないjmsを使う">普段は使わないJMSを使う</h2>
+
+<p>おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。
+世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。
+分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。
+おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。</p>
+
+<p>そんな事もあって、JMSの知識が皆無だったわけですが、
+JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。</p>
+
+<h2 id="必要なもの">必要なもの</h2>
+
+<ul>
+<li>GlassFish-3.1.2.2</li>
+<li>jms-api-1.1-rev-1.jar</li>
+</ul>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;javax.jms&lt;/groupId&gt;
+  &lt;artifactId&gt;jms-api&lt;/artifactId&gt;
+  &lt;version&gt;1.1-rev-1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<ul>
+<li>imq-4.5.2.jar</li>
+</ul>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.glassfish.mq&lt;/groupId&gt;
+  &lt;artifactId&gt;imq&lt;/artifactId&gt;
+  &lt;version&gt;4.5.2&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、
+今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。
+また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、
+こちらも容易に入手可能です。</p>
+
+<h2 id="事前準備">事前準備</h2>
+
+<p>GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、
+ポートへのアクセスを許可する必要があるかもしれません。</p>
+
+<h2 id="メッセージプロデューサーを作る">メッセージプロデューサーを作る</h2>
+
+<p>メッセージを送信するプロデューサーを作ります。</p>
+
+<pre><code class="language-java">package jp.co.baykraft.jmsexample;
+
+import com.sun.messaging.ConnectionConfiguration;
+import com.sun.messaging.QueueConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.jms.TextMessage;
+
+/**
+ * メッセージを送信するクラスです。
+ * @author Katsumi
+ */
+public class Sender
+{
+    public static void main(String... args) throws JMSException
+    {
+        QueueConnectionFactory factory = new QueueConnectionFactory();
+        factory.setProperty(ConnectionConfiguration.imqAddressList, 
+            &quot;localhost:7676&quot;);
+        QueueConnection connection = factory.createQueueConnection();
+        QueueSession session = connection.createQueueSession(false, 
+            QueueSession.AUTO_ACKNOWLEDGE);
+        Queue queue = session.createQueue(&quot;KQueue&quot;);
+
+        QueueSender sender = session.createSender(queue);
+        TextMessage message = session.createTextMessage();
+        message.setText(&quot;メッセージ&quot;);
+        sender.send(message);
+
+        connection.close();
+
+        System.out.println(&quot;Finished.&quot;);
+    }
+}
+</code></pre>
+
+<p><code>session.createQueue(&quot;KQueue&quot;)</code>でKQueueという文字列を指定していますが、これは任意の文字列です。
+メッセージを受信する側でも同じ文字列を指定してメッセージを受け取ります。</p>
+
+<h2 id="メッセージコンシューマを作る">メッセージコンシューマを作る</h2>
+
+<p>次にメッセージを受信するコンシューマを作ります。</p>
+
+<pre><code class="language-java">package jp.co.baykraft.jmsexample;
+
+import com.sun.messaging.ConnectionConfiguration;
+import com.sun.messaging.QueueConnectionFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueReceiver;
+import javax.jms.QueueSession;
+import javax.jms.TextMessage;
+
+/**
+ * メッセージを受診するクラスです。
+ * @author Katsumi
+ */
+public class Receiver
+{
+    public static void main(String... args) throws JMSException
+    {
+        QueueConnectionFactory factory = new QueueConnectionFactory();
+        factory.setProperty(ConnectionConfiguration.imqAddressList, 
+            &quot;localhost:7676&quot;);
+        QueueConnection connection = factory.createQueueConnection();
+        QueueSession session = connection.createQueueSession(false, 
+            QueueSession.CLIENT_ACKNOWLEDGE);
+        Queue queue = session.createQueue(&quot;KQueue&quot;);
+
+        QueueReceiver receiver = session.createReceiver(queue);
+        receiver.setMessageListener(new MessageListener() {
+            @Override
+            public void onMessage(Message msg)
+            {
+                try {
+                    TextMessage message = (TextMessage) msg;
+                    message.acknowledge();
+                    System.out.println(message.getText());
+                }
+                catch (JMSException ex) {
+                    Logger.getLogger(Receiver.class.getName())
+                          .log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+        connection.start();
+    }
+}
+</code></pre>
+
+<h2 id="動かしてみよう">動かしてみよう</h2>
+
+<p>さて、コードも作ったので動かしてみます。
+送信するメッセージはキューに溜め込まれるので、コンシューマを起動しておかなくても大丈夫です。
+まずはプロデューサーを起動すると、「メッセージ」という文字列がメッセージプロバイダに送られます。</p>
+
+<p>次にコンシューマを起動します。
+コンシューマを起動すると、メッセージプロバイダのKQueueに溜め込まれたメッセージが受信されます。
+コンシューマのコードの<code>QueueSession.CLIENT_ACKNOWLEDGE</code>の指定ですが、この指定の場合、
+コンシューマ側で<code>TextMessage#acknowledge()</code>メソッドを呼び出すまで、キュー上のメッセージは削除されません。
+コンシューマ側の処理が失敗した場合はキュー上のメッセージを削除したくないのでこの指定にしています。</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>GlassFishを起動するだけでメッセージプロバイダが起動されるのは非常に便利です。
+メッセージプロバイダを起動しておけば、簡単なメッセージの送受信アプリが作れます。
+キューの名前をコンシューマ毎に切り替えれば、複数クライアントのアプリも出来そうです。
+JMSの本来の利用目的とは違うのかもしれませんが、こんな簡単なアプリから触ってみると楽しいと思います。
+それにしても、GlassFishは最高ですね。</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2012%2f12%2f15%2fpoint-to-point-on-jms%2f - Point-to-Point%20on%20JMS by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/">JdbcRealm with WildFly 9.0.1.Final<aside class="dates">Dec 25 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/">Server Sent Events<aside class="dates">Dec 20 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/10/testfx/">JavaFXのUIをJUnit形式でテストする<aside class="dates">Dec 10 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/">WildFly SwarmでEJBを試す<aside class="dates">Nov 22 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/">WildFly SwarmでJSFを試す<aside class="dates">Nov 16 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/">WildFly SwarmでJAXRSを試す<aside class="dates">Nov 14 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/">JAX-RSでStreamを扱う<aside class="dates">Oct 15 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/">Googleのテキスト読み上げAPIを組み込む（その２）<aside class="dates">May 7 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/03/translate-google/">Googleのテキスト読み上げAPIを組み込む<aside class="dates">May 3 2015</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

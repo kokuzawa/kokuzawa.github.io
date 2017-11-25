@@ -13,10 +13,10 @@
     
     <item>
       <title>JDBCRealmのパッケージが変更 #glassfish-4</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</link>
+      <link>https://kokuzawa.github.io/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</link>
       <pubDate>Sun, 30 Jun 2013 11:09:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</guid>
       <description>GlassFish-4.0からJDBCRealmクラスのパッケージが変更になった。
 今までのパッケージは下記の通り。
 com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm  GlassFish-4.0からは下記のパッケージとなる。
@@ -25,10 +25,10 @@ com.sun.enterprise.security.ee.auth.realm.jdbc.JDBCRealm  Embeddedとして利�
     
     <item>
       <title>jersey on glassfish-4</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/03/24/jersey-on-glassfish4/</link>
+      <link>https://kokuzawa.github.io/blog/2013/03/24/jersey-on-glassfish4/</link>
       <pubDate>Sun, 24 Mar 2013 12:32:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/03/24/jersey-on-glassfish4/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/03/24/jersey-on-glassfish4/</guid>
       <description>GlassFish-4を使ってみたらJerseyのパッケージが変わってた。 GlassFish-3.1.2.2までは以下のようにcom.sunパッケージにあるJerseyのサーブレットがロードできていたけど、
 &amp;lt;servlet-name&amp;gt;jersey-serlvet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;com.sun.jersey.spi.container.servlet.ServletContainer&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt;  GlassFish-4ではcom.sunパッケージにJerseyはなく、org.glassfishのパッケージとなっている。
 &amp;lt;servlet-name&amp;gt;jersey-serlvet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;org.glassfish.jersey.servlet.ServletContainer&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt;  </description>
@@ -36,10 +36,10 @@ com.sun.enterprise.security.ee.auth.realm.jdbc.JDBCRealm  Embeddedとして利�
     
     <item>
       <title>Point-to-Point on JMS</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</link>
+      <link>https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/</link>
       <pubDate>Sat, 15 Dec 2012 15:50:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/</guid>
       <description>JavaEE Advent Calendar 2012の15日目のエントリーです。
 昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
 明日は@akirakoyasuさんです。
@@ -53,10 +53,10 @@ package jp.co.baykraft.jmsexample; import com.sun.messaging.ConnectionConfigurat
     
     <item>
       <title>GlassFish3.1.2へのデプロイ時のエラー</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</link>
+      <link>https://kokuzawa.github.io/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</link>
       <pubDate>Sat, 10 Nov 2012 07:44:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</guid>
       <description>java.util.concurrent.ExecutionException: com.sun.faces.config.ConfigurationException: Unable to parse document &amp;lsquo;bundle://213.0:1/com/sun/faces/jsf-ri-runtime.xml&amp;rsquo;: DTD factory class org.apache.xerces.impl.dv.dtd.DTDDVFactoryImpl does not extend from DTDDVFactory.
  JSFを利用していると発生しているようなので、warファイル内のjavax.faces-2.1.4.jarを取り除いて再度デプロイ。でも変化なし。 （JSFのライブラリはGlassFishに含まれている。バージョンはわからないけど）
 何度か再デプロイをしていると起動できるので、それほど真剣に調べていなかったけど、本腰をいれて調べてみることにした。

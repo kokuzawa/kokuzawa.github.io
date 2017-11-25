@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>JSF2.0でCSSリソース内の画像を読み込む</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="JSF2.0でCSSリソース内の画像を読み込む" />
+<meta property="og:description" content=" JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。
+Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。
+フォルダ構成は次のようになっています。（Mavenです）
+root &#43;-- src &#43;-- webapp &#43;-- resources &#43;-- css | &#43;-- bootstrap.min.css &#43;-- img &#43;-- glyphicons-halflings.png  JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。
+&lt;h:outputStylesheet library=&quot;css&quot; name=&quot;bootstrap.min.css&quot;/&gt;  このとき、bootstrap.min.css内のイメージのパスは../img/glyphicons-halflings.pngとなっていますが、 このままでは画像が読み込まれません。まあ、パスからも明らかですね。
+問題を解決するには次のように、イメージのパスを変更する必要があります。
+background-image:url(&quot;#{resource[&#39;img/glyphicons-halflings.png&#39;]}&quot;)  Jun 20, 2013 追記 twitterで@den2snさんに教えてもらったのですが、outputStylesheetを下記のようにlibraryを削除して宣言することにより、 bootstrap.min.cssを書き換えなくても良くなります。
+&lt;h:outputStylesheet name=&quot;css/bootstrap.min.css&quot;/&gt;  " />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/" />
+
+
+
+<meta property="article:published_time" content="2013-06-10T03:10:00&#43;09:00"/>
+
+<meta property="article:modified_time" content="2013-06-10T03:10:00&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="JSF2.0でCSSリソース内の画像を読み込む">
+<meta itemprop="description" content=" JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。
+Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。
+フォルダ構成は次のようになっています。（Mavenです）
+root &#43;-- src &#43;-- webapp &#43;-- resources &#43;-- css | &#43;-- bootstrap.min.css &#43;-- img &#43;-- glyphicons-halflings.png  JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。
+&lt;h:outputStylesheet library=&quot;css&quot; name=&quot;bootstrap.min.css&quot;/&gt;  このとき、bootstrap.min.css内のイメージのパスは../img/glyphicons-halflings.pngとなっていますが、 このままでは画像が読み込まれません。まあ、パスからも明らかですね。
+問題を解決するには次のように、イメージのパスを変更する必要があります。
+background-image:url(&quot;#{resource[&#39;img/glyphicons-halflings.png&#39;]}&quot;)  Jun 20, 2013 追記 twitterで@den2snさんに教えてもらったのですが、outputStylesheetを下記のようにlibraryを削除して宣言することにより、 bootstrap.min.cssを書き換えなくても良くなります。
+&lt;h:outputStylesheet name=&quot;css/bootstrap.min.css&quot;/&gt;  ">
+
+
+<meta itemprop="datePublished" content="2013-06-10T03:10:00&#43;09:00" />
+<meta itemprop="dateModified" content="2013-06-10T03:10:00&#43;09:00" />
+<meta itemprop="wordCount" content="37">
+
+
+
+<meta itemprop="keywords" content="Java,JSF," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="JSF2.0でCSSリソース内の画像を読み込む"/>
+<meta name="twitter:description" content=" JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。
+Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。
+フォルダ構成は次のようになっています。（Mavenです）
+root &#43;-- src &#43;-- webapp &#43;-- resources &#43;-- css | &#43;-- bootstrap.min.css &#43;-- img &#43;-- glyphicons-halflings.png  JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。
+&lt;h:outputStylesheet library=&quot;css&quot; name=&quot;bootstrap.min.css&quot;/&gt;  このとき、bootstrap.min.css内のイメージのパスは../img/glyphicons-halflings.pngとなっていますが、 このままでは画像が読み込まれません。まあ、パスからも明らかですね。
+問題を解決するには次のように、イメージのパスを変更する必要があります。
+background-image:url(&quot;#{resource[&#39;img/glyphicons-halflings.png&#39;]}&quot;)  Jun 20, 2013 追記 twitterで@den2snさんに教えてもらったのですが、outputStylesheetを下記のようにlibraryを削除して宣言することにより、 bootstrap.min.cssを書き換えなくても良くなります。
+&lt;h:outputStylesheet name=&quot;css/bootstrap.min.css&quot;/&gt;  "/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>JSF2.0でCSSリソース内の画像を読み込む</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        June 10, 2013
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/jsf">JSF</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。<br />
+Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。</p>
+
+<!-- MORE -->
+
+<p>フォルダ構成は次のようになっています。（Mavenです）</p>
+
+<pre><code>root
+ +-- src
+     +-- webapp
+         +-- resources
+             +-- css
+             |   +-- bootstrap.min.css
+             +-- img
+                 +-- glyphicons-halflings.png
+</code></pre>
+
+<p>JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。</p>
+
+<pre><code class="language-xml">&lt;h:outputStylesheet library=&quot;css&quot; name=&quot;bootstrap.min.css&quot;/&gt;
+</code></pre>
+
+<p>このとき、bootstrap.min.css内のイメージのパスは<code>../img/glyphicons-halflings.png</code>となっていますが、
+このままでは画像が読み込まれません。まあ、パスからも明らかですね。</p>
+
+<p>問題を解決するには次のように、イメージのパスを変更する必要があります。</p>
+
+<pre><code class="language-css">background-image:url(&quot;#{resource['img/glyphicons-halflings.png']}&quot;)
+</code></pre>
+
+<h2 id="jun-20-2013-追記">Jun 20, 2013 追記</h2>
+
+<p>twitterで<a href="https://twitter.com/den2sn">@den2sn</a>さんに教えてもらったのですが、outputStylesheetを下記のようにlibraryを削除して宣言することにより、
+bootstrap.min.cssを書き換えなくても良くなります。</p>
+
+<pre><code class="language-xml">&lt;h:outputStylesheet name=&quot;css/bootstrap.min.css&quot;/&gt;
+</code></pre>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2013%2f06%2f10%2fload-images-within-css-resources-in-jsf-2-dot-0%2f - JSF2.0%e3%81%a7CSS%e3%83%aa%e3%82%bd%e3%83%bc%e3%82%b9%e5%86%85%e3%81%ae%e7%94%bb%e5%83%8f%e3%82%92%e8%aa%ad%e3%81%bf%e8%be%bc%e3%82%80 by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/">JdbcRealm with WildFly 9.0.1.Final<aside class="dates">Dec 25 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/">Server Sent Events<aside class="dates">Dec 20 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/10/testfx/">JavaFXのUIをJUnit形式でテストする<aside class="dates">Dec 10 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/">WildFly SwarmでEJBを試す<aside class="dates">Nov 22 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/">WildFly SwarmでJSFを試す<aside class="dates">Nov 16 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/">WildFly SwarmでJAXRSを試す<aside class="dates">Nov 14 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/">JAX-RSでStreamを扱う<aside class="dates">Oct 15 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/">Googleのテキスト読み上げAPIを組み込む（その２）<aside class="dates">May 7 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/03/translate-google/">Googleのテキスト読み上げAPIを組み込む<aside class="dates">May 3 2015</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

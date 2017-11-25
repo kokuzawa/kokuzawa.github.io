@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>はじめてのLATEX</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="はじめてのLATEX" />
+<meta property="og:description" content="LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。 何がきっかけだったのかすっかり忘れてしまったけど、今日LaTeXを使ってみようと思い立ち、利用するための環境設定を色々と調べたので、その記録を書き記しておこうと思う。
+LaTeXって何？  LATEX（ラテック、ラテフ、レイテック、レイテックス）とは、レスリー・ランポート (英: Leslie Lamport) によって開発されたテキストベースの組版処理システムである。電子組版ソフトウェア TEX にマクロパッケージを組み込むことによって構築されており、単体の TEX に比べて、より手軽に組版を行うことができるようになっている。なお、LATEX を基にアスキーが日本語処理に対応させたものとして日本語 LATEX が、さらに縦組み処理にも対応させたものとして pLATEX がある。
+ Wikipediaによれば、組版処理システムということらしい。Wordとかの所謂文書スタイルを制御するものと考えれば良さそう。 ただ、これだけではLaTeXが一体なんなのかがぼんやりとしか分からない。 やっぱり実際に触ってみた方が良さそうだ。
+MacにLaTeXをインストールする MacでLaTexを使うには何をインストールしたら良いのか？ 調べたところ、pTeXというのを入れれば良く、これは縦組み処理も対応したpLATEXと同じもの。 早速インストールしてみよう。インストーラを見つけるよりは、MacPortsを利用した方が早いんじゃないのかと思い、MacPortsで検索してみる。
+&gt; sudo port search ptex pTeX @20110314 (tex, print, textproc, japanese) Japanese TeX (pTeX) processing environment ptex-sfmacros @0 (tex, print, japanese) Tategumi/Tateyoko/Kunten packages written by Shinsaku Fujita.  2つ見つけたけど、1つ目の方だろう。インストールする場合はオプションをつけた方が良いとのこと。
+&gt; sodo port install pTeX &#43;utf8 &#43;motif  長い&hellip;。とても時間がかかるので最初にコーヒーを淹れておけばよかった。ゆっくり飲みながら気長に待つ。 インストールが終わったら、ちゃんとインストールがされたか確認する。
+&gt; platex -version TeX 3." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/blog/2012/11/24/hazimetefalselatex/" />
+
+
+
+<meta property="article:published_time" content="2012-11-24T01:25:00&#43;09:00"/>
+
+<meta property="article:modified_time" content="2012-11-24T01:25:00&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="はじめてのLATEX">
+<meta itemprop="description" content="LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。 何がきっかけだったのかすっかり忘れてしまったけど、今日LaTeXを使ってみようと思い立ち、利用するための環境設定を色々と調べたので、その記録を書き記しておこうと思う。
+LaTeXって何？  LATEX（ラテック、ラテフ、レイテック、レイテックス）とは、レスリー・ランポート (英: Leslie Lamport) によって開発されたテキストベースの組版処理システムである。電子組版ソフトウェア TEX にマクロパッケージを組み込むことによって構築されており、単体の TEX に比べて、より手軽に組版を行うことができるようになっている。なお、LATEX を基にアスキーが日本語処理に対応させたものとして日本語 LATEX が、さらに縦組み処理にも対応させたものとして pLATEX がある。
+ Wikipediaによれば、組版処理システムということらしい。Wordとかの所謂文書スタイルを制御するものと考えれば良さそう。 ただ、これだけではLaTeXが一体なんなのかがぼんやりとしか分からない。 やっぱり実際に触ってみた方が良さそうだ。
+MacにLaTeXをインストールする MacでLaTexを使うには何をインストールしたら良いのか？ 調べたところ、pTeXというのを入れれば良く、これは縦組み処理も対応したpLATEXと同じもの。 早速インストールしてみよう。インストーラを見つけるよりは、MacPortsを利用した方が早いんじゃないのかと思い、MacPortsで検索してみる。
+&gt; sudo port search ptex pTeX @20110314 (tex, print, textproc, japanese) Japanese TeX (pTeX) processing environment ptex-sfmacros @0 (tex, print, japanese) Tategumi/Tateyoko/Kunten packages written by Shinsaku Fujita.  2つ見つけたけど、1つ目の方だろう。インストールする場合はオプションをつけた方が良いとのこと。
+&gt; sodo port install pTeX &#43;utf8 &#43;motif  長い&hellip;。とても時間がかかるので最初にコーヒーを淹れておけばよかった。ゆっくり飲みながら気長に待つ。 インストールが終わったら、ちゃんとインストールがされたか確認する。
+&gt; platex -version TeX 3.">
+
+
+<meta itemprop="datePublished" content="2012-11-24T01:25:00&#43;09:00" />
+<meta itemprop="dateModified" content="2012-11-24T01:25:00&#43;09:00" />
+<meta itemprop="wordCount" content="185">
+
+
+
+<meta itemprop="keywords" content="Mac,LaTeX," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="はじめてのLATEX"/>
+<meta name="twitter:description" content="LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。 何がきっかけだったのかすっかり忘れてしまったけど、今日LaTeXを使ってみようと思い立ち、利用するための環境設定を色々と調べたので、その記録を書き記しておこうと思う。
+LaTeXって何？  LATEX（ラテック、ラテフ、レイテック、レイテックス）とは、レスリー・ランポート (英: Leslie Lamport) によって開発されたテキストベースの組版処理システムである。電子組版ソフトウェア TEX にマクロパッケージを組み込むことによって構築されており、単体の TEX に比べて、より手軽に組版を行うことができるようになっている。なお、LATEX を基にアスキーが日本語処理に対応させたものとして日本語 LATEX が、さらに縦組み処理にも対応させたものとして pLATEX がある。
+ Wikipediaによれば、組版処理システムということらしい。Wordとかの所謂文書スタイルを制御するものと考えれば良さそう。 ただ、これだけではLaTeXが一体なんなのかがぼんやりとしか分からない。 やっぱり実際に触ってみた方が良さそうだ。
+MacにLaTeXをインストールする MacでLaTexを使うには何をインストールしたら良いのか？ 調べたところ、pTeXというのを入れれば良く、これは縦組み処理も対応したpLATEXと同じもの。 早速インストールしてみよう。インストーラを見つけるよりは、MacPortsを利用した方が早いんじゃないのかと思い、MacPortsで検索してみる。
+&gt; sudo port search ptex pTeX @20110314 (tex, print, textproc, japanese) Japanese TeX (pTeX) processing environment ptex-sfmacros @0 (tex, print, japanese) Tategumi/Tateyoko/Kunten packages written by Shinsaku Fujita.  2つ見つけたけど、1つ目の方だろう。インストールする場合はオプションをつけた方が良いとのこと。
+&gt; sodo port install pTeX &#43;utf8 &#43;motif  長い&hellip;。とても時間がかかるので最初にコーヒーを淹れておけばよかった。ゆっくり飲みながら気長に待つ。 インストールが終わったら、ちゃんとインストールがされたか確認する。
+&gt; platex -version TeX 3."/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>はじめてのLATEX</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        November 24, 2012
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/mac">Mac</a>
+            
+                <a href="https://kokuzawa.github.io/tags/latex">LaTeX</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。
+何がきっかけだったのかすっかり忘れてしまったけど、今日LaTeXを使ってみようと思い立ち、利用するための環境設定を色々と調べたので、その記録を書き記しておこうと思う。</p>
+
+<h2 id="latexって何">LaTeXって何？</h2>
+
+<blockquote>
+<p>LATEX（ラテック、ラテフ、レイテック、レイテックス）とは、レスリー・ランポート (英: Leslie Lamport) によって開発されたテキストベースの組版処理システムである。電子組版ソフトウェア TEX にマクロパッケージを組み込むことによって構築されており、単体の TEX に比べて、より手軽に組版を行うことができるようになっている。なお、LATEX を基にアスキーが日本語処理に対応させたものとして日本語 LATEX が、さらに縦組み処理にも対応させたものとして pLATEX がある。</p>
+</blockquote>
+
+<p><a href="http://ja.wikipedia.org/wiki/LaTeX">Wikipedia</a>によれば、組版処理システムということらしい。Wordとかの所謂文書スタイルを制御するものと考えれば良さそう。
+ただ、これだけではLaTeXが一体なんなのかがぼんやりとしか分からない。
+やっぱり実際に触ってみた方が良さそうだ。</p>
+
+<h2 id="macにlatexをインストールする">MacにLaTeXをインストールする</h2>
+
+<p>MacでLaTexを使うには何をインストールしたら良いのか？
+調べたところ、pTeXというのを入れれば良く、これは縦組み処理も対応したpLATEXと同じもの。
+早速インストールしてみよう。インストーラを見つけるよりは、MacPortsを利用した方が早いんじゃないのかと思い、MacPortsで検索してみる。</p>
+
+<pre><code>&gt; sudo port search ptex
+
+pTeX @20110314 (tex, print, textproc, japanese)
+    Japanese TeX (pTeX) processing environment
+
+ptex-sfmacros @0 (tex, print, japanese)
+    Tategumi/Tateyoko/Kunten packages written by Shinsaku Fujita.
+</code></pre>
+
+<p>2つ見つけたけど、1つ目の方だろう。インストールする場合はオプションをつけた方が良いとのこと。</p>
+
+<pre><code>&gt; sodo port install pTeX +utf8 +motif
+</code></pre>
+
+<p>長い&hellip;。とても時間がかかるので最初にコーヒーを淹れておけばよかった。ゆっくり飲みながら気長に待つ。
+インストールが終わったら、ちゃんとインストールがされたか確認する。</p>
+
+<pre><code>&gt; platex -version
+
+TeX 3.141592-p3.1.10 (utf8.euc) (Web2C 7.5.4)
+kpathsea version 3.5.6
+ptexenc version 0.997
+Copyright (C) 1997-2004 D.E. Knuth.
+Kpathsea is copyright (C) 1997-2004 Free Software Foundation, Inc.
+There is NO warranty.  Redistribution of this software is
+covered by the terms of both the pTeX copyright and
+the GNU General Public License.
+For more information about these matters, see the files
+named COPYING and the pTeX source.
+Primary author of TeX: D.E. Knuth.
+Kpathsea written by Karl Berry and others.
+</code></pre>
+
+<p>ああ、やっとインストールできた。</p>
+
+<h2 id="使ってみよう">使ってみよう</h2>
+
+<p>LaTeXを使うには、まず素となるテキストを作る必要がある。</p>
+
+<pre><code>\documentclass[a4paper,12pt]{jarticle}
+\begin{document}
+本文です。
+\end{document}
+</code></pre>
+
+<p>firstdoc.texという名前で保存。tex拡張子はおそらく慣習？
+これをplatexでコンパイルする。コンパイルという言葉が正しいかどうかは分からないけど。</p>
+
+<pre><code>&gt; platex firstdoc.tex
+</code></pre>
+
+<p>すると、拡張子がDVIの中間ファイルが生成される。
+このファイルはプレビューすることができて、どんな組版になったのかを確認できるようだ。</p>
+
+<pre><code>&gt; xdvi firstdoc.dvi
+
+Error: Can't open display:
+</code></pre>
+
+<p>エラーが出た。Macの場合、ターミナルでプレビューを見ようとしてもダメらしく、
+プレビューを見るにはX11をインストールする必要があるらしい。
+今更X11はインストールしたくないので、別の方法で確認してみようと思う。</p>
+
+<pre><code>&gt; dvipdf firstdoc.dvi
+</code></pre>
+
+<p>これは、PDFファイルを生成するためのコマンド。実行するとPDFファイルが生成されるので、それを開く。</p>
+
+<pre><code>&gt; open firstdoc.pdf
+</code></pre>
+
+<p>これでプレビューアプリでfirstdoc.pdfを開くことができる。
+PDFは開いたままファイルを修正して、platex -&gt; dvipdf でもう一回PDFを生成すると、
+開いているPDFが更新される。これで組版の確認をすることができるようになった。</p>
+
+<h2 id="まとめ">まとめ</h2>
+
+<p>たいした内容を書かなくても、それっぽいドキュメントを作ることができるのはありがたい。
+あと、文章を作る行程がプログラミングのようで、これもなかなか楽しいし、
+素となるファイルがバイナリではないので、版数管理もし易そうだ。
+組版をするにはいろいろと覚えることが多そうだけど、それを差し引いてもすばらしい。</p>
+
+<h2 id="参考サイト">参考サイト</h2>
+
+<p><a href="http://keizai.xrea.jp/latex/tutorial/index.html">http://keizai.xrea.jp/latex/tutorial/index.html</a></p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2012%2f11%2f24%2fhazimetefalselatex%2f - %e3%81%af%e3%81%98%e3%82%81%e3%81%a6%e3%81%aeLATEX by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/">JdbcRealm with WildFly 9.0.1.Final<aside class="dates">Dec 25 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/">Server Sent Events<aside class="dates">Dec 20 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/10/testfx/">JavaFXのUIをJUnit形式でテストする<aside class="dates">Dec 10 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/">WildFly SwarmでEJBを試す<aside class="dates">Nov 22 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/">WildFly SwarmでJSFを試す<aside class="dates">Nov 16 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/">WildFly SwarmでJAXRSを試す<aside class="dates">Nov 14 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/">JAX-RSでStreamを扱う<aside class="dates">Oct 15 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/">Googleのテキスト読み上げAPIを組み込む（その２）<aside class="dates">May 7 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/03/translate-google/">Googleのテキスト読み上げAPIを組み込む<aside class="dates">May 3 2015</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>Apache solrで全文検索に触れる</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="Apache solrで全文検索に触れる" />
+<meta property="og:description" content="Javaで簡単に全文検索を体験するには Apache Solr (ソーラー)が便利です。
+今回は現時点での最新バージョンである 4.10.0 を利用して全文検索を体験したいと思います。
+環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot&trade; 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Solrを起動する SolrはWebアプリケーションの形になっています。 ZIPファイルをダウンロードして解凍すると、distフォルダにWARファイルが入っているので、 これをアプリケーションサーバにデプロイすれば良さそうですが、 今回はexampleフォルダにあるstart.jarを単独起動させます。
+java -jar start.jar  起動するとログが出力されて分かるのですが、Jettyを内包しているようです。 数秒で起動するので、下記URLにアクセスして起動していることを確認します。
+http://localhost:8983/solr/  文書登録 Solrを紹介しているサイトを確認すると、XMLファイルを読み込ませてインデックスを作成する例が多く見つかります。 ですが、実際の業務としてはOfficeファイルやPDFなどのファイルの内容をインデックス化したいという要求の方が多いので、 XMLではなく、それらのファイルを読み込ませてインデックスを作ってみることにします。 おそらく起動したSolr管理画面からもファイルの登録ができると思うのですが、 今回はJavaで書いたプログラムからファイルの登録を実行します。
+JavaからSolrにアクセスするにはApache Solrjというライブラリが必要です。 これはMavenに登録されているのでそこから取得します。
+&lt;dependency&gt; &lt;groupId&gt;org.apache.solr&lt;/groupId&gt; &lt;artifactId&gt;solr-solrj&lt;/artifactId&gt; &lt;version&gt;4.10.0&lt;/version&gt; &lt;scope&gt;compile&lt;/scope&gt; &lt;/dependency&gt;  SolrjからPDFファイルを登録するサンプルコードです。
+import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.solrj.impl.HttpSolrServer; import org.apache.solr.client.solrj.request.AbstractUpdateRequest; import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest; import java.io.File; public class App { public static void main(String." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/" />
+
+
+
+<meta property="article:published_time" content="2014-09-05T00:12:34&#43;09:00"/>
+
+<meta property="article:modified_time" content="2014-09-05T00:12:34&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="Apache solrで全文検索に触れる">
+<meta itemprop="description" content="Javaで簡単に全文検索を体験するには Apache Solr (ソーラー)が便利です。
+今回は現時点での最新バージョンである 4.10.0 を利用して全文検索を体験したいと思います。
+環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot&trade; 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Solrを起動する SolrはWebアプリケーションの形になっています。 ZIPファイルをダウンロードして解凍すると、distフォルダにWARファイルが入っているので、 これをアプリケーションサーバにデプロイすれば良さそうですが、 今回はexampleフォルダにあるstart.jarを単独起動させます。
+java -jar start.jar  起動するとログが出力されて分かるのですが、Jettyを内包しているようです。 数秒で起動するので、下記URLにアクセスして起動していることを確認します。
+http://localhost:8983/solr/  文書登録 Solrを紹介しているサイトを確認すると、XMLファイルを読み込ませてインデックスを作成する例が多く見つかります。 ですが、実際の業務としてはOfficeファイルやPDFなどのファイルの内容をインデックス化したいという要求の方が多いので、 XMLではなく、それらのファイルを読み込ませてインデックスを作ってみることにします。 おそらく起動したSolr管理画面からもファイルの登録ができると思うのですが、 今回はJavaで書いたプログラムからファイルの登録を実行します。
+JavaからSolrにアクセスするにはApache Solrjというライブラリが必要です。 これはMavenに登録されているのでそこから取得します。
+&lt;dependency&gt; &lt;groupId&gt;org.apache.solr&lt;/groupId&gt; &lt;artifactId&gt;solr-solrj&lt;/artifactId&gt; &lt;version&gt;4.10.0&lt;/version&gt; &lt;scope&gt;compile&lt;/scope&gt; &lt;/dependency&gt;  SolrjからPDFファイルを登録するサンプルコードです。
+import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.solrj.impl.HttpSolrServer; import org.apache.solr.client.solrj.request.AbstractUpdateRequest; import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest; import java.io.File; public class App { public static void main(String.">
+
+
+<meta itemprop="datePublished" content="2014-09-05T00:12:34&#43;09:00" />
+<meta itemprop="dateModified" content="2014-09-05T00:12:34&#43;09:00" />
+<meta itemprop="wordCount" content="176">
+
+
+
+<meta itemprop="keywords" content="Solr,Java," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Apache solrで全文検索に触れる"/>
+<meta name="twitter:description" content="Javaで簡単に全文検索を体験するには Apache Solr (ソーラー)が便利です。
+今回は現時点での最新バージョンである 4.10.0 を利用して全文検索を体験したいと思います。
+環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot&trade; 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Solrを起動する SolrはWebアプリケーションの形になっています。 ZIPファイルをダウンロードして解凍すると、distフォルダにWARファイルが入っているので、 これをアプリケーションサーバにデプロイすれば良さそうですが、 今回はexampleフォルダにあるstart.jarを単独起動させます。
+java -jar start.jar  起動するとログが出力されて分かるのですが、Jettyを内包しているようです。 数秒で起動するので、下記URLにアクセスして起動していることを確認します。
+http://localhost:8983/solr/  文書登録 Solrを紹介しているサイトを確認すると、XMLファイルを読み込ませてインデックスを作成する例が多く見つかります。 ですが、実際の業務としてはOfficeファイルやPDFなどのファイルの内容をインデックス化したいという要求の方が多いので、 XMLではなく、それらのファイルを読み込ませてインデックスを作ってみることにします。 おそらく起動したSolr管理画面からもファイルの登録ができると思うのですが、 今回はJavaで書いたプログラムからファイルの登録を実行します。
+JavaからSolrにアクセスするにはApache Solrjというライブラリが必要です。 これはMavenに登録されているのでそこから取得します。
+&lt;dependency&gt; &lt;groupId&gt;org.apache.solr&lt;/groupId&gt; &lt;artifactId&gt;solr-solrj&lt;/artifactId&gt; &lt;version&gt;4.10.0&lt;/version&gt; &lt;scope&gt;compile&lt;/scope&gt; &lt;/dependency&gt;  SolrjからPDFファイルを登録するサンプルコードです。
+import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.solrj.impl.HttpSolrServer; import org.apache.solr.client.solrj.request.AbstractUpdateRequest; import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest; import java.io.File; public class App { public static void main(String."/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>Apache solrで全文検索に触れる</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        September 5, 2014
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/solr">Solr</a>
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>Javaで簡単に全文検索を体験するには Apache Solr (ソーラー)が便利です。<br />
+今回は現時点での最新バージョンである 4.10.0 を利用して全文検索を体験したいと思います。</p>
+
+<!-- MORE -->
+
+<h2 id="環境">環境</h2>
+
+<ul>
+<li>OS: Mac OSX 10.9.4</li>
+<li>Java: Oracle Corporation Java HotSpot&trade; 64-Bit Server VM (1.8.0 25.0-b70)</li>
+<li>メモリ: 4GB</li>
+<li>Apache Solr-4.10.0</li>
+</ul>
+
+<h2 id="solrを起動する">Solrを起動する</h2>
+
+<p>SolrはWebアプリケーションの形になっています。
+ZIPファイルをダウンロードして解凍すると、distフォルダにWARファイルが入っているので、
+これをアプリケーションサーバにデプロイすれば良さそうですが、
+今回はexampleフォルダにあるstart.jarを単独起動させます。</p>
+
+<pre><code>java -jar start.jar
+</code></pre>
+
+<p>起動するとログが出力されて分かるのですが、Jettyを内包しているようです。
+数秒で起動するので、下記URLにアクセスして起動していることを確認します。</p>
+
+<pre><code>http://localhost:8983/solr/
+</code></pre>
+
+<h2 id="文書登録">文書登録</h2>
+
+<p>Solrを紹介しているサイトを確認すると、XMLファイルを読み込ませてインデックスを作成する例が多く見つかります。
+ですが、実際の業務としてはOfficeファイルやPDFなどのファイルの内容をインデックス化したいという要求の方が多いので、
+XMLではなく、それらのファイルを読み込ませてインデックスを作ってみることにします。
+おそらく起動したSolr管理画面からもファイルの登録ができると思うのですが、
+今回はJavaで書いたプログラムからファイルの登録を実行します。</p>
+
+<p>JavaからSolrにアクセスするにはApache Solrjというライブラリが必要です。
+これはMavenに登録されているのでそこから取得します。</p>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.apache.solr&lt;/groupId&gt;
+    &lt;artifactId&gt;solr-solrj&lt;/artifactId&gt;
+    &lt;version&gt;4.10.0&lt;/version&gt;
+    &lt;scope&gt;compile&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>SolrjからPDFファイルを登録するサンプルコードです。</p>
+
+<pre><code class="language-java">import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.request.AbstractUpdateRequest;
+import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
+
+import java.io.File;
+
+public class App
+{
+    public static void main(String... args) throws Exception
+    {
+        final SolrServer solr = 
+                new HttpSolrServer(&quot;http://localhost:8983/solr/collection1&quot;);
+        final ContentStreamUpdateRequest update = 
+                new ContentStreamUpdateRequest(&quot;/update/extract&quot;);
+        update.addFile(
+                new File(&quot;/Users/Katsumi/Downloads/javamagazinevol16.pdf&quot;), 
+                &quot;application/pdf&quot;);
+        update.setParam(&quot;literal.id&quot;, &quot;javamagazinevol16.pdf&quot;);
+        update.setAction(AbstractUpdateRequest.ACTION.COMMIT, true, true);
+        solr.request(update);
+    }
+}
+</code></pre>
+
+<p>ちょうど手元に以前ダウンロードした「Javaマガジン日本語版 vol16」があったので、
+それを登録しています。実行するとわかるのですがcommons-loggingのクラスがない旨を表すエラーがでます。
+Mavenの依存ライブラリには含まれていないようなのですが、内部で使っているのでしょうね。
+しょうがないので、commons-loggingも取得するようにMavenに追加します。</p>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;commons-logging&lt;/groupId&gt;
+    &lt;artifactId&gt;commons-logging&lt;/artifactId&gt;
+    &lt;version&gt;1.2&lt;/version&gt;
+    &lt;scope&gt;runtime&lt;/scope&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>再度実行すると今度はエラーも発生せずに正常に終了しました。
+登録したPDFファイルは66ページ、24.6MBですが、数秒で登録が終わりました。</p>
+
+<h2 id="文書検索">文書検索</h2>
+
+<p>以下のURLを実行して登録されていることを確認します。</p>
+
+<pre><code>http://localhost:8983/solr/collection1/select?q=ストリーム&amp;wt=xml
+</code></pre>
+
+<p>PDFファイル中に「ストリーム」という単語があるので、これを検索条件（q）としています。
+また、検索結果フォーマット（wt）はxmlを指定します。他にjsonも指定できるようです。
+検索結果は以下のようになりました。</p>
+
+<pre><code class="language-xml">&lt;response&gt;
+  &lt;lst name=&quot;responseHeader&quot;&gt;
+    &lt;int name=&quot;status&quot;&gt;0&lt;/int&gt;
+    &lt;int name=&quot;QTime&quot;&gt;1&lt;/int&gt;
+    &lt;lst name=&quot;params&quot;&gt;
+      &lt;str name=&quot;q&quot;&gt;ストリーム&lt;/str&gt;
+      &lt;str name=&quot;wt&quot;&gt;xml&lt;/str&gt;
+    &lt;/lst&gt;
+  &lt;/lst&gt;
+  &lt;result name=&quot;response&quot; numFound=&quot;1&quot; start=&quot;0&quot;&gt;
+    &lt;doc&gt;
+      &lt;arr name=&quot;links&quot;&gt;...&lt;/arr&gt;
+      &lt;str name=&quot;id&quot;&gt;javamagazinevol16.pdf&lt;/str&gt;
+      &lt;date name=&quot;last_modified&quot;&gt;2014-05-21T07:44:33Z&lt;/date&gt;
+      &lt;arr name=&quot;title&quot;&gt;
+        &lt;str/&gt;
+      &lt;/arr&gt;
+      &lt;arr name=&quot;content_type&quot;&gt;
+        &lt;str&gt;application/pdf&lt;/str&gt;
+      &lt;/arr&gt;
+      &lt;arr name=&quot;content&quot;&gt;
+        &lt;str&gt;
+          JAVA //MARCH/APRIL 2014 / 注目のキーワ ドー： ラムダ式 / Nashorn / 日付と時間 / 組込み
+          ...
+</code></pre>
+
+<p>次回はJavaから文書検索をしてみたいと思います。</p>
+
+<hr />
+
+<p><strong>Change at Sep 6, 2014</strong><br />
+誤字脱字を修正。</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2014%2f09%2f05%2fapache-solrdequan-wen-jian-suo-nihong-reru%2f - Apache%20solr%e3%81%a7%e5%85%a8%e6%96%87%e6%a4%9c%e7%b4%a2%e3%81%ab%e8%a7%a6%e3%82%8c%e3%82%8b by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/">JdbcRealm with WildFly 9.0.1.Final<aside class="dates">Dec 25 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/">Server Sent Events<aside class="dates">Dec 20 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/12/10/testfx/">JavaFXのUIをJUnit形式でテストする<aside class="dates">Dec 10 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/">WildFly SwarmでEJBを試す<aside class="dates">Nov 22 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/">WildFly SwarmでJSFを試す<aside class="dates">Nov 16 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/">WildFly SwarmでJAXRSを試す<aside class="dates">Nov 14 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/10/15/stream-in-jaxrs/">JAX-RSでStreamを扱う<aside class="dates">Oct 15 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/">Googleのテキスト読み上げAPIを組み込む（その２）<aside class="dates">May 7 2015</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/blog/2015/05/03/translate-google/">Googleのテキスト読み上げAPIを組み込む<aside class="dates">May 3 2015</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

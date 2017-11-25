@@ -13,10 +13,10 @@
     
     <item>
       <title>WildFly SwarmでJSFを試す</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</link>
+      <link>https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</link>
       <pubDate>Mon, 16 Nov 2015 22:58:09 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
       <description>昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。
 JSFを組み込む 仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。 あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。
 &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jsf&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JSFアプリケーションを作る JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、 動くことが分かれば良いのでXHTMLファイルだけを作るだけにします。
@@ -27,10 +27,10 @@ package org.katsumi.jsf; import org.</description>
     
     <item>
       <title>Googleのテキスト読み上げAPIを組み込む</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/05/03/translate-google/</link>
+      <link>https://kokuzawa.github.io/blog/2015/05/03/translate-google/</link>
       <pubDate>Sun, 03 May 2015 22:12:37 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/05/03/translate-google/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/05/03/translate-google/</guid>
       <description>子供用の英単語帳Webアプリを作っています。 単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、 Googleが提供しているテキスト読み上げAPIというのを見つけました。
 使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。 この例ではoneという単語を読み上げてくれます。
 http://translate.google.com/translate_tts?tl=en&amp;amp;q=one  これをHTMLに組み込みます。 HTMLで音声を再生するためにはaudioタグを利用します。 下記のように組み込むことで音声を再生するためのコントロールを表示することができます。
@@ -41,10 +41,10 @@ http://translate.google.com/translate_tts?tl=en&amp;amp;q=one  これをHTMLに�
     
     <item>
       <title>[JSF-2.3]FacesContextをInjectする</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</link>
+      <link>https://kokuzawa.github.io/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</link>
       <pubDate>Tue, 23 Dec 2014 15:02:06 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</guid>
       <description>JSF-2.3の新しい機能として、UIViewRoot, ViewMap, ApplicationMap, ExternalContext, FacesContextがInjectできるようになります。 この記事ではFacesContextの古い取得方法であるFacesContext.getCurrentInstance()と、 Injectを利用した取得方法のサンプルを記載します。
 サンプルでは画面のボタンをクリックすると、&amp;lt;h:messages/&amp;gt;タグとFacesContext.addMessage(String, FacesMessage)を利用して 同じ画面上にインフォメーションメッセージを表示します。
 最初にFacesContextの古い取得方法を利用したManaged Beanです。
@@ -54,10 +54,10 @@ import javax.enterprise.context.RequestScoped; import javax.faces.application.Fa
     
     <item>
       <title>JSFのCSRF対策</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/10/08/jsffalsecsrfdui-ce/</link>
+      <link>https://kokuzawa.github.io/blog/2014/10/08/jsffalsecsrfdui-ce/</link>
       <pubDate>Wed, 08 Oct 2014 02:29:57 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/10/08/jsffalsecsrfdui-ce/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/10/08/jsffalsecsrfdui-ce/</guid>
       <description>だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。 そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、 JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのように防げるのかを確認してみます。
 環境  OS: Mac OSX 10.9.4 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  アプリを作る CSRFの脆弱性がある、といわれても具体例がないとなかなかイメージするのが難しいかもしれません。 そこで、ここでは実際に攻撃を受けるアプリを作り、脆弱性を露呈されてみたいと思います。 コードの構成は下記のようになります。
 JSFCSRFSample +- src | +- main | | +- java | | +- org.katsumi.bean | | +- FormBean.java | +- webapp | +- index.xhtml | +- result.xhtml | +- warning.xhtml | +- WEB-INF | +- jboss-web.xml | +- faces-config.xml | +- web.xml +- pom.</description>
@@ -65,10 +65,10 @@ JSFCSRFSample +- src | +- main | | +- java | | +- org.katsumi.bean | | +- FormBe
     
     <item>
       <title>How to set the value in ValueChangeListener</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</link>
+      <link>https://kokuzawa.github.io/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</link>
       <pubDate>Wed, 12 Feb 2014 00:58:25 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</guid>
       <description>JSFには値が変更されたことをハンドリングするためのイベントとしてValueChangeEventが用意されています。 このイベントは、コンポーネントのValueChangeListenerによって発行されます。 ValueChangEventを利用してテキストフィールドに入力された値の検証を行っているのですが、 値が不正だった場合に、エラーを表示するのではなく正常な値を設定したい場合があります。
 このとき、単純にValueChangeListenerの中でテキストフィールドのプロパティに値を設定しても、画面には反映されません。 これは、ValueChangeEventがJSFのライフサイクルのUpdate Model Valuesフェーズの前に呼ばれるからであり、 ValueChangeListenerで設定した値はUpdate Model Valuesフェーズで入力値によって上書きされてしまうからです。
 これを解決するには、ValueChangeListenerにおいて、ちょっとした工夫が必要です。 以下にその例を示します。
@@ -79,10 +79,10 @@ Enjoy !</description>
     
     <item>
       <title>JSF 2.2 でさらに便利になったMarkupを使ってみよう</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/</link>
+      <link>https://kokuzawa.github.io/blog/2013/12/18/jsf-2-dot-2-markup/</link>
       <pubDate>Tue, 17 Dec 2013 00:12:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/12/18/jsf-2-dot-2-markup/</guid>
       <description>この記事は、Java EE Advent Calendar 2013の18日目の記事です。
 昨日は @yumix_h さんの私がJava EE開発の現場から学んだことでした。
 明日は誕生日の @aoetk さんです。
@@ -104,10 +104,10 @@ JSF 2.2 jsfc属性でJSFコンポーネントをHTMLとして認識させるの�
     
     <item>
       <title>JSF2.0でCSSリソース内の画像を読み込む</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</link>
+      <link>https://kokuzawa.github.io/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</link>
       <pubDate>Mon, 10 Jun 2013 03:10:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</guid>
       <description> JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。
 Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。
 フォルダ構成は次のようになっています。（Mavenです）
@@ -120,10 +120,10 @@ background-image:url(&amp;quot;#{resource[&#39;img/glyphicons-halflings.png&#39;
     
     <item>
       <title>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</link>
+      <link>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</link>
       <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</guid>
       <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
 (Bootstrapのalert alert-errorを適用)
 これに対してTableレイアウトは以下のような出力になります。

@@ -13,10 +13,10 @@
     
     <item>
       <title>Deprecated org.hibernate.ejb.HibernatePersistence</title>
-      <link>https://kokuzawa.github.io/posts/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</link>
+      <link>https://kokuzawa.github.io/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</link>
       <pubDate>Tue, 27 Jan 2015 23:46:21 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</guid>
+      <guid>https://kokuzawa.github.io/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</guid>
       <description>どのバージョンからなのかはわからないが、Hibernate-4.3.8.Finalではpersistence.xmlのproviderに記載するHibernateのプロバイダクラスがdeprecatedになっていた。
 &amp;lt;provider&amp;gt;org.hibernate.ejb.HibernatePersistence&amp;lt;/provider&amp;gt;  上記を下記に置き換える必要がある。
 &amp;lt;provider&amp;gt;org.hibernate.jpa.HibernatePersistenceProvider&amp;lt;/provider&amp;gt;  </description>
@@ -24,10 +24,10 @@
     
     <item>
       <title>EclipseLinkでの一意制約例外</title>
-      <link>https://kokuzawa.github.io/posts/blog/2014/01/31/entityexistsexception/</link>
+      <link>https://kokuzawa.github.io/blog/2014/01/31/entityexistsexception/</link>
       <pubDate>Fri, 31 Jan 2014 22:52:45 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2014/01/31/entityexistsexception/</guid>
+      <guid>https://kokuzawa.github.io/blog/2014/01/31/entityexistsexception/</guid>
       <description>@kikutaro_さんのブログで、 EclipseLinkの一意制約例外について書かれた 「EclipseLinkで一意制約の例外を拾ってみたけど…」 の記事が Twitterで言及されていたので、ちょっと読んでたらjavax.persistence.EntityExistsExceptionがスローされないってあって、 あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。
 で、まあググると確かにスローされないって言っている人が沢山いたけど、 やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。
 （コードにはlombokを適用してます）
@@ -39,10 +39,10 @@ persistence.xml:
     
     <item>
       <title>JUnitでJPAのテスト</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/</link>
+      <link>https://kokuzawa.github.io/blog/2013/11/03/unit-test-of-jpa/</link>
       <pubDate>Sun, 03 Nov 2013 01:39:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/11/03/unit-test-of-jpa/</guid>
       <description>JPAで作ったデータアクセスクラスのテストをJUnitで作る際に、EntityManagerの扱いが問題になってきます。 プロダクトコードだと、PersistenceUnitのtransactionTypeをJTAとするため、 この設定のままユニットテストを実行には、APサーバが起動している必要があります。 この状態だとJenkinsに食わせたりするときに色々大変だし、 そもそもテスト用にはデータベースを別にしたいので、設定をテスト時だけ書き直す必要が出てきて面倒です。 そこでプロダクトコードとテストコードで参照するPersistenceUnitを変更するようにしてみました。
 ファイル構成 ファイルは下記のように、プロダクトコードとテストコード用にそれぞれpersistence.xmlを用意します。
 root └ src ├ main │ ├ java │ │ ├ Account.java │ │ └ AccountFacade.java │ └ resources │ └ META-INF │ └ persistence.xml └ test ├ java │ └ AccountFacadeTest.java └ resources └ META-INF └ persistence.xml  プロダクトコードのpersistence.xmlはこんな感じ。 transaction-typeをJTAにしているので、jta-data-sourceにAPサーバで設定したデータソース名を指定しています。
@@ -52,10 +52,10 @@ persistence.xml:
     
     <item>
       <title>Performance of JPA</title>
-      <link>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</link>
+      <link>https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/</link>
       <pubDate>Sun, 27 Jan 2013 12:08:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</guid>
+      <guid>https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/</guid>
       <description> JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
 数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
 アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
@@ -71,10 +71,10 @@ em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエン�
     
     <item>
       <title>複合キーを使ったOrderBy</title>
-      <link>https://kokuzawa.github.io/posts/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</link>
+      <link>https://kokuzawa.github.io/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</link>
       <pubDate>Wed, 07 Nov 2012 00:56:00 +0900</pubDate>
       
-      <guid>https://kokuzawa.github.io/posts/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</guid>
+      <guid>https://kokuzawa.github.io/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</guid>
       <description>JPAで複合キークラスを使ってOrderByをやろうとしたら、メタデータの設定方法が分からなかったんだけど、分かってみれば簡単な話だった。
 複合キーって何？ JPAのエンティティには複数の@Idアノテーションが付与できないので、DBのテーブルに主キーが複数ある場合はその主キーをひとまとめにしたクラスを作成する。エンティティ上では、@EmbeddedIdアノテーションを付与すれば、その作成クラスを主キーとして指定できる。これを複合キーといって、実際には下記のようなクラス構成となる。（EntityPK.javaが複合キー）
 @Entity public class Entity { @EmbeddedId private EntityPK entityPK; public EntityPK getEntityPK() { return entityPK; } }  @Embeddable public class EntityPK implements Serializable { @Column private Integer key1; @Column private Integer key2; }  CriteriaQueryでSQLを構築 この複合キーがあるエンティティに対してCriteriaQueryを使ってSQLを構築する。
