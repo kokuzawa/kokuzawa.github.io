@@ -1,0 +1,310 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Java on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/java/</link>
+    <description>Recent content in Java on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 22 Dec 2013 09:20:55 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JAX-RSで複数ファイルをアップロードするには</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/</link>
+      <pubDate>Sun, 22 Dec 2013 09:20:55 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/</guid>
+      <description>この記事はJava Advent Calendar 2013の22日目の記事です。
+昨日は@nagaseyasuhitoさんの「mvn siteのtips三連発」でした。
+明日は monzou さんです。
+ファイルアップロードを実現するために何を使っていますか？
+私はもっぱらJAX-RSを使っています。
+ファイルアップロードはAX-RSの仕様には含まれていないのですが、ほとんどの実装でサポートされているようです。 その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。
+今回利用したJerseyはGlassFish4に含まれているものを利用します。
+ライブラリとしては以下のjarになります。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.jersey.media&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jersey-media-multipart&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.4.1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。
+&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=UTF-8&amp;quot;/&amp;gt; &amp;lt;title&amp;gt;JAX-RS upload multiple files example&amp;lt;/title&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;form enctype=&amp;quot;multipart/form-data&amp;quot; method=&amp;quot;post&amp;quot; action=&amp;quot;rest/upload/multipleFiles&amp;quot;&amp;gt; &amp;lt;div&amp;gt;&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;file&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;div&amp;gt;&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;file&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Upload&amp;quot;&amp;gt; &amp;lt;/form&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;  で、実際にリクエストを受け取るJavaのコード。
+package org.katsumi.resources; import org.glassfish.jersey.media.multipart.FormDataBodyPart; import org.glassfish.jersey.media.multipart.FormDataParam; import javax.ws.rs.Consumes; import javax.ws.rs.POST; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.</description>
+    </item>
+    
+    <item>
+      <title>JSF 2.2 でさらに便利になったMarkupを使ってみよう</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/</link>
+      <pubDate>Tue, 17 Dec 2013 00:12:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/</guid>
+      <description>この記事は、Java EE Advent Calendar 2013の18日目の記事です。
+昨日は @yumix_h さんの私がJava EE開発の現場から学んだことでした。
+明日は誕生日の @aoetk さんです。
+みなさんJSF使ってますか？
+JSFってちょっと取っ付きにくいところがありますよね。でもそんなJSFもバージョンが2.2になって、 ちょっと良い感じになってきたので使ってみませんか、 ということでJSFのマークアップについて書いてみたいと思います。
+デザイナーとプログラマの作業の分担 JSFはデザイナーとプログラマで作業が分担できるということを良く聞きます。 デザイナーを雇うほど大きなプロジェクトでJSFを使ったことがないし、 分担しているということもあまり見聞きしませんが、実際この分担というのはどういうことなんでしょう？
+デザイナーはHTMLは分かりますがJSFはわかりません。
+プログラマはHTMLもJSFも分かりますが、デザインセンスはそれを専属でやっているデザイナーのほうに 一日の長があると思うので、素直にデザインは任せた方が良いでしょう。
+このようにHTMLしか分からない人が、HTMLに注力できるようにするには、 そのファイルがHTMLとして認識、つまりAPサーバーを経由しなくても、ブラウザでレイアウトが表示できる必要があります。 昔のJSPのように、JSPのタグやスクリプトレットで動的にレイアウトをするようにしていると、 ブラウザでレイアウトが表示できないのでダメということですね。
+JSFはFaceletsというテンプレートエンジンを取り込んでいるので、 特別なファイルではなく、XHTMLとして画面を作ることができます。 そのため、JSFのコンポーネントを埋め込まなければ、このままブラウザで表示することができます。
+ですが、何も埋め込まないのでは静的なHPと何も変わらないので、 JSFのコンポーネントを埋め込んでいく必要があり、下記のようなコンポーネントを埋め込んでしまうと、 デザイナーが理解できない状態、ブラウザでレイアウトを確認できない状態になってしまいます。
+&amp;lt;h:commandButton value=&amp;quot;OK&amp;quot; action=&amp;quot; #{managedBean.doAction}&amp;quot;/&amp;gt;  ではどうしたら良いのでしょう？
+JSF 2.1 JSF 2.1では、例えば下記のようにHTMLのタグにJSFのコンポーネント名を設定することによって、 JSFのコンポーネントとして認識させることができます。もちろんJSF 2.2でもできます。
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;OK&amp;quot; jsfc=&amp;quot;h:commandButton&amp;quot; action=&amp;quot;#{managedBean.doAction}&amp;quot;/&amp;gt;  これをブラウザで表示してみます。
+h:commandButtonの方は見事に表示されませんが、jsfc属性で書いた方は普通のボタンとして表示されています。
+JSF 2.2 jsfc属性でJSFコンポーネントをHTMLとして認識させるのには十分でしたが、 それぞれのJSFコンポーネント名をいちいち記載するのは面倒でした。コンポーネント名を正確に覚えていなければならないし&amp;hellip;。 JSF 2.2ではそこがさらに改善され、下記のようにコンポーネント名を書かなくても、JSFコンポーネントとして認識してくれるようになりました。 namespaceはxmlns:jsf=&amp;quot;http://xmlns.jcp.org/jsf&amp;quot;です。
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;OK&amp;quot; jsf:action=&amp;quot;#{managedBean.doAction}&amp;quot;/&amp;gt;  詳しくはJava EE 7 Tutorialを参考にしてください。</description>
+    </item>
+    
+    <item>
+      <title>IntelliJ IDEA 13で作るJavaFXアプリケーション</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/</link>
+      <pubDate>Sun, 08 Dec 2013 00:15:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/</guid>
+      <description>この記事は、JavaFX Advent Calendar 2013の8日目です。
+昨日は@aoetkさんのListViewやTableViewのセルをカスタマイズする方法でした。
+明日は@sk44_さんです。
+祝！IntelliJ IDEA 13 リリース IntelliJ IDEA 13 が 12月3日にリリースされました！めでたいですね！
+たぶん説明はいらないと思うので書きませんが、Java界隈の人なら知る人ぞ知る素敵なIDEです。
+IntelliJの最新版であるver.13はJavaFXもサポートされているので、 今回はこれを使ってJavaFXの簡単なアプリケーションを作ってみたいと思います。
+6日目の記事で@khasunumaさんが書かれた、 「e(fx)clipseで作るJavaFXアプリケーション」のIntelliJ版ですね。
+早速作ってみる IntelliJを初めて起動すると以下のような画面が表示されるので、右側にある「Create New project」を選択します。
+今度はプロジェクトの作成画面が表示されるので、 左側からプロジェクトのタイプとして「JavaFX Application」を選択、右側の「Project name」に任意のプロジェクト名を入れます。 今回は「HelloJavaFX」という名前にしました。
+Finishボタンをクリックすると、プロジェクトが作られます。 プロジェクトには簡単なファイルが3つ用意されていて、それぞれ以下のような内容になっています。
+Mainクラスがちゃんと書かれているのでこれだけでも動きます。 初めてJavaFXのアプリケーションを作る人に必要最低限のファイルとコードを示すのに十分です。 これ以上のコードがあると、本来は不必要なものまで必要だと勘違いしてしまうと思います。 ただControllerとFXMLは空っぽなので、このままだと枠しか表示されなくて面白くない&amp;hellip;。
+ボタンをクリックしたら文字を表示するというぐらいはやりたいので、 ボタンとラベルをFXMLに追加していきます。
+&amp;lt;?import javafx.geometry.Insets?&amp;gt; &amp;lt;?import javafx.scene.layout.GridPane?&amp;gt; &amp;lt;?import javafx.scene.control.Button?&amp;gt; &amp;lt;?import javafx.scene.control.Label?&amp;gt; &amp;lt;GridPane fx:controller=&amp;quot;sample.Controller&amp;quot; xmlns:fx=&amp;quot;http://javafx.com/fxml&amp;quot; alignment=&amp;quot;center&amp;quot; hgap=&amp;quot;10&amp;quot; vgap=&amp;quot;10&amp;quot;&amp;gt; &amp;lt;Label fx:id=&amp;quot;label&amp;quot; GridPane.columnIndex=&amp;quot;0&amp;quot; GridPane.rowIndex=&amp;quot;0&amp;quot;/&amp;gt; &amp;lt;Button fx:id=&amp;quot;button&amp;quot; text=&amp;quot;OK&amp;quot; onAction=&amp;quot;#click&amp;quot; GridPane.columnIndex=&amp;quot;0&amp;quot; GridPane.rowIndex=&amp;quot;1&amp;quot; GridPane.halignment=&amp;quot;CENTER&amp;quot;/&amp;gt; &amp;lt;/GridPane&amp;gt;  ちなみに、以下のような感じでちょっとだけ入力すると補完候補が出てきます。 この辺はIntelliJ様々です。他のIDEもできるのかもしれないですけど。
+次はControllerに動作を書いていきます。
+package sample; import javafx.</description>
+    </item>
+    
+    <item>
+      <title>JUnitでJPAのテスト</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/</link>
+      <pubDate>Sun, 03 Nov 2013 01:39:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/</guid>
+      <description>JPAで作ったデータアクセスクラスのテストをJUnitで作る際に、EntityManagerの扱いが問題になってきます。 プロダクトコードだと、PersistenceUnitのtransactionTypeをJTAとするため、 この設定のままユニットテストを実行には、APサーバが起動している必要があります。 この状態だとJenkinsに食わせたりするときに色々大変だし、 そもそもテスト用にはデータベースを別にしたいので、設定をテスト時だけ書き直す必要が出てきて面倒です。 そこでプロダクトコードとテストコードで参照するPersistenceUnitを変更するようにしてみました。
+ファイル構成 ファイルは下記のように、プロダクトコードとテストコード用にそれぞれpersistence.xmlを用意します。
+root └ src ├ main │ ├ java │ │ ├ Account.java │ │ └ AccountFacade.java │ └ resources │ └ META-INF │ └ persistence.xml └ test ├ java │ └ AccountFacadeTest.java └ resources └ META-INF └ persistence.xml  プロダクトコードのpersistence.xmlはこんな感じ。 transaction-typeをJTAにしているので、jta-data-sourceにAPサーバで設定したデータソース名を指定しています。
+persistence.xml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;persistence xmlns=&amp;quot;http://java.sun.com/xml/ns/persistence&amp;quot; version=&amp;quot;2.0&amp;quot;&amp;gt; &amp;lt;persistence-unit name=&amp;quot;mytestPU&amp;quot; transaction-type=&amp;quot;JTA&amp;quot;&amp;gt; &amp;lt;jta-data-source&amp;gt;jdbc/mytest&amp;lt;/jta-data-source&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;property name=&amp;quot;eclipselink.ddl-generation&amp;quot; value=&amp;quot;create-tables&amp;quot;/&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;/persistence-unit&amp;gt; &amp;lt;/persistence&amp;gt;  テストコードのpersistence.xmlはこんな感じ。 プロダクトコードとは違い、APサーバが起動していなくてもユニットテストが実行できるように transaction-typeをRESOURCE_LOCALにしています。</description>
+    </item>
+    
+    <item>
+      <title>springframeworkのjarファイル一式をダウンロードするには？</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</link>
+      <pubDate>Tue, 15 Oct 2013 00:16:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</guid>
+      <description>久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。 サイトは今風になって素敵なんだけど。
+MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。 Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。 Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。
+Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。 maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。
+distribution.xml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;assembly xmlns=&amp;quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&amp;quot;&amp;gt; &amp;lt;id&amp;gt;distribution&amp;lt;/id&amp;gt; &amp;lt;formats&amp;gt; &amp;lt;format&amp;gt;zip&amp;lt;/format&amp;gt; &amp;lt;/formats&amp;gt; &amp;lt;dependencySets&amp;gt; &amp;lt;dependencyset&amp;gt; &amp;lt;unpack&amp;gt;false&amp;lt;/unpack&amp;gt; &amp;lt;scope&amp;gt;runtime&amp;lt;/scope&amp;gt; &amp;lt;outputDirectory&amp;gt;/out&amp;lt;/outputDirectory&amp;gt; &amp;lt;/dependencyset&amp;gt; &amp;lt;/dependencySets&amp;gt; &amp;lt;/assembly&amp;gt;  ファイルの内容を簡単に説明すると、format には出力形式として zip, tar, tar.gz が指定できる。 unpack では、取得する jar ファイルを解凍して一つの jar とするかどうかを指定する。 scope は、Maven の dependency の scope と同じ意味なので、必要な値を指定、 outputDirectory は zip の出力先を指定する。
+次にpom.xmlにプラグインの追加とdistribution.xmlの場所を定義する必要がある。
+pom.xml:
+&amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;maven-assembly-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.2.1&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;descriptors&amp;gt; &amp;lt;descriptor&amp;gt;distributions.xml&amp;lt;/descriptor&amp;gt; &amp;lt;/descriptors&amp;gt; &amp;lt;/configuration&amp;gt; &amp;lt;/plugin&amp;gt; &amp;lt;/plugins&amp;gt; &amp;lt;/build&amp;gt;  Spring Framework のライブラリはリポジトリを別途指定する必要があるので、それを pom.</description>
+    </item>
+    
+    <item>
+      <title>JDBCRealmのパッケージが変更 #glassfish-4</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</link>
+      <pubDate>Sun, 30 Jun 2013 11:09:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</guid>
+      <description>GlassFish-4.0からJDBCRealmクラスのパッケージが変更になった。
+今までのパッケージは下記の通り。
+com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm  GlassFish-4.0からは下記のパッケージとなる。
+com.sun.enterprise.security.ee.auth.realm.jdbc.JDBCRealm  Embeddedとして利用しているとかじゃないとあまり影響はないかもしれない。</description>
+    </item>
+    
+    <item>
+      <title>JavaEE 7 リリース！</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/</link>
+      <pubDate>Fri, 14 Jun 2013 01:53:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/</guid>
+      <description>JavaEE 7 がというかGlassFish 4 がリリースされた。
+会社でテストサーバとして使っているのは、GlassFish 3.1.2.2 なので早速入れ替えてみた。 余談だが運用サーバはTomcatなので、どちらかというとテストサーバの方が性能が良い。
+で、意気揚々と起動してみた訳なのだが、起動できない。
+理由は単純で、GlassFish 4 はJDK7が必須にもかかわらず、プロジェクトのJDKのバージョンがJDK6なのである。 まあコンパイル時にサーバのクラスのバージョンよりも古いバージョンでコンパイルしているよ、という警告が出ていたので 何となくは思っていたのだが、改めて起動できないとちょっとショックではある。
+ひとまず、DataSourceの設定が今までと同じように出来ることは確認したので、 それについて書こうと思う。
+ドライバの配置 GlassFishで利用できるJDBCドライバには下記のものがある。
+Administration Guide:
+ ■ IBM DB2 Database Type 2 Driver
+■ IBM DB2 Database Type 4 Driver
+■ Java DB/Derby Type 4 Driver
+■ MySQL Server Database Type 4 Driver
+■ Oracle 10 Database Driver
+■ Oracle 11 Database Driver
+■ PostgreSQL Type 4 Driver
+■ DataDirect Type 4 Driver for IBM DB2 Database</description>
+    </item>
+    
+    <item>
+      <title>JSF2.0でCSSリソース内の画像を読み込む</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</link>
+      <pubDate>Mon, 10 Jun 2013 03:10:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</guid>
+      <description> JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。
+Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。
+フォルダ構成は次のようになっています。（Mavenです）
+root +-- src +-- webapp +-- resources +-- css | +-- bootstrap.min.css +-- img +-- glyphicons-halflings.png  JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。
+&amp;lt;h:outputStylesheet library=&amp;quot;css&amp;quot; name=&amp;quot;bootstrap.min.css&amp;quot;/&amp;gt;  このとき、bootstrap.min.css内のイメージのパスは../img/glyphicons-halflings.pngとなっていますが、 このままでは画像が読み込まれません。まあ、パスからも明らかですね。
+問題を解決するには次のように、イメージのパスを変更する必要があります。
+background-image:url(&amp;quot;#{resource[&#39;img/glyphicons-halflings.png&#39;]}&amp;quot;)  Jun 20, 2013 追記 twitterで@den2snさんに教えてもらったのですが、outputStylesheetを下記のようにlibraryを削除して宣言することにより、 bootstrap.min.cssを書き換えなくても良くなります。
+&amp;lt;h:outputStylesheet name=&amp;quot;css/bootstrap.min.css&amp;quot;/&amp;gt;  </description>
+    </item>
+    
+    <item>
+      <title>cookie on java web start (JWS)</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/06/07/cookie-on-jnlp/</link>
+      <pubDate>Fri, 07 Jun 2013 01:41:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/06/07/cookie-on-jnlp/</guid>
+      <description>今更感がありますが、JWSでのcookieの扱い、というかjsessionidの扱いについて。
+JWSからサーバへの最初のアクセスでjsessionidの指定が無いと、サーバでjsessionidが発行されます。 すると、JWSからのそれ以降のアクセスには、その生成されたjsessionidがcookieとしてサーバに送信されます。 これは良く出来た仕組みで、プログラマが意識しなくてもセッションを継続することが可能になります。 ただ、自動でjsessionidを送信してしまうため、意図したセッションを継続させることが出来ないことがあります。
+任意のjsessionidを送信したい 前提として以下のことが成り立っているとします。
+ 認証はプラウザで行う 認証状態をセッションで維持している  JWSでもその認証状態を維持したい、つまり認証されていなければJWSを操作させたくない場合、 簡単な方法としてJWS起動時にsessionidを渡せば、JWSからのリクエストにjsessionidを付与することが可能になり、 認証状態のあるセッションを継続することが出来るようになります。
+例えば、以下のようにJWSからHttpURLConnectionを利用してリクエストを送信するケースですが、 HttpURLConection#setRequestProperty(String, String)を使うことによってcookieにjsessionidを含めることが可能です。 もちろん、URLの最後に;jsessionid=XXXXXという形でjsessionidを付けても問題ありません。 ちなみに、URLの最後に付けるのと、setRequestPropertyでの設定と両方の指定がある場合は、 setRequestPropertyの方が優先されます。
+final HttpURLConnection connection = (HttpURLConnection) new URL(&amp;quot;http://localhost/mycontext&amp;quot;).openConnection(); connection.setRequestProperty(&amp;quot;Cookie&amp;quot;, &amp;quot;JSESSIONID=&amp;quot; + sessionid);  このリクエストがJWSからの最初のリクエストでは無く、かつ最初のリクエストでjsessionidを明示的に送っていない場合、 Cookieには2つのjsessionidが設定された状態でリクエストされます。 サーバではこの2つのjsessionidのうち、最初に設定されている方を有効と見なして処理が行われます。 よって、上記コードで明示的に設定したjsessionidが無視されることになります。
+では、このケースで明示的に設定したjsessionidを有効にするにはどうしたら良いのか。
+自動で設定されるcookieを無効にする 自動で設定されるcookieはCookieHandlerで設定されるようです。 なので、このCookieHandlerを機能させなくすれば、cookieが自動で設定されなくなるはず。 というわけで、下記のコードを追加します。
+CookieHandler.setDefault(null);  これでcookieの自動設定が行われないはずなのですが、実はこのメソッド、セキュリティが all-permissionsでないと、AccessControlExceptionがスローされてしまいます。 JWSでall-permissionsにするには、jarファイルに署名しなければなりません。
+最後に jarファイルに署名できないような政治的な事情がある場合はこの方法が取れないので、 JWSからの最初のリクエストにちゃんとjsessionidが付与されるようにしましょう。
+まあ、署名するための証明書もオレオレ証明書じゃない場合は、 それなりに費用もかかるので、署名できないことも多い訳ですが&amp;hellip; :P
+それにしても、JNLPのこととか、JWSなどの記事が軒並み古いので、 もうほとんど使われてないのかなぁと思ったりした快晴の木曜日でした。
+enjoy!</description>
+    </item>
+    
+    <item>
+      <title>jersey on glassfish-4</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/03/24/jersey-on-glassfish4/</link>
+      <pubDate>Sun, 24 Mar 2013 12:32:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/03/24/jersey-on-glassfish4/</guid>
+      <description>GlassFish-4を使ってみたらJerseyのパッケージが変わってた。 GlassFish-3.1.2.2までは以下のようにcom.sunパッケージにあるJerseyのサーブレットがロードできていたけど、
+&amp;lt;servlet-name&amp;gt;jersey-serlvet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;com.sun.jersey.spi.container.servlet.ServletContainer&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt;  GlassFish-4ではcom.sunパッケージにJerseyはなく、org.glassfishのパッケージとなっている。
+&amp;lt;servlet-name&amp;gt;jersey-serlvet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;org.glassfish.jersey.servlet.ServletContainer&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt;  </description>
+    </item>
+    
+    <item>
+      <title>Performance of JPA</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</link>
+      <pubDate>Sun, 27 Jan 2013 12:08:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</guid>
+      <description> JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
+数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
+アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
+コード 検証に利用するコードは下記の通り。 Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、 永続化されたBookエンティティのうち、bookname=&#39;name1&#39;のレコードを抽出する。 また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。
+ 検証 まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。 約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。 簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、 tachされたエンティティの数が増加すると、それに比例して劣化していく。
+次に改善後の結果。 約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。
+改善方法 では、何をすれば改善するのか。 結論から言えば、エンティティをdetachすれば良い。 detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。 そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、 あとでEclipseLinkのソースコードを確認してみようと思う。 ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。
+検証コードでは、ループ内の最後に下記2行を追加した。
+em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。 ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、 片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。
+ちなみにflushやclearに関しては次の本が詳しい。
+ </description>
+    </item>
+    
+    <item>
+      <title>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</link>
+      <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</guid>
+      <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
+(Bootstrapのalert alert-errorを適用)
+これに対してTableレイアウトは以下のような出力になります。
+どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。 MessagesコンポーネントはHTMLをカスタマイズする事ができません。 正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、 そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、 com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。 もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。 そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。
+BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。 このクローズボタンをクリックする事により、エラー情報を消すことができます。 クローズボタンを出すには、HTMLを下記のように記載する必要があります。
+&amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;Summary Message&amp;lt;/h4&amp;gt; Detail Message &amp;lt;/div&amp;gt;  これをJSF合成コンポーネントにします。 webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)
+alert.xhtml:
+&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt; &amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xmlns:cc=&amp;quot;http://java.sun.com/jsf/composite&amp;quot; xmlns:c=&amp;quot;http://java.sun.com/jsp/jstl/core&amp;quot;&amp;gt; &amp;lt;!-- INTERFACE --&amp;gt; &amp;lt;cc:interface&amp;gt; &amp;lt;/cc:interface&amp;gt; &amp;lt;!-- IMPLEMENTATION --&amp;gt; &amp;lt;cc:implementation&amp;gt; &amp;lt;c:forEach var=&amp;quot;message&amp;quot; items=&amp;quot;#{facesContext.messageList}&amp;quot;&amp;gt; &amp;lt;c:if test=&amp;quot;#{message.severity == &#39;ERROR 2&#39;}&amp;quot;&amp;gt; &amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;#{message.</description>
+    </item>
+    
+    <item>
+      <title>Point-to-Point on JMS</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</link>
+      <pubDate>Sat, 15 Dec 2012 15:50:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</guid>
+      <description>JavaEE Advent Calendar 2012の15日目のエントリーです。
+昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
+明日は@akirakoyasuさんです。
+普段は使わないJMSを使う おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。 世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。 分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。 おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。
+そんな事もあって、JMSの知識が皆無だったわけですが、 JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。
+必要なもの  GlassFish-3.1.2.2 jms-api-1.1-rev-1.jar  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;javax.jms&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jms-api&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.1-rev-1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;   imq-4.5.2.jar  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.mq&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;imq&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.5.2&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、 今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。 また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、 こちらも容易に入手可能です。
+事前準備 GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、 ポートへのアクセスを許可する必要があるかもしれません。
+メッセージプロデューサーを作る メッセージを送信するプロデューサーを作ります。
+package jp.co.baykraft.jmsexample; import com.sun.messaging.ConnectionConfiguration; import com.sun.messaging.QueueConnectionFactory; import javax.jms.JMSException; import javax.jms.Queue; import javax.jms.QueueConnection; import javax.jms.QueueSender; import javax.jms.QueueSession; import javax.</description>
+    </item>
+    
+    <item>
+      <title>WiiRemoteJで遊ぼう on OSX 10.8.7</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</link>
+      <pubDate>Tue, 11 Dec 2012 01:46:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</guid>
+      <description>Java Advent Calendar 2012の11日目のエントリーです。
+昨日は@cero_tさんです。
+明日は@snuffkinさんです。
+クリスマスだから楽しいことをしよう ということで、WiiUも発売したことだし、今更ながら、WiiRemoteJを取り上げてみたいと思います。 WiiRemoteJはBluetoothを利用して、WiiリモコンでJavaのアプリを操作するためのライブラリです。 最新版はv1.6というのがあるようなのですが、見つけることができなかったため、v1.4を使ってみたいと思います。
+OSX 10.8.7 Mountain Lionで動かす 今回やりたいことは、Macbook Pro上にWiiリモコンのレシーバーとなるアプリを起動し、 Wiiリモコンを使ってそのアプリを操作する、ということです。 レシーバーアプリは下記2つのライブラリが必要になります。
+ BlueCove.jar WiiRemoteJ.jar  BlueCoveはJavaのBluetoothを利用する為のAPIの規約であるJSR-82の実装ライブラリです。 WiiRemoteJを動かす為に必要になります。 BlueCoveの最新版は2.1.0です。ところがこのBlueCove-2.1.0、Mountain Lion上では動かす事ができません。 Mountain Lionで動かす為には、まだ正式にリリースされていないBlueCove-2.1.1-SNAPSHOTを利用する必要があります。
+ただ、この2.1.1-SNAPSHOTも問題があります。 BlueCoveはBluetoothにアクセスする為に/System/Library/Frameworks/IOBluetooth.frameworkというフレームワークを利用しているのですが、 BlueCove-2.1.1-SNAPSHOTはこのIOBluetooth.frameworkに対応できていないため、実行時にエラーが発生してしまいます。
+という訳で、このままでは実行できそうにありません。 そこで、ここで提供されている、 BlueCove-2.1.1-SNAPSHOTで操作できるIOBluetooth.frameworkに置き換えることにします。 置き換える事により、他のアプリで問題が発生するかもしれません。 置き換える前に、元のIOBluetooth.frameworkのバックアップを作る事をお勧めします。
+さあ、ここまでできれば、あとはレシーバーを作るだけです。
+レシーバーを実装する 下記が実装コードになります。動作は単純で、1ボタン、2ボタン、マイナスボタン、プラスボタン、Aボタン、Bボタン、十字キーを押した場合は、 それを標準出力に表示、ホームボタンを押したらレシーバーを終了します。
+import java.io.IOException; import java.util.logging.Level; import java.util.logging.Logger; import wiiremotej.WiiRemote; import wiiremotej.WiiRemoteJ; import wiiremotej.event.WRAccelerationEvent; import wiiremotej.event.WRButtonEvent; import wiiremotej.event.WRStatusEvent; import wiiremotej.event.WiiRemoteAdapter; import wiiremotej.event.WiiRemoteDiscoveredEvent; import wiiremotej.event.WiiRemoteDiscoveryListener; /** * WiiRemoteJサンプルアプリ * @author Katsumi */ public class Wii extends WiiRemoteAdapter implements WiiRemoteDiscoveryListener { private WiiRemote _remote; public static void main(String.</description>
+    </item>
+    
+    <item>
+      <title>OpenJFXをコンパイルしようとして挫折した記録</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</link>
+      <pubDate>Fri, 07 Dec 2012 21:05:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</guid>
+      <description>JavaFX Advent Calendar 2012の7日目のエントリーです。
+昨日は@fukai_yasさんの「AppletでFXMLを使って罠にハマる」です。
+明日は@btnrougeさんです。
+JOptionPaneが使いたい JavaFX 2.2.3で業務に利用する簡単なツールを作っていたのですが、入力エラーを通知する為に、 SwingでいうところのJOptionPane相当のものを探したのですがみつかりませんでした。 誰か知っている人はいないだろうかとTwitterでつぶやいてみたところ、@skrbさんよりこんなお返事を頂きました。
+@kokuzawa Project Sandboxというのがあって、そこでJOptionPaneのように使えるDialogクラスを提供してますよ。正式にはJavaFX 8で入る予定です。 http://t.co/w6AswYKA
+&amp;mdash; Yuichi Sakuraba (@skrb) 2012年11月30日 
+Project SandboxでJOptionPane相当のDialogsクラスが提供されているということ。JavaFX 8 に入るらしい。 すばらしい！すばらしいけど、今使いたい。そこでひとまずProject Sandboxを動かしてみる事にしました。
+OpenJFXをビルドする Project SandboxはOpenJFXのSandboxプロジェクトで、これを利用する為には、Mercurialに登録されているソースをコンパイルする必要があるようです。 そこでOpenJFXのページに書かれているビルド手順を実行します。 でもこれ、記述が古い。JDKのフォルダ構成とか、今のものとはかなり違う。さて困った。
+そこで新たな情報を求めていると、Building OpenJFXという、 まさに望んだ通りのページがありました。手順は次のようになります。 また、コンパイルにはJDK 8 が必要です。
+ mkdir -p ~/open-jfx cd ~/open-jfx hg clone http://hg.openjdk.java.net/openjfx/8/master cd master mkdir -p artifacts/sdk/rt/lib cp -r &amp;lt;PATH TO JDK&amp;gt;/jre/lib/jfxrt.jar artifacts/sdk/rt/lib hg clone http://hg.openjdk.java.net/openjfx/8/master/rt cd rt ant  今度こそ、コンパイル出来そうな感じです。最後のantを実行すると、何個かのモジュールのjarが出来上がっていきます。 が、javafx-ui-commonというモジュールのコンパイルが通りません。JDKのバージョンの問題かもしれないと思ったのですが、 JDK 8 はJDK 8 b65というもので、この時点では最新のものです。 ここで1日試行錯誤を繰り返したものの、解決の糸口はなく、ビルドはあきらめる事にしました。</description>
+    </item>
+    
+    <item>
+      <title>GlassFish3.1.2へのデプロイ時のエラー</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</link>
+      <pubDate>Sat, 10 Nov 2012 07:44:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</guid>
+      <description>java.util.concurrent.ExecutionException: com.sun.faces.config.ConfigurationException: Unable to parse document &amp;lsquo;bundle://213.0:1/com/sun/faces/jsf-ri-runtime.xml&amp;rsquo;: DTD factory class org.apache.xerces.impl.dv.dtd.DTDDVFactoryImpl does not extend from DTDDVFactory.
+ JSFを利用していると発生しているようなので、warファイル内のjavax.faces-2.1.4.jarを取り除いて再度デプロイ。でも変化なし。 （JSFのライブラリはGlassFishに含まれている。バージョンはわからないけど）
+何度か再デプロイをしていると起動できるので、それほど真剣に調べていなかったけど、本腰をいれて調べてみることにした。
+結果 ログを見るとorg.apache.xerces.impl.dv.dtd.DTDDVFactoryImpl関係でエラーが発生してbundle://213.0:1/com/sun/faces/jsf-ri-runtime.xmlがパースできないことがわかる。
+っていうかbundle://213.0:1/com/sun/faces/jsf-ri-runtime.xmlって何だろう？ひとまずこれについてはあとで調査。
+おそらくGlassFishで利用しているXMLパーサとぶつかっているせいだと思う。warファイル内からxercesImpl-2.8.1.jarを取り除いてデプロイしたところ正常に起動ができた。 取り除いても正常に起動できたのでXMLパーサがGlassFishに含まれてるのは間違いないと推測できるが、GlassFishのどこにXMLパーサが含まれているのかがわからない。
+追記: Nov 11, 2012 運用環境はTomcatだからxercesImpl-2.8.1.jarを取り除いちゃダメなんじゃないかと思う。</description>
+    </item>
+    
+    <item>
+      <title>複合キーを使ったOrderBy</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</link>
+      <pubDate>Wed, 07 Nov 2012 00:56:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</guid>
+      <description>JPAで複合キークラスを使ってOrderByをやろうとしたら、メタデータの設定方法が分からなかったんだけど、分かってみれば簡単な話だった。
+複合キーって何？ JPAのエンティティには複数の@Idアノテーションが付与できないので、DBのテーブルに主キーが複数ある場合はその主キーをひとまとめにしたクラスを作成する。エンティティ上では、@EmbeddedIdアノテーションを付与すれば、その作成クラスを主キーとして指定できる。これを複合キーといって、実際には下記のようなクラス構成となる。（EntityPK.javaが複合キー）
+@Entity public class Entity { @EmbeddedId private EntityPK entityPK; public EntityPK getEntityPK() { return entityPK; } }  @Embeddable public class EntityPK implements Serializable { @Column private Integer key1; @Column private Integer key2; }  CriteriaQueryでSQLを構築 この複合キーがあるエンティティに対してCriteriaQueryを使ってSQLを構築する。
+final CriteriaBuilder cb = entityManager.getCriteriaBuilder(); final CriteriaQuery&amp;lt;Entity&amp;gt; query = cb.createQuery(Entity.class); final Root&amp;lt;Entity&amp;gt; root = query.from(Entity.class); query.select(root).orderBy(cb.asc(root.get(Entity_.entityPK) .get(EntityPK_.key1)));  ここでポイントとなるのが、key1でソートしようとした場合、いきなり cb.asc(root.get(EntityPK_.key1)) と指定はできないので、 cb.asc(root.get(Entity_.entityPK).get(EntityPK_.key1)) のように連鎖した呼び出しにする必要がある、ということ。</description>
+    </item>
+    
+  </channel>
+</rss>

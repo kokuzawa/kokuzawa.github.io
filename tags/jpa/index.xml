@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jpa on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/jpa/</link>
+    <description>Recent content in Jpa on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 03 Nov 2013 01:39:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/jpa/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JUnitでJPAのテスト</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/</link>
+      <pubDate>Sun, 03 Nov 2013 01:39:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/</guid>
+      <description>JPAで作ったデータアクセスクラスのテストをJUnitで作る際に、EntityManagerの扱いが問題になってきます。 プロダクトコードだと、PersistenceUnitのtransactionTypeをJTAとするため、 この設定のままユニットテストを実行には、APサーバが起動している必要があります。 この状態だとJenkinsに食わせたりするときに色々大変だし、 そもそもテスト用にはデータベースを別にしたいので、設定をテスト時だけ書き直す必要が出てきて面倒です。 そこでプロダクトコードとテストコードで参照するPersistenceUnitを変更するようにしてみました。
+ファイル構成 ファイルは下記のように、プロダクトコードとテストコード用にそれぞれpersistence.xmlを用意します。
+root └ src ├ main │ ├ java │ │ ├ Account.java │ │ └ AccountFacade.java │ └ resources │ └ META-INF │ └ persistence.xml └ test ├ java │ └ AccountFacadeTest.java └ resources └ META-INF └ persistence.xml  プロダクトコードのpersistence.xmlはこんな感じ。 transaction-typeをJTAにしているので、jta-data-sourceにAPサーバで設定したデータソース名を指定しています。
+persistence.xml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;persistence xmlns=&amp;quot;http://java.sun.com/xml/ns/persistence&amp;quot; version=&amp;quot;2.0&amp;quot;&amp;gt; &amp;lt;persistence-unit name=&amp;quot;mytestPU&amp;quot; transaction-type=&amp;quot;JTA&amp;quot;&amp;gt; &amp;lt;jta-data-source&amp;gt;jdbc/mytest&amp;lt;/jta-data-source&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;property name=&amp;quot;eclipselink.ddl-generation&amp;quot; value=&amp;quot;create-tables&amp;quot;/&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;/persistence-unit&amp;gt; &amp;lt;/persistence&amp;gt;  テストコードのpersistence.xmlはこんな感じ。 プロダクトコードとは違い、APサーバが起動していなくてもユニットテストが実行できるように transaction-typeをRESOURCE_LOCALにしています。</description>
+    </item>
+    
+    <item>
+      <title>Performance of JPA</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</link>
+      <pubDate>Sun, 27 Jan 2013 12:08:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</guid>
+      <description> JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
+数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
+アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
+コード 検証に利用するコードは下記の通り。 Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、 永続化されたBookエンティティのうち、bookname=&#39;name1&#39;のレコードを抽出する。 また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。
+ 検証 まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。 約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。 簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、 tachされたエンティティの数が増加すると、それに比例して劣化していく。
+次に改善後の結果。 約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。
+改善方法 では、何をすれば改善するのか。 結論から言えば、エンティティをdetachすれば良い。 detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。 そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、 あとでEclipseLinkのソースコードを確認してみようと思う。 ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。
+検証コードでは、ループ内の最後に下記2行を追加した。
+em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。 ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、 片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。
+ちなみにflushやclearに関しては次の本が詳しい。
+ </description>
+    </item>
+    
+    <item>
+      <title>複合キーを使ったOrderBy</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</link>
+      <pubDate>Wed, 07 Nov 2012 00:56:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</guid>
+      <description>JPAで複合キークラスを使ってOrderByをやろうとしたら、メタデータの設定方法が分からなかったんだけど、分かってみれば簡単な話だった。
+複合キーって何？ JPAのエンティティには複数の@Idアノテーションが付与できないので、DBのテーブルに主キーが複数ある場合はその主キーをひとまとめにしたクラスを作成する。エンティティ上では、@EmbeddedIdアノテーションを付与すれば、その作成クラスを主キーとして指定できる。これを複合キーといって、実際には下記のようなクラス構成となる。（EntityPK.javaが複合キー）
+@Entity public class Entity { @EmbeddedId private EntityPK entityPK; public EntityPK getEntityPK() { return entityPK; } }  @Embeddable public class EntityPK implements Serializable { @Column private Integer key1; @Column private Integer key2; }  CriteriaQueryでSQLを構築 この複合キーがあるエンティティに対してCriteriaQueryを使ってSQLを構築する。
+final CriteriaBuilder cb = entityManager.getCriteriaBuilder(); final CriteriaQuery&amp;lt;Entity&amp;gt; query = cb.createQuery(Entity.class); final Root&amp;lt;Entity&amp;gt; root = query.from(Entity.class); query.select(root).orderBy(cb.asc(root.get(Entity_.entityPK) .get(EntityPK_.key1)));  ここでポイントとなるのが、key1でソートしようとした場合、いきなり cb.asc(root.get(EntityPK_.key1)) と指定はできないので、 cb.asc(root.get(Entity_.entityPK).get(EntityPK_.key1)) のように連鎖した呼び出しにする必要がある、ということ。</description>
+    </item>
+    
+  </channel>
+</rss>

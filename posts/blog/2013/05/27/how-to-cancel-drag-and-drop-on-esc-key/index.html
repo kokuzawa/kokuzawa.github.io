@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>how to cancel drag-and-drop on esc key</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="how to cancel drag-and-drop on esc key" />
+<meta property="og:description" content="Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。
+標準機能としてはありませんが、これ以降のバージョンで対応されている可能性もあるという前提になります。
+実はDrag and DropをEscキーを使ってキャンセルできることは知りませんでした。 Windowsでもできるようですが、普段使っているMacでもできることにさっき気がついたぐらいなので、 そんな操作を利用している人は少ないのではないかと思ってました。 ですが、検索してみると意外と多くの人が利用しているようです。
+実装する 機能が無いので実装することにします。
+&lt;?xml version=&quot;1.0&quot;?&gt; &lt;s:Application xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot; xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot; xmlns:mx=&quot;library://ns.adobe.com/flex/mx&quot; creationComplete=&quot;creationComplete(event)&quot;&gt; &lt;fx:Script&gt;&lt;![CDATA[ import mx.events.FlexEvent; import mx.managers.DragManager; import mx.managers.dragClasses.DragProxy; protected function creationComplete(event:FlexEvent):void { addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void { if (event.keyCode == Keyboard.ESCAPE) { DragManager.acceptDragDrop(null); myTree.hideDropFeedback(null); myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP)); var dragProxy:DragProxy = DragManager.mx_internal::dragProxy; if (dragProxy) { dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP)); } } }); } ]]&gt;&lt;/fx:Script&gt; &lt;s:layout&gt; &lt;s:HorizontalLayout/&gt; &lt;/s:layout&gt; &lt;mx:Tree id=&quot;myTree&quot; width=&quot;200&quot; height=&quot;300&quot; dragMoveEnabled=&quot;true&quot; dragEnabled=&quot;true&quot; dropEnabled=&quot;true&quot; labelField=&quot;@label&quot;&gt; &lt;mx:XMLListCollection id=&quot;treeData&quot;&gt; &lt;fx:XMLList&gt; &lt;node label=&quot;Mail Box&quot;&gt; &lt;node label=&quot;Inbox&quot;&gt; &lt;node label=&quot;AAAAA&quot;/&gt; &lt;node label=&quot;BBBBB&quot;/&gt; &lt;node label=&quot;CCCCC&quot;/&gt; &lt;/node&gt; &lt;node label=&quot;Outbox&quot;&gt; &lt;node label=&quot;DDDDD&quot;/&gt; &lt;node label=&quot;EEEEE&quot;/&gt; &lt;/node&gt; &lt;/node&gt; &lt;/fx:XMLList&gt; &lt;/mx:XMLListCollection&gt; &lt;/mx:Tree&gt; &lt;/s:Application&gt;  大したことはしてなくて、重要なのは下記の部分。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/posts/blog/2013/05/27/how-to-cancel-drag-and-drop-on-esc-key/" />
+
+
+
+<meta property="article:published_time" content="2013-05-27T01:12:00&#43;09:00"/>
+
+<meta property="article:modified_time" content="2013-05-27T01:12:00&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="how to cancel drag-and-drop on esc key">
+<meta itemprop="description" content="Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。
+標準機能としてはありませんが、これ以降のバージョンで対応されている可能性もあるという前提になります。
+実はDrag and DropをEscキーを使ってキャンセルできることは知りませんでした。 Windowsでもできるようですが、普段使っているMacでもできることにさっき気がついたぐらいなので、 そんな操作を利用している人は少ないのではないかと思ってました。 ですが、検索してみると意外と多くの人が利用しているようです。
+実装する 機能が無いので実装することにします。
+&lt;?xml version=&quot;1.0&quot;?&gt; &lt;s:Application xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot; xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot; xmlns:mx=&quot;library://ns.adobe.com/flex/mx&quot; creationComplete=&quot;creationComplete(event)&quot;&gt; &lt;fx:Script&gt;&lt;![CDATA[ import mx.events.FlexEvent; import mx.managers.DragManager; import mx.managers.dragClasses.DragProxy; protected function creationComplete(event:FlexEvent):void { addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void { if (event.keyCode == Keyboard.ESCAPE) { DragManager.acceptDragDrop(null); myTree.hideDropFeedback(null); myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP)); var dragProxy:DragProxy = DragManager.mx_internal::dragProxy; if (dragProxy) { dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP)); } } }); } ]]&gt;&lt;/fx:Script&gt; &lt;s:layout&gt; &lt;s:HorizontalLayout/&gt; &lt;/s:layout&gt; &lt;mx:Tree id=&quot;myTree&quot; width=&quot;200&quot; height=&quot;300&quot; dragMoveEnabled=&quot;true&quot; dragEnabled=&quot;true&quot; dropEnabled=&quot;true&quot; labelField=&quot;@label&quot;&gt; &lt;mx:XMLListCollection id=&quot;treeData&quot;&gt; &lt;fx:XMLList&gt; &lt;node label=&quot;Mail Box&quot;&gt; &lt;node label=&quot;Inbox&quot;&gt; &lt;node label=&quot;AAAAA&quot;/&gt; &lt;node label=&quot;BBBBB&quot;/&gt; &lt;node label=&quot;CCCCC&quot;/&gt; &lt;/node&gt; &lt;node label=&quot;Outbox&quot;&gt; &lt;node label=&quot;DDDDD&quot;/&gt; &lt;node label=&quot;EEEEE&quot;/&gt; &lt;/node&gt; &lt;/node&gt; &lt;/fx:XMLList&gt; &lt;/mx:XMLListCollection&gt; &lt;/mx:Tree&gt; &lt;/s:Application&gt;  大したことはしてなくて、重要なのは下記の部分。">
+
+
+<meta itemprop="datePublished" content="2013-05-27T01:12:00&#43;09:00" />
+<meta itemprop="dateModified" content="2013-05-27T01:12:00&#43;09:00" />
+<meta itemprop="wordCount" content="132">
+
+
+
+<meta itemprop="keywords" content="Flex," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="how to cancel drag-and-drop on esc key"/>
+<meta name="twitter:description" content="Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。
+標準機能としてはありませんが、これ以降のバージョンで対応されている可能性もあるという前提になります。
+実はDrag and DropをEscキーを使ってキャンセルできることは知りませんでした。 Windowsでもできるようですが、普段使っているMacでもできることにさっき気がついたぐらいなので、 そんな操作を利用している人は少ないのではないかと思ってました。 ですが、検索してみると意外と多くの人が利用しているようです。
+実装する 機能が無いので実装することにします。
+&lt;?xml version=&quot;1.0&quot;?&gt; &lt;s:Application xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot; xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot; xmlns:mx=&quot;library://ns.adobe.com/flex/mx&quot; creationComplete=&quot;creationComplete(event)&quot;&gt; &lt;fx:Script&gt;&lt;![CDATA[ import mx.events.FlexEvent; import mx.managers.DragManager; import mx.managers.dragClasses.DragProxy; protected function creationComplete(event:FlexEvent):void { addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void { if (event.keyCode == Keyboard.ESCAPE) { DragManager.acceptDragDrop(null); myTree.hideDropFeedback(null); myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP)); var dragProxy:DragProxy = DragManager.mx_internal::dragProxy; if (dragProxy) { dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP)); } } }); } ]]&gt;&lt;/fx:Script&gt; &lt;s:layout&gt; &lt;s:HorizontalLayout/&gt; &lt;/s:layout&gt; &lt;mx:Tree id=&quot;myTree&quot; width=&quot;200&quot; height=&quot;300&quot; dragMoveEnabled=&quot;true&quot; dragEnabled=&quot;true&quot; dropEnabled=&quot;true&quot; labelField=&quot;@label&quot;&gt; &lt;mx:XMLListCollection id=&quot;treeData&quot;&gt; &lt;fx:XMLList&gt; &lt;node label=&quot;Mail Box&quot;&gt; &lt;node label=&quot;Inbox&quot;&gt; &lt;node label=&quot;AAAAA&quot;/&gt; &lt;node label=&quot;BBBBB&quot;/&gt; &lt;node label=&quot;CCCCC&quot;/&gt; &lt;/node&gt; &lt;node label=&quot;Outbox&quot;&gt; &lt;node label=&quot;DDDDD&quot;/&gt; &lt;node label=&quot;EEEEE&quot;/&gt; &lt;/node&gt; &lt;/node&gt; &lt;/fx:XMLList&gt; &lt;/mx:XMLListCollection&gt; &lt;/mx:Tree&gt; &lt;/s:Application&gt;  大したことはしてなくて、重要なのは下記の部分。"/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>how to cancel drag-and-drop on esc key</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        May 27, 2013
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/flex">Flex</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        
+
+<p>Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。<br />
+標準機能としてはありませんが、これ以降のバージョンで対応されている可能性もあるという前提になります。</p>
+
+<p>実はDrag and DropをEscキーを使ってキャンセルできることは知りませんでした。
+Windowsでもできるようですが、普段使っているMacでもできることにさっき気がついたぐらいなので、
+そんな操作を利用している人は少ないのではないかと思ってました。
+ですが、検索してみると意外と多くの人が利用しているようです。</p>
+
+<h2 id="実装する">実装する</h2>
+
+<p>機能が無いので実装することにします。</p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;s:Application xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot;
+               xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot;
+               xmlns:mx=&quot;library://ns.adobe.com/flex/mx&quot;
+               creationComplete=&quot;creationComplete(event)&quot;&gt;
+
+    &lt;fx:Script&gt;&lt;![CDATA[
+        import mx.events.FlexEvent;
+        import mx.managers.DragManager;
+        import mx.managers.dragClasses.DragProxy;
+
+        protected function creationComplete(event:FlexEvent):void
+        {
+            addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
+            {
+                if (event.keyCode == Keyboard.ESCAPE) {
+                    DragManager.acceptDragDrop(null);
+                    myTree.hideDropFeedback(null);
+                    myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
+                    var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
+                    if (dragProxy) {
+                        dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
+                    }
+                }
+            });
+        }
+        ]]&gt;&lt;/fx:Script&gt;
+
+    &lt;s:layout&gt;
+        &lt;s:HorizontalLayout/&gt;
+    &lt;/s:layout&gt;
+
+    &lt;mx:Tree id=&quot;myTree&quot;
+             width=&quot;200&quot;
+             height=&quot;300&quot;
+             dragMoveEnabled=&quot;true&quot;
+             dragEnabled=&quot;true&quot;
+             dropEnabled=&quot;true&quot;
+             labelField=&quot;@label&quot;&gt;
+        &lt;mx:XMLListCollection id=&quot;treeData&quot;&gt;
+            &lt;fx:XMLList&gt;
+                &lt;node label=&quot;Mail Box&quot;&gt;
+                    &lt;node label=&quot;Inbox&quot;&gt;
+                        &lt;node label=&quot;AAAAA&quot;/&gt;
+                        &lt;node label=&quot;BBBBB&quot;/&gt;
+                        &lt;node label=&quot;CCCCC&quot;/&gt;
+                    &lt;/node&gt;
+                    &lt;node label=&quot;Outbox&quot;&gt;
+                        &lt;node label=&quot;DDDDD&quot;/&gt;
+                        &lt;node label=&quot;EEEEE&quot;/&gt;
+                    &lt;/node&gt;
+                &lt;/node&gt;
+            &lt;/fx:XMLList&gt;
+        &lt;/mx:XMLListCollection&gt;
+    &lt;/mx:Tree&gt;
+
+&lt;/s:Application&gt;
+</code></pre>
+
+<p>大したことはしてなくて、重要なのは下記の部分。</p>
+
+<pre><code class="language-javascript">addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
+{
+    if (event.keyCode == Keyboard.ESCAPE) {
+        DragManager.acceptDragDrop(null);
+        myTree.hideDropFeedback(null);
+        myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
+        var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
+        if (dragProxy) {
+            dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
+        }
+    }
+});
+</code></pre>
+
+<p>簡単に説明すると、まず、ツリーコンポーネントの上以外でもEscキーをハンドリングする必要があるので、キーイベントのリスナーはApplicationに付けます。
+で、Escが叩かれたらdrag-and-dropをキャンセルさせるためにコンポーネントに通知します。</p>
+
+<p><code>DragManager.acceptDragDrop(null);</code>でドロップを無効に、ドラッグすると移動先にラインが表示されるので、
+<code>myTree.hideDropFeedback(null);</code>でラインを消します。
+ドラッグ中はマウスをダウンしたままなので、キャンセルに合わせてツリーコンポーネントに対して
+<code>myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));</code>を通知します。</p>
+
+<p>そのあとがちょっと特殊で、mx_internalでDragManagerの内部変数を参照し、マウスアップイベントを通知します。
+この通知が無いと、ドラッグ操作をキャンセルしたと認識されません。</p>
+
+<p>もっと良いやり方や、最新バージョンだと出来るよとか教えて頂けると嬉しいです :D</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fposts%2fblog%2f2013%2f05%2f27%2fhow-to-cancel-drag-and-drop-on-esc-key%2f - how%20to%20cancel%20drag-and-drop%20on%20esc%20key by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/">JAX-RSで複数ファイルをアップロードするには<aside class="dates">Dec 22 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/">JSF 2.2 でさらに便利になったMarkupを使ってみよう<aside class="dates">Dec 17 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/">IntelliJ IDEA 13で作るJavaFXアプリケーション<aside class="dates">Dec 8 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/11/13/bootstrapfalseremote-modal/">BootstrapのRemote Modal<aside class="dates">Nov 13 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/">JUnitでJPAのテスト<aside class="dates">Nov 3 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/">springframeworkのjarファイル一式をダウンロードするには？<aside class="dates">Oct 15 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/09/05/run-javafx/">バブルソートをJavaFXで可視化<aside class="dates">Sep 5 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/">JDBCRealmのパッケージが変更 #glassfish-4<aside class="dates">Jun 30 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/">JavaEE 7 リリース！<aside class="dates">Jun 14 2013</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

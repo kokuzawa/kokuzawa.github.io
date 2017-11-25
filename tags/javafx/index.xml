@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Javafx on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/javafx/</link>
+    <description>Recent content in Javafx on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 08 Dec 2013 00:15:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/javafx/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>IntelliJ IDEA 13で作るJavaFXアプリケーション</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/</link>
+      <pubDate>Sun, 08 Dec 2013 00:15:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/</guid>
+      <description>この記事は、JavaFX Advent Calendar 2013の8日目です。
+昨日は@aoetkさんのListViewやTableViewのセルをカスタマイズする方法でした。
+明日は@sk44_さんです。
+祝！IntelliJ IDEA 13 リリース IntelliJ IDEA 13 が 12月3日にリリースされました！めでたいですね！
+たぶん説明はいらないと思うので書きませんが、Java界隈の人なら知る人ぞ知る素敵なIDEです。
+IntelliJの最新版であるver.13はJavaFXもサポートされているので、 今回はこれを使ってJavaFXの簡単なアプリケーションを作ってみたいと思います。
+6日目の記事で@khasunumaさんが書かれた、 「e(fx)clipseで作るJavaFXアプリケーション」のIntelliJ版ですね。
+早速作ってみる IntelliJを初めて起動すると以下のような画面が表示されるので、右側にある「Create New project」を選択します。
+今度はプロジェクトの作成画面が表示されるので、 左側からプロジェクトのタイプとして「JavaFX Application」を選択、右側の「Project name」に任意のプロジェクト名を入れます。 今回は「HelloJavaFX」という名前にしました。
+Finishボタンをクリックすると、プロジェクトが作られます。 プロジェクトには簡単なファイルが3つ用意されていて、それぞれ以下のような内容になっています。
+Mainクラスがちゃんと書かれているのでこれだけでも動きます。 初めてJavaFXのアプリケーションを作る人に必要最低限のファイルとコードを示すのに十分です。 これ以上のコードがあると、本来は不必要なものまで必要だと勘違いしてしまうと思います。 ただControllerとFXMLは空っぽなので、このままだと枠しか表示されなくて面白くない&amp;hellip;。
+ボタンをクリックしたら文字を表示するというぐらいはやりたいので、 ボタンとラベルをFXMLに追加していきます。
+&amp;lt;?import javafx.geometry.Insets?&amp;gt; &amp;lt;?import javafx.scene.layout.GridPane?&amp;gt; &amp;lt;?import javafx.scene.control.Button?&amp;gt; &amp;lt;?import javafx.scene.control.Label?&amp;gt; &amp;lt;GridPane fx:controller=&amp;quot;sample.Controller&amp;quot; xmlns:fx=&amp;quot;http://javafx.com/fxml&amp;quot; alignment=&amp;quot;center&amp;quot; hgap=&amp;quot;10&amp;quot; vgap=&amp;quot;10&amp;quot;&amp;gt; &amp;lt;Label fx:id=&amp;quot;label&amp;quot; GridPane.columnIndex=&amp;quot;0&amp;quot; GridPane.rowIndex=&amp;quot;0&amp;quot;/&amp;gt; &amp;lt;Button fx:id=&amp;quot;button&amp;quot; text=&amp;quot;OK&amp;quot; onAction=&amp;quot;#click&amp;quot; GridPane.columnIndex=&amp;quot;0&amp;quot; GridPane.rowIndex=&amp;quot;1&amp;quot; GridPane.halignment=&amp;quot;CENTER&amp;quot;/&amp;gt; &amp;lt;/GridPane&amp;gt;  ちなみに、以下のような感じでちょっとだけ入力すると補完候補が出てきます。 この辺はIntelliJ様々です。他のIDEもできるのかもしれないですけど。
+次はControllerに動作を書いていきます。
+package sample; import javafx.</description>
+    </item>
+    
+    <item>
+      <title>バブルソートをJavaFXで可視化</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/09/05/run-javafx/</link>
+      <pubDate>Thu, 05 Sep 2013 03:15:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/09/05/run-javafx/</guid>
+      <description>『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。 作るのはそれほど難しい話ではないので、ちょっとした解説を加えつつ紹介しようと思う。
+実行モジュールもあとで提示するので確認して頂ければ幸い。
+IDEはIntelliJ IDEAを使った。IntelliJ IDEAにはJavaFXモジュール用のプロジェクトを作ることができるのでそれを利用する。 ビルドすると親切なことにjarファイルだけでなく、JNLPやHTMLファイルを生成してくれるので非常に便利。
+ビルドされた実行モジュールを見てもらった方が分かり易いと思い、 Appletとしてブラウザ上で動かそうと思ったのだが、 IDEAが生成してくれたHTMLをSafariで開いても、いつまでたっても起動しない。 HTMLのソースを見てみると、dtjava.jsというJavaScriptを使って起動しようとしているようだが、 少なくともSafariではうんともすんとも言わない。 他のブラウザなら動作するのだろうかと思い、Chromeで実行すると、今度は「このブラウザではサポートされていない」という趣旨の メッセージが表示される。多分Macだとダメなのだろう。もし起動する方法を知っていたら教えて頂きたい。
+ということで、Appletとして動かすことは諦めたので、JNLPファイルへのリンクを提示する。
+JavaFXApp.jnlp
+このJNLPをダウンロードして起動すると、バブルソートが実行される。 OSXの場合だと、セキュリティによって起動できないかもしれない。 その場合、ダウンロードしたJNLPファイルをCtrl＋クリックして「このアプリケーションで開く」-&amp;gt; 「Java Web Start」とメニューを 選択して行けば、起動しても良いか尋ねてくれるので、ここから起動が出来ると思う。
+アプリについて ソート対象となる100本の黒ラインはランダムに並んでいて、現在処理中のラインを赤で表している。 実際に動作を見ると、短い黒ラインがだんだんと左側に寄って行くのが分かる。
+コード 初期データはCollections.shuffle(Collection)でシャッフルする。
+for (int i = 1; i &amp;lt;= N; i++) { data.add(i); } Collections.shuffle(data);  ステージの初期化。黒ラインと赤ラインを表すPathを2つ。 repaint()メソッドで描画した結果から必要になった幅をステージの幅として設定する。+10はパディング分になる。
+path.setStrokeWidth(3.0); path.setStroke(Color.GRAY); currentPath.setStrokeWidth(4.0); currentPath.setStroke(Color.RED); root.getChildren().add(path); root.getChildren().add(currentPath); final int width = repaint(); primaryStage.setTitle(&amp;quot;Bubble Sort&amp;quot;); primaryStage.setResizable(false); primaryStage.setScene(new Scene(root, width + 10, VIEW_HEIGHT)); primaryStage.show();  実際のライン描画処理。 JavaFXではTimelineクラスを使うと秒毎の処理が書けるので簡単にアニメーションを作ることができる。 待機時間無しだとソートが一瞬で終わってしまい、過程を見ることができないので、 ここでは待機時間に10ミリ秒を指定している。new Duration(10)の部分。</description>
+    </item>
+    
+    <item>
+      <title>OpenJFXをコンパイルしようとして挫折した記録</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</link>
+      <pubDate>Fri, 07 Dec 2012 21:05:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</guid>
+      <description>JavaFX Advent Calendar 2012の7日目のエントリーです。
+昨日は@fukai_yasさんの「AppletでFXMLを使って罠にハマる」です。
+明日は@btnrougeさんです。
+JOptionPaneが使いたい JavaFX 2.2.3で業務に利用する簡単なツールを作っていたのですが、入力エラーを通知する為に、 SwingでいうところのJOptionPane相当のものを探したのですがみつかりませんでした。 誰か知っている人はいないだろうかとTwitterでつぶやいてみたところ、@skrbさんよりこんなお返事を頂きました。
+@kokuzawa Project Sandboxというのがあって、そこでJOptionPaneのように使えるDialogクラスを提供してますよ。正式にはJavaFX 8で入る予定です。 http://t.co/w6AswYKA
+&amp;mdash; Yuichi Sakuraba (@skrb) 2012年11月30日 
+Project SandboxでJOptionPane相当のDialogsクラスが提供されているということ。JavaFX 8 に入るらしい。 すばらしい！すばらしいけど、今使いたい。そこでひとまずProject Sandboxを動かしてみる事にしました。
+OpenJFXをビルドする Project SandboxはOpenJFXのSandboxプロジェクトで、これを利用する為には、Mercurialに登録されているソースをコンパイルする必要があるようです。 そこでOpenJFXのページに書かれているビルド手順を実行します。 でもこれ、記述が古い。JDKのフォルダ構成とか、今のものとはかなり違う。さて困った。
+そこで新たな情報を求めていると、Building OpenJFXという、 まさに望んだ通りのページがありました。手順は次のようになります。 また、コンパイルにはJDK 8 が必要です。
+ mkdir -p ~/open-jfx cd ~/open-jfx hg clone http://hg.openjdk.java.net/openjfx/8/master cd master mkdir -p artifacts/sdk/rt/lib cp -r &amp;lt;PATH TO JDK&amp;gt;/jre/lib/jfxrt.jar artifacts/sdk/rt/lib hg clone http://hg.openjdk.java.net/openjfx/8/master/rt cd rt ant  今度こそ、コンパイル出来そうな感じです。最後のantを実行すると、何個かのモジュールのjarが出来上がっていきます。 が、javafx-ui-commonというモジュールのコンパイルが通りません。JDKのバージョンの問題かもしれないと思ったのですが、 JDK 8 はJDK 8 b65というもので、この時点では最新のものです。 ここで1日試行錯誤を繰り返したものの、解決の糸口はなく、ビルドはあきらめる事にしました。</description>
+    </item>
+    
+  </channel>
+</rss>

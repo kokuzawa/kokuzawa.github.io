@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mac on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/mac/</link>
+    <description>Recent content in Mac on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 11 Dec 2012 01:46:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/mac/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>WiiRemoteJで遊ぼう on OSX 10.8.7</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</link>
+      <pubDate>Tue, 11 Dec 2012 01:46:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</guid>
+      <description>Java Advent Calendar 2012の11日目のエントリーです。
+昨日は@cero_tさんです。
+明日は@snuffkinさんです。
+クリスマスだから楽しいことをしよう ということで、WiiUも発売したことだし、今更ながら、WiiRemoteJを取り上げてみたいと思います。 WiiRemoteJはBluetoothを利用して、WiiリモコンでJavaのアプリを操作するためのライブラリです。 最新版はv1.6というのがあるようなのですが、見つけることができなかったため、v1.4を使ってみたいと思います。
+OSX 10.8.7 Mountain Lionで動かす 今回やりたいことは、Macbook Pro上にWiiリモコンのレシーバーとなるアプリを起動し、 Wiiリモコンを使ってそのアプリを操作する、ということです。 レシーバーアプリは下記2つのライブラリが必要になります。
+ BlueCove.jar WiiRemoteJ.jar  BlueCoveはJavaのBluetoothを利用する為のAPIの規約であるJSR-82の実装ライブラリです。 WiiRemoteJを動かす為に必要になります。 BlueCoveの最新版は2.1.0です。ところがこのBlueCove-2.1.0、Mountain Lion上では動かす事ができません。 Mountain Lionで動かす為には、まだ正式にリリースされていないBlueCove-2.1.1-SNAPSHOTを利用する必要があります。
+ただ、この2.1.1-SNAPSHOTも問題があります。 BlueCoveはBluetoothにアクセスする為に/System/Library/Frameworks/IOBluetooth.frameworkというフレームワークを利用しているのですが、 BlueCove-2.1.1-SNAPSHOTはこのIOBluetooth.frameworkに対応できていないため、実行時にエラーが発生してしまいます。
+という訳で、このままでは実行できそうにありません。 そこで、ここで提供されている、 BlueCove-2.1.1-SNAPSHOTで操作できるIOBluetooth.frameworkに置き換えることにします。 置き換える事により、他のアプリで問題が発生するかもしれません。 置き換える前に、元のIOBluetooth.frameworkのバックアップを作る事をお勧めします。
+さあ、ここまでできれば、あとはレシーバーを作るだけです。
+レシーバーを実装する 下記が実装コードになります。動作は単純で、1ボタン、2ボタン、マイナスボタン、プラスボタン、Aボタン、Bボタン、十字キーを押した場合は、 それを標準出力に表示、ホームボタンを押したらレシーバーを終了します。
+import java.io.IOException; import java.util.logging.Level; import java.util.logging.Logger; import wiiremotej.WiiRemote; import wiiremotej.WiiRemoteJ; import wiiremotej.event.WRAccelerationEvent; import wiiremotej.event.WRButtonEvent; import wiiremotej.event.WRStatusEvent; import wiiremotej.event.WiiRemoteAdapter; import wiiremotej.event.WiiRemoteDiscoveredEvent; import wiiremotej.event.WiiRemoteDiscoveryListener; /** * WiiRemoteJサンプルアプリ * @author Katsumi */ public class Wii extends WiiRemoteAdapter implements WiiRemoteDiscoveryListener { private WiiRemote _remote; public static void main(String.</description>
+    </item>
+    
+    <item>
+      <title>はじめてのLATEX</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/11/24/hazimetefalselatex/</link>
+      <pubDate>Sat, 24 Nov 2012 01:25:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/11/24/hazimetefalselatex/</guid>
+      <description>LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。 何がきっかけだったのかすっかり忘れてしまったけど、今日LaTeXを使ってみようと思い立ち、利用するための環境設定を色々と調べたので、その記録を書き記しておこうと思う。
+LaTeXって何？  LATEX（ラテック、ラテフ、レイテック、レイテックス）とは、レスリー・ランポート (英: Leslie Lamport) によって開発されたテキストベースの組版処理システムである。電子組版ソフトウェア TEX にマクロパッケージを組み込むことによって構築されており、単体の TEX に比べて、より手軽に組版を行うことができるようになっている。なお、LATEX を基にアスキーが日本語処理に対応させたものとして日本語 LATEX が、さらに縦組み処理にも対応させたものとして pLATEX がある。
+ Wikipediaによれば、組版処理システムということらしい。Wordとかの所謂文書スタイルを制御するものと考えれば良さそう。 ただ、これだけではLaTeXが一体なんなのかがぼんやりとしか分からない。 やっぱり実際に触ってみた方が良さそうだ。
+MacにLaTeXをインストールする MacでLaTexを使うには何をインストールしたら良いのか？ 調べたところ、pTeXというのを入れれば良く、これは縦組み処理も対応したpLATEXと同じもの。 早速インストールしてみよう。インストーラを見つけるよりは、MacPortsを利用した方が早いんじゃないのかと思い、MacPortsで検索してみる。
+&amp;gt; sudo port search ptex pTeX @20110314 (tex, print, textproc, japanese) Japanese TeX (pTeX) processing environment ptex-sfmacros @0 (tex, print, japanese) Tategumi/Tateyoko/Kunten packages written by Shinsaku Fujita.  2つ見つけたけど、1つ目の方だろう。インストールする場合はオプションをつけた方が良いとのこと。
+&amp;gt; sodo port install pTeX +utf8 +motif  長い&amp;hellip;。とても時間がかかるので最初にコーヒーを淹れておけばよかった。ゆっくり飲みながら気長に待つ。 インストールが終わったら、ちゃんとインストールがされたか確認する。
+&amp;gt; platex -version TeX 3.</description>
+    </item>
+    
+  </channel>
+</rss>

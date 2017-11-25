@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Glassfish on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/glassfish/</link>
+    <description>Recent content in Glassfish on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 30 Jun 2013 11:09:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/glassfish/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JDBCRealmのパッケージが変更 #glassfish-4</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</link>
+      <pubDate>Sun, 30 Jun 2013 11:09:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/</guid>
+      <description>GlassFish-4.0からJDBCRealmクラスのパッケージが変更になった。
+今までのパッケージは下記の通り。
+com.sun.enterprise.security.auth.realm.jdbc.JDBCRealm  GlassFish-4.0からは下記のパッケージとなる。
+com.sun.enterprise.security.ee.auth.realm.jdbc.JDBCRealm  Embeddedとして利用しているとかじゃないとあまり影響はないかもしれない。</description>
+    </item>
+    
+    <item>
+      <title>jersey on glassfish-4</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/03/24/jersey-on-glassfish4/</link>
+      <pubDate>Sun, 24 Mar 2013 12:32:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/03/24/jersey-on-glassfish4/</guid>
+      <description>GlassFish-4を使ってみたらJerseyのパッケージが変わってた。 GlassFish-3.1.2.2までは以下のようにcom.sunパッケージにあるJerseyのサーブレットがロードできていたけど、
+&amp;lt;servlet-name&amp;gt;jersey-serlvet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;com.sun.jersey.spi.container.servlet.ServletContainer&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt;  GlassFish-4ではcom.sunパッケージにJerseyはなく、org.glassfishのパッケージとなっている。
+&amp;lt;servlet-name&amp;gt;jersey-serlvet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;org.glassfish.jersey.servlet.ServletContainer&amp;lt;/servlet-class&amp;gt; &amp;lt;/servlet&amp;gt;  </description>
+    </item>
+    
+    <item>
+      <title>Point-to-Point on JMS</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</link>
+      <pubDate>Sat, 15 Dec 2012 15:50:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</guid>
+      <description>JavaEE Advent Calendar 2012の15日目のエントリーです。
+昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
+明日は@akirakoyasuさんです。
+普段は使わないJMSを使う おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。 世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。 分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。 おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。
+そんな事もあって、JMSの知識が皆無だったわけですが、 JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。
+必要なもの  GlassFish-3.1.2.2 jms-api-1.1-rev-1.jar  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;javax.jms&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jms-api&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.1-rev-1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;   imq-4.5.2.jar  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.mq&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;imq&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.5.2&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、 今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。 また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、 こちらも容易に入手可能です。
+事前準備 GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、 ポートへのアクセスを許可する必要があるかもしれません。
+メッセージプロデューサーを作る メッセージを送信するプロデューサーを作ります。
+package jp.co.baykraft.jmsexample; import com.sun.messaging.ConnectionConfiguration; import com.sun.messaging.QueueConnectionFactory; import javax.jms.JMSException; import javax.jms.Queue; import javax.jms.QueueConnection; import javax.jms.QueueSender; import javax.jms.QueueSession; import javax.</description>
+    </item>
+    
+    <item>
+      <title>GlassFish3.1.2へのデプロイ時のエラー</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</link>
+      <pubDate>Sat, 10 Nov 2012 07:44:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/</guid>
+      <description>java.util.concurrent.ExecutionException: com.sun.faces.config.ConfigurationException: Unable to parse document &amp;lsquo;bundle://213.0:1/com/sun/faces/jsf-ri-runtime.xml&amp;rsquo;: DTD factory class org.apache.xerces.impl.dv.dtd.DTDDVFactoryImpl does not extend from DTDDVFactory.
+ JSFを利用していると発生しているようなので、warファイル内のjavax.faces-2.1.4.jarを取り除いて再度デプロイ。でも変化なし。 （JSFのライブラリはGlassFishに含まれている。バージョンはわからないけど）
+何度か再デプロイをしていると起動できるので、それほど真剣に調べていなかったけど、本腰をいれて調べてみることにした。
+結果 ログを見るとorg.apache.xerces.impl.dv.dtd.DTDDVFactoryImpl関係でエラーが発生してbundle://213.0:1/com/sun/faces/jsf-ri-runtime.xmlがパースできないことがわかる。
+っていうかbundle://213.0:1/com/sun/faces/jsf-ri-runtime.xmlって何だろう？ひとまずこれについてはあとで調査。
+おそらくGlassFishで利用しているXMLパーサとぶつかっているせいだと思う。warファイル内からxercesImpl-2.8.1.jarを取り除いてデプロイしたところ正常に起動ができた。 取り除いても正常に起動できたのでXMLパーサがGlassFishに含まれてるのは間違いないと推測できるが、GlassFishのどこにXMLパーサが含まれているのかがわからない。
+追記: Nov 11, 2012 運用環境はTomcatだからxercesImpl-2.8.1.jarを取り除いちゃダメなんじゃないかと思う。</description>
+    </item>
+    
+  </channel>
+</rss>

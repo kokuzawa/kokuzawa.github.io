@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Intellij Idea on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/intellij-idea/</link>
+    <description>Recent content in Intellij Idea on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Mon, 01 Apr 2013 22:35:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/intellij-idea/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Edit breakpoint of the IntelliJ IDEA</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/04/01/edit-breakpoints/</link>
+      <pubDate>Mon, 01 Apr 2013 22:35:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/04/01/edit-breakpoints/</guid>
+      <description>IntelliJも他のIDE同様デバッグが簡単にできます。
+もちろん複数のスレッドを同時にデバッグできるのですが、初期設定だと一つのスレッドが終わるまですべてのスレッドがSuspendされます。 最初はこういうものかなと思っていたんですが、設定で切り替えることができるようです。
+手順 ブレークポイントをCtrl+クリックしてEditメニューを選択します。
+表示されたポップアップのSuspendのところ、Allにチェックが入っていると思います。 これをThreadに変更します。もし今後すべての動作をThreadにするのであれば、右にある「Make Default」ボタンをクリックします。
+これでスレッド毎にSuspendされるようになりました。
+Best regards,
+Katsumi</description>
+    </item>
+    
+    <item>
+      <title>IntelliJ IDEAでglassfish-web.xmlを自動生成するには</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/03/21/generate-glassfish-web-dot-xml-automatically/</link>
+      <pubDate>Thu, 21 Mar 2013 00:04:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/03/21/generate-glassfish-web-dot-xml-automatically/</guid>
+      <description>NetBeansだとsun-web.xmlとして自動生成されるファイルのことです。 JavaEE6のドキュメントを読む限り、 glassfish-web.xmlが正式名称のようですが&amp;hellip;。
+このファイル、通常は必要ないのですが、GlassFishのBASIC認証とかDIGEST認証にJDBCレルムを使おうとすると必要になります。 XMLファイルなので、DTDのパスとか&amp;hellip;まあその辺の入力が面倒な訳で、テンプレートは検索すれば見つかりますけど、出来ればIntelliJで生成できないかなと。
+手順 画面上部のツールバーからProject Structureを選択。もしくはCmd+;
+表示された画面からModules-&amp;gt;Webと選択し、右ペイン中にあるAdd Aplication Server specific descriptorボタンをクリック。
+表示されたポップアップのApplication ServerをGlassfish Serverに、Descriptorは選択肢が2つで最後にOracleとなっている方を選択。 (以下のイメージでは既にOracleを設定済みなのでSunしか表示されていない。)
+これでglassfish-web.xmlのテンプレートが自動生成される。
+glassfish-web.xml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;!DOCTYPE glassfish-web-app PUBLIC &amp;quot;-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN&amp;quot; &amp;quot;http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd&amp;quot;&amp;gt; &amp;lt;glassfish-web-app&amp;gt; &amp;lt;/glassfish-web-app&amp;gt;  あとはここに必要な記述を追加して行くだけ。IntelliJは補完が強力なので、ここまでファイルが出来てくれれば後は楽。</description>
+    </item>
+    
+  </channel>
+</rss>

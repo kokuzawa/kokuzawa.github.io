@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Javaee on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/javaee/</link>
+    <description>Recent content in Javaee on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 22 Dec 2013 09:20:55 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/javaee/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JAX-RSで複数ファイルをアップロードするには</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/</link>
+      <pubDate>Sun, 22 Dec 2013 09:20:55 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/</guid>
+      <description>この記事はJava Advent Calendar 2013の22日目の記事です。
+昨日は@nagaseyasuhitoさんの「mvn siteのtips三連発」でした。
+明日は monzou さんです。
+ファイルアップロードを実現するために何を使っていますか？
+私はもっぱらJAX-RSを使っています。
+ファイルアップロードはAX-RSの仕様には含まれていないのですが、ほとんどの実装でサポートされているようです。 その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。
+今回利用したJerseyはGlassFish4に含まれているものを利用します。
+ライブラリとしては以下のjarになります。
+&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.jersey.media&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jersey-media-multipart&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.4.1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。
+&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=UTF-8&amp;quot;/&amp;gt; &amp;lt;title&amp;gt;JAX-RS upload multiple files example&amp;lt;/title&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;form enctype=&amp;quot;multipart/form-data&amp;quot; method=&amp;quot;post&amp;quot; action=&amp;quot;rest/upload/multipleFiles&amp;quot;&amp;gt; &amp;lt;div&amp;gt;&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;file&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;div&amp;gt;&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;file&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Upload&amp;quot;&amp;gt; &amp;lt;/form&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;  で、実際にリクエストを受け取るJavaのコード。
+package org.katsumi.resources; import org.glassfish.jersey.media.multipart.FormDataBodyPart; import org.glassfish.jersey.media.multipart.FormDataParam; import javax.ws.rs.Consumes; import javax.ws.rs.POST; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.</description>
+    </item>
+    
+    <item>
+      <title>JavaEE 7 リリース！</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/</link>
+      <pubDate>Fri, 14 Jun 2013 01:53:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/</guid>
+      <description>JavaEE 7 がというかGlassFish 4 がリリースされた。
+会社でテストサーバとして使っているのは、GlassFish 3.1.2.2 なので早速入れ替えてみた。 余談だが運用サーバはTomcatなので、どちらかというとテストサーバの方が性能が良い。
+で、意気揚々と起動してみた訳なのだが、起動できない。
+理由は単純で、GlassFish 4 はJDK7が必須にもかかわらず、プロジェクトのJDKのバージョンがJDK6なのである。 まあコンパイル時にサーバのクラスのバージョンよりも古いバージョンでコンパイルしているよ、という警告が出ていたので 何となくは思っていたのだが、改めて起動できないとちょっとショックではある。
+ひとまず、DataSourceの設定が今までと同じように出来ることは確認したので、 それについて書こうと思う。
+ドライバの配置 GlassFishで利用できるJDBCドライバには下記のものがある。
+Administration Guide:
+ ■ IBM DB2 Database Type 2 Driver
+■ IBM DB2 Database Type 4 Driver
+■ Java DB/Derby Type 4 Driver
+■ MySQL Server Database Type 4 Driver
+■ Oracle 10 Database Driver
+■ Oracle 11 Database Driver
+■ PostgreSQL Type 4 Driver
+■ DataDirect Type 4 Driver for IBM DB2 Database</description>
+    </item>
+    
+    <item>
+      <title>Performance of JPA</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</link>
+      <pubDate>Sun, 27 Jan 2013 12:08:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/01/27/performance-of-jpa/</guid>
+      <description> JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
+数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
+アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
+コード 検証に利用するコードは下記の通り。 Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、 永続化されたBookエンティティのうち、bookname=&#39;name1&#39;のレコードを抽出する。 また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。
+ 検証 まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。 約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。 簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、 tachされたエンティティの数が増加すると、それに比例して劣化していく。
+次に改善後の結果。 約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。
+改善方法 では、何をすれば改善するのか。 結論から言えば、エンティティをdetachすれば良い。 detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。 そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、 あとでEclipseLinkのソースコードを確認してみようと思う。 ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。
+検証コードでは、ループ内の最後に下記2行を追加した。
+em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。 ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、 片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。
+ちなみにflushやclearに関しては次の本が詳しい。
+ </description>
+    </item>
+    
+    <item>
+      <title>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</link>
+      <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</guid>
+      <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
+(Bootstrapのalert alert-errorを適用)
+これに対してTableレイアウトは以下のような出力になります。
+どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。 MessagesコンポーネントはHTMLをカスタマイズする事ができません。 正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、 そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、 com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。 もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。 そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。
+BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。 このクローズボタンをクリックする事により、エラー情報を消すことができます。 クローズボタンを出すには、HTMLを下記のように記載する必要があります。
+&amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;Summary Message&amp;lt;/h4&amp;gt; Detail Message &amp;lt;/div&amp;gt;  これをJSF合成コンポーネントにします。 webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)
+alert.xhtml:
+&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt; &amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xmlns:cc=&amp;quot;http://java.sun.com/jsf/composite&amp;quot; xmlns:c=&amp;quot;http://java.sun.com/jsp/jstl/core&amp;quot;&amp;gt; &amp;lt;!-- INTERFACE --&amp;gt; &amp;lt;cc:interface&amp;gt; &amp;lt;/cc:interface&amp;gt; &amp;lt;!-- IMPLEMENTATION --&amp;gt; &amp;lt;cc:implementation&amp;gt; &amp;lt;c:forEach var=&amp;quot;message&amp;quot; items=&amp;quot;#{facesContext.messageList}&amp;quot;&amp;gt; &amp;lt;c:if test=&amp;quot;#{message.severity == &#39;ERROR 2&#39;}&amp;quot;&amp;gt; &amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;#{message.</description>
+    </item>
+    
+    <item>
+      <title>Point-to-Point on JMS</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</link>
+      <pubDate>Sat, 15 Dec 2012 15:50:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/12/15/point-to-point-on-jms/</guid>
+      <description>JavaEE Advent Calendar 2012の15日目のエントリーです。
+昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
+明日は@akirakoyasuさんです。
+普段は使わないJMSを使う おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。 世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。 分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。 おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。
+そんな事もあって、JMSの知識が皆無だったわけですが、 JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。
+必要なもの  GlassFish-3.1.2.2 jms-api-1.1-rev-1.jar  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;javax.jms&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jms-api&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.1-rev-1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;   imq-4.5.2.jar  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.mq&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;imq&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.5.2&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、 今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。 また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、 こちらも容易に入手可能です。
+事前準備 GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、 ポートへのアクセスを許可する必要があるかもしれません。
+メッセージプロデューサーを作る メッセージを送信するプロデューサーを作ります。
+package jp.co.baykraft.jmsexample; import com.sun.messaging.ConnectionConfiguration; import com.sun.messaging.QueueConnectionFactory; import javax.jms.JMSException; import javax.jms.Queue; import javax.jms.QueueConnection; import javax.jms.QueueSender; import javax.jms.QueueSession; import javax.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Flex on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/flex/</link>
+    <description>Recent content in Flex on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Mon, 27 May 2013 01:12:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/flex/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>how to cancel drag-and-drop on esc key</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/05/27/how-to-cancel-drag-and-drop-on-esc-key/</link>
+      <pubDate>Mon, 27 May 2013 01:12:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/05/27/how-to-cancel-drag-and-drop-on-esc-key/</guid>
+      <description>Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。
+標準機能としてはありませんが、これ以降のバージョンで対応されている可能性もあるという前提になります。
+実はDrag and DropをEscキーを使ってキャンセルできることは知りませんでした。 Windowsでもできるようですが、普段使っているMacでもできることにさっき気がついたぐらいなので、 そんな操作を利用している人は少ないのではないかと思ってました。 ですが、検索してみると意外と多くの人が利用しているようです。
+実装する 機能が無いので実装することにします。
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;s:Application xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot; xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot; xmlns:mx=&amp;quot;library://ns.adobe.com/flex/mx&amp;quot; creationComplete=&amp;quot;creationComplete(event)&amp;quot;&amp;gt; &amp;lt;fx:Script&amp;gt;&amp;lt;![CDATA[ import mx.events.FlexEvent; import mx.managers.DragManager; import mx.managers.dragClasses.DragProxy; protected function creationComplete(event:FlexEvent):void { addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void { if (event.keyCode == Keyboard.ESCAPE) { DragManager.acceptDragDrop(null); myTree.hideDropFeedback(null); myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP)); var dragProxy:DragProxy = DragManager.mx_internal::dragProxy; if (dragProxy) { dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP)); } } }); } ]]&amp;gt;&amp;lt;/fx:Script&amp;gt; &amp;lt;s:layout&amp;gt; &amp;lt;s:HorizontalLayout/&amp;gt; &amp;lt;/s:layout&amp;gt; &amp;lt;mx:Tree id=&amp;quot;myTree&amp;quot; width=&amp;quot;200&amp;quot; height=&amp;quot;300&amp;quot; dragMoveEnabled=&amp;quot;true&amp;quot; dragEnabled=&amp;quot;true&amp;quot; dropEnabled=&amp;quot;true&amp;quot; labelField=&amp;quot;@label&amp;quot;&amp;gt; &amp;lt;mx:XMLListCollection id=&amp;quot;treeData&amp;quot;&amp;gt; &amp;lt;fx:XMLList&amp;gt; &amp;lt;node label=&amp;quot;Mail Box&amp;quot;&amp;gt; &amp;lt;node label=&amp;quot;Inbox&amp;quot;&amp;gt; &amp;lt;node label=&amp;quot;AAAAA&amp;quot;/&amp;gt; &amp;lt;node label=&amp;quot;BBBBB&amp;quot;/&amp;gt; &amp;lt;node label=&amp;quot;CCCCC&amp;quot;/&amp;gt; &amp;lt;/node&amp;gt; &amp;lt;node label=&amp;quot;Outbox&amp;quot;&amp;gt; &amp;lt;node label=&amp;quot;DDDDD&amp;quot;/&amp;gt; &amp;lt;node label=&amp;quot;EEEEE&amp;quot;/&amp;gt; &amp;lt;/node&amp;gt; &amp;lt;/node&amp;gt; &amp;lt;/fx:XMLList&amp;gt; &amp;lt;/mx:XMLListCollection&amp;gt; &amp;lt;/mx:Tree&amp;gt; &amp;lt;/s:Application&amp;gt;  大したことはしてなくて、重要なのは下記の部分。</description>
+    </item>
+    
+  </channel>
+</rss>

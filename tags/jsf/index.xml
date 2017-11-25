@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Jsf on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/jsf/</link>
+    <description>Recent content in Jsf on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 17 Dec 2013 00:12:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/jsf/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>JSF 2.2 でさらに便利になったMarkupを使ってみよう</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/</link>
+      <pubDate>Tue, 17 Dec 2013 00:12:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/</guid>
+      <description>この記事は、Java EE Advent Calendar 2013の18日目の記事です。
+昨日は @yumix_h さんの私がJava EE開発の現場から学んだことでした。
+明日は誕生日の @aoetk さんです。
+みなさんJSF使ってますか？
+JSFってちょっと取っ付きにくいところがありますよね。でもそんなJSFもバージョンが2.2になって、 ちょっと良い感じになってきたので使ってみませんか、 ということでJSFのマークアップについて書いてみたいと思います。
+デザイナーとプログラマの作業の分担 JSFはデザイナーとプログラマで作業が分担できるということを良く聞きます。 デザイナーを雇うほど大きなプロジェクトでJSFを使ったことがないし、 分担しているということもあまり見聞きしませんが、実際この分担というのはどういうことなんでしょう？
+デザイナーはHTMLは分かりますがJSFはわかりません。
+プログラマはHTMLもJSFも分かりますが、デザインセンスはそれを専属でやっているデザイナーのほうに 一日の長があると思うので、素直にデザインは任せた方が良いでしょう。
+このようにHTMLしか分からない人が、HTMLに注力できるようにするには、 そのファイルがHTMLとして認識、つまりAPサーバーを経由しなくても、ブラウザでレイアウトが表示できる必要があります。 昔のJSPのように、JSPのタグやスクリプトレットで動的にレイアウトをするようにしていると、 ブラウザでレイアウトが表示できないのでダメということですね。
+JSFはFaceletsというテンプレートエンジンを取り込んでいるので、 特別なファイルではなく、XHTMLとして画面を作ることができます。 そのため、JSFのコンポーネントを埋め込まなければ、このままブラウザで表示することができます。
+ですが、何も埋め込まないのでは静的なHPと何も変わらないので、 JSFのコンポーネントを埋め込んでいく必要があり、下記のようなコンポーネントを埋め込んでしまうと、 デザイナーが理解できない状態、ブラウザでレイアウトを確認できない状態になってしまいます。
+&amp;lt;h:commandButton value=&amp;quot;OK&amp;quot; action=&amp;quot; #{managedBean.doAction}&amp;quot;/&amp;gt;  ではどうしたら良いのでしょう？
+JSF 2.1 JSF 2.1では、例えば下記のようにHTMLのタグにJSFのコンポーネント名を設定することによって、 JSFのコンポーネントとして認識させることができます。もちろんJSF 2.2でもできます。
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;OK&amp;quot; jsfc=&amp;quot;h:commandButton&amp;quot; action=&amp;quot;#{managedBean.doAction}&amp;quot;/&amp;gt;  これをブラウザで表示してみます。
+h:commandButtonの方は見事に表示されませんが、jsfc属性で書いた方は普通のボタンとして表示されています。
+JSF 2.2 jsfc属性でJSFコンポーネントをHTMLとして認識させるのには十分でしたが、 それぞれのJSFコンポーネント名をいちいち記載するのは面倒でした。コンポーネント名を正確に覚えていなければならないし&amp;hellip;。 JSF 2.2ではそこがさらに改善され、下記のようにコンポーネント名を書かなくても、JSFコンポーネントとして認識してくれるようになりました。 namespaceはxmlns:jsf=&amp;quot;http://xmlns.jcp.org/jsf&amp;quot;です。
+&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;OK&amp;quot; jsf:action=&amp;quot;#{managedBean.doAction}&amp;quot;/&amp;gt;  詳しくはJava EE 7 Tutorialを参考にしてください。</description>
+    </item>
+    
+    <item>
+      <title>JSF2.0でCSSリソース内の画像を読み込む</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</link>
+      <pubDate>Mon, 10 Jun 2013 03:10:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</guid>
+      <description> JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。
+Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。
+フォルダ構成は次のようになっています。（Mavenです）
+root +-- src +-- webapp +-- resources +-- css | +-- bootstrap.min.css +-- img +-- glyphicons-halflings.png  JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。
+&amp;lt;h:outputStylesheet library=&amp;quot;css&amp;quot; name=&amp;quot;bootstrap.min.css&amp;quot;/&amp;gt;  このとき、bootstrap.min.css内のイメージのパスは../img/glyphicons-halflings.pngとなっていますが、 このままでは画像が読み込まれません。まあ、パスからも明らかですね。
+問題を解決するには次のように、イメージのパスを変更する必要があります。
+background-image:url(&amp;quot;#{resource[&#39;img/glyphicons-halflings.png&#39;]}&amp;quot;)  Jun 20, 2013 追記 twitterで@den2snさんに教えてもらったのですが、outputStylesheetを下記のようにlibraryを削除して宣言することにより、 bootstrap.min.cssを書き換えなくても良くなります。
+&amp;lt;h:outputStylesheet name=&amp;quot;css/bootstrap.min.css&amp;quot;/&amp;gt;  </description>
+    </item>
+    
+    <item>
+      <title>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</link>
+      <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</guid>
+      <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
+(Bootstrapのalert alert-errorを適用)
+これに対してTableレイアウトは以下のような出力になります。
+どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。 MessagesコンポーネントはHTMLをカスタマイズする事ができません。 正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、 そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、 com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。 もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。 そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。
+BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。 このクローズボタンをクリックする事により、エラー情報を消すことができます。 クローズボタンを出すには、HTMLを下記のように記載する必要があります。
+&amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;Summary Message&amp;lt;/h4&amp;gt; Detail Message &amp;lt;/div&amp;gt;  これをJSF合成コンポーネントにします。 webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)
+alert.xhtml:
+&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt; &amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xmlns:cc=&amp;quot;http://java.sun.com/jsf/composite&amp;quot; xmlns:c=&amp;quot;http://java.sun.com/jsp/jstl/core&amp;quot;&amp;gt; &amp;lt;!-- INTERFACE --&amp;gt; &amp;lt;cc:interface&amp;gt; &amp;lt;/cc:interface&amp;gt; &amp;lt;!-- IMPLEMENTATION --&amp;gt; &amp;lt;cc:implementation&amp;gt; &amp;lt;c:forEach var=&amp;quot;message&amp;quot; items=&amp;quot;#{facesContext.messageList}&amp;quot;&amp;gt; &amp;lt;c:if test=&amp;quot;#{message.severity == &#39;ERROR 2&#39;}&amp;quot;&amp;gt; &amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;#{message.</description>
+    </item>
+    
+  </channel>
+</rss>

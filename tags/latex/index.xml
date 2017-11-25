@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Latex on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/latex/</link>
+    <description>Recent content in Latex on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sat, 24 Nov 2012 01:25:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/latex/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>はじめてのLATEX</title>
+      <link>https://kokuzawa.github.io/posts/blog/2012/11/24/hazimetefalselatex/</link>
+      <pubDate>Sat, 24 Nov 2012 01:25:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2012/11/24/hazimetefalselatex/</guid>
+      <description>LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。 何がきっかけだったのかすっかり忘れてしまったけど、今日LaTeXを使ってみようと思い立ち、利用するための環境設定を色々と調べたので、その記録を書き記しておこうと思う。
+LaTeXって何？  LATEX（ラテック、ラテフ、レイテック、レイテックス）とは、レスリー・ランポート (英: Leslie Lamport) によって開発されたテキストベースの組版処理システムである。電子組版ソフトウェア TEX にマクロパッケージを組み込むことによって構築されており、単体の TEX に比べて、より手軽に組版を行うことができるようになっている。なお、LATEX を基にアスキーが日本語処理に対応させたものとして日本語 LATEX が、さらに縦組み処理にも対応させたものとして pLATEX がある。
+ Wikipediaによれば、組版処理システムということらしい。Wordとかの所謂文書スタイルを制御するものと考えれば良さそう。 ただ、これだけではLaTeXが一体なんなのかがぼんやりとしか分からない。 やっぱり実際に触ってみた方が良さそうだ。
+MacにLaTeXをインストールする MacでLaTexを使うには何をインストールしたら良いのか？ 調べたところ、pTeXというのを入れれば良く、これは縦組み処理も対応したpLATEXと同じもの。 早速インストールしてみよう。インストーラを見つけるよりは、MacPortsを利用した方が早いんじゃないのかと思い、MacPortsで検索してみる。
+&amp;gt; sudo port search ptex pTeX @20110314 (tex, print, textproc, japanese) Japanese TeX (pTeX) processing environment ptex-sfmacros @0 (tex, print, japanese) Tategumi/Tateyoko/Kunten packages written by Shinsaku Fujita.  2つ見つけたけど、1つ目の方だろう。インストールする場合はオプションをつけた方が良いとのこと。
+&amp;gt; sodo port install pTeX +utf8 +motif  長い&amp;hellip;。とても時間がかかるので最初にコーヒーを淹れておけばよかった。ゆっくり飲みながら気長に待つ。 インストールが終わったら、ちゃんとインストールがされたか確認する。
+&amp;gt; platex -version TeX 3.</description>
+    </item>
+    
+  </channel>
+</rss>

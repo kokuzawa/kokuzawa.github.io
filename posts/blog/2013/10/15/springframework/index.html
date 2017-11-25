@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ja-jp">
+	<head>
+    <meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Katsumi Kokuzawa">
+
+<meta name="generator" content="Hugo 0.31" />
+<title>springframeworkのjarファイル一式をダウンロードするには？</title>
+<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+
+
+
+<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+
+
+
+
+<meta property="og:title" content="springframeworkのjarファイル一式をダウンロードするには？" />
+<meta property="og:description" content="久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。 サイトは今風になって素敵なんだけど。
+MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。 Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。 Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。
+Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。 maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。
+distribution.xml:
+&lt;?xml version=&quot;1.0&quot;?&gt; &lt;assembly xmlns=&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&quot;&gt; &lt;id&gt;distribution&lt;/id&gt; &lt;formats&gt; &lt;format&gt;zip&lt;/format&gt; &lt;/formats&gt; &lt;dependencySets&gt; &lt;dependencyset&gt; &lt;unpack&gt;false&lt;/unpack&gt; &lt;scope&gt;runtime&lt;/scope&gt; &lt;outputDirectory&gt;/out&lt;/outputDirectory&gt; &lt;/dependencyset&gt; &lt;/dependencySets&gt; &lt;/assembly&gt;  ファイルの内容を簡単に説明すると、format には出力形式として zip, tar, tar.gz が指定できる。 unpack では、取得する jar ファイルを解凍して一つの jar とするかどうかを指定する。 scope は、Maven の dependency の scope と同じ意味なので、必要な値を指定、 outputDirectory は zip の出力先を指定する。
+次にpom.xmlにプラグインの追加とdistribution.xmlの場所を定義する必要がある。
+pom.xml:
+&lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt; &lt;version&gt;2.2.1&lt;/version&gt; &lt;configuration&gt; &lt;descriptors&gt; &lt;descriptor&gt;distributions.xml&lt;/descriptor&gt; &lt;/descriptors&gt; &lt;/configuration&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt;  Spring Framework のライブラリはリポジトリを別途指定する必要があるので、それを pom." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/" />
+
+
+
+<meta property="article:published_time" content="2013-10-15T00:16:00&#43;09:00"/>
+
+<meta property="article:modified_time" content="2013-10-15T00:16:00&#43;09:00"/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<meta itemprop="name" content="springframeworkのjarファイル一式をダウンロードするには？">
+<meta itemprop="description" content="久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。 サイトは今風になって素敵なんだけど。
+MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。 Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。 Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。
+Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。 maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。
+distribution.xml:
+&lt;?xml version=&quot;1.0&quot;?&gt; &lt;assembly xmlns=&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&quot;&gt; &lt;id&gt;distribution&lt;/id&gt; &lt;formats&gt; &lt;format&gt;zip&lt;/format&gt; &lt;/formats&gt; &lt;dependencySets&gt; &lt;dependencyset&gt; &lt;unpack&gt;false&lt;/unpack&gt; &lt;scope&gt;runtime&lt;/scope&gt; &lt;outputDirectory&gt;/out&lt;/outputDirectory&gt; &lt;/dependencyset&gt; &lt;/dependencySets&gt; &lt;/assembly&gt;  ファイルの内容を簡単に説明すると、format には出力形式として zip, tar, tar.gz が指定できる。 unpack では、取得する jar ファイルを解凍して一つの jar とするかどうかを指定する。 scope は、Maven の dependency の scope と同じ意味なので、必要な値を指定、 outputDirectory は zip の出力先を指定する。
+次にpom.xmlにプラグインの追加とdistribution.xmlの場所を定義する必要がある。
+pom.xml:
+&lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt; &lt;version&gt;2.2.1&lt;/version&gt; &lt;configuration&gt; &lt;descriptors&gt; &lt;descriptor&gt;distributions.xml&lt;/descriptor&gt; &lt;/descriptors&gt; &lt;/configuration&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt;  Spring Framework のライブラリはリポジトリを別途指定する必要があるので、それを pom.">
+
+
+<meta itemprop="datePublished" content="2013-10-15T00:16:00&#43;09:00" />
+<meta itemprop="dateModified" content="2013-10-15T00:16:00&#43;09:00" />
+<meta itemprop="wordCount" content="151">
+
+
+
+<meta itemprop="keywords" content="Java,Spring,Maven," />
+
+<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="springframeworkのjarファイル一式をダウンロードするには？"/>
+<meta name="twitter:description" content="久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。 サイトは今風になって素敵なんだけど。
+MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。 Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。 Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。
+Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。 maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。
+distribution.xml:
+&lt;?xml version=&quot;1.0&quot;?&gt; &lt;assembly xmlns=&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&quot;&gt; &lt;id&gt;distribution&lt;/id&gt; &lt;formats&gt; &lt;format&gt;zip&lt;/format&gt; &lt;/formats&gt; &lt;dependencySets&gt; &lt;dependencyset&gt; &lt;unpack&gt;false&lt;/unpack&gt; &lt;scope&gt;runtime&lt;/scope&gt; &lt;outputDirectory&gt;/out&lt;/outputDirectory&gt; &lt;/dependencyset&gt; &lt;/dependencySets&gt; &lt;/assembly&gt;  ファイルの内容を簡単に説明すると、format には出力形式として zip, tar, tar.gz が指定できる。 unpack では、取得する jar ファイルを解凍して一つの jar とするかどうかを指定する。 scope は、Maven の dependency の scope と同じ意味なので、必要な値を指定、 outputDirectory は zip の出力先を指定する。
+次にpom.xmlにプラグインの追加とdistribution.xmlの場所を定義する必要がある。
+pom.xml:
+&lt;build&gt; &lt;plugins&gt; &lt;plugin&gt; &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt; &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt; &lt;version&gt;2.2.1&lt;/version&gt; &lt;configuration&gt; &lt;descriptors&gt; &lt;descriptor&gt;distributions.xml&lt;/descriptor&gt; &lt;/descriptors&gt; &lt;/configuration&gt; &lt;/plugin&gt; &lt;/plugins&gt; &lt;/build&gt;  Spring Framework のライブラリはリポジトリを別途指定する必要があるので、それを pom."/>
+<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
+
+
+    </head>
+<body>
+    <nav class="main-nav">
+	
+		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
+	
+
+	
+ 		<a href='https://kokuzawa.github.io/about/'>About</a>
+  	
+
+	
+</nav>
+
+    <section id="wrapper">
+        
+        
+<article class="post">
+    <header>
+        <h1>springframeworkのjarファイル一式をダウンロードするには？</h1>
+        <h2 class="subtitle"></h2>
+        <h2 class="headline">
+        October 15, 2013
+        <br>
+        
+        
+            
+                <a href="https://kokuzawa.github.io/tags/java">Java</a>
+            
+                <a href="https://kokuzawa.github.io/tags/spring">Spring</a>
+            
+                <a href="https://kokuzawa.github.io/tags/maven">Maven</a>
+            
+        
+        
+        </h2>
+    </header>
+    <section id="post-body">
+        <p>久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。
+サイトは今風になって素敵なんだけど。</p>
+
+<p>MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。
+Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。
+Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。</p>
+
+<p>Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。
+maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。</p>
+
+<p><strong>distribution.xml:</strong></p>
+
+<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
+&lt;assembly xmlns=&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&quot;
+          xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
+          xsi:schemaLocation=&quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2
+                              http://maven.apache.org/xsd/assembly-1.1.2.xsd&quot;&gt;
+    &lt;id&gt;distribution&lt;/id&gt;
+    &lt;formats&gt;
+        &lt;format&gt;zip&lt;/format&gt;
+    &lt;/formats&gt;
+    &lt;dependencySets&gt;
+        &lt;dependencyset&gt;
+            &lt;unpack&gt;false&lt;/unpack&gt;
+            &lt;scope&gt;runtime&lt;/scope&gt;
+            &lt;outputDirectory&gt;/out&lt;/outputDirectory&gt;
+        &lt;/dependencyset&gt;
+    &lt;/dependencySets&gt;
+&lt;/assembly&gt;
+</code></pre>
+
+<p>ファイルの内容を簡単に説明すると、format には出力形式として zip, tar, tar.gz が指定できる。
+unpack では、取得する jar ファイルを解凍して一つの jar とするかどうかを指定する。
+scope は、Maven の dependency の scope と同じ意味なので、必要な値を指定、
+outputDirectory は zip の出力先を指定する。</p>
+
+<p>次にpom.xmlにプラグインの追加とdistribution.xmlの場所を定義する必要がある。</p>
+
+<p><strong>pom.xml:</strong></p>
+
+<pre><code class="language-xml">&lt;build&gt;
+    &lt;plugins&gt;
+        &lt;plugin&gt;
+            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+            &lt;artifactId&gt;maven-assembly-plugin&lt;/artifactId&gt;
+            &lt;version&gt;2.2.1&lt;/version&gt;
+            &lt;configuration&gt;
+                &lt;descriptors&gt;
+                    &lt;descriptor&gt;distributions.xml&lt;/descriptor&gt;
+                &lt;/descriptors&gt;
+            &lt;/configuration&gt;
+        &lt;/plugin&gt;
+    &lt;/plugins&gt;
+&lt;/build&gt;
+</code></pre>
+
+<p>Spring Framework のライブラリはリポジトリを別途指定する必要があるので、それを pom.xml に定義する。</p>
+
+<p><strong>pom.xml:</strong></p>
+
+<pre><code class="language-xml">&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;com.springsource.repository.bundles.release&lt;/id&gt;
+        &lt;name&gt;SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases&lt;/name&gt;
+        &lt;url&gt;http://repository.springsource.com/maven/bundles/release&lt;/url&gt;
+    &lt;/repository&gt;
+    &lt;repository&gt;
+        &lt;id&gt;com.springsource.repository.bundle.external&lt;/id&gt;
+        &lt;name&gt;SpringSource Enterprise Bundle Repository - External Bundle Releases&lt;/name&gt;
+        &lt;url&gt;http://repository.springsource.com/maven/bundles/external&lt;/url&gt;
+    &lt;/repository&gt;
+    &lt;repository&gt;
+        &lt;id&gt;com.springsource.repository.libraries.release&lt;/id&gt;
+        &lt;name&gt;SpringSource Enterprise Bundle Repository - SpringSource Library Releases&lt;/name&gt;
+        &lt;url&gt;http://repository.springsource.com/maven/libraries/release&lt;/url&gt;
+    &lt;/repository&gt;
+    &lt;repository&gt;
+        &lt;id&gt;com.springsource.repository.libraries.external&lt;/id&gt;
+        &lt;name&gt;SpringSource Enterprise Bundle Repository - External Library Releases&lt;/name&gt;
+        &lt;url&gt;http://repository.springsource.com/maven/libraries/external&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;
+</code></pre>
+
+<p>あとは Spring framework の実体を指す dependency を追加すれば完成。
+これは<a href="http://ebr.springsource.com/repository/app/library/version/detail?name=org.springframework.spring&amp;version=3.2.3.RELEASE">ここ</a>を
+参考にすれば良いと思う。</p>
+
+<p><strong>pom.xml:</strong></p>
+
+<pre><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework&lt;/groupId&gt;
+    &lt;artifactId&gt;org.springframework.spring-library&lt;/artifactId&gt;
+    &lt;type&gt;libd&lt;/type&gt;
+    &lt;version&gt;3.2.3.RELEASE&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>これでpom.xmlが完成したので、あとは以下のコマンドを実行すればdistribution.xmlで定義したoutディレクトリに
+Spring Frameworkのjarファイル一式が含まれたzipファイルが生成されるはず。</p>
+
+<pre><code>$ mvn assembly:assembly
+</code></pre>
+
+<p>Best regards.</p>
+
+    </section>
+</article>
+
+<footer id="post-meta" class="clearfix">
+    <a href="https://twitter.com/kokuzawa">
+    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
+    <div>
+        <span class="dark">Katsumi Kokuzawa</span>
+        <span></span>
+    </div>
+    </a>
+    <section id="sharing">
+        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fposts%2fblog%2f2013%2f10%2f15%2fspringframework%2f - springframework%e3%81%aejar%e3%83%95%e3%82%a1%e3%82%a4%e3%83%ab%e4%b8%80%e5%bc%8f%e3%82%92%e3%83%80%e3%82%a6%e3%83%b3%e3%83%ad%e3%83%bc%e3%83%89%e3%81%99%e3%82%8b%e3%81%ab%e3%81%af%ef%bc%9f by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
+
+<a class="facebook" href="#" onclick="
+    window.open(
+      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
+      'facebook-share-dialog',
+      'width=626,height=436');
+    return false;"><span class="icon-facebook-rect"> Share</span>
+</a>
+
+    </section>
+</footer>
+
+<div id="disqus_thread"></div>
+<script>
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "Katsumii" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+<ul id="post-list" class="archive readmore">
+    <h3>Read more</h3>
+
+    
+    
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/12/22/jaxrs-upload-multiple-files/">JAX-RSで複数ファイルをアップロードするには<aside class="dates">Dec 22 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/12/18/jsf-2-dot-2-markup/">JSF 2.2 でさらに便利になったMarkupを使ってみよう<aside class="dates">Dec 17 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/12/08/javafx-on-intellij-idea/">IntelliJ IDEA 13で作るJavaFXアプリケーション<aside class="dates">Dec 8 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/11/13/bootstrapfalseremote-modal/">BootstrapのRemote Modal<aside class="dates">Nov 13 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/11/03/unit-test-of-jpa/">JUnitでJPAのテスト<aside class="dates">Nov 3 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/09/05/run-javafx/">バブルソートをJavaFXで可視化<aside class="dates">Sep 5 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/">JDBCRealmのパッケージが変更 #glassfish-4<aside class="dates">Jun 30 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/06/14/javaee7-release/">JavaEE 7 リリース！<aside class="dates">Jun 14 2013</aside></a>
+        </li>
+    
+        <li>
+            <a href="https://kokuzawa.github.io/posts/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/">JSF2.0でCSSリソース内の画像を読み込む<aside class="dates">Jun 10 2013</aside></a>
+        </li>
+    
+</ul>
+
+
+
+        <footer id="footer">
+    
+        <div id="social">
+
+	
+	
+    
+    <a class="symbol" href="https://github.com/kokuzawa">
+        circlegithub
+    </a>
+    
+    <a class="symbol" href="https://www.twitter.com/kokuzawa">
+        circletwitterbird
+    </a>
+    
+
+
+</div>
+
+    
+    <p class="small">
+    
+        © Copyright 2017 Katsumi Kokuzawa
+    
+    </p>
+</footer>
+
+    </section>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="https://kokuzawa.github.io/js/main.js"></script>
+<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Maven on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/maven/</link>
+    <description>Recent content in Maven on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 15 Oct 2013 00:16:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/maven/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>springframeworkのjarファイル一式をダウンロードするには？</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</link>
+      <pubDate>Tue, 15 Oct 2013 00:16:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/10/15/springframework/</guid>
+      <description>久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。 サイトは今風になって素敵なんだけど。
+MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。 Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。 Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。
+Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。 maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。
+distribution.xml:
+&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;assembly xmlns=&amp;quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&amp;quot;&amp;gt; &amp;lt;id&amp;gt;distribution&amp;lt;/id&amp;gt; &amp;lt;formats&amp;gt; &amp;lt;format&amp;gt;zip&amp;lt;/format&amp;gt; &amp;lt;/formats&amp;gt; &amp;lt;dependencySets&amp;gt; &amp;lt;dependencyset&amp;gt; &amp;lt;unpack&amp;gt;false&amp;lt;/unpack&amp;gt; &amp;lt;scope&amp;gt;runtime&amp;lt;/scope&amp;gt; &amp;lt;outputDirectory&amp;gt;/out&amp;lt;/outputDirectory&amp;gt; &amp;lt;/dependencyset&amp;gt; &amp;lt;/dependencySets&amp;gt; &amp;lt;/assembly&amp;gt;  ファイルの内容を簡単に説明すると、format には出力形式として zip, tar, tar.gz が指定できる。 unpack では、取得する jar ファイルを解凍して一つの jar とするかどうかを指定する。 scope は、Maven の dependency の scope と同じ意味なので、必要な値を指定、 outputDirectory は zip の出力先を指定する。
+次にpom.xmlにプラグインの追加とdistribution.xmlの場所を定義する必要がある。
+pom.xml:
+&amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;maven-assembly-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.2.1&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;descriptors&amp;gt; &amp;lt;descriptor&amp;gt;distributions.xml&amp;lt;/descriptor&amp;gt; &amp;lt;/descriptors&amp;gt; &amp;lt;/configuration&amp;gt; &amp;lt;/plugin&amp;gt; &amp;lt;/plugins&amp;gt; &amp;lt;/build&amp;gt;  Spring Framework のライブラリはリポジトリを別途指定する必要があるので、それを pom.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bootstrap on Katsumi Kokuzawa&#39;s Blog</title>
+    <link>https://kokuzawa.github.io/tags/bootstrap/</link>
+    <description>Recent content in Bootstrap on Katsumi Kokuzawa&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Wed, 13 Nov 2013 03:55:00 +0900</lastBuildDate>
+    
+	<atom:link href="https://kokuzawa.github.io/tags/bootstrap/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>BootstrapのRemote Modal</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/11/13/bootstrapfalseremote-modal/</link>
+      <pubDate>Wed, 13 Nov 2013 03:55:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/11/13/bootstrapfalseremote-modal/</guid>
+      <description>bootstrap-3.0.2のRemote Modalの書き方がやっと分かった。
+今までは.modal-bodyだけが書き変わっていたのに、バージョン3以降は中身が全部書き変わるみたい。
+つまり呼び出し元はこれだけでいい。
+&amp;lt;a href=&amp;quot;inner.html&amp;quot; data-toggle=&amp;quot;modal&amp;quot; data-target=&amp;quot;myModal&amp;quot;&amp;gt;Click&amp;lt;/a&amp;gt; &amp;lt;div class=&amp;quot;modal fade&amp;quot; id=&amp;quot;myModal&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;  呼び出し先に実際の内容を書く。
+inner.html:
+&amp;lt;div class=&amp;quot;modal-dialog&amp;quot;&amp;gt; &amp;lt;div class=&amp;quot;modal-content&amp;quot;&amp;gt; &amp;lt;div class=&amp;quot;modal-header&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;modal&amp;quot; aria-hidden=&amp;quot;true&amp;quot;&amp;gt;&amp;amp;#215;&amp;lt;/button&amp;gt; &amp;lt;h4 class=&amp;quot;modal-title&amp;quot; id=&amp;quot;editModalLabel&amp;quot;&amp;gt;${msg[&#39;mypage.edit_time&#39;]}&amp;lt;/h4&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div class=&amp;quot;modal-body&amp;quot;&amp;gt; &amp;lt;p&amp;gt;Loading...&amp;lt;/p&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div class=&amp;quot;modal-footer&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;btn btn-default&amp;quot; data-dismiss=&amp;quot;modal&amp;quot;&amp;gt;Close&amp;lt;/button&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt;  分かってみれば簡単だったけど、ドキュメントからは読み取れなかったなぁ。
+Add Nov 27, 2013 このままだとinner.htmlの内容が動的に変わる場合、最初にモーダルを表示した内容から書き変わらないので、 以下のスクリプトを追加する必要があります。
+$(&#39;#myModal&#39;).on(&#39;hidden.bs.modal&#39;, function() { $(this).removeData(&#39;bs.modal&#39;); });  Best Regards.</description>
+    </item>
+    
+    <item>
+      <title>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</title>
+      <link>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</link>
+      <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/posts/blog/2013/01/13/facesmessagetobootstrap/</guid>
+      <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
+(Bootstrapのalert alert-errorを適用)
+これに対してTableレイアウトは以下のような出力になります。
+どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。 MessagesコンポーネントはHTMLをカスタマイズする事ができません。 正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、 そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、 com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。 もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。 そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。
+BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。 このクローズボタンをクリックする事により、エラー情報を消すことができます。 クローズボタンを出すには、HTMLを下記のように記載する必要があります。
+&amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;Summary Message&amp;lt;/h4&amp;gt; Detail Message &amp;lt;/div&amp;gt;  これをJSF合成コンポーネントにします。 webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)
+alert.xhtml:
+&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt; &amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xmlns:cc=&amp;quot;http://java.sun.com/jsf/composite&amp;quot; xmlns:c=&amp;quot;http://java.sun.com/jsp/jstl/core&amp;quot;&amp;gt; &amp;lt;!-- INTERFACE --&amp;gt; &amp;lt;cc:interface&amp;gt; &amp;lt;/cc:interface&amp;gt; &amp;lt;!-- IMPLEMENTATION --&amp;gt; &amp;lt;cc:implementation&amp;gt; &amp;lt;c:forEach var=&amp;quot;message&amp;quot; items=&amp;quot;#{facesContext.messageList}&amp;quot;&amp;gt; &amp;lt;c:if test=&amp;quot;#{message.severity == &#39;ERROR 2&#39;}&amp;quot;&amp;gt; &amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;#{message.</description>
+    </item>
+    
+  </channel>
+</rss>
