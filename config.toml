@@ -5,6 +5,7 @@ languageCode = "ja-jp"
 title = "Katsumi Kokuzawa's Blog"
 theme = "hugo-cactus-theme"
 disqusShortname = "Katsumii"
+googleAnalytics = "UA-36546771-1"
 
 [params]
 name = "Katsumi Kokuzawa"
