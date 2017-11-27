@@ -4,7 +4,7 @@ canonifyurls = true
 languageCode = "ja-jp"
 title = "Katsumi Kokuzawa's Blog"
 theme = "hugo-cactus-theme"
-disqusShortname = "Katsumii"
+disqusShortname = "katsumikokuzawasblog"
 googleAnalytics = "UA-36546771-1"
 
 [params]
