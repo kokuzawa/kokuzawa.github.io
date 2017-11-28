@@ -21,9 +21,8 @@
 
 <meta property="og:title" content="web.xmlのバージョン別DTD・XSDの宣言方法" />
 <meta property="og:description" content="JavaでWebアプリを作る場合、Mavenのmaven-archetype-webappテンプレートを利用しています。 非常に便利なのですが、Servlet 3.1が出ている今、 生成されたwe.xmlがServlet 2.3の記述になっていてちょっと古すぎます。 そのため、毎回テンプレートから生成したあとにweb.xmlを書き換えなければなりません。 このちょっと面倒な作業を楽にするためにバージョン毎の宣言方法をメモしておきます。
-Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
-&lt;!DOCTYPE web-app PUBLIC &quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&quot; &quot;http://java.sun.com/dtd/web-app_2_3.dtd&quot; &gt; &lt;web-app&gt; &lt;/web-app&gt;  Servlet 2.4 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;web-app version=&quot;2.4&quot; xmlns=&quot;http://java.sun.com/xml/ns/j2ee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot; &gt; &lt;/web-app&gt;  Servlet 2.5 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot; version=&quot;2.5&quot;&gt; &lt;/web-app&gt;  Servlet 3.0 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot; version=&quot;3.0&quot;&gt; &lt;/web-app&gt;  Servlet 3.1 現時点で最新のバージョンです。 このバージョンからネームスペースがjava.sun.comからxmlns.jcp.orgに変わるんですね。感慨深い。
-&lt;?xml version=&quot;1." />
+ Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
+ &lt;!DOCTYPE web-app PUBLIC &#34;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&#34; &#34;http://java.sun.com/dtd/web-app_2_3.dtd&#34; &gt; &lt;web-app&gt; &lt;/web-app&gt;     Servlet 2.4 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app version=&#34;2.4&#34; xmlns=&#34;http://java.sun.com/xml/ns/j2ee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34; &gt; &lt;/web-app&gt;     Servlet 2.5 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app xmlns=&#34;http://java.sun.com/xml/ns/javaee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34; version=&#34;2.5&#34;&gt; &lt;/web-app&gt;     Servlet 3.0 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app xmlns=&#34;http://java.sun.com/xml/ns/javaee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="https://kokuzawa.github.io/blog/2015/04/07/web-dot-xmlfalsebaziyonbie-dtdxsdfalsexuan-yan-fang-fa/" />
 
@@ -47,14 +46,13 @@ Servlet 2.3 maven-archetype-webappテンプレートで生成されるもので�
 
 <meta itemprop="name" content="web.xmlのバージョン別DTD・XSDの宣言方法">
 <meta itemprop="description" content="JavaでWebアプリを作る場合、Mavenのmaven-archetype-webappテンプレートを利用しています。 非常に便利なのですが、Servlet 3.1が出ている今、 生成されたwe.xmlがServlet 2.3の記述になっていてちょっと古すぎます。 そのため、毎回テンプレートから生成したあとにweb.xmlを書き換えなければなりません。 このちょっと面倒な作業を楽にするためにバージョン毎の宣言方法をメモしておきます。
-Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
-&lt;!DOCTYPE web-app PUBLIC &quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&quot; &quot;http://java.sun.com/dtd/web-app_2_3.dtd&quot; &gt; &lt;web-app&gt; &lt;/web-app&gt;  Servlet 2.4 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;web-app version=&quot;2.4&quot; xmlns=&quot;http://java.sun.com/xml/ns/j2ee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot; &gt; &lt;/web-app&gt;  Servlet 2.5 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot; version=&quot;2.5&quot;&gt; &lt;/web-app&gt;  Servlet 3.0 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot; version=&quot;3.0&quot;&gt; &lt;/web-app&gt;  Servlet 3.1 現時点で最新のバージョンです。 このバージョンからネームスペースがjava.sun.comからxmlns.jcp.orgに変わるんですね。感慨深い。
-&lt;?xml version=&quot;1.">
+ Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
+ &lt;!DOCTYPE web-app PUBLIC &#34;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&#34; &#34;http://java.sun.com/dtd/web-app_2_3.dtd&#34; &gt; &lt;web-app&gt; &lt;/web-app&gt;     Servlet 2.4 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app version=&#34;2.4&#34; xmlns=&#34;http://java.sun.com/xml/ns/j2ee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34; &gt; &lt;/web-app&gt;     Servlet 2.5 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app xmlns=&#34;http://java.sun.com/xml/ns/javaee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34; version=&#34;2.5&#34;&gt; &lt;/web-app&gt;     Servlet 3.0 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app xmlns=&#34;http://java.sun.com/xml/ns/javaee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;">
 
 
 <meta itemprop="datePublished" content="2015-04-07T23:24:07&#43;09:00" />
 <meta itemprop="dateModified" content="2015-04-07T23:24:07&#43;09:00" />
-<meta itemprop="wordCount" content="74">
+<meta itemprop="wordCount" content="90">
 
 
 
@@ -62,9 +60,8 @@ Servlet 2.3 maven-archetype-webappテンプレートで生成されるもので�
 
 <meta name="twitter:card" content="summary"/><meta name="twitter:title" content="web.xmlのバージョン別DTD・XSDの宣言方法"/>
 <meta name="twitter:description" content="JavaでWebアプリを作る場合、Mavenのmaven-archetype-webappテンプレートを利用しています。 非常に便利なのですが、Servlet 3.1が出ている今、 生成されたwe.xmlがServlet 2.3の記述になっていてちょっと古すぎます。 そのため、毎回テンプレートから生成したあとにweb.xmlを書き換えなければなりません。 このちょっと面倒な作業を楽にするためにバージョン毎の宣言方法をメモしておきます。
-Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
-&lt;!DOCTYPE web-app PUBLIC &quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&quot; &quot;http://java.sun.com/dtd/web-app_2_3.dtd&quot; &gt; &lt;web-app&gt; &lt;/web-app&gt;  Servlet 2.4 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;web-app version=&quot;2.4&quot; xmlns=&quot;http://java.sun.com/xml/ns/j2ee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot; &gt; &lt;/web-app&gt;  Servlet 2.5 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot; version=&quot;2.5&quot;&gt; &lt;/web-app&gt;  Servlet 3.0 &lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt; &lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot; version=&quot;3.0&quot;&gt; &lt;/web-app&gt;  Servlet 3.1 現時点で最新のバージョンです。 このバージョンからネームスペースがjava.sun.comからxmlns.jcp.orgに変わるんですね。感慨深い。
-&lt;?xml version=&quot;1."/>
+ Servlet 2.3 maven-archetype-webappテンプレートで生成されるものです。
+ &lt;!DOCTYPE web-app PUBLIC &#34;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&#34; &#34;http://java.sun.com/dtd/web-app_2_3.dtd&#34; &gt; &lt;web-app&gt; &lt;/web-app&gt;     Servlet 2.4 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app version=&#34;2.4&#34; xmlns=&#34;http://java.sun.com/xml/ns/j2ee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&#34; &gt; &lt;/web-app&gt;     Servlet 2.5 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app xmlns=&#34;http://java.sun.com/xml/ns/javaee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&#34; version=&#34;2.5&#34;&gt; &lt;/web-app&gt;     Servlet 3.0 &lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt; &lt;web-app xmlns=&#34;http://java.sun.com/xml/ns/javaee&#34; xmlns:xsi=&#34;http://www.w3.org/2001/XMLSchema-instance&#34; xsi:schemaLocation=&#34;"/>
 <meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
 
 
@@ -104,77 +101,118 @@ Servlet 2.3 maven-archetype-webappテンプレートで生成されるもので�
         </h2>
     </header>
     <section id="post-body">
-        
-
+        <div class="paragraph">
 <p>JavaでWebアプリを作る場合、Mavenのmaven-archetype-webappテンプレートを利用しています。
 非常に便利なのですが、Servlet 3.1が出ている今、
 生成されたwe.xmlがServlet 2.3の記述になっていてちょっと古すぎます。
 そのため、毎回テンプレートから生成したあとにweb.xmlを書き換えなければなりません。
 このちょっと面倒な作業を楽にするためにバージョン毎の宣言方法をメモしておきます。</p>
-
-<!-- MORE -->
-
-<h2 id="servlet-2-3">Servlet 2.3</h2>
-
+</div>
+<div class="sect1">
+<h2 id="_servlet_2_3">Servlet 2.3</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>maven-archetype-webappテンプレートで生成されるものです。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" &gt;
 
-<pre><code class="language-xml">&lt;!DOCTYPE web-app PUBLIC
- &quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&quot;
- &quot;http://java.sun.com/dtd/web-app_2_3.dtd&quot; &gt;
- 
 &lt;web-app&gt;
-&lt;/web-app&gt;
-</code></pre>
+&lt;/web-app&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_servlet_2_4">Servlet 2.4</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app version="2.4"
+         xmlns="http://java.sun.com/xml/ns/j2ee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd" &gt;
 
-<h2 id="servlet-2-4">Servlet 2.4</h2>
+&lt;/web-app&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_servlet_2_5">Servlet 2.5</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+           http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+           version="2.5"&gt;
 
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;web-app version=&quot;2.4&quot;
-         xmlns=&quot;http://java.sun.com/xml/ns/j2ee&quot;
-         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/j2ee 
-         http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd&quot; &gt;
+&lt;/web-app&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_servlet_3_0">Servlet 3.0</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://java.sun.com/xml/ns/javaee"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+           http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+           version="3.0"&gt;
 
-&lt;/web-app&gt;
-</code></pre>
-
-<h2 id="servlet-2-5">Servlet 2.5</h2>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
-           xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-           xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee
-           http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd&quot;
-           version=&quot;2.5&quot;&gt;
-
-&lt;/web-app&gt;
-</code></pre>
-
-<h2 id="servlet-3-0">Servlet 3.0</h2>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;web-app xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;
-           xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-           xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee
-           http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;
-           version=&quot;3.0&quot;&gt;
-
-&lt;/web-app&gt;
-</code></pre>
-
-<h2 id="servlet-3-1">Servlet 3.1</h2>
-
-<p>現時点で最新のバージョンです。
-このバージョンからネームスペースが<code>java.sun.com</code>から<code>xmlns.jcp.org</code>に変わるんですね。感慨深い。</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
-         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee 
-         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&quot;
-         version=&quot;3.1&quot;&gt;
-&lt;/web-app&gt;
-</code></pre>
+&lt;/web-app&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_servlet_3_1">Servlet 3.1</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>このバージョンからネームスペースが <code>java.sun.com</code> から <code>xmlns.jcp.org</code> に変わるんですね。<br>
+感慨深い。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1"&gt;
+&lt;/web-app&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_servlet_4_0">Servlet 4.0</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0"&gt;
+&lt;/web-app&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
 
     </section>
 </article>
