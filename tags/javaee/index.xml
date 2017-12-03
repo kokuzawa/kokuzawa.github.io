@@ -6,10 +6,22 @@
     <description>Recent content in Javaee on Katsumi Kokuzawa&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 25 Dec 2015 20:50:08 +0900</lastBuildDate>
+    <lastBuildDate>Mon, 04 Dec 2017 01:40:41 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/tags/javaee/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PrimeFaces-6.1 Dblclick Event</title>
+      <link>https://kokuzawa.github.io/blog/2017/12/04/primefaces-dblclick/</link>
+      <pubDate>Mon, 04 Dec 2017 01:40:41 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2017/12/04/primefaces-dblclick/</guid>
+      <description>今作っているWebアプリでリンクをダブルクリックで動作させるという要求が出たので、 どうやって実現するのか調べてみました。
+ 通常のリンクを実装してみる PrimeFacesの commandLink コンポーネントでリンクを実装します。
+ &amp;lt;p:commandLink value=&#34;Single Click&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;     ダブルクリックで動作するリンクを実装してみる commandLink コンポーネントで実装すると、 onclick イベントで動作するようにレンダリングされてしまうので、 link コンポーネントで実装します。 href を指定するのがコツです。 link コンポーネントでは dblclick イベントだけを発生させ、実際の呼び出しは remoteCommand コンポーネントで行います。
+ &amp;lt;p:link href=&#34;#&#34; value=&#34;Double Click&#34; ondblclick=&#34;dblClickEvent()&#34; /&amp;gt; &amp;lt;p:remoteCommand name=&#34;dblClickEvent&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;     </description>
+    </item>
     
     <item>
       <title>JdbcRealm with WildFly 9.0.1.Final</title>
