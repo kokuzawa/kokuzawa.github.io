@@ -1,135 +1,91 @@
+
 <!DOCTYPE html>
 <html lang="ja-jp">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Katsumi Kokuzawa">
+<head>
 
-<meta name="generator" content="Hugo 0.31" />
-<title>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</title>
-<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+  
+  <meta charset="UTF-8">
+  <title>
+    Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0 | KATSUMI KOKUZAWA&#39;S BLOG
+  </title>
 
 
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+  
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="https://kokuzawa.github.io/index.xml" rel="alternate" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+  <link href="https://kokuzawa.github.io/index.xml" rel="feed" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+
+  
+  
 
 
-
-
-<meta property="og:title" content="Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0" />
-<meta property="og:description" content="JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
-(Bootstrapのalert alert-errorを適用)
-これに対してTableレイアウトは以下のような出力になります。
-どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。 MessagesコンポーネントはHTMLをカスタマイズする事ができません。 正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、 そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、 com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。 もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。 そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。
-BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。 このクローズボタンをクリックする事により、エラー情報を消すことができます。 クローズボタンを出すには、HTMLを下記のように記載する必要があります。
-&lt;div class=&quot;alert alert-error&quot;&gt; &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;&amp;times;&lt;/button&gt; &lt;h4&gt;Summary Message&lt;/h4&gt; Detail Message &lt;/div&gt;  これをJSF合成コンポーネントにします。 webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)
-alert.xhtml:
-&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&gt; &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt; &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xmlns:cc=&quot;http://java.sun.com/jsf/composite&quot; xmlns:c=&quot;http://java.sun.com/jsp/jstl/core&quot;&gt; &lt;!-- INTERFACE --&gt; &lt;cc:interface&gt; &lt;/cc:interface&gt; &lt;!-- IMPLEMENTATION --&gt; &lt;cc:implementation&gt; &lt;c:forEach var=&quot;message&quot; items=&quot;#{facesContext.messageList}&quot;&gt; &lt;c:if test=&quot;#{message.severity == &#39;ERROR 2&#39;}&quot;&gt; &lt;div class=&quot;alert alert-error&quot;&gt; &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;&amp;times;&lt;/button&gt; &lt;h4&gt;#{message." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/" />
-
-
-
-<meta property="article:published_time" content="2013-01-13T18:46:00&#43;09:00"/>
-
-<meta property="article:modified_time" content="2013-01-13T18:46:00&#43;09:00"/>
+</head>
 
 
 
-
-
-
-
-
-
-
-
-
-
-<meta itemprop="name" content="Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0">
-<meta itemprop="description" content="JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
-(Bootstrapのalert alert-errorを適用)
-これに対してTableレイアウトは以下のような出力になります。
-どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。 MessagesコンポーネントはHTMLをカスタマイズする事ができません。 正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、 そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、 com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。 もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。 そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。
-BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。 このクローズボタンをクリックする事により、エラー情報を消すことができます。 クローズボタンを出すには、HTMLを下記のように記載する必要があります。
-&lt;div class=&quot;alert alert-error&quot;&gt; &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;&amp;times;&lt;/button&gt; &lt;h4&gt;Summary Message&lt;/h4&gt; Detail Message &lt;/div&gt;  これをJSF合成コンポーネントにします。 webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)
-alert.xhtml:
-&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&gt; &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt; &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xmlns:cc=&quot;http://java.sun.com/jsf/composite&quot; xmlns:c=&quot;http://java.sun.com/jsp/jstl/core&quot;&gt; &lt;!-- INTERFACE --&gt; &lt;cc:interface&gt; &lt;/cc:interface&gt; &lt;!-- IMPLEMENTATION --&gt; &lt;cc:implementation&gt; &lt;c:forEach var=&quot;message&quot; items=&quot;#{facesContext.messageList}&quot;&gt; &lt;c:if test=&quot;#{message.severity == &#39;ERROR 2&#39;}&quot;&gt; &lt;div class=&quot;alert alert-error&quot;&gt; &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;&amp;times;&lt;/button&gt; &lt;h4&gt;#{message.">
-
-
-<meta itemprop="datePublished" content="2013-01-13T18:46:00&#43;09:00" />
-<meta itemprop="dateModified" content="2013-01-13T18:46:00&#43;09:00" />
-<meta itemprop="wordCount" content="99">
-
-
-
-<meta itemprop="keywords" content="Java,JavaEE,JSF,Bootstrap," />
-
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0"/>
-<meta name="twitter:description" content="JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
-(Bootstrapのalert alert-errorを適用)
-これに対してTableレイアウトは以下のような出力になります。
-どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。 MessagesコンポーネントはHTMLをカスタマイズする事ができません。 正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、 そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、 com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。 もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。 そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。
-BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。 このクローズボタンをクリックする事により、エラー情報を消すことができます。 クローズボタンを出すには、HTMLを下記のように記載する必要があります。
-&lt;div class=&quot;alert alert-error&quot;&gt; &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;&amp;times;&lt;/button&gt; &lt;h4&gt;Summary Message&lt;/h4&gt; Detail Message &lt;/div&gt;  これをJSF合成コンポーネントにします。 webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)
-alert.xhtml:
-&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&gt; &lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt; &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xmlns:cc=&quot;http://java.sun.com/jsf/composite&quot; xmlns:c=&quot;http://java.sun.com/jsp/jstl/core&quot;&gt; &lt;!-- INTERFACE --&gt; &lt;cc:interface&gt; &lt;/cc:interface&gt; &lt;!-- IMPLEMENTATION --&gt; &lt;cc:implementation&gt; &lt;c:forEach var=&quot;message&quot; items=&quot;#{facesContext.messageList}&quot;&gt; &lt;c:if test=&quot;#{message.severity == &#39;ERROR 2&#39;}&quot;&gt; &lt;div class=&quot;alert alert-error&quot;&gt; &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;alert&quot;&gt;&amp;times;&lt;/button&gt; &lt;h4&gt;#{message."/>
-<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
-
-
-    </head>
 <body>
-    <nav class="main-nav">
-	
-		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
-	
+<div class="container">
 
-	
- 		<a href='https://kokuzawa.github.io/about/'>About</a>
-  	
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="https://kokuzawa.github.io/">KATSUMI KOKUZAWA&#39;S BLOG</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="https://twitter.com/kokuzawa" target="_blank">Twitter</a></li>
+          
+          <li><a href="https://github.com/kokuzawa" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
 
-	
-</nav>
 
-    <section id="wrapper">
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</h1>
+      <div class="meta">
+        Jan 13, 2013 &nbsp;
         
+          #<a href="/tags/java">Java</a>&nbsp;
         
-<article class="post">
-    <header>
-        <h1>Convert the Alerts component of &#39;Bootstrap&#39; to a component of JSF 2.0</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        January 13, 2013
-        <br>
+          #<a href="/tags/javaee">JavaEE</a>&nbsp;
         
+          #<a href="/tags/jsf">JSF</a>&nbsp;
         
-            
-                <a href="https://kokuzawa.github.io/tags/java">Java</a>
-            
-                <a href="https://kokuzawa.github.io/tags/javaee">JavaEE</a>
-            
-                <a href="https://kokuzawa.github.io/tags/jsf">JSF</a>
-            
-                <a href="https://kokuzawa.github.io/tags/bootstrap">Bootstrap</a>
-            
+          #<a href="/tags/bootstrap">Bootstrap</a>&nbsp;
         
-        
-        </h2>
-    </header>
-    <section id="post-body">
-        <p>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。
+      </div>
+    </div>
+    <article>
+      <p>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。
 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。
 listレイアウトは以下のような出力になります。<br />
 (Bootstrapの<code>alert alert-error</code>を適用)</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_1.png" alt="" /></p>
+<p><img src="/images/post_image_1.png" alt="" /></p>
 
 <p>これに対してTableレイアウトは以下のような出力になります。</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_2.png" alt="" /></p>
+<p><img src="/images/post_image_2.png" alt="" /></p>
 
 <p>どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。
 MessagesコンポーネントはHTMLをカスタマイズする事ができません。
@@ -201,152 +157,67 @@ EL式ではStatic fieldを比較値として比較できません。
 
 <p>実際に表示すると以下のようになります。</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_3.png" alt="" /></p>
+<p><img src="/images/post_image_3.png" alt="" /></p>
 
 <p>エラーメッセージの右上にクローズボタンが表示され、クリックする事によりメッセージを閉じることができるようになりました。</p>
 
-    </section>
-</article>
-
-<footer id="post-meta" class="clearfix">
-    <a href="https://twitter.com/kokuzawa">
-    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
-    <div>
-        <span class="dark">Katsumi Kokuzawa</span>
-        <span></span>
-    </div>
-    </a>
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2013%2f01%2f13%2ffacesmessagetobootstrap%2f - Convert%20the%20Alerts%20component%20of%20%27Bootstrap%27%20to%20a%20component%20of%20JSF%202.0 by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
-
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
-
-    </section>
-</footer>
-
-<div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
+      
+      
+      
+    </article>
     
-    
-    
-    };
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'katsumikokuzawasblog';
+
+     
     (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "katsumikokuzawasblog" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<ul id="post-list" class="archive readmore">
-    <h3>Read more</h3>
-
-    
-    
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/12/04/primefaces-dblclick/">PrimeFaces-6.1 Dblclick Event<aside class="dates">Dec 4 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">JSF 2.3 の Websocket を試す<aside class="dates">Jan 12 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/primeng/">PrimeNGを組み込む<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/">IntelliJ IDEAでAngular2アプリを動かす<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/">Dialog of PrimeFaces<aside class="dates">Dec 25 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/15/httpurlconnection/">HttpURLConnectionで嵌った話<aside class="dates">Dec 15 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/">remoteCommand in Composite<aside class="dates">Dec 14 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/10/20/java-freemarker-noparse/">FreeMarkerでinterpolation部分をそのまま出力<aside class="dates">Oct 20 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/06/27/java-sql-timestamp/">java.sql.Timestamp の振る舞い<aside class="dates">Jun 27 2016</aside></a>
-        </li>
-    
-</ul>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
 
-        <footer id="footer">
+  </main>
+  
+  <nav class="pagination-single">
     
-        <div id="social">
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2012/12/16/fisheyetocrucible/" rel="prev">FishEyeとCrucible #augj</a></span>
+    
+    
+      <span class="next"><a href="https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/" rel="next">Performance of JPA</a> &rarr;</span>
+    
+  </nav>
 
-	
-	
-    
-    <a class="symbol" href="https://github.com/kokuzawa">
-        circlegithub
-    </a>
-    
-    <a class="symbol" href="https://www.twitter.com/kokuzawa">
-        circletwitterbird
-    </a>
-    
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      Written by Katsumi Kokuzawa
+    </div>
+  </footer>
 
 
 </div>
 
-    
-    <p class="small">
-    
-        © Copyright 2017 Katsumi Kokuzawa
-    
-    </p>
-</footer>
-
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://kokuzawa.github.io/js/main.js"></script>
-<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script src="/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
-
-
-
 <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-36546771-1', 'auto');
-ga('send', 'pageview');
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36546771-1', 'auto');
+	ga('send', 'pageview');
 </script>
-
 
 </body>
 </html>
+

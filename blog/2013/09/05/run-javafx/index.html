@@ -1,129 +1,76 @@
+
 <!DOCTYPE html>
 <html lang="ja-jp">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Katsumi Kokuzawa">
+<head>
 
-<meta name="generator" content="Hugo 0.31" />
-<title>バブルソートをJavaFXで可視化</title>
-<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+  
+  <meta charset="UTF-8">
+  <title>
+    バブルソートをJavaFXで可視化 | KATSUMI KOKUZAWA&#39;S BLOG
+  </title>
 
 
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+  
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2013/09/05/run-javafx/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="https://kokuzawa.github.io/index.xml" rel="alternate" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+  <link href="https://kokuzawa.github.io/index.xml" rel="feed" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+
+  
+  
 
 
-
-
-<meta property="og:title" content="バブルソートをJavaFXで可視化" />
-<meta property="og:description" content="『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。 作るのはそれほど難しい話ではないので、ちょっとした解説を加えつつ紹介しようと思う。
-実行モジュールもあとで提示するので確認して頂ければ幸い。
-IDEはIntelliJ IDEAを使った。IntelliJ IDEAにはJavaFXモジュール用のプロジェクトを作ることができるのでそれを利用する。 ビルドすると親切なことにjarファイルだけでなく、JNLPやHTMLファイルを生成してくれるので非常に便利。
-ビルドされた実行モジュールを見てもらった方が分かり易いと思い、 Appletとしてブラウザ上で動かそうと思ったのだが、 IDEAが生成してくれたHTMLをSafariで開いても、いつまでたっても起動しない。 HTMLのソースを見てみると、dtjava.jsというJavaScriptを使って起動しようとしているようだが、 少なくともSafariではうんともすんとも言わない。 他のブラウザなら動作するのだろうかと思い、Chromeで実行すると、今度は「このブラウザではサポートされていない」という趣旨の メッセージが表示される。多分Macだとダメなのだろう。もし起動する方法を知っていたら教えて頂きたい。
-ということで、Appletとして動かすことは諦めたので、JNLPファイルへのリンクを提示する。
-JavaFXApp.jnlp
-このJNLPをダウンロードして起動すると、バブルソートが実行される。 OSXの場合だと、セキュリティによって起動できないかもしれない。 その場合、ダウンロードしたJNLPファイルをCtrl＋クリックして「このアプリケーションで開く」-&gt; 「Java Web Start」とメニューを 選択して行けば、起動しても良いか尋ねてくれるので、ここから起動が出来ると思う。
-アプリについて ソート対象となる100本の黒ラインはランダムに並んでいて、現在処理中のラインを赤で表している。 実際に動作を見ると、短い黒ラインがだんだんと左側に寄って行くのが分かる。
-コード 初期データはCollections.shuffle(Collection)でシャッフルする。
-for (int i = 1; i &lt;= N; i&#43;&#43;) { data.add(i); } Collections.shuffle(data);  ステージの初期化。黒ラインと赤ラインを表すPathを2つ。 repaint()メソッドで描画した結果から必要になった幅をステージの幅として設定する。&#43;10はパディング分になる。
-path.setStrokeWidth(3.0); path.setStroke(Color.GRAY); currentPath.setStrokeWidth(4.0); currentPath.setStroke(Color.RED); root.getChildren().add(path); root.getChildren().add(currentPath); final int width = repaint(); primaryStage.setTitle(&quot;Bubble Sort&quot;); primaryStage.setResizable(false); primaryStage.setScene(new Scene(root, width &#43; 10, VIEW_HEIGHT)); primaryStage.show();  実際のライン描画処理。 JavaFXではTimelineクラスを使うと秒毎の処理が書けるので簡単にアニメーションを作ることができる。 待機時間無しだとソートが一瞬で終わってしまい、過程を見ることができないので、 ここでは待機時間に10ミリ秒を指定している。new Duration(10)の部分。" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://kokuzawa.github.io/blog/2013/09/05/run-javafx/" />
+</head>
 
 
 
-<meta property="article:published_time" content="2013-09-05T03:15:00&#43;09:00"/>
-
-<meta property="article:modified_time" content="2013-09-05T03:15:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta itemprop="name" content="バブルソートをJavaFXで可視化">
-<meta itemprop="description" content="『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。 作るのはそれほど難しい話ではないので、ちょっとした解説を加えつつ紹介しようと思う。
-実行モジュールもあとで提示するので確認して頂ければ幸い。
-IDEはIntelliJ IDEAを使った。IntelliJ IDEAにはJavaFXモジュール用のプロジェクトを作ることができるのでそれを利用する。 ビルドすると親切なことにjarファイルだけでなく、JNLPやHTMLファイルを生成してくれるので非常に便利。
-ビルドされた実行モジュールを見てもらった方が分かり易いと思い、 Appletとしてブラウザ上で動かそうと思ったのだが、 IDEAが生成してくれたHTMLをSafariで開いても、いつまでたっても起動しない。 HTMLのソースを見てみると、dtjava.jsというJavaScriptを使って起動しようとしているようだが、 少なくともSafariではうんともすんとも言わない。 他のブラウザなら動作するのだろうかと思い、Chromeで実行すると、今度は「このブラウザではサポートされていない」という趣旨の メッセージが表示される。多分Macだとダメなのだろう。もし起動する方法を知っていたら教えて頂きたい。
-ということで、Appletとして動かすことは諦めたので、JNLPファイルへのリンクを提示する。
-JavaFXApp.jnlp
-このJNLPをダウンロードして起動すると、バブルソートが実行される。 OSXの場合だと、セキュリティによって起動できないかもしれない。 その場合、ダウンロードしたJNLPファイルをCtrl＋クリックして「このアプリケーションで開く」-&gt; 「Java Web Start」とメニューを 選択して行けば、起動しても良いか尋ねてくれるので、ここから起動が出来ると思う。
-アプリについて ソート対象となる100本の黒ラインはランダムに並んでいて、現在処理中のラインを赤で表している。 実際に動作を見ると、短い黒ラインがだんだんと左側に寄って行くのが分かる。
-コード 初期データはCollections.shuffle(Collection)でシャッフルする。
-for (int i = 1; i &lt;= N; i&#43;&#43;) { data.add(i); } Collections.shuffle(data);  ステージの初期化。黒ラインと赤ラインを表すPathを2つ。 repaint()メソッドで描画した結果から必要になった幅をステージの幅として設定する。&#43;10はパディング分になる。
-path.setStrokeWidth(3.0); path.setStroke(Color.GRAY); currentPath.setStrokeWidth(4.0); currentPath.setStroke(Color.RED); root.getChildren().add(path); root.getChildren().add(currentPath); final int width = repaint(); primaryStage.setTitle(&quot;Bubble Sort&quot;); primaryStage.setResizable(false); primaryStage.setScene(new Scene(root, width &#43; 10, VIEW_HEIGHT)); primaryStage.show();  実際のライン描画処理。 JavaFXではTimelineクラスを使うと秒毎の処理が書けるので簡単にアニメーションを作ることができる。 待機時間無しだとソートが一瞬で終わってしまい、過程を見ることができないので、 ここでは待機時間に10ミリ秒を指定している。new Duration(10)の部分。">
-
-
-<meta itemprop="datePublished" content="2013-09-05T03:15:00&#43;09:00" />
-<meta itemprop="dateModified" content="2013-09-05T03:15:00&#43;09:00" />
-<meta itemprop="wordCount" content="200">
-
-
-
-<meta itemprop="keywords" content="JavaFX," />
-
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="バブルソートをJavaFXで可視化"/>
-<meta name="twitter:description" content="『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。 作るのはそれほど難しい話ではないので、ちょっとした解説を加えつつ紹介しようと思う。
-実行モジュールもあとで提示するので確認して頂ければ幸い。
-IDEはIntelliJ IDEAを使った。IntelliJ IDEAにはJavaFXモジュール用のプロジェクトを作ることができるのでそれを利用する。 ビルドすると親切なことにjarファイルだけでなく、JNLPやHTMLファイルを生成してくれるので非常に便利。
-ビルドされた実行モジュールを見てもらった方が分かり易いと思い、 Appletとしてブラウザ上で動かそうと思ったのだが、 IDEAが生成してくれたHTMLをSafariで開いても、いつまでたっても起動しない。 HTMLのソースを見てみると、dtjava.jsというJavaScriptを使って起動しようとしているようだが、 少なくともSafariではうんともすんとも言わない。 他のブラウザなら動作するのだろうかと思い、Chromeで実行すると、今度は「このブラウザではサポートされていない」という趣旨の メッセージが表示される。多分Macだとダメなのだろう。もし起動する方法を知っていたら教えて頂きたい。
-ということで、Appletとして動かすことは諦めたので、JNLPファイルへのリンクを提示する。
-JavaFXApp.jnlp
-このJNLPをダウンロードして起動すると、バブルソートが実行される。 OSXの場合だと、セキュリティによって起動できないかもしれない。 その場合、ダウンロードしたJNLPファイルをCtrl＋クリックして「このアプリケーションで開く」-&gt; 「Java Web Start」とメニューを 選択して行けば、起動しても良いか尋ねてくれるので、ここから起動が出来ると思う。
-アプリについて ソート対象となる100本の黒ラインはランダムに並んでいて、現在処理中のラインを赤で表している。 実際に動作を見ると、短い黒ラインがだんだんと左側に寄って行くのが分かる。
-コード 初期データはCollections.shuffle(Collection)でシャッフルする。
-for (int i = 1; i &lt;= N; i&#43;&#43;) { data.add(i); } Collections.shuffle(data);  ステージの初期化。黒ラインと赤ラインを表すPathを2つ。 repaint()メソッドで描画した結果から必要になった幅をステージの幅として設定する。&#43;10はパディング分になる。
-path.setStrokeWidth(3.0); path.setStroke(Color.GRAY); currentPath.setStrokeWidth(4.0); currentPath.setStroke(Color.RED); root.getChildren().add(path); root.getChildren().add(currentPath); final int width = repaint(); primaryStage.setTitle(&quot;Bubble Sort&quot;); primaryStage.setResizable(false); primaryStage.setScene(new Scene(root, width &#43; 10, VIEW_HEIGHT)); primaryStage.show();  実際のライン描画処理。 JavaFXではTimelineクラスを使うと秒毎の処理が書けるので簡単にアニメーションを作ることができる。 待機時間無しだとソートが一瞬で終わってしまい、過程を見ることができないので、 ここでは待機時間に10ミリ秒を指定している。new Duration(10)の部分。"/>
-<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
-
-
-    </head>
 <body>
-    <nav class="main-nav">
-	
-		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
-	
+<div class="container">
 
-	
- 		<a href='https://kokuzawa.github.io/about/'>About</a>
-  	
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="https://kokuzawa.github.io/">KATSUMI KOKUZAWA&#39;S BLOG</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="https://twitter.com/kokuzawa" target="_blank">Twitter</a></li>
+          
+          <li><a href="https://github.com/kokuzawa" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
 
-	
-</nav>
 
-    <section id="wrapper">
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>バブルソートをJavaFXで可視化</h1>
+      <div class="meta">
+        Sep 5, 2013 &nbsp;
         
+          #<a href="/tags/javafx">JavaFX</a>&nbsp;
         
-<article class="post">
-    <header>
-        <h1>バブルソートをJavaFXで可視化</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        September 5, 2013
-        <br>
-        
-        
-            
-                <a href="https://kokuzawa.github.io/tags/javafx">JavaFX</a>
-            
-        
-        
-        </h2>
-    </header>
-    <section id="post-body">
-        
+      </div>
+    </div>
+    <article>
+      
 
 <p>『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。
 作るのはそれほど難しい話ではないので、ちょっとした解説を加えつつ紹介しようと思う。</p>
@@ -154,7 +101,7 @@ OSXの場合だと、セキュリティによって起動できないかもし�
 
 <h2 id="アプリについて">アプリについて</h2>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_15.png" alt="" /></p>
+<p><img src="/images/post_image_15.png" alt="" /></p>
 
 <p>ソート対象となる100本の黒ラインはランダムに並んでいて、現在処理中のラインを赤で表している。
 実際に動作を見ると、短い黒ラインがだんだんと左側に寄って行くのが分かる。</p>
@@ -257,148 +204,63 @@ JavaFXでラインを引く場合、<code>MoveTo</code>クラスで座標を移�
 <p>ソースコードはbitbucketにあるので完全版はそちらを参照してください。
 <a href="https://bitbucket.org/kokuzawa/bubblesort">https://bitbucket.org/kokuzawa/bubblesort</a></p>
 
-    </section>
-</article>
-
-<footer id="post-meta" class="clearfix">
-    <a href="https://twitter.com/kokuzawa">
-    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
-    <div>
-        <span class="dark">Katsumi Kokuzawa</span>
-        <span></span>
-    </div>
-    </a>
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2013%2f09%2f05%2frun-javafx%2f - %e3%83%90%e3%83%96%e3%83%ab%e3%82%bd%e3%83%bc%e3%83%88%e3%82%92JavaFX%e3%81%a7%e5%8f%af%e8%a6%96%e5%8c%96 by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
-
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
-
-    </section>
-</footer>
-
-<div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
+      
+      
+      
+    </article>
     
-    
-    
-    };
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'katsumikokuzawasblog';
+
+     
     (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "katsumikokuzawasblog" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<ul id="post-list" class="archive readmore">
-    <h3>Read more</h3>
-
-    
-    
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/12/04/primefaces-dblclick/">PrimeFaces-6.1 Dblclick Event<aside class="dates">Dec 4 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">JSF 2.3 の Websocket を試す<aside class="dates">Jan 12 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/primeng/">PrimeNGを組み込む<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/">IntelliJ IDEAでAngular2アプリを動かす<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/">Dialog of PrimeFaces<aside class="dates">Dec 25 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/15/httpurlconnection/">HttpURLConnectionで嵌った話<aside class="dates">Dec 15 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/">remoteCommand in Composite<aside class="dates">Dec 14 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/10/20/java-freemarker-noparse/">FreeMarkerでinterpolation部分をそのまま出力<aside class="dates">Oct 20 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/06/27/java-sql-timestamp/">java.sql.Timestamp の振る舞い<aside class="dates">Jun 27 2016</aside></a>
-        </li>
-    
-</ul>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
 
-        <footer id="footer">
+  </main>
+  
+  <nav class="pagination-single">
     
-        <div id="social">
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2013/06/30/jdbcrealmfalsepatukezigabian-geng-number-glassfish-4/" rel="prev">JDBCRealmのパッケージが変更 #glassfish-4</a></span>
+    
+    
+      <span class="next"><a href="https://kokuzawa.github.io/blog/2013/10/15/springframework/" rel="next">springframeworkのjarファイル一式をダウンロードするには？</a> &rarr;</span>
+    
+  </nav>
 
-	
-	
-    
-    <a class="symbol" href="https://github.com/kokuzawa">
-        circlegithub
-    </a>
-    
-    <a class="symbol" href="https://www.twitter.com/kokuzawa">
-        circletwitterbird
-    </a>
-    
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      Written by Katsumi Kokuzawa
+    </div>
+  </footer>
 
 
 </div>
 
-    
-    <p class="small">
-    
-        © Copyright 2017 Katsumi Kokuzawa
-    
-    </p>
-</footer>
-
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://kokuzawa.github.io/js/main.js"></script>
-<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script src="/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
-
-
-
 <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-36546771-1', 'auto');
-ga('send', 'pageview');
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36546771-1', 'auto');
+	ga('send', 'pageview');
 </script>
-
 
 </body>
 </html>
+

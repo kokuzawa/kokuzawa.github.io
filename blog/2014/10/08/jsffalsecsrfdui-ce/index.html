@@ -1,107 +1,78 @@
+
 <!DOCTYPE html>
 <html lang="ja-jp">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Katsumi Kokuzawa">
+<head>
 
-<meta name="generator" content="Hugo 0.31" />
-<title>JSFのCSRF対策</title>
-<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+  
+  <meta charset="UTF-8">
+  <title>
+    JSFのCSRF対策 | KATSUMI KOKUZAWA&#39;S BLOG
+  </title>
 
 
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+  
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2014/10/08/jsffalsecsrfdui-ce/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="https://kokuzawa.github.io/index.xml" rel="alternate" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+  <link href="https://kokuzawa.github.io/index.xml" rel="feed" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+
+  
+  
 
 
-
-
-<meta property="og:title" content="JSFのCSRF対策" />
-<meta property="og:description" content="だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。 そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、 JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのように防げるのかを確認してみます。
-環境  OS: Mac OSX 10.9.4 Java: Java&trade; SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  アプリを作る CSRFの脆弱性がある、といわれても具体例がないとなかなかイメージするのが難しいかもしれません。 そこで、ここでは実際に攻撃を受けるアプリを作り、脆弱性を露呈されてみたいと思います。 コードの構成は下記のようになります。
-JSFCSRFSample &#43;- src | &#43;- main | | &#43;- java | | &#43;- org.katsumi.bean | | &#43;- FormBean.java | &#43;- webapp | &#43;- index.xhtml | &#43;- result.xhtml | &#43;- warning.xhtml | &#43;- WEB-INF | &#43;- jboss-web.xml | &#43;- faces-config.xml | &#43;- web.xml &#43;- pom." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://kokuzawa.github.io/blog/2014/10/08/jsffalsecsrfdui-ce/" />
-
-
-
-<meta property="article:published_time" content="2014-10-08T02:29:57&#43;09:00"/>
-
-<meta property="article:modified_time" content="2014-10-08T02:29:57&#43;09:00"/>
-
-
+</head>
 
 
 
-
-
-
-
-
-
-
-
-<meta itemprop="name" content="JSFのCSRF対策">
-<meta itemprop="description" content="だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。 そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、 JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのように防げるのかを確認してみます。
-環境  OS: Mac OSX 10.9.4 Java: Java&trade; SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  アプリを作る CSRFの脆弱性がある、といわれても具体例がないとなかなかイメージするのが難しいかもしれません。 そこで、ここでは実際に攻撃を受けるアプリを作り、脆弱性を露呈されてみたいと思います。 コードの構成は下記のようになります。
-JSFCSRFSample &#43;- src | &#43;- main | | &#43;- java | | &#43;- org.katsumi.bean | | &#43;- FormBean.java | &#43;- webapp | &#43;- index.xhtml | &#43;- result.xhtml | &#43;- warning.xhtml | &#43;- WEB-INF | &#43;- jboss-web.xml | &#43;- faces-config.xml | &#43;- web.xml &#43;- pom.">
-
-
-<meta itemprop="datePublished" content="2014-10-08T02:29:57&#43;09:00" />
-<meta itemprop="dateModified" content="2014-10-08T02:29:57&#43;09:00" />
-<meta itemprop="wordCount" content="205">
-
-
-
-<meta itemprop="keywords" content="Java,JSF," />
-
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="JSFのCSRF対策"/>
-<meta name="twitter:description" content="だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。 そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、 JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのように防げるのかを確認してみます。
-環境  OS: Mac OSX 10.9.4 Java: Java&trade; SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  アプリを作る CSRFの脆弱性がある、といわれても具体例がないとなかなかイメージするのが難しいかもしれません。 そこで、ここでは実際に攻撃を受けるアプリを作り、脆弱性を露呈されてみたいと思います。 コードの構成は下記のようになります。
-JSFCSRFSample &#43;- src | &#43;- main | | &#43;- java | | &#43;- org.katsumi.bean | | &#43;- FormBean.java | &#43;- webapp | &#43;- index.xhtml | &#43;- result.xhtml | &#43;- warning.xhtml | &#43;- WEB-INF | &#43;- jboss-web.xml | &#43;- faces-config.xml | &#43;- web.xml &#43;- pom."/>
-<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
-
-
-    </head>
 <body>
-    <nav class="main-nav">
-	
-		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
-	
+<div class="container">
 
-	
- 		<a href='https://kokuzawa.github.io/about/'>About</a>
-  	
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="https://kokuzawa.github.io/">KATSUMI KOKUZAWA&#39;S BLOG</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="https://twitter.com/kokuzawa" target="_blank">Twitter</a></li>
+          
+          <li><a href="https://github.com/kokuzawa" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
 
-	
-</nav>
 
-    <section id="wrapper">
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>JSFのCSRF対策</h1>
+      <div class="meta">
+        Oct 8, 2014 &nbsp;
         
+          #<a href="/tags/java">Java</a>&nbsp;
         
-<article class="post">
-    <header>
-        <h1>JSFのCSRF対策</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        October 8, 2014
-        <br>
+          #<a href="/tags/jsf">JSF</a>&nbsp;
         
-        
-            
-                <a href="https://kokuzawa.github.io/tags/java">Java</a>
-            
-                <a href="https://kokuzawa.github.io/tags/jsf">JSF</a>
-            
-        
-        
-        </h2>
-    </header>
-    <section id="post-body">
-        
+      </div>
+    </div>
+    <article>
+      
 
 <p>だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。
 そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、
@@ -204,11 +175,11 @@ public class FormBean
 <p>準備はできたので、実際に動作させて攻撃してみます。
 起動後にindex.xhtmlにアクセスすると下記の画面が表示されます。</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_32.png" alt="" /></p>
+<p><img src="/images/post_image_32.png" alt="" /></p>
 
 <p>「Jump!」ボタンをクリックすると、パラメータが送信されてresult.xhtmlが表示されます。</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_33.png" alt="" /></p>
+<p><img src="/images/post_image_33.png" alt="" /></p>
 
 <p>ここで、攻撃者が用意した下記のリンクを踏んだと仮定します。</p>
 
@@ -219,7 +190,7 @@ public class FormBean
 認証をセッションIDベースで行っている場合は問題なくスルーされるはずです。
 というわけで、下記の結果になります。</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_34.png" alt="" /></p>
+<p><img src="/images/post_image_34.png" alt="" /></p>
 
 <p>意図していない文字列が登録されてしまいました。</p>
 
@@ -265,12 +236,12 @@ JSF 2.2からこの仕組みを利用できるようになっているので対�
 
 <p>攻撃者が用意した先ほどのリンクを送信すると下記の結果になりました。</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_35.png" alt="" /></p>
+<p><img src="/images/post_image_35.png" alt="" /></p>
 
 <p>うまく機能しているようです。
 正しいルートでリクエストを送信すると、下記のようにトークンが付与されていることがわかります。</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_36.png" alt="" /></p>
+<p><img src="/images/post_image_36.png" alt="" /></p>
 
 <h2 id="まとめ">まとめ</h2>
 
@@ -290,148 +261,63 @@ JSF 2.2からこの仕組みを利用できるようになっているので対�
 <li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/JSF-CSRF-Demo/JSF2.2CsrfDemo.html">Java Platform, Enterprise Edition 7: JSON Processing</a></li>
 </ul>
 
-    </section>
-</article>
-
-<footer id="post-meta" class="clearfix">
-    <a href="https://twitter.com/kokuzawa">
-    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
-    <div>
-        <span class="dark">Katsumi Kokuzawa</span>
-        <span></span>
-    </div>
-    </a>
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2014%2f10%2f08%2fjsffalsecsrfdui-ce%2f - JSF%e3%81%aeCSRF%e5%af%be%e7%ad%96 by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
-
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
-
-    </section>
-</footer>
-
-<div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
+      
+      
+      
+    </article>
     
-    
-    
-    };
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'katsumikokuzawasblog';
+
+     
     (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "katsumikokuzawasblog" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<ul id="post-list" class="archive readmore">
-    <h3>Read more</h3>
-
-    
-    
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/12/04/primefaces-dblclick/">PrimeFaces-6.1 Dblclick Event<aside class="dates">Dec 4 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">JSF 2.3 の Websocket を試す<aside class="dates">Jan 12 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/primeng/">PrimeNGを組み込む<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/">IntelliJ IDEAでAngular2アプリを動かす<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/">Dialog of PrimeFaces<aside class="dates">Dec 25 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/15/httpurlconnection/">HttpURLConnectionで嵌った話<aside class="dates">Dec 15 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/">remoteCommand in Composite<aside class="dates">Dec 14 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/10/20/java-freemarker-noparse/">FreeMarkerでinterpolation部分をそのまま出力<aside class="dates">Oct 20 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/06/27/java-sql-timestamp/">java.sql.Timestamp の振る舞い<aside class="dates">Jun 27 2016</aside></a>
-        </li>
-    
-</ul>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
 
-        <footer id="footer">
+  </main>
+  
+  <nav class="pagination-single">
     
-        <div id="social">
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/" rel="prev">Javaで文書検索をする (Apache Solr)</a></span>
+    
+    
+      <span class="next"><a href="https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/" rel="next">FlexとJavaFXでREST-APIを呼び出す</a> &rarr;</span>
+    
+  </nav>
 
-	
-	
-    
-    <a class="symbol" href="https://github.com/kokuzawa">
-        circlegithub
-    </a>
-    
-    <a class="symbol" href="https://www.twitter.com/kokuzawa">
-        circletwitterbird
-    </a>
-    
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      Written by Katsumi Kokuzawa
+    </div>
+  </footer>
 
 
 </div>
 
-    
-    <p class="small">
-    
-        © Copyright 2017 Katsumi Kokuzawa
-    
-    </p>
-</footer>
-
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://kokuzawa.github.io/js/main.js"></script>
-<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script src="/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
-
-
-
 <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-36546771-1', 'auto');
-ga('send', 'pageview');
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36546771-1', 'auto');
+	ga('send', 'pageview');
 </script>
-
 
 </body>
 </html>
+

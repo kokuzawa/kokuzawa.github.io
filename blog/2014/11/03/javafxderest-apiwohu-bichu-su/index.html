@@ -1,118 +1,80 @@
+
 <!DOCTYPE html>
 <html lang="ja-jp">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Katsumi Kokuzawa">
+<head>
 
-<meta name="generator" content="Hugo 0.31" />
-<title>FlexとJavaFXでREST-APIを呼び出す</title>
-<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+  
+  <meta charset="UTF-8">
+  <title>
+    FlexとJavaFXでREST-APIを呼び出す | KATSUMI KOKUZAWA&#39;S BLOG
+  </title>
 
 
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+  
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="https://kokuzawa.github.io/index.xml" rel="alternate" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+  <link href="https://kokuzawa.github.io/index.xml" rel="feed" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+
+  
+  
 
 
-
-
-<meta property="og:title" content="FlexとJavaFXでREST-APIを呼び出す" />
-<meta property="og:description" content="FlexとJavaFXからREST-APIを呼び出してみました。
-環境  OS: Mac OSX Yosemite 10.10 Java: Java&trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
-import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&quot;/hello&quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&quot;string&quot;) String string) { return String.format(&quot;Hello %s!&quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。
-画面構成を管理するMXMLです。
-Main.mxml:
-&lt;?xml version=&quot;1.0&quot;?&gt; &lt;s:WindowedApplication xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot; xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot; xmlns:local=&quot;*&quot; title=&quot;Hello World&quot; width=&quot;230&quot; height=&quot;80&quot;&gt; &lt;fx:Declarations&gt; &lt;local:Controller id=&quot;controller&quot;/&gt; &lt;/fx:Declarations&gt; &lt;s:VGroup paddingBottom=&quot;10&quot; paddingLeft=&quot;10&quot; paddingRight=&quot;10&quot; paddingTop=&quot;10&quot; gap=&quot;10&quot; minHeight=&quot;0&quot;&gt; &lt;s:HGroup&gt; &lt;s:TextInput id=&quot;stringField&quot;/&gt; &lt;s:Button label=&quot;Button&quot; click=&quot;{controller." />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/" />
-
-
-
-<meta property="article:published_time" content="2014-11-03T17:12:02&#43;09:00"/>
-
-<meta property="article:modified_time" content="2014-11-03T17:12:02&#43;09:00"/>
+</head>
 
 
 
-
-
-
-
-
-
-
-
-
-
-<meta itemprop="name" content="FlexとJavaFXでREST-APIを呼び出す">
-<meta itemprop="description" content="FlexとJavaFXからREST-APIを呼び出してみました。
-環境  OS: Mac OSX Yosemite 10.10 Java: Java&trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
-import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&quot;/hello&quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&quot;string&quot;) String string) { return String.format(&quot;Hello %s!&quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。
-画面構成を管理するMXMLです。
-Main.mxml:
-&lt;?xml version=&quot;1.0&quot;?&gt; &lt;s:WindowedApplication xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot; xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot; xmlns:local=&quot;*&quot; title=&quot;Hello World&quot; width=&quot;230&quot; height=&quot;80&quot;&gt; &lt;fx:Declarations&gt; &lt;local:Controller id=&quot;controller&quot;/&gt; &lt;/fx:Declarations&gt; &lt;s:VGroup paddingBottom=&quot;10&quot; paddingLeft=&quot;10&quot; paddingRight=&quot;10&quot; paddingTop=&quot;10&quot; gap=&quot;10&quot; minHeight=&quot;0&quot;&gt; &lt;s:HGroup&gt; &lt;s:TextInput id=&quot;stringField&quot;/&gt; &lt;s:Button label=&quot;Button&quot; click=&quot;{controller.">
-
-
-<meta itemprop="datePublished" content="2014-11-03T17:12:02&#43;09:00" />
-<meta itemprop="dateModified" content="2014-11-03T17:12:02&#43;09:00" />
-<meta itemprop="wordCount" content="504">
-
-
-
-<meta itemprop="keywords" content="Java,JavaFX,JAX-RS," />
-
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="FlexとJavaFXでREST-APIを呼び出す"/>
-<meta name="twitter:description" content="FlexとJavaFXからREST-APIを呼び出してみました。
-環境  OS: Mac OSX Yosemite 10.10 Java: Java&trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
-import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&quot;/hello&quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&quot;string&quot;) String string) { return String.format(&quot;Hello %s!&quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。
-画面構成を管理するMXMLです。
-Main.mxml:
-&lt;?xml version=&quot;1.0&quot;?&gt; &lt;s:WindowedApplication xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot; xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot; xmlns:local=&quot;*&quot; title=&quot;Hello World&quot; width=&quot;230&quot; height=&quot;80&quot;&gt; &lt;fx:Declarations&gt; &lt;local:Controller id=&quot;controller&quot;/&gt; &lt;/fx:Declarations&gt; &lt;s:VGroup paddingBottom=&quot;10&quot; paddingLeft=&quot;10&quot; paddingRight=&quot;10&quot; paddingTop=&quot;10&quot; gap=&quot;10&quot; minHeight=&quot;0&quot;&gt; &lt;s:HGroup&gt; &lt;s:TextInput id=&quot;stringField&quot;/&gt; &lt;s:Button label=&quot;Button&quot; click=&quot;{controller."/>
-<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
-
-
-    </head>
 <body>
-    <nav class="main-nav">
-	
-		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
-	
+<div class="container">
 
-	
- 		<a href='https://kokuzawa.github.io/about/'>About</a>
-  	
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="https://kokuzawa.github.io/">KATSUMI KOKUZAWA&#39;S BLOG</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="https://twitter.com/kokuzawa" target="_blank">Twitter</a></li>
+          
+          <li><a href="https://github.com/kokuzawa" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
 
-	
-</nav>
 
-    <section id="wrapper">
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>FlexとJavaFXでREST-APIを呼び出す</h1>
+      <div class="meta">
+        Nov 3, 2014 &nbsp;
         
+          #<a href="/tags/java">Java</a>&nbsp;
         
-<article class="post">
-    <header>
-        <h1>FlexとJavaFXでREST-APIを呼び出す</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        November 3, 2014
-        <br>
+          #<a href="/tags/javafx">JavaFX</a>&nbsp;
         
+          #<a href="/tags/jax-rs">JAX-RS</a>&nbsp;
         
-            
-                <a href="https://kokuzawa.github.io/tags/java">Java</a>
-            
-                <a href="https://kokuzawa.github.io/tags/javafx">JavaFX</a>
-            
-                <a href="https://kokuzawa.github.io/tags/jax-rs">JAX-RS</a>
-            
-        
-        
-        </h2>
-    </header>
-    <section id="post-body">
-        
+      </div>
+    </div>
+    <article>
+      
 
 <p>FlexとJavaFXからREST-APIを呼び出してみました。</p>
 
@@ -222,7 +184,7 @@ public class HelloService
 
 <p>起動すると下記の画面が表示されます。</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_37.png" alt="" /></p>
+<p><img src="/images/post_image_37.png" alt="" /></p>
 
 <h2 id="javafxからrest-apiを呼び出す">JavaFXからREST-APIを呼び出す</h2>
 
@@ -320,7 +282,7 @@ public class Controller
 
 <p>起動すると下記の画面が表示されます。</p>
 
-<p><img src="https://kokuzawa.github.io/images/post_image_38.png" alt="" /></p>
+<p><img src="/images/post_image_38.png" alt="" /></p>
 
 <h2 id="javafxからの呼び出しを非同期にする">JavaFXからの呼び出しを非同期にする</h2>
 
@@ -484,148 +446,63 @@ JavaFXを利用する上ではそれほど問題にならないかな、と思�
 <li><a href="http://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm">Concurrency in JavaFX</a></li>
 </ul>
 
-    </section>
-</article>
-
-<footer id="post-meta" class="clearfix">
-    <a href="https://twitter.com/kokuzawa">
-    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
-    <div>
-        <span class="dark">Katsumi Kokuzawa</span>
-        <span></span>
-    </div>
-    </a>
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2014%2f11%2f03%2fjavafxderest-apiwohu-bichu-su%2f - Flex%e3%81%a8JavaFX%e3%81%a7REST-API%e3%82%92%e5%91%bc%e3%81%b3%e5%87%ba%e3%81%99 by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
-
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
-
-    </section>
-</footer>
-
-<div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
+      
+      
+      
+    </article>
     
-    
-    
-    };
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'katsumikokuzawasblog';
+
+     
     (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "katsumikokuzawasblog" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<ul id="post-list" class="archive readmore">
-    <h3>Read more</h3>
-
-    
-    
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/12/04/primefaces-dblclick/">PrimeFaces-6.1 Dblclick Event<aside class="dates">Dec 4 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">JSF 2.3 の Websocket を試す<aside class="dates">Jan 12 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/primeng/">PrimeNGを組み込む<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/">IntelliJ IDEAでAngular2アプリを動かす<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/">Dialog of PrimeFaces<aside class="dates">Dec 25 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/15/httpurlconnection/">HttpURLConnectionで嵌った話<aside class="dates">Dec 15 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/">remoteCommand in Composite<aside class="dates">Dec 14 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/10/20/java-freemarker-noparse/">FreeMarkerでinterpolation部分をそのまま出力<aside class="dates">Oct 20 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/06/27/java-sql-timestamp/">java.sql.Timestamp の振る舞い<aside class="dates">Jun 27 2016</aside></a>
-        </li>
-    
-</ul>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
 
-        <footer id="footer">
+  </main>
+  
+  <nav class="pagination-single">
     
-        <div id="social">
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2014/10/08/jsffalsecsrfdui-ce/" rel="prev">JSFのCSRF対策</a></span>
+    
+    
+      <span class="next"><a href="https://kokuzawa.github.io/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/" rel="next">JavaFXでMarkdownエディタを作る</a> &rarr;</span>
+    
+  </nav>
 
-	
-	
-    
-    <a class="symbol" href="https://github.com/kokuzawa">
-        circlegithub
-    </a>
-    
-    <a class="symbol" href="https://www.twitter.com/kokuzawa">
-        circletwitterbird
-    </a>
-    
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      Written by Katsumi Kokuzawa
+    </div>
+  </footer>
 
 
 </div>
 
-    
-    <p class="small">
-    
-        © Copyright 2017 Katsumi Kokuzawa
-    
-    </p>
-</footer>
-
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://kokuzawa.github.io/js/main.js"></script>
-<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script src="/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
-
-
-
 <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-36546771-1', 'auto');
-ga('send', 'pageview');
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36546771-1', 'auto');
+	ga('send', 'pageview');
 </script>
-
 
 </body>
 </html>
+

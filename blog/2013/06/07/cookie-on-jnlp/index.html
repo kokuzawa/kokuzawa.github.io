@@ -1,135 +1,76 @@
+
 <!DOCTYPE html>
 <html lang="ja-jp">
-	<head>
-    <meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="author" content="Katsumi Kokuzawa">
+<head>
 
-<meta name="generator" content="Hugo 0.31" />
-<title>cookie on java web start (JWS)</title>
-<link rel="shortcut icon" href="https://kokuzawa.github.io/images/favicon.ico">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/style.css">
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/highlight.css">
+  
+  <meta charset="UTF-8">
+  <title>
+    cookie on java web start (JWS) | KATSUMI KOKUZAWA&#39;S BLOG
+  </title>
 
 
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
-<link rel="stylesheet" href="https://kokuzawa.github.io/css/monosocialiconsfont.css">
+  
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2013/06/07/cookie-on-jnlp/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="https://kokuzawa.github.io/index.xml" rel="alternate" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+  <link href="https://kokuzawa.github.io/index.xml" rel="feed" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+
+  
+  
 
 
-
-
-<meta property="og:title" content="cookie on java web start (JWS)" />
-<meta property="og:description" content="今更感がありますが、JWSでのcookieの扱い、というかjsessionidの扱いについて。
-JWSからサーバへの最初のアクセスでjsessionidの指定が無いと、サーバでjsessionidが発行されます。 すると、JWSからのそれ以降のアクセスには、その生成されたjsessionidがcookieとしてサーバに送信されます。 これは良く出来た仕組みで、プログラマが意識しなくてもセッションを継続することが可能になります。 ただ、自動でjsessionidを送信してしまうため、意図したセッションを継続させることが出来ないことがあります。
-任意のjsessionidを送信したい 前提として以下のことが成り立っているとします。
- 認証はプラウザで行う 認証状態をセッションで維持している  JWSでもその認証状態を維持したい、つまり認証されていなければJWSを操作させたくない場合、 簡単な方法としてJWS起動時にsessionidを渡せば、JWSからのリクエストにjsessionidを付与することが可能になり、 認証状態のあるセッションを継続することが出来るようになります。
-例えば、以下のようにJWSからHttpURLConnectionを利用してリクエストを送信するケースですが、 HttpURLConection#setRequestProperty(String, String)を使うことによってcookieにjsessionidを含めることが可能です。 もちろん、URLの最後に;jsessionid=XXXXXという形でjsessionidを付けても問題ありません。 ちなみに、URLの最後に付けるのと、setRequestPropertyでの設定と両方の指定がある場合は、 setRequestPropertyの方が優先されます。
-final HttpURLConnection connection = (HttpURLConnection) new URL(&quot;http://localhost/mycontext&quot;).openConnection(); connection.setRequestProperty(&quot;Cookie&quot;, &quot;JSESSIONID=&quot; &#43; sessionid);  このリクエストがJWSからの最初のリクエストでは無く、かつ最初のリクエストでjsessionidを明示的に送っていない場合、 Cookieには2つのjsessionidが設定された状態でリクエストされます。 サーバではこの2つのjsessionidのうち、最初に設定されている方を有効と見なして処理が行われます。 よって、上記コードで明示的に設定したjsessionidが無視されることになります。
-では、このケースで明示的に設定したjsessionidを有効にするにはどうしたら良いのか。
-自動で設定されるcookieを無効にする 自動で設定されるcookieはCookieHandlerで設定されるようです。 なので、このCookieHandlerを機能させなくすれば、cookieが自動で設定されなくなるはず。 というわけで、下記のコードを追加します。
-CookieHandler.setDefault(null);  これでcookieの自動設定が行われないはずなのですが、実はこのメソッド、セキュリティが all-permissionsでないと、AccessControlExceptionがスローされてしまいます。 JWSでall-permissionsにするには、jarファイルに署名しなければなりません。
-最後に jarファイルに署名できないような政治的な事情がある場合はこの方法が取れないので、 JWSからの最初のリクエストにちゃんとjsessionidが付与されるようにしましょう。
-まあ、署名するための証明書もオレオレ証明書じゃない場合は、 それなりに費用もかかるので、署名できないことも多い訳ですが&hellip; :P
-それにしても、JNLPのこととか、JWSなどの記事が軒並み古いので、 もうほとんど使われてないのかなぁと思ったりした快晴の木曜日でした。
-enjoy!" />
-<meta property="og:type" content="article" />
-<meta property="og:url" content="https://kokuzawa.github.io/blog/2013/06/07/cookie-on-jnlp/" />
+</head>
 
 
 
-<meta property="article:published_time" content="2013-06-07T01:41:00&#43;09:00"/>
-
-<meta property="article:modified_time" content="2013-06-07T01:41:00&#43;09:00"/>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<meta itemprop="name" content="cookie on java web start (JWS)">
-<meta itemprop="description" content="今更感がありますが、JWSでのcookieの扱い、というかjsessionidの扱いについて。
-JWSからサーバへの最初のアクセスでjsessionidの指定が無いと、サーバでjsessionidが発行されます。 すると、JWSからのそれ以降のアクセスには、その生成されたjsessionidがcookieとしてサーバに送信されます。 これは良く出来た仕組みで、プログラマが意識しなくてもセッションを継続することが可能になります。 ただ、自動でjsessionidを送信してしまうため、意図したセッションを継続させることが出来ないことがあります。
-任意のjsessionidを送信したい 前提として以下のことが成り立っているとします。
- 認証はプラウザで行う 認証状態をセッションで維持している  JWSでもその認証状態を維持したい、つまり認証されていなければJWSを操作させたくない場合、 簡単な方法としてJWS起動時にsessionidを渡せば、JWSからのリクエストにjsessionidを付与することが可能になり、 認証状態のあるセッションを継続することが出来るようになります。
-例えば、以下のようにJWSからHttpURLConnectionを利用してリクエストを送信するケースですが、 HttpURLConection#setRequestProperty(String, String)を使うことによってcookieにjsessionidを含めることが可能です。 もちろん、URLの最後に;jsessionid=XXXXXという形でjsessionidを付けても問題ありません。 ちなみに、URLの最後に付けるのと、setRequestPropertyでの設定と両方の指定がある場合は、 setRequestPropertyの方が優先されます。
-final HttpURLConnection connection = (HttpURLConnection) new URL(&quot;http://localhost/mycontext&quot;).openConnection(); connection.setRequestProperty(&quot;Cookie&quot;, &quot;JSESSIONID=&quot; &#43; sessionid);  このリクエストがJWSからの最初のリクエストでは無く、かつ最初のリクエストでjsessionidを明示的に送っていない場合、 Cookieには2つのjsessionidが設定された状態でリクエストされます。 サーバではこの2つのjsessionidのうち、最初に設定されている方を有効と見なして処理が行われます。 よって、上記コードで明示的に設定したjsessionidが無視されることになります。
-では、このケースで明示的に設定したjsessionidを有効にするにはどうしたら良いのか。
-自動で設定されるcookieを無効にする 自動で設定されるcookieはCookieHandlerで設定されるようです。 なので、このCookieHandlerを機能させなくすれば、cookieが自動で設定されなくなるはず。 というわけで、下記のコードを追加します。
-CookieHandler.setDefault(null);  これでcookieの自動設定が行われないはずなのですが、実はこのメソッド、セキュリティが all-permissionsでないと、AccessControlExceptionがスローされてしまいます。 JWSでall-permissionsにするには、jarファイルに署名しなければなりません。
-最後に jarファイルに署名できないような政治的な事情がある場合はこの方法が取れないので、 JWSからの最初のリクエストにちゃんとjsessionidが付与されるようにしましょう。
-まあ、署名するための証明書もオレオレ証明書じゃない場合は、 それなりに費用もかかるので、署名できないことも多い訳ですが&hellip; :P
-それにしても、JNLPのこととか、JWSなどの記事が軒並み古いので、 もうほとんど使われてないのかなぁと思ったりした快晴の木曜日でした。
-enjoy!">
-
-
-<meta itemprop="datePublished" content="2013-06-07T01:41:00&#43;09:00" />
-<meta itemprop="dateModified" content="2013-06-07T01:41:00&#43;09:00" />
-<meta itemprop="wordCount" content="51">
-
-
-
-<meta itemprop="keywords" content="Java," />
-
-<meta name="twitter:card" content="summary"/><meta name="twitter:title" content="cookie on java web start (JWS)"/>
-<meta name="twitter:description" content="今更感がありますが、JWSでのcookieの扱い、というかjsessionidの扱いについて。
-JWSからサーバへの最初のアクセスでjsessionidの指定が無いと、サーバでjsessionidが発行されます。 すると、JWSからのそれ以降のアクセスには、その生成されたjsessionidがcookieとしてサーバに送信されます。 これは良く出来た仕組みで、プログラマが意識しなくてもセッションを継続することが可能になります。 ただ、自動でjsessionidを送信してしまうため、意図したセッションを継続させることが出来ないことがあります。
-任意のjsessionidを送信したい 前提として以下のことが成り立っているとします。
- 認証はプラウザで行う 認証状態をセッションで維持している  JWSでもその認証状態を維持したい、つまり認証されていなければJWSを操作させたくない場合、 簡単な方法としてJWS起動時にsessionidを渡せば、JWSからのリクエストにjsessionidを付与することが可能になり、 認証状態のあるセッションを継続することが出来るようになります。
-例えば、以下のようにJWSからHttpURLConnectionを利用してリクエストを送信するケースですが、 HttpURLConection#setRequestProperty(String, String)を使うことによってcookieにjsessionidを含めることが可能です。 もちろん、URLの最後に;jsessionid=XXXXXという形でjsessionidを付けても問題ありません。 ちなみに、URLの最後に付けるのと、setRequestPropertyでの設定と両方の指定がある場合は、 setRequestPropertyの方が優先されます。
-final HttpURLConnection connection = (HttpURLConnection) new URL(&quot;http://localhost/mycontext&quot;).openConnection(); connection.setRequestProperty(&quot;Cookie&quot;, &quot;JSESSIONID=&quot; &#43; sessionid);  このリクエストがJWSからの最初のリクエストでは無く、かつ最初のリクエストでjsessionidを明示的に送っていない場合、 Cookieには2つのjsessionidが設定された状態でリクエストされます。 サーバではこの2つのjsessionidのうち、最初に設定されている方を有効と見なして処理が行われます。 よって、上記コードで明示的に設定したjsessionidが無視されることになります。
-では、このケースで明示的に設定したjsessionidを有効にするにはどうしたら良いのか。
-自動で設定されるcookieを無効にする 自動で設定されるcookieはCookieHandlerで設定されるようです。 なので、このCookieHandlerを機能させなくすれば、cookieが自動で設定されなくなるはず。 というわけで、下記のコードを追加します。
-CookieHandler.setDefault(null);  これでcookieの自動設定が行われないはずなのですが、実はこのメソッド、セキュリティが all-permissionsでないと、AccessControlExceptionがスローされてしまいます。 JWSでall-permissionsにするには、jarファイルに署名しなければなりません。
-最後に jarファイルに署名できないような政治的な事情がある場合はこの方法が取れないので、 JWSからの最初のリクエストにちゃんとjsessionidが付与されるようにしましょう。
-まあ、署名するための証明書もオレオレ証明書じゃない場合は、 それなりに費用もかかるので、署名できないことも多い訳ですが&hellip; :P
-それにしても、JNLPのこととか、JWSなどの記事が軒並み古いので、 もうほとんど使われてないのかなぁと思ったりした快晴の木曜日でした。
-enjoy!"/>
-<meta name="twitter:site" content="@https://www.twitter.com/kokuzawa"/>
-
-
-    </head>
 <body>
-    <nav class="main-nav">
-	
-		<a href='https://kokuzawa.github.io/'> <span class="arrow">←</span>Home</a>
-	
+<div class="container">
 
-	
- 		<a href='https://kokuzawa.github.io/about/'>About</a>
-  	
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="https://kokuzawa.github.io/">KATSUMI KOKUZAWA&#39;S BLOG</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="/tags/">Tags</a></li>
+          <li><a href="https://twitter.com/kokuzawa" target="_blank">Twitter</a></li>
+          
+          <li><a href="https://github.com/kokuzawa" target="_blank">GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </header>
 
-	
-</nav>
 
-    <section id="wrapper">
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>cookie on java web start (JWS)</h1>
+      <div class="meta">
+        Jun 7, 2013 &nbsp;
         
+          #<a href="/tags/java">Java</a>&nbsp;
         
-<article class="post">
-    <header>
-        <h1>cookie on java web start (JWS)</h1>
-        <h2 class="subtitle"></h2>
-        <h2 class="headline">
-        June 7, 2013
-        <br>
-        
-        
-            
-                <a href="https://kokuzawa.github.io/tags/java">Java</a>
-            
-        
-        
-        </h2>
-    </header>
-    <section id="post-body">
-        
+      </div>
+    </div>
+    <article>
+      
 
 <p>今更感がありますが、JWSでのcookieの扱い、というかjsessionidの扱いについて。</p>
 
@@ -197,148 +138,63 @@ JWSからの最初のリクエストにちゃんとjsessionidが付与される�
 
 <p>enjoy!</p>
 
-    </section>
-</article>
-
-<footer id="post-meta" class="clearfix">
-    <a href="https://twitter.com/kokuzawa">
-    <img class="avatar" src="https://kokuzawa.github.io/images/avatar.png">
-    <div>
-        <span class="dark">Katsumi Kokuzawa</span>
-        <span></span>
-    </div>
-    </a>
-    <section id="sharing">
-        <a class="twitter" href="https://twitter.com/intent/tweet?text=https%3a%2f%2fkokuzawa.github.io%2fblog%2f2013%2f06%2f07%2fcookie-on-jnlp%2f - cookie%20on%20java%20web%20start%20%28JWS%29 by @kokuzawa"><span class="icon-twitter"> tweet</span></a>
-
-<a class="facebook" href="#" onclick="
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u='+encodeURIComponent(location.href),
-      'facebook-share-dialog',
-      'width=626,height=436');
-    return false;"><span class="icon-facebook-rect"> Share</span>
-</a>
-
-    </section>
-</footer>
-
-<div id="disqus_thread"></div>
-<script>
-    var disqus_config = function () {
+      
+      
+      
+    </article>
     
-    
-    
-    };
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'katsumikokuzawasblog';
+
+     
     (function() {
-        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
-            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
-            return;
-        }
-        var d = document, s = d.createElement('script'); s.async = true;
-        s.src = '//' + "katsumikokuzawasblog" + '.disqus.com/embed.js';
-        s.setAttribute('data-timestamp', +new Date());
-        (d.head || d.body).appendChild(s);
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
     })();
 </script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-
-<ul id="post-list" class="archive readmore">
-    <h3>Read more</h3>
-
-    
-    
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/12/04/primefaces-dblclick/">PrimeFaces-6.1 Dblclick Event<aside class="dates">Dec 4 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/11/24/my-first-post/">Hugoで始めるブログ生活<aside class="dates">Nov 24 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">JSF 2.3 の Websocket を試す<aside class="dates">Jan 12 2017</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/primeng/">PrimeNGを組み込む<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/">IntelliJ IDEAでAngular2アプリを動かす<aside class="dates">Dec 28 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/">Dialog of PrimeFaces<aside class="dates">Dec 25 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/15/httpurlconnection/">HttpURLConnectionで嵌った話<aside class="dates">Dec 15 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/">remoteCommand in Composite<aside class="dates">Dec 14 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/10/20/java-freemarker-noparse/">FreeMarkerでinterpolation部分をそのまま出力<aside class="dates">Oct 20 2016</aside></a>
-        </li>
-    
-        <li>
-            <a href="https://kokuzawa.github.io/blog/2016/06/27/java-sql-timestamp/">java.sql.Timestamp の振る舞い<aside class="dates">Jun 27 2016</aside></a>
-        </li>
-    
-</ul>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 
 
 
-        <footer id="footer">
+  </main>
+  
+  <nav class="pagination-single">
     
-        <div id="social">
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2013/05/27/how-to-cancel-drag-and-drop-on-esc-key/" rel="prev">how to cancel drag-and-drop on esc key</a></span>
+    
+    
+      <span class="next"><a href="https://kokuzawa.github.io/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/" rel="next">JSF2.0でCSSリソース内の画像を読み込む</a> &rarr;</span>
+    
+  </nav>
 
-	
-	
-    
-    <a class="symbol" href="https://github.com/kokuzawa">
-        circlegithub
-    </a>
-    
-    <a class="symbol" href="https://www.twitter.com/kokuzawa">
-        circletwitterbird
-    </a>
-    
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      
+      Written by Katsumi Kokuzawa
+    </div>
+  </footer>
 
 
 </div>
 
-    
-    <p class="small">
-    
-        © Copyright 2017 Katsumi Kokuzawa
-    
-    </p>
-</footer>
-
-    </section>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://kokuzawa.github.io/js/main.js"></script>
-<script src="https://kokuzawa.github.io/js/highlight.js"></script>
+<script src="/js/highlight.pack.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
 
-
-
-
 <script>
-(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-ga('create', 'UA-36546771-1', 'auto');
-ga('send', 'pageview');
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36546771-1', 'auto');
+	ga('send', 'pageview');
 </script>
-
 
 </body>
 </html>
+
