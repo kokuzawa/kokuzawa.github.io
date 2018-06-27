@@ -30,6 +30,7 @@
   
   
 
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
 </head>
 
@@ -47,11 +48,11 @@
       </div>
       <div id="social" class="col span_6">
         <ul>
-          <li><a href="/tags/">Tags</a></li>
-          <li><a href="https://twitter.com/kokuzawa" target="_blank">Twitter</a></li>
+          <li><a href="/tags/"><i class="fas fa-tag fa-2x"></i></a></li>
+          <li><a href="https://twitter.com/kokuzawa" target="_blank"><i class="fab fa-twitter fa-2x"></i></a></li>
           
-          <li><a href="https://github.com/kokuzawa" target="_blank">GitHub</a></li>
-          
+          <li><a href="https://github.com/kokuzawa" target="_blank"><i class="fab fa-github-alt fa-2x"></i></a></li>
+          <li><a href="https://kokuzawa.github.io/index.xml" type="application/rss+xml" target="_blank"><i class="fas fa-rss-square fa-2x"></i></a></li>
         </ul>
       </div>
     </div>
@@ -79,7 +80,7 @@ brewを使ってHugoをインストールします。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ brew install hugo</pre>
+<pre class="highlight"><code class="language-sh" data-lang="sh">$ brew install hugo</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -87,7 +88,7 @@ brewを使ってHugoをインストールします。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ brew install asciidoctor</pre>
+<pre class="highlight"><code class="language-sh" data-lang="sh">$ brew install asciidoctor</code></pre>
 </div>
 </div>
 </div>
@@ -100,20 +101,11 @@ brewを使ってHugoをインストールします。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ hugo new site hugo-quickstart</pre>
+<pre class="highlight"><code class="language-sh" data-lang="sh">$ hugo new site hugo-quickstart</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<div class="title">Note</div>
-</td>
-<td class="content">
-カレントフォルダに <code>hugo-quickstart</code> フォルダが作られます。
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>カレントフォルダに <code>hugo-quickstart</code> フォルダが作られます。</p>
 </div>
 </div>
 </div>
@@ -126,8 +118,8 @@ brewを使ってHugoをインストールします。</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ cd hugo-quickstart/themes
-$ git clone https://github.com/digitalcraftsman/hugo-cactus-theme.git</pre>
+<pre class="highlight"><code class="language-sh" data-lang="sh">$ cd hugo-quickstart/themes
+$ git clone https://github.com/digitalcraftsman/hugo-cactus-theme.git</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -136,7 +128,7 @@ $ git clone https://github.com/digitalcraftsman/hugo-cactus-theme.git</pre>
 <div class="listingblock">
 <div class="title">config.toml</div>
 <div class="content">
-<pre>theme = "hugo-cactus-theme"</pre>
+<pre class="highlight"><code class="language-toml" data-lang="toml">theme = "hugo-cactus-theme"</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -145,9 +137,9 @@ $ git clone https://github.com/digitalcraftsman/hugo-cactus-theme.git</pre>
 <div class="listingblock">
 <div class="title">config.toml</div>
 <div class="content">
-<pre>[params]
+<pre class="highlight"><code class="language-toml" data-lang="toml">[params]
 name = "Katsumi Kokuzawa"
-bio = "Programmer"</pre>
+bio = "Programmer"</code></pre>
 </div>
 </div>
 </div>
@@ -160,7 +152,7 @@ bio = "Programmer"</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ hugo new posts/my-first-post.adoc</pre>
+<pre class="highlight"><code class="language-sh" data-lang="sh">$ hugo new posts/my-first-post.adoc</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -168,7 +160,7 @@ bio = "Programmer"</pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre>$ hugo server -D</pre>
+<pre class="highlight"><code class="language-sh" data-lang="sh">$ hugo server -D</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -214,7 +206,7 @@ bio = "Programmer"</pre>
   
   <footer role="contentinfo">
     <div style="text-align:center;">
-      
+      <img src="/images/avatar.png" width="64" height="64"><br>
       Written by Katsumi Kokuzawa
     </div>
   </footer>
