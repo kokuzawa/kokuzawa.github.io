@@ -1,18 +1,18 @@
 # Site settings
 baseURL = "https://kokuzawa.github.io/"
-canonifyurls = true
 languageCode = "ja-jp"
-title = "Katsumi Kokuzawa's Blog"
-theme = "hugo-cactus-theme"
+title = "KATSUMI KOKUZAWA'S BLOG"
+theme = "angels-ladder"
 disqusShortname = "katsumikokuzawasblog"
-googleAnalytics = "UA-36546771-1"
 
-[params]
-name = "Katsumi Kokuzawa"
-bio = "Programmer"
-twitter = "kokuzawa"
-socialIconStyle = "circle"
-
-[social]
+[Params]
+copyright = "Written by Katsumi Kokuzawa"
+twitter = "https://twitter.com/kokuzawa"
 github = "https://github.com/kokuzawa"
-twitter = "https://www.twitter.com/kokuzawa"
+showsRSS = true
+analytics = "UA-36546771-1"
+profile = "/images/avatar.png"
+
+[taxonomies]
+tag = "tags"
+

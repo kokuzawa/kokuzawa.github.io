@@ -11,12 +11,14 @@ draft: false
 macOSでHomebrewがインストールされていることが前提です。 +
 brewを使ってHugoをインストールします。
 
+[source,sh]
 ----
 $ brew install hugo
 ----
 
 asciidoc形式で記事を書くつもりなので、asciidoctorもインストールします。
 
+[source,sh]
 ----
 $ brew install asciidoctor
 ----
@@ -25,11 +27,11 @@ $ brew install asciidoctor
 
 Hugoをインストールしたら、はじめにサイトを作ります。
 
+[source,sh]
 ----
 $ hugo new site hugo-quickstart
 ----
 
-[NOTE]
 カレントフォルダに `hugo-quickstart` フォルダが作られます。
 
 == Step 3: テーマを追加
@@ -37,6 +39,7 @@ $ hugo new site hugo-quickstart
 Hugoの https://themes.gohugo.io[テーマサイト] から好きなテーマを選んで追加します。
 個人的にCactusというテーマが気に入ったのでこれを取得します。
 
+[source,sh]
 ----
 $ cd hugo-quickstart/themes
 $ git clone https://github.com/digitalcraftsman/hugo-cactus-theme.git
@@ -45,6 +48,7 @@ $ git clone https://github.com/digitalcraftsman/hugo-cactus-theme.git
 テーマを追加したら、そのテーマを使うことを宣言しなければなりません。
 
 .config.toml
+[source,toml]
 ----
 theme = "hugo-cactus-theme"
 ----
@@ -52,6 +56,7 @@ theme = "hugo-cactus-theme"
 さらにこのテーマは下記の設定も追記しないとダメなようです。
 
 .config.toml
+[source,toml]
 ----
 [params]
 name = "Katsumi Kokuzawa"
@@ -62,12 +67,14 @@ bio = "Programmer"
 
 記事ファイルを追加します。
 
+[source,sh]
 ----
 $ hugo new posts/my-first-post.adoc
 ----
 
 追加した記事は `hugo server` をドラフトモードで起動することで確認できます。
 
+[source,sh]
 ----
 $ hugo server -D
 ----
