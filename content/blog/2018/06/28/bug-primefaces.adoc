@@ -1,0 +1,35 @@
+---
+title: "子ノードにドロップをすると StackOverflowError が発生"
+date: 2018-06-28T01:16:27+09:00
+tags: ["Java","JavaEE","PrimeFaces"]
+draft: false
+---
+
+== 要約
+
+PrimeFaces-6.2 の Tree コンポーネントにバグがあります。
+
+この問題は報告済みです。
+対応状況や詳しい内容は下記を参照してください。 +
+https://github.com/primefaces/primefaces/issues/3771[Tree: "StackOverflowError" when a node is dropped to own child node]
+
+== 再現方法
+
+再現はとても簡単です。
+PrimeFaces の https://www.primefaces.org/showcase/ui/data/tree/dragdrop.xhtml[Showcase] で、
+`Node 0` をドラッグして `Node 0.0` にドロップするだけです。
+
+この操作を実施するとエラー画面が表示されます。
+以前はスタックトレースが画面に表示されたのですが、
+新しいデザインになってからは表示がされず、何が起きたのかよくわからないかもしれません。
+ローカル環境でこの操作を実施すると、下記のエラーが発生します。
+
+[source,java]
+----
+java.lang.StackOverflowError
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+----
+

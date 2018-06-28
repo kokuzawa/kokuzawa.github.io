@@ -2,7 +2,7 @@
 title: "Hugoで始めるブログ生活"
 description: "ブログをHugoで生成することにしました。"
 date: 2017-11-24T01:56:46+09:00
-tags: ["hugo"]
+tags: ["Hugo"]
 draft: false
 ---
 

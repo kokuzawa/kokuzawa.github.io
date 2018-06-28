@@ -1,7 +1,7 @@
 ---
 title: "PrimeFaces-6.1 Dblclick Event"
 date: 2017-12-04T01:40:41+09:00
-tags: ["java","javaee","primefaces"]
+tags: ["Java","JavaEE","PrimeFaces"]
 draft: false
 ---
 
