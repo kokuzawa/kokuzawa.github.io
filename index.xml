@@ -1053,5 +1053,21 @@ MacにLaTeXをインストールする MacでLaTexを使うには何をインス
 final CriteriaBuilder cb = entityManager.getCriteriaBuilder(); final CriteriaQuery&amp;lt;Entity&amp;gt; query = cb.createQuery(Entity.class); final Root&amp;lt;Entity&amp;gt; root = query.from(Entity.class); query.select(root).orderBy(cb.asc(root.get(Entity_.entityPK) .get(EntityPK_.key1)));  ここでポイントとなるのが、key1でソートしようとした場合、いきなり cb.asc(root.get(EntityPK_.key1)) と指定はできないので、 cb.asc(root.get(Entity_.entityPK).get(EntityPK_.key1)) のように連鎖した呼び出しにする必要がある、ということ。</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/</guid>
+      <description>title: &#34;[JSF 2.3] Websocket を試す（その２）&#34; date: 2018-07-04T01:54:11+09:00 tags: [&#34;Java&#34;,&#34;JavaEE&#34;,&#34;JSF&#34;] draft: false 以前、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。
+その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、 JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。
+ 環境   macOS High Sierra
+  Java&amp;#8482; SE Runtime Environment (build 1.8.0_91-b14)
+  WildFly 13.0.0.Final
+     実行 フルセットのコードは下記にあります。
+https://github.com/kokuzawa/sandbox/tree/master/websocket-example
+   </description>
+    </item>
+    
   </channel>
 </rss>

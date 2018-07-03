@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    複合キーを使ったOrderBy | KATSUMI KOKUZAWA&#39;S BLOG
+     | KATSUMI KOKUZAWA&#39;S BLOG
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="https://kokuzawa.github.io/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/"/>
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -62,64 +62,49 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>複合キーを使ったOrderBy</h1>
+      <h1></h1>
       <div class="meta">
-        Nov 7, 2012 &nbsp;
-        
-          #<a href="/tags/java">Java</a>&nbsp;
-        
-          #<a href="/tags/jpa">JPA</a>&nbsp;
+        Jan 1, 0001 &nbsp;
         
       </div>
     </div>
     <article>
-      
-
-<p>JPAで複合キークラスを使ってOrderByをやろうとしたら、メタデータの設定方法が分からなかったんだけど、分かってみれば簡単な話だった。</p>
-
-<h3 id="複合キーって何">複合キーって何？</h3>
-
-<p>JPAのエンティティには複数の@Idアノテーションが付与できないので、DBのテーブルに主キーが複数ある場合はその主キーをひとまとめにしたクラスを作成する。エンティティ上では、@EmbeddedIdアノテーションを付与すれば、その作成クラスを主キーとして指定できる。これを複合キーといって、実際には下記のようなクラス構成となる。（EntityPK.javaが複合キー）</p>
-
-<pre><code class="language-java">@Entity
-public class Entity
-{
-    @EmbeddedId
-    private EntityPK entityPK;
-
-    public EntityPK getEntityPK()
-    {
-        return entityPK;
-    }
-}
-</code></pre>
-
-<pre><code class="language-java">@Embeddable
-public class EntityPK implements Serializable
-{
-    @Column
-    private Integer key1;
-
-    @Column
-    private Integer key2;
-}
-</code></pre>
-
-<h3 id="criteriaqueryでsqlを構築">CriteriaQueryでSQLを構築</h3>
-
-<p>この複合キーがあるエンティティに対してCriteriaQueryを使ってSQLを構築する。</p>
-
-<pre><code class="language-java">final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-final CriteriaQuery&lt;Entity&gt; query = cb.createQuery(Entity.class);
-final Root&lt;Entity&gt; root = query.from(Entity.class);
-query.select(root).orderBy(cb.asc(root.get(Entity_.entityPK)
-    .get(EntityPK_.key1)));
-</code></pre>
-
-<p>ここでポイントとなるのが、key1でソートしようとした場合、いきなり
-<code>cb.asc(root.get(EntityPK_.key1))</code> と指定はできないので、
-<code>cb.asc(root.get(Entity_.entityPK).get(EntityPK_.key1))</code>
-のように連鎖した呼び出しにする必要がある、ということ。</p>
+      title: "[JSF 2.3] Websocket を試す（その２）"
+date: 2018-07-04T01:54:11+09:00
+tags: ["Java","JavaEE","JSF"]
+draft: false
+<div class="paragraph">
+<p><a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">以前</a>、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。<br>
+その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、
+JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。</p>
+</div>
+<div class="sect1">
+<h2 id="_環境">環境</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>macOS High Sierra</p>
+</li>
+<li>
+<p>Java&#8482; SE Runtime Environment (build 1.8.0_91-b14)</p>
+</li>
+<li>
+<p>WildFly 13.0.0.Final</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_実行">実行</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>フルセットのコードは下記にあります。<br>
+<a href="https://github.com/kokuzawa/sandbox/tree/master/websocket-example" class="bare">https://github.com/kokuzawa/sandbox/tree/master/websocket-example</a></p>
+</div>
+</div>
+</div>
 
       
       
@@ -147,10 +132,8 @@ query.select(root).orderBy(cb.asc(root.get(Entity_.entityPK)
   
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/" rel="prev"></a></span>
     
-    
-      <span class="next"><a href="https://kokuzawa.github.io/blog/2012/11/10/glassfishhefalsedepuroishi-falseera/" rel="next">GlassFish3.1.2へのデプロイ時のエラー</a> &rarr;</span>
+      <span class="next"><a href="https://kokuzawa.github.io/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/" rel="next">複合キーを使ったOrderBy</a> &rarr;</span>
     
   </nav>
 
