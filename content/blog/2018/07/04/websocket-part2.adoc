@@ -2,7 +2,7 @@
 title: "[JSF 2.3] Websocket を試す（その２）"
 date: 2018-07-04T01:54:11+09:00
 tags: ["Java","JavaEE","JSF"]
-draft: true
+draft: false
 ---
 
 https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/[以前]、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。 +
