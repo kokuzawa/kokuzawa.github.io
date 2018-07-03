@@ -1,0 +1,94 @@
+---
+title: "[JSF 2.3] Websocket を試す（その２）"
+date: 2018-07-04T01:54:11+09:00
+tags: ["Java","JavaEE","JSF"]
+draft: true
+---
+
+https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/[以前]、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。 +
+その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、
+JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。
+
+== 環境
+
+* macOS High Sierra
+* Java(TM) SE Runtime Environment (build 1.8.0_91-b14)
+* WildFly 13.0.0.Final
+
+== 実装
+
+フルセットのコードは下記にあります。 +
+https://github.com/kokuzawa/sandbox/tree/master/websocket-example
+
+通常のJSFの設定の他に、下記設定がweb.xmlに必要です。
+
+.web.xml
+[source,xml]
+----
+<context-param>
+    <param-name>javax.faces.ENABLE_CDI_RESOLVER_CHAIN</param-name>
+    <param-value>true</param-value>
+</context-param>
+<context-param>
+    <param-name>javax.faces.ENABLE_WEBSOCKET_ENDPOINT</param-name>
+    <param-value>true</param-value>
+</context-param>
+----
+
+管理BeanはApplicationScopeの必要があります。
+
+.PushBean.java
+[source,java]
+----
+import javax.enterprise.context.ApplicationScoped;
+import javax.faces.push.Push;
+import javax.faces.push.PushContext;
+import javax.inject.Named;
+import java.io.Serializable;
+import java.util.Calendar;
+
+@Named
+@ApplicationScoped
+public class PushBean implements Serializable
+{
+    @Push(channel = "clock")
+    private PushContext push;
+
+    public void clockAction()
+    {
+        final Calendar now = Calendar.getInstance();
+
+        final String time = now.get(Calendar.HOUR_OF_DAY) + ":" +
+                now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND);
+
+        push.send(time);
+    }
+}
+----
+
+XHTMLで重要なのは下記だけです。
+`websocket` タグの `chaannel` 属性で指定した値と、管理Beanの `Push` アノテーションで指定した値が一致する必要があります。
+
+.index.xhtml
+[source,xhtml]
+----
+<f:websocket channel="clock" onmessage="socketListener" />
+
+<script type="text/javascript">
+    function socketListener(message, channel, event) {
+        document.getElementById("clockId").innerHTML += message + "&lt;br/&gt;";
+    }
+</script>
+----
+
+== 実行
+
+起動オプションに下記を設定することで、WildFlyがJavaEE8モードで起動します。
+
+[source]
+----
+-Dee8.preview.mode=true
+----
+
+前回と異なり、余計な設定をしなくても問題なく実行できました。
+
