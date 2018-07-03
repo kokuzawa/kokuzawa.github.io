@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-     | KATSUMI KOKUZAWA&#39;S BLOG
+    [JSF 2.3] Websocket を試す（その２） | KATSUMI KOKUZAWA&#39;S BLOG
   </title>
 
 
@@ -62,18 +62,20 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1></h1>
+      <h1>[JSF 2.3] Websocket を試す（その２）</h1>
       <div class="meta">
-        Jan 1, 0001 &nbsp;
+        Jul 4, 2018 &nbsp;
+        
+          #<a href="/tags/java">Java</a>&nbsp;
+        
+          #<a href="/tags/javaee">JavaEE</a>&nbsp;
+        
+          #<a href="/tags/jsf">JSF</a>&nbsp;
         
       </div>
     </div>
     <article>
-      title: "[JSF 2.3] Websocket を試す（その２）"
-date: 2018-07-04T01:54:11+09:00
-tags: ["Java","JavaEE","JSF"]
-draft: false
-<div class="paragraph">
+      <div class="paragraph">
 <p><a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">以前</a>、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。<br>
 その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、
 JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。</p>
@@ -97,11 +99,91 @@ JSF2.3を含んだJavaEE8をプレビューモードで起動できるように�
 </div>
 </div>
 <div class="sect1">
-<h2 id="_実行">実行</h2>
+<h2 id="_実装">実装</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>フルセットのコードは下記にあります。<br>
 <a href="https://github.com/kokuzawa/sandbox/tree/master/websocket-example" class="bare">https://github.com/kokuzawa/sandbox/tree/master/websocket-example</a></p>
+</div>
+<div class="paragraph">
+<p>通常のJSFの設定の他に、下記設定がweb.xmlに必要です。</p>
+</div>
+<div class="listingblock">
+<div class="title">web.xml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;context-param&gt;
+    &lt;param-name&gt;javax.faces.ENABLE_CDI_RESOLVER_CHAIN&lt;/param-name&gt;
+    &lt;param-value&gt;true&lt;/param-value&gt;
+&lt;/context-param&gt;
+&lt;context-param&gt;
+    &lt;param-name&gt;javax.faces.ENABLE_WEBSOCKET_ENDPOINT&lt;/param-name&gt;
+    &lt;param-value&gt;true&lt;/param-value&gt;
+&lt;/context-param&gt;</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>管理BeanはApplicationScopeの必要があります。</p>
+</div>
+<div class="listingblock">
+<div class="title">PushBean.java</div>
+<div class="content">
+<pre class="highlight"><code class="language-java" data-lang="java">import javax.enterprise.context.ApplicationScoped;
+import javax.faces.push.Push;
+import javax.faces.push.PushContext;
+import javax.inject.Named;
+import java.io.Serializable;
+import java.util.Calendar;
+
+@Named
+@ApplicationScoped
+public class PushBean implements Serializable
+{
+    @Push(channel = "clock")
+    private PushContext push;
+
+    public void clockAction()
+    {
+        final Calendar now = Calendar.getInstance();
+
+        final String time = now.get(Calendar.HOUR_OF_DAY) + ":" +
+                now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND);
+
+        push.send(time);
+    }
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>XHTMLで重要なのは下記だけです。
+<code>websocket</code> タグの <code>chaannel</code> 属性で指定した値と、管理Beanの <code>Push</code> アノテーションで指定した値が一致する必要があります。</p>
+</div>
+<div class="listingblock">
+<div class="title">index.xhtml</div>
+<div class="content">
+<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;f:websocket channel="clock" onmessage="socketListener" /&gt;
+
+&lt;script type="text/javascript"&gt;
+    function socketListener(message, channel, event) {
+        document.getElementById("clockId").innerHTML += message + "&amp;lt;br/&amp;gt;";
+    }
+&lt;/script&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_実行">実行</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>起動オプションに下記を設定することで、WildFlyがJavaEE8モードで起動します。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>-Dee8.preview.mode=true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>前回と異なり、余計な設定をしなくても問題なく実行できました。</p>
 </div>
 </div>
 </div>
@@ -132,8 +214,8 @@ JSF2.3を含んだJavaEE8をプレビューモードで起動できるように�
   
   <nav class="pagination-single">
     
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/06/28/bug-primefaces/" rel="prev">子ノードにドロップをすると StackOverflowError が発生</a></span>
     
-      <span class="next"><a href="https://kokuzawa.github.io/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/" rel="next">複合キーを使ったOrderBy</a> &rarr;</span>
     
   </nav>
 

@@ -6,10 +6,28 @@
     <description>Recent content in Blogs on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 28 Jun 2018 01:16:27 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 04 Jul 2018 01:54:11 +0900</lastBuildDate>
     
 	<atom:link href="https://kokuzawa.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[JSF 2.3] Websocket を試す（その２）</title>
+      <link>https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/</link>
+      <pubDate>Wed, 04 Jul 2018 01:54:11 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/</guid>
+      <description>以前、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。
+その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、 JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。
+ 環境   macOS High Sierra
+  Java&amp;#8482; SE Runtime Environment (build 1.8.0_91-b14)
+  WildFly 13.0.0.Final
+     実装 フルセットのコードは下記にあります。
+https://github.com/kokuzawa/sandbox/tree/master/websocket-example
+ 通常のJSFの設定の他に、下記設定がweb.xmlに必要です。
+ web.xml &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;javax.faces.ENABLE_CDI_RESOLVER_CHAIN&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;javax.faces.ENABLE_WEBSOCKET_ENDPOINT&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt;   管理BeanはApplicationScopeの必要があります。
+ PushBean.java import javax.enterprise.context.ApplicationScoped; import javax.faces.push.Push; import javax.faces.push.PushContext; import javax.inject.Named; import java.io.Serializable; import java.util.Calendar; @Named @ApplicationScoped public class PushBean implements Serializable { @Push(channel = &#34;clock&#34;) private PushContext push; public void clockAction() { final Calendar now = Calendar.</description>
+    </item>
     
     <item>
       <title>子ノードにドロップをすると StackOverflowError が発生</title>
@@ -1051,22 +1069,6 @@ MacにLaTeXをインストールする MacでLaTexを使うには何をインス
 複合キーって何？ JPAのエンティティには複数の@Idアノテーションが付与できないので、DBのテーブルに主キーが複数ある場合はその主キーをひとまとめにしたクラスを作成する。エンティティ上では、@EmbeddedIdアノテーションを付与すれば、その作成クラスを主キーとして指定できる。これを複合キーといって、実際には下記のようなクラス構成となる。（EntityPK.javaが複合キー）
 @Entity public class Entity { @EmbeddedId private EntityPK entityPK; public EntityPK getEntityPK() { return entityPK; } }  @Embeddable public class EntityPK implements Serializable { @Column private Integer key1; @Column private Integer key2; }  CriteriaQueryでSQLを構築 この複合キーがあるエンティティに対してCriteriaQueryを使ってSQLを構築する。
 final CriteriaBuilder cb = entityManager.getCriteriaBuilder(); final CriteriaQuery&amp;lt;Entity&amp;gt; query = cb.createQuery(Entity.class); final Root&amp;lt;Entity&amp;gt; root = query.from(Entity.class); query.select(root).orderBy(cb.asc(root.get(Entity_.entityPK) .get(EntityPK_.key1)));  ここでポイントとなるのが、key1でソートしようとした場合、いきなり cb.asc(root.get(EntityPK_.key1)) と指定はできないので、 cb.asc(root.get(Entity_.entityPK).get(EntityPK_.key1)) のように連鎖した呼び出しにする必要がある、ということ。</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/</guid>
-      <description>title: &#34;[JSF 2.3] Websocket を試す（その２）&#34; date: 2018-07-04T01:54:11+09:00 tags: [&#34;Java&#34;,&#34;JavaEE&#34;,&#34;JSF&#34;] draft: false 以前、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。
-その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、 JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。
- 環境   macOS High Sierra
-  Java&amp;#8482; SE Runtime Environment (build 1.8.0_91-b14)
-  WildFly 13.0.0.Final
-     実行 フルセットのコードは下記にあります。
-https://github.com/kokuzawa/sandbox/tree/master/websocket-example
-   </description>
     </item>
     
   </channel>
