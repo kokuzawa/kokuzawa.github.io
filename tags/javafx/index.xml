@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Thu, 10 Dec 2015 10:10:10 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/javafx/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/javafx/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,18 +17,134 @@
       <pubDate>Thu, 10 Dec 2015 10:10:10 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/12/10/testfx/</guid>
-      <description>Java Advent Calendar 2015と JavaFX Advent Calendar 2015の10日目の記事です。
-昨日は下記のお二人でした。
- Java Advent Calendarは@namihira_kさんの 「パフォーマンスを意識したJavaコーディング」 JavaFX Advent Calendarは@skrbさんの 「Interpolator で補間」  明日は下記のお二人です。
- Java Advent Calendarは@bitter_foxさん JavaFX Advent Calendarは@y_q1mさん  TestFXを知る 先月ダウンロードしたJava Magazine vol23に面白い記事が載っていました。 テストについて特集された中の、TestFXによるJavaFXのテストについての記事です。 TestFXはJavaFXのユーザ・インターフェースをJUnitベースでテストするためのAPIということで、 JUnitで書いたロジック通りにユーザ・インターフェースのテストが実施されます。 単純にロジックをなぞるだけではなく、実際にユーザ・インターフェースを操作した結果を判定してくれるようです。 これは、実際にテストを実行した際に、JavaFXのアプリ上でマウスカーソルが自動的に動いてボタンをクリックしたりすることからもわかります。
-普段のプロジェクトでは、残念ながらJavaFXではなくFlexを使っているのですが、 ユーザ・インターフェース周りのテストの仕組みはあってもなかなか思ったようなテストができていないのが現実です。 TestFXはJUnitの延長上でテストができそうなので期待できそうです。
-内容を説明する前に、実際に実行した際の動画を記録しました。 動画だと自動で動いているのかわからないと思いますが、 テスト起動後には何も操作をしていません。
- アプリの説明 テストに使ったアプリは、ラベルとボタンのあるシンプルなものです。 ボタンをクリックすることで、ラベルに「Hello World!」と表示します。
-実際のコードは下記にあります。
-https://github.com/kokuzawa/javafx-test
-TestFXを設定 Mavenプロジェクトでは下記のDependencyを追加します。
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.loadui&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;testFx&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.1.2&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt;  テストを書く 対象のテストクラスは、TestFXを使うためにorg.loadui.testfx.GuiTestクラスを継承します。 org.loadui.testfx.GuiTestクラスはgetRootNode()メソッドを持ち、そのメソッドでテストしたい画面のFXMLをロードします。
-package org.katsumi; import javafx.fxml.FXMLLoader; import javafx.scene.Node; import javafx.</description>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2015/java&#34;&gt;Java Advent Calendar 2015&lt;/a&gt;と
+&lt;a href=&#34;http://qiita.com/advent-calendar/2015/javafx&#34;&gt;JavaFX Advent Calendar 2015&lt;/a&gt;の10日目の記事です。&lt;/p&gt;
+
+&lt;p&gt;昨日は下記のお二人でした。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Java Advent Calendarは&lt;a href=&#34;https://twitter.com/namihira_k&#34;&gt;@namihira_k&lt;/a&gt;さんの
+「&lt;a href=&#34;http://namihira.hatenablog.com/entry/20151209/1449667895&#34;&gt;パフォーマンスを意識したJavaコーディング&lt;/a&gt;」&lt;/li&gt;
+&lt;li&gt;JavaFX Advent Calendarは&lt;a href=&#34;https://twitter.com/skrb&#34;&gt;@skrb&lt;/a&gt;さんの
+「&lt;a href=&#34;http://skrb.hatenablog.com/entry/2015/12/09/212241&#34;&gt;Interpolator で補間&lt;/a&gt;」&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;明日は下記のお二人です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Java Advent Calendarは&lt;a href=&#34;https://twitter.com/bitter_fox&#34;&gt;@bitter_fox&lt;/a&gt;さん&lt;/li&gt;
+&lt;li&gt;JavaFX Advent Calendarは&lt;a href=&#34;https://twitter.com/y_q1m&#34;&gt;@y_q1m&lt;/a&gt;さん&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;testfxを知る&#34;&gt;TestFXを知る&lt;/h2&gt;
+
+&lt;p&gt;先月ダウンロードしたJava Magazine vol23に面白い記事が載っていました。
+テストについて特集された中の、TestFXによるJavaFXのテストについての記事です。
+TestFXはJavaFXのユーザ・インターフェースをJUnitベースでテストするためのAPIということで、
+JUnitで書いたロジック通りにユーザ・インターフェースのテストが実施されます。
+単純にロジックをなぞるだけではなく、実際にユーザ・インターフェースを操作した結果を判定してくれるようです。
+これは、実際にテストを実行した際に、JavaFXのアプリ上でマウスカーソルが自動的に動いてボタンをクリックしたりすることからもわかります。&lt;/p&gt;
+
+&lt;p&gt;普段のプロジェクトでは、残念ながらJavaFXではなくFlexを使っているのですが、
+ユーザ・インターフェース周りのテストの仕組みはあってもなかなか思ったようなテストができていないのが現実です。
+TestFXはJUnitの延長上でテストができそうなので期待できそうです。&lt;/p&gt;
+
+&lt;p&gt;内容を説明する前に、実際に実行した際の動画を記録しました。
+動画だと自動で動いているのかわからないと思いますが、
+テスト起動後には何も操作をしていません。&lt;/p&gt;
+
+&lt;iframe width=&#34;420&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/JdgX6ywJ4GY&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;h2 id=&#34;アプリの説明&#34;&gt;アプリの説明&lt;/h2&gt;
+
+&lt;p&gt;テストに使ったアプリは、ラベルとボタンのあるシンプルなものです。
+ボタンをクリックすることで、ラベルに「Hello World!」と表示します。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_40.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;実際のコードは下記にあります。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/kokuzawa/javafx-test&#34;&gt;https://github.com/kokuzawa/javafx-test&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;testfxを設定&#34;&gt;TestFXを設定&lt;/h2&gt;
+
+&lt;p&gt;Mavenプロジェクトでは下記のDependencyを追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.loadui&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;testFx&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;3.1.2&amp;lt;/version&amp;gt;
+    &amp;lt;scope&amp;gt;test&amp;lt;/scope&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;テストを書く&#34;&gt;テストを書く&lt;/h2&gt;
+
+&lt;p&gt;対象のテストクラスは、TestFXを使うために&lt;code&gt;org.loadui.testfx.GuiTest&lt;/code&gt;クラスを継承します。
+&lt;code&gt;org.loadui.testfx.GuiTest&lt;/code&gt;クラスは&lt;code&gt;getRootNode()&lt;/code&gt;メソッドを持ち、そのメソッドでテストしたい画面のFXMLをロードします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import org.junit.Test;
+import org.loadui.testfx.GuiTest;
+
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import static org.junit.Assert.assertThat;
+import static org.loadui.testfx.controls.Commons.hasText;
+
+public class IndexControllerTest extends GuiTest
+{
+    @Override
+    protected Parent getRootNode()
+    {
+        try {
+            return FXMLLoader.load(getClass().getResource(&amp;quot;index.fxml&amp;quot;));
+        }
+        catch (IOException e) {
+            Logger.getLogger(IndexControllerTest.class.getName()).log(Level.SEVERE, &amp;quot;&amp;quot;, e);
+            return null;
+        }
+    }
+
+    @Test
+    public void testSay()
+    {
+        final Node node = find(&amp;quot;#button&amp;quot;);
+        click(node);
+        assertThat(&amp;quot;#greeting&amp;quot;, hasText(&amp;quot;Hello World!&amp;quot;));
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;テストメソッドは普通にJUnitの形式です。
+内容ですが、まず&lt;code&gt;find(&amp;quot;#button&amp;quot;)&lt;/code&gt;でfx:idがbuttonのコントロールを見つけます。
+見つけたボタンコントロールを&lt;code&gt;click&lt;/code&gt;メソッドを利用して実際にクリックします。
+ラベルに「Hello World!」が設定されたことを&lt;code&gt;Assert.assertThat&lt;/code&gt;で検証します。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;TestFXはJUnitベースなので抵抗なくテストを実装することができました。
+ただ、連続で何度か実行しているとエラーになることがありました。
+原因を調べているのですが、まだちょっとわからない状態です。
+とは言っても、エラーになるのは稀で、基本的は正常に動作します。&lt;/p&gt;
+
+&lt;p&gt;テストコードの導入はプロジェクトの最初の頃に決めておかないと、プロダクトコードがテストしにくい形で作られてしまうことが多々あります。
+特にクライアント側のコードはその傾向が強いと思いますので、もしこれからJavaFXのプロジェクトを始める際のであれば、
+TestFXの導入を検討してみてはいかがでしょうか。&lt;/p&gt;
+
+&lt;p&gt;今回この記事を書くきっかけになった、Java Magazineは下記からダウンロードすることができます。
+&lt;a href=&#34;http://www.oracle.com/technetwork/jp/articles/java/overview/index.html?elq_mid=33486&amp;amp;sh=1612166126426151606143&amp;amp;cmid=JPFM15040092MPP006C005&#34;&gt;http://www.oracle.com/technetwork/jp/articles/java/overview/index.html?elq_mid=33486&amp;amp;sh=1612166126426151606143&amp;amp;cmid=JPFM15040092MPP006C005&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -37,15 +153,207 @@ package org.katsumi; import javafx.fxml.FXMLLoader; import javafx.scene.Node; im
       <pubDate>Sat, 06 Dec 2014 06:42:41 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/12/06/javafxdemarkdownedeitawozuo-ru/</guid>
-      <description>この記事は JavaFX Advent Calendar 2014 の6日目です。
-昨日はsoutokuさんのJavaFX:WYSIWYGエディタを作るでした。
-明日は@backpaper0さんです。
-JavaFX 楽しいですよね。
-JavaFXには標準でWebページを表示するためのWebViewクラスがあり、これを使えばいろいろなことができます。 今回はこのWebViewクラスを使ってMarkdownエディタを作ってみることにします。 MarkdownといえばGitHubとかでも利用している人が多いかと思いますが、文書を記述するための軽量マークアップ言語です。 Markdownでテキストを入力し、それをパースしてWebViewに表示するという簡単な動作をするアプリケーションです。
-環境  OS: Mac OSX Yosemite 10.10 メモリ: 4GB Java: Java SE Runtime Environment (build 1.8.0-b132) markdown4j-2.2-cj-1.0  Markdownのパースにはmarkdown4jを使うことにしました。
-実際に動かしてみる 実際に動作している動画です。
- FXMLで外枠を作る 外枠を作るのはFXMLで書けばよいので簡単です。 IntelliJ IDEA 14 を使っているのでインラインScene Builderも使えますが&amp;hellip;という状態なので スタンドアロンのScene Builderを使いました。 ささっと作ったFXMLは以下のようになりました。
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;?import javafx.scene.control.*?&amp;gt; &amp;lt;?import javafx.scene.layout.*?&amp;gt; &amp;lt;?import javafx.scene.text.TextFlow?&amp;gt; &amp;lt;BorderPane maxHeight=&amp;quot;-Infinity&amp;quot; maxWidth=&amp;quot;-Infinity&amp;quot; minHeight=&amp;quot;-Infinity&amp;quot; minWidth=&amp;quot;-Infinity&amp;quot; prefHeight=&amp;quot;400.0&amp;quot; prefWidth=&amp;quot;600.0&amp;quot; xmlns=&amp;quot;http://javafx.com/javafx/8&amp;quot; xmlns:fx=&amp;quot;http://javafx.com/fxml/1&amp;quot; fx:controller=&amp;quot;sample.Controller&amp;quot;&amp;gt; &amp;lt;center&amp;gt; &amp;lt;SplitPane dividerPositions=&amp;quot;0.5&amp;quot; orientation=&amp;quot;VERTICAL&amp;quot; prefHeight=&amp;quot;200.</description>
+      <description>
+
+&lt;p&gt;この記事は &lt;a href=&#34;http://www.adventar.org/calendars/380&#34;&gt;JavaFX Advent Calendar 2014&lt;/a&gt; の6日目です。&lt;br /&gt;
+昨日は&lt;a href=&#34;http://www.adventar.org/users/5558&#34;&gt;soutoku&lt;/a&gt;さんの&lt;a href=&#34;http://soutoku.hatenablog.com/entry/2014/12/05/013342&#34;&gt;JavaFX:WYSIWYGエディタを作る&lt;/a&gt;でした。&lt;br /&gt;
+明日は&lt;a href=&#34;https://twitter.com/backpaper0&#34;&gt;@backpaper0&lt;/a&gt;さんです。&lt;/p&gt;
+
+&lt;p&gt;JavaFX 楽しいですよね。&lt;/p&gt;
+
+&lt;p&gt;JavaFXには標準でWebページを表示するためのWebViewクラスがあり、これを使えばいろいろなことができます。
+今回はこのWebViewクラスを使ってMarkdownエディタを作ってみることにします。
+MarkdownといえばGitHubとかでも利用している人が多いかと思いますが、文書を記述するための軽量マークアップ言語です。
+Markdownでテキストを入力し、それをパースしてWebViewに表示するという簡単な動作をするアプリケーションです。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: Mac OSX Yosemite 10.10&lt;/li&gt;
+&lt;li&gt;メモリ: 4GB&lt;/li&gt;
+&lt;li&gt;Java: Java SE Runtime Environment (build 1.8.0-b132)&lt;/li&gt;
+&lt;li&gt;markdown4j-2.2-cj-1.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Markdownのパースには&lt;a href=&#34;https://code.google.com/p/markdown4j/&#34;&gt;markdown4j&lt;/a&gt;を使うことにしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;実際に動かしてみる&#34;&gt;実際に動かしてみる&lt;/h2&gt;
+
+&lt;p&gt;実際に動作している動画です。&lt;/p&gt;
+
+&lt;iframe width=&#34;420&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/zjFR_In-gik&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;h2 id=&#34;fxmlで外枠を作る&#34;&gt;FXMLで外枠を作る&lt;/h2&gt;
+
+&lt;p&gt;外枠を作るのはFXMLで書けばよいので簡単です。
+IntelliJ IDEA 14 を使っているのでインラインScene Builderも使えますが&amp;hellip;という状態なので
+スタンドアロンのScene Builderを使いました。
+ささっと作ったFXMLは以下のようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+
+&amp;lt;?import javafx.scene.control.*?&amp;gt;
+&amp;lt;?import javafx.scene.layout.*?&amp;gt;
+&amp;lt;?import javafx.scene.text.TextFlow?&amp;gt;
+&amp;lt;BorderPane maxHeight=&amp;quot;-Infinity&amp;quot;
+            maxWidth=&amp;quot;-Infinity&amp;quot;
+            minHeight=&amp;quot;-Infinity&amp;quot;
+            minWidth=&amp;quot;-Infinity&amp;quot;
+            prefHeight=&amp;quot;400.0&amp;quot;
+            prefWidth=&amp;quot;600.0&amp;quot;
+            xmlns=&amp;quot;http://javafx.com/javafx/8&amp;quot; xmlns:fx=&amp;quot;http://javafx.com/fxml/1&amp;quot;
+	    fx:controller=&amp;quot;sample.Controller&amp;quot;&amp;gt;
+   &amp;lt;center&amp;gt;
+      &amp;lt;SplitPane dividerPositions=&amp;quot;0.5&amp;quot;
+                 orientation=&amp;quot;VERTICAL&amp;quot;
+                 prefHeight=&amp;quot;200.0&amp;quot;
+                 prefWidth=&amp;quot;160.0&amp;quot;
+                 BorderPane.alignment=&amp;quot;CENTER&amp;quot;&amp;gt;
+        &amp;lt;items&amp;gt;
+          &amp;lt;AnchorPane minHeight=&amp;quot;0.0&amp;quot; minWidth=&amp;quot;0.0&amp;quot; prefHeight=&amp;quot;100.0&amp;quot; prefWidth=&amp;quot;160.0&amp;quot;&amp;gt;
+               &amp;lt;children&amp;gt;
+                  &amp;lt;TextArea fx:id=&amp;quot;textArea&amp;quot;
+		            prefHeight=&amp;quot;200.0&amp;quot;
+                            prefWidth=&amp;quot;200.0&amp;quot;
+                            AnchorPane.bottomAnchor=&amp;quot;0.0&amp;quot;
+                            AnchorPane.leftAnchor=&amp;quot;0.0&amp;quot;
+                            AnchorPane.rightAnchor=&amp;quot;0.0&amp;quot;
+                            AnchorPane.topAnchor=&amp;quot;0.0&amp;quot;&amp;gt;
+		  &amp;lt;/TextArea&amp;gt;
+               &amp;lt;/children&amp;gt;
+               &amp;lt;padding&amp;gt;
+                  &amp;lt;Insets bottom=&amp;quot;5.0&amp;quot; left=&amp;quot;5.0&amp;quot; right=&amp;quot;5.0&amp;quot; top=&amp;quot;5.0&amp;quot; /&amp;gt;
+               &amp;lt;/padding&amp;gt;
+            &amp;lt;/AnchorPane&amp;gt;
+          &amp;lt;AnchorPane minHeight=&amp;quot;0.0&amp;quot; minWidth=&amp;quot;0.0&amp;quot; prefHeight=&amp;quot;100.0&amp;quot; prefWidth=&amp;quot;160.0&amp;quot;&amp;gt;
+               &amp;lt;children&amp;gt;
+                  &amp;lt;WebView fx:id=&amp;quot;webView&amp;quot;
+                           prefHeight=&amp;quot;200.0&amp;quot; 
+                           prefWidth=&amp;quot;200.0&amp;quot; 
+                           AnchorPane.bottomAnchor=&amp;quot;0.0&amp;quot; 
+                           AnchorPane.leftAnchor=&amp;quot;0.0&amp;quot; 
+                           AnchorPane.rightAnchor=&amp;quot;0.0&amp;quot; 
+                           AnchorPane.topAnchor=&amp;quot;0.0&amp;quot; /&amp;gt;
+               &amp;lt;/children&amp;gt;
+               &amp;lt;padding&amp;gt;
+                  &amp;lt;Insets bottom=&amp;quot;5.0&amp;quot; left=&amp;quot;5.0&amp;quot; right=&amp;quot;5.0&amp;quot; top=&amp;quot;5.0&amp;quot; /&amp;gt;
+               &amp;lt;/padding&amp;gt;
+            &amp;lt;/AnchorPane&amp;gt;
+        &amp;lt;/items&amp;gt;
+      &amp;lt;/SplitPane&amp;gt;
+   &amp;lt;/center&amp;gt;
+   &amp;lt;top&amp;gt;
+      &amp;lt;MenuBar BorderPane.alignment=&amp;quot;CENTER&amp;quot;&amp;gt;
+        &amp;lt;menus&amp;gt;
+          &amp;lt;Menu mnemonicParsing=&amp;quot;false&amp;quot; text=&amp;quot;File&amp;quot;&amp;gt;
+            &amp;lt;items&amp;gt;
+              &amp;lt;MenuItem mnemonicParsing=&amp;quot;false&amp;quot; text=&amp;quot;Close&amp;quot; /&amp;gt;
+            &amp;lt;/items&amp;gt;
+          &amp;lt;/Menu&amp;gt;
+          &amp;lt;Menu mnemonicParsing=&amp;quot;false&amp;quot; text=&amp;quot;Edit&amp;quot;&amp;gt;
+            &amp;lt;items&amp;gt;
+              &amp;lt;MenuItem mnemonicParsing=&amp;quot;false&amp;quot; text=&amp;quot;Delete&amp;quot; /&amp;gt;
+            &amp;lt;/items&amp;gt;
+          &amp;lt;/Menu&amp;gt;
+          &amp;lt;Menu mnemonicParsing=&amp;quot;false&amp;quot; text=&amp;quot;Help&amp;quot;&amp;gt;
+            &amp;lt;items&amp;gt;
+              &amp;lt;MenuItem mnemonicParsing=&amp;quot;false&amp;quot; text=&amp;quot;About&amp;quot; /&amp;gt;
+            &amp;lt;/items&amp;gt;
+          &amp;lt;/Menu&amp;gt;
+        &amp;lt;/menus&amp;gt;
+      &amp;lt;/MenuBar&amp;gt;
+   &amp;lt;/top&amp;gt;
+&amp;lt;/BorderPane&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;BorderPaneのtopに配置しているMenuBarは飾りです (^^;&lt;br /&gt;
+本体はBorderPaneのcenterにSplitPaneを配置し、上半分にTextArea、下半分にWebViewを表示します。&lt;/p&gt;
+
+&lt;h2 id=&#34;コントローラを作る&#34;&gt;コントローラを作る&lt;/h2&gt;
+
+&lt;p&gt;この画面を操作するためのコントローラクラスを作ります。
+コントローラがやることは、TextAreaに入力された値をパースしてWebViewに表示することです。
+今回はTextAreaにイベントを張って、イベント発生毎にWebViewの内容を書き換える方法ではなく、
+TextAreaのテキストプロパティにChangeListenerを設定し、値の変化を検知してWebViewを書き換えるようにします。
+本当はWebView側にコンテンツをバインドできるプロパティが存在すればバインドを使いたいところです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package sample;
+
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.TextArea;
+import javafx.scene.web.WebView;
+import org.markdown4j.Markdown4jProcessor;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class Controller implements Initializable
+{
+    @FXML
+    private TextArea textArea;
+
+    @FXML
+    private WebView webView;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources)
+    {
+        textArea.textProperty().addListener((observable, oldValue, newValue) -&amp;gt; {
+            try {
+                webView.getEngine().loadContent(new Markdown4jProcessor().process(newValue));
+            }
+            catch (StringIndexOutOfBoundsException | IOException e) {
+                webView.getEngine().loadContent(newValue);
+            }
+        });
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ChangeListenerを設定するためには&lt;code&gt;TextArea#textProperty()&lt;/code&gt;メソッドからStringPropertyを取得し、
+そのプロパティの持つ&lt;code&gt;addListener&lt;/code&gt;を使用します。
+値の変更を検知するとChangeListenerのchangedメソッドがコールされるので、
+ここでWebViewに対してHTMLを設定するようにします。
+入力された文字列は&lt;code&gt;Markdown4jProcessor#process(String)&lt;/code&gt;メソッドを経由してHTMLに変換されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;WebView#loadContent(String)&lt;/code&gt;メソッドには&lt;code&gt;WebView#loadContent(String, String)&lt;/code&gt;という引数を２つ取るメソッドも存在します。
+引数が２つのほうは、第二引数にコンテンツタイプを指定できます。引数が１つのほうは内部で引数が２つメソッドを呼び出しいて、
+第二引数には&amp;rdquo;text/html&amp;rdquo;を渡しています。ですので、デフォルトではHTMLを表示することになりますね。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめとちょっと考察&#34;&gt;まとめとちょっと考察&lt;/h2&gt;
+
+&lt;p&gt;これでシンプルなMarkdownエディタができました。
+実は、ChangeListenerの代わりにInvalidationListenerを使うこともできます。
+ChangeListenerとInvalidationListenerの違いは下記のサイトを参考にさせてもらいました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://skrb.hatenablog.com/entry/2013/09/08/174826&#34;&gt;JavaFX in the Box:JavaFX Hands on Lab&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/nodamushi/20141012/1413136054&#34;&gt;プログラムdeタマゴ:JavaFXのInvalidationListenerやChangeListenerやObservableListやBindingについて&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;textArea.textProperty().addListener(observable -&amp;gt; {
+    final String value = ((StringProperty) observable).get();
+    try {
+        webView.getEngine().loadContent(new Markdown4jProcessor().process(value));
+    }
+    catch (StringIndexOutOfBoundsException | IOException e) {
+        webView.getEngine().loadContent(value);
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ただ、InvalidationListenerを使うと次のような問題が発生します。&lt;/p&gt;
+
+&lt;p&gt;日本語入力においてChangeListenerだと確定前文字が入力された場合だけイベントが呼ばれるのですが、
+InvalidationListenerだと確定前文字が入力された時と入力文字を確定した場合の2度イベントが発生します。
+正確には、一回の値変更でイベントが2度発生するので計4回のイベントを受け取る形です。
+確定前文字と入力文字を確定した時の文字は同じものであるため2回目のイベントが無駄になってしまいます。
+使い方がまずいのかもしれないのですが、ChangeListenerを使ったほうが無難な様子です。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -54,12 +362,378 @@ JavaFXには標準でWebページを表示するためのWebViewクラスがあ�
       <pubDate>Mon, 03 Nov 2014 17:12:02 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
-      <description>FlexとJavaFXからREST-APIを呼び出してみました。
-環境  OS: Mac OSX Yosemite 10.10 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) Flex SDK 4.6 メモリ: 4GB WildFly 8.0.0.Final  サーバの用意 今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。 RESTの実装にはJersey-2.8を利用します。
-import javax.ws.rs.GET; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.ws.rs.QueryParam; import javax.ws.rs.core.MediaType; @Path(&amp;quot;/hello&amp;quot;) public class HelloService { @GET @Produces(MediaType.TEXT_PLAIN) public String hello(@QueryParam(&amp;quot;string&amp;quot;) String string) { return String.format(&amp;quot;Hello %s!&amp;quot;, string); } }  FlexからのREST-API呼び出し JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。
-画面構成を管理するMXMLです。
-Main.mxml:
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;s:WindowedApplication xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot; xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot; xmlns:local=&amp;quot;*&amp;quot; title=&amp;quot;Hello World&amp;quot; width=&amp;quot;230&amp;quot; height=&amp;quot;80&amp;quot;&amp;gt; &amp;lt;fx:Declarations&amp;gt; &amp;lt;local:Controller id=&amp;quot;controller&amp;quot;/&amp;gt; &amp;lt;/fx:Declarations&amp;gt; &amp;lt;s:VGroup paddingBottom=&amp;quot;10&amp;quot; paddingLeft=&amp;quot;10&amp;quot; paddingRight=&amp;quot;10&amp;quot; paddingTop=&amp;quot;10&amp;quot; gap=&amp;quot;10&amp;quot; minHeight=&amp;quot;0&amp;quot;&amp;gt; &amp;lt;s:HGroup&amp;gt; &amp;lt;s:TextInput id=&amp;quot;stringField&amp;quot;/&amp;gt; &amp;lt;s:Button label=&amp;quot;Button&amp;quot; click=&amp;quot;{controller.</description>
+      <description>
+
+&lt;p&gt;FlexとJavaFXからREST-APIを呼び出してみました。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: Mac OSX Yosemite 10.10&lt;/li&gt;
+&lt;li&gt;Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132)&lt;/li&gt;
+&lt;li&gt;Flex SDK 4.6&lt;/li&gt;
+&lt;li&gt;メモリ: 4GB&lt;/li&gt;
+&lt;li&gt;WildFly 8.0.0.Final&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;サーバの用意&#34;&gt;サーバの用意&lt;/h2&gt;
+
+&lt;p&gt;今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。
+引数で受け取った文字を加工して「Hello XXX!」という文字を返します。
+RESTの実装にはJersey-2.8を利用します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.MediaType;
+
+@Path(&amp;quot;/hello&amp;quot;)
+public class HelloService
+{
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String hello(@QueryParam(&amp;quot;string&amp;quot;) String string)
+    {
+        return String.format(&amp;quot;Hello %s!&amp;quot;, string);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;flexからのrest-api呼び出し&#34;&gt;FlexからのREST-API呼び出し&lt;/h2&gt;
+
+&lt;p&gt;JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。&lt;/p&gt;
+
+&lt;p&gt;画面構成を管理するMXMLです。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Main.mxml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
+&amp;lt;s:WindowedApplication
+        xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot;
+        xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot;
+        xmlns:local=&amp;quot;*&amp;quot; 
+        title=&amp;quot;Hello World&amp;quot; 
+        width=&amp;quot;230&amp;quot; 
+        height=&amp;quot;80&amp;quot;&amp;gt;
+    &amp;lt;fx:Declarations&amp;gt;
+        &amp;lt;local:Controller id=&amp;quot;controller&amp;quot;/&amp;gt;
+    &amp;lt;/fx:Declarations&amp;gt;
+    &amp;lt;s:VGroup paddingBottom=&amp;quot;10&amp;quot; 
+              paddingLeft=&amp;quot;10&amp;quot; 
+              paddingRight=&amp;quot;10&amp;quot; 
+              paddingTop=&amp;quot;10&amp;quot; 
+              gap=&amp;quot;10&amp;quot; 
+              minHeight=&amp;quot;0&amp;quot;&amp;gt;
+        &amp;lt;s:HGroup&amp;gt;
+            &amp;lt;s:TextInput id=&amp;quot;stringField&amp;quot;/&amp;gt;
+            &amp;lt;s:Button label=&amp;quot;Button&amp;quot; click=&amp;quot;{controller.buttonAction(event)}&amp;quot;/&amp;gt;
+        &amp;lt;/s:HGroup&amp;gt;
+        &amp;lt;s:Label id=&amp;quot;stringLabel&amp;quot;/&amp;gt;
+    &amp;lt;/s:VGroup&amp;gt;
+&amp;lt;/s:WindowedApplication&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;画面をコントロールするコントローラクラスです。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Controller.as:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-as&#34;&gt;package {
+    import flash.events.MouseEvent;
+
+    import mx.core.IMXMLObject;
+    import mx.rpc.events.ResultEvent;
+    import mx.rpc.http.mxml.HTTPService;
+
+    public class Controller implements IMXMLObject
+    {
+        private var _document:Main;
+
+        public function initialized(document:Object, id:String):void
+        {
+            _document = document as Main;
+        }
+
+        public function buttonAction(event:MouseEvent):void
+        {
+            var service:HTTPService = new HTTPService(&amp;quot;http://localhost:8080&amp;quot;);
+            service.url = &amp;quot;/jaxrs/rest/hello&amp;quot;;
+            service.addEventListener(ResultEvent.RESULT, function (e:ResultEvent):void
+            {
+                _document.stringLabel.text = e.result as String;
+            });
+            service.send({string:_document.stringField.text});
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;起動すると下記の画面が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_37.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;javafxからrest-apiを呼び出す&#34;&gt;JavaFXからREST-APIを呼び出す&lt;/h2&gt;
+
+&lt;p&gt;JavaFXからの呼び出し例を提示します。&lt;/p&gt;
+
+&lt;p&gt;画面構成を管理するFXMLです。
+画面レイアウトにはSceneBuilder-2.0を利用しました。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;sample.fxml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+
+&amp;lt;?import javafx.geometry.Insets?&amp;gt;
+&amp;lt;?import javafx.scene.control.Button?&amp;gt;
+&amp;lt;?import javafx.scene.control.Label?&amp;gt;
+&amp;lt;?import javafx.scene.control.TextField?&amp;gt;
+&amp;lt;?import javafx.scene.layout.*?&amp;gt;
+&amp;lt;GridPane alignment=&amp;quot;center&amp;quot; 
+          hgap=&amp;quot;10&amp;quot; 
+          prefHeight=&amp;quot;46.0&amp;quot; 
+          prefWidth=&amp;quot;324.0&amp;quot; 
+          vgap=&amp;quot;10&amp;quot; 
+          xmlns=&amp;quot;http://javafx.com/javafx/8&amp;quot; 
+          xmlns:fx=&amp;quot;http://javafx.com/fxml/1&amp;quot; 
+          fx:controller=&amp;quot;sample.Controller&amp;quot;&amp;gt;
+   &amp;lt;columnConstraints&amp;gt;
+      &amp;lt;ColumnConstraints /&amp;gt;
+      &amp;lt;ColumnConstraints minWidth=&amp;quot;10.0&amp;quot; prefWidth=&amp;quot;60.0&amp;quot; /&amp;gt;
+   &amp;lt;/columnConstraints&amp;gt;
+   &amp;lt;rowConstraints&amp;gt;
+      &amp;lt;RowConstraints /&amp;gt;
+      &amp;lt;RowConstraints minHeight=&amp;quot;10.0&amp;quot; prefHeight=&amp;quot;30.0&amp;quot; /&amp;gt;
+   &amp;lt;/rowConstraints&amp;gt;
+   &amp;lt;children&amp;gt;
+      &amp;lt;TextField fx:id=&amp;quot;stringField&amp;quot; prefHeight=&amp;quot;26.0&amp;quot; prefWidth=&amp;quot;205.0&amp;quot; /&amp;gt;
+      &amp;lt;Button mnemonicParsing=&amp;quot;false&amp;quot; text=&amp;quot;Button&amp;quot; GridPane.columnIndex=&amp;quot;1&amp;quot; onAction=&amp;quot;#buttonAction&amp;quot;/&amp;gt;
+      &amp;lt;Label fx:id=&amp;quot;stringLabel&amp;quot; GridPane.columnSpan=&amp;quot;2&amp;quot; GridPane.rowIndex=&amp;quot;1&amp;quot; /&amp;gt;
+   &amp;lt;/children&amp;gt;
+   &amp;lt;padding&amp;gt;
+      &amp;lt;Insets bottom=&amp;quot;10.0&amp;quot; left=&amp;quot;10.0&amp;quot; right=&amp;quot;10.0&amp;quot; top=&amp;quot;10.0&amp;quot; /&amp;gt;
+   &amp;lt;/padding&amp;gt;
+&amp;lt;/GridPane&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JavaによるREST-API呼び出しは、JAX-RSクライアントを利用するため、
+下記ライブラリを追加します。（Mavenの設定）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependencies&amp;gt;
+    &amp;lt;dependency&amp;gt;
+        &amp;lt;groupId&amp;gt;org.glassfish.jersey.core&amp;lt;/groupId&amp;gt;
+        &amp;lt;artifactId&amp;gt;jersey-client&amp;lt;/artifactId&amp;gt;
+        &amp;lt;version&amp;gt;2.8&amp;lt;/version&amp;gt;
+    &amp;lt;/dependency&amp;gt;
+&amp;lt;/dependencies&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;画面をコントロールするコントローラクラスです。
+ボタンがクリックされた場合にREST-APIを呼び出して結果をラベルに設定します。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Controller.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+
+public class Controller
+{
+    @FXML
+    private TextField stringField;
+
+    @FXML
+    private Label stringLabel;
+
+    public void buttonAction()
+    {
+        final Client client = ClientBuilder.newClient();
+        try {
+            final String result = client.target(&amp;quot;http://localhost:8080/jaxrs/rest&amp;quot;)
+                    .path(&amp;quot;hello&amp;quot;)
+                    .queryParam(&amp;quot;string&amp;quot;, stringField.getText())
+                    .request(MediaType.TEXT_PLAIN_TYPE)
+                    .get(String.class);
+            stringLabel.setText(result);
+        }
+        finally {
+            client.close();
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;起動すると下記の画面が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_38.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;javafxからの呼び出しを非同期にする&#34;&gt;JavaFXからの呼び出しを非同期にする&lt;/h2&gt;
+
+&lt;p&gt;FlexもJavaFXもほぼ同じようなコードでREST-APIを呼び出すことができるのですが、
+Flexの方は非同期呼び出しであり、JavaFXの方は同期呼び出しという違いがあります。
+そこでJavaFXの方でも非同期呼び出しをさせてみたいと思います。&lt;/p&gt;
+
+&lt;p&gt;JAX-RSクライアントには非同期呼び出しの仕組みがあるので、
+それを利用するようにREST-APIの呼び出し部分を下記のように書き換えました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final Client client = ClientBuilder.newClient();
+client.target(&amp;quot;http://localhost:8080/jaxrs/rest&amp;quot;)
+      .path(&amp;quot;hello&amp;quot;)
+      .queryParam(&amp;quot;string&amp;quot;, stringField.getText())
+      .request(MediaType.TEXT_PLAIN_TYPE)
+      .async()
+      .get(new InvocationCallback&amp;lt;String&amp;gt;()
+      {
+          @Override
+          public void completed(String result)
+          {
+              stringLabel.setText(result);
+          }
+
+          @Override
+          public void failed(Throwable throwable)
+          {
+              throwable.printStackTrace();
+          }
+      });
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;呼び出しチェーンに&lt;code&gt;async()&lt;/code&gt;メソッドを追加します。
+結果は戻り値ではなく、&lt;code&gt;InvocationCallback&amp;lt;T&amp;gt;&lt;/code&gt;インターフェースの&lt;code&gt;completed(T)&lt;/code&gt;メソッドで受け取るようになります。
+また、呼び出し後にclientをクローズしてしまうと非同期によるレスポンスを受け取る前に接続が切れてしまいます。
+そのため、ここではクローズは行いません。&lt;/p&gt;
+
+&lt;p&gt;これで非同期になると思いきや、実行すると下記エラーが発生します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;javax.ws.rs.ProcessingException: java.lang.IllegalStateException: Not on FX application thread; currentThread = jersey-client-async-executor-0
+	at org.glassfish.jersey.client.ClientRuntime.processFailure(ClientRuntime.java:173)
+	at org.glassfish.jersey.client.ClientRuntime.access$400(ClientRuntime.java:69)
+	at org.glassfish.jersey.client.ClientRuntime$1.run(ClientRuntime.java:155)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JavaFXアプリのスレッド以外でアクセスしようとしたのでエラーが発生しています。
+というわけで&lt;code&gt;async()&lt;/code&gt;メソッドは使えません。
+そこで、&lt;code&gt;javafx.concurrent.Service&lt;/code&gt;クラスを利用します。
+このクラスを利用すると、JavaFXアプリにおいて別スレッドを利用できるようになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;javafx.concurrent.Service&lt;/code&gt;クラスを利用したクラスが下記になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;HelloService.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.core.MediaType;
+
+public class HelloService extends Service&amp;lt;String&amp;gt;
+{
+    private StringProperty string = new SimpleStringProperty();
+
+    public StringProperty stringProperty()
+    {
+        return string;
+    }
+
+    @Override
+    protected Task&amp;lt;String&amp;gt; createTask()
+    {
+        return new Task&amp;lt;String&amp;gt;()
+        {
+            @Override
+            protected String call() throws Exception
+            {
+                if (false == string.get().isEmpty()) {
+                    final Client client = ClientBuilder.newClient();
+                    try {
+                        return client.target(&amp;quot;http://localhost:8080/jaxrs/rest&amp;quot;)
+                                .path(&amp;quot;hello&amp;quot;)
+                                .queryParam(&amp;quot;string&amp;quot;, string.get())
+                                .request(MediaType.TEXT_PLAIN_TYPE)
+                                .get(String.class);
+                    }
+                    finally {
+                        client.close();
+                    }
+                }
+                return null;
+            }
+        };
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;作成したサービスクラスを利用するようにコントローラクラスを書き換えます。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Controller.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class Controller implements Initializable
+{
+    @FXML
+    private TextField stringField;
+
+    @FXML
+    private Label stringLabel;
+
+    private HelloService service = new HelloService();
+
+    public void buttonAction()
+    {
+        service.restart();
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle)
+    {
+        service.stringProperty().bind(stringField.textProperty());
+        service.setOnSucceeded(e -&amp;gt; stringLabel.setText((String)e.getSource().getValue()));
+        service.start();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;Initializable&lt;/code&gt;インターフェースの&lt;code&gt;initialize(URL, ResourceBundle)&lt;/code&gt;メソッド内で
+入力フィールドをサービスクラスへバインドし、サービスの処理完了時に呼ばれる&lt;code&gt;setOnSucceeded&lt;/code&gt;メソッドで
+ラベルに対してレスポンスを書き出すようにします。&lt;code&gt;start()&lt;/code&gt;メソッドでサービスを開始します。&lt;/p&gt;
+
+&lt;p&gt;また、書き換え前のコードではボタンクリックのハンドラ内でREEST-APIを呼び出していましたが、
+新しいコードではサービスクラスの&lt;code&gt;restart()&lt;/code&gt;メソッドを呼び出し、
+サービスの起動状態をキャンセルして再起動させます。こうすることにより、サービス内のタスクが再度生成されるので、
+入力された値がサーバーに送信されるようになります。
+入力値はバインドを利用しているので、サービスへの再設定は必要ありません。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;FlexとJavaFXでの簡単な呼び出しにおいてはほとんど違いがないことがわかるかと思います。
+JavaFXで非同期呼び出しをしようとした場合にちょっとだけ面倒になりますが、
+非同期にしたい部分だけ今回のようにサービスにするだけなので、
+JavaFXを利用する上ではそれほど問題にならないかな、と思っています。&lt;/p&gt;
+
+&lt;p&gt;Flexでは同期呼び出しにするという選択肢がないので、
+同期と非同期を切り替えられるJavaFXの方がメリットがありそうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm&#34;&gt;Concurrency in JavaFX&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -68,21 +742,125 @@ Main.mxml:
       <pubDate>Sun, 08 Dec 2013 00:15:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/12/08/javafx-on-intellij-idea/</guid>
-      <description>この記事は、JavaFX Advent Calendar 2013の8日目です。
-昨日は@aoetkさんのListViewやTableViewのセルをカスタマイズする方法でした。
-明日は@sk44_さんです。
-祝！IntelliJ IDEA 13 リリース IntelliJ IDEA 13 が 12月3日にリリースされました！めでたいですね！
-たぶん説明はいらないと思うので書きませんが、Java界隈の人なら知る人ぞ知る素敵なIDEです。
-IntelliJの最新版であるver.13はJavaFXもサポートされているので、 今回はこれを使ってJavaFXの簡単なアプリケーションを作ってみたいと思います。
-6日目の記事で@khasunumaさんが書かれた、 「e(fx)clipseで作るJavaFXアプリケーション」のIntelliJ版ですね。
-早速作ってみる IntelliJを初めて起動すると以下のような画面が表示されるので、右側にある「Create New project」を選択します。
-今度はプロジェクトの作成画面が表示されるので、 左側からプロジェクトのタイプとして「JavaFX Application」を選択、右側の「Project name」に任意のプロジェクト名を入れます。 今回は「HelloJavaFX」という名前にしました。
-Finishボタンをクリックすると、プロジェクトが作られます。 プロジェクトには簡単なファイルが3つ用意されていて、それぞれ以下のような内容になっています。
-Mainクラスがちゃんと書かれているのでこれだけでも動きます。 初めてJavaFXのアプリケーションを作る人に必要最低限のファイルとコードを示すのに十分です。 これ以上のコードがあると、本来は不必要なものまで必要だと勘違いしてしまうと思います。 ただControllerとFXMLは空っぽなので、このままだと枠しか表示されなくて面白くない&amp;hellip;。
-ボタンをクリックしたら文字を表示するというぐらいはやりたいので、 ボタンとラベルをFXMLに追加していきます。
-&amp;lt;?import javafx.geometry.Insets?&amp;gt; &amp;lt;?import javafx.scene.layout.GridPane?&amp;gt; &amp;lt;?import javafx.scene.control.Button?&amp;gt; &amp;lt;?import javafx.scene.control.Label?&amp;gt; &amp;lt;GridPane fx:controller=&amp;quot;sample.Controller&amp;quot; xmlns:fx=&amp;quot;http://javafx.com/fxml&amp;quot; alignment=&amp;quot;center&amp;quot; hgap=&amp;quot;10&amp;quot; vgap=&amp;quot;10&amp;quot;&amp;gt; &amp;lt;Label fx:id=&amp;quot;label&amp;quot; GridPane.columnIndex=&amp;quot;0&amp;quot; GridPane.rowIndex=&amp;quot;0&amp;quot;/&amp;gt; &amp;lt;Button fx:id=&amp;quot;button&amp;quot; text=&amp;quot;OK&amp;quot; onAction=&amp;quot;#click&amp;quot; GridPane.columnIndex=&amp;quot;0&amp;quot; GridPane.rowIndex=&amp;quot;1&amp;quot; GridPane.halignment=&amp;quot;CENTER&amp;quot;/&amp;gt; &amp;lt;/GridPane&amp;gt;  ちなみに、以下のような感じでちょっとだけ入力すると補完候補が出てきます。 この辺はIntelliJ様々です。他のIDEもできるのかもしれないですけど。
-次はControllerに動作を書いていきます。
-package sample; import javafx.</description>
+      <description>
+
+&lt;p&gt;この記事は、&lt;a href=&#34;http://www.adventar.org/calendars/146&#34;&gt;JavaFX Advent Calendar 2013&lt;/a&gt;の8日目です。&lt;br /&gt;
+昨日は&lt;a href=&#34;http://twitter.com/aoetk&#34;&gt;@aoetk&lt;/a&gt;さんの&lt;a href=&#34;http://d.hatena.ne.jp/aoe-tk/20131206/1386345344&#34;&gt;ListViewやTableViewのセルをカスタマイズする方法&lt;/a&gt;でした。&lt;br /&gt;
+明日は&lt;a href=&#34;http://twitter.com/sk44_&#34;&gt;@sk44_&lt;/a&gt;さんです。&lt;/p&gt;
+
+&lt;h2 id=&#34;祝-intellij-idea-13-リリース&#34;&gt;祝！IntelliJ IDEA 13 リリース&lt;/h2&gt;
+
+&lt;p&gt;IntelliJ IDEA 13 が 12月3日にリリースされました！めでたいですね！&lt;br /&gt;
+たぶん説明はいらないと思うので書きませんが、Java界隈の人なら知る人ぞ知る素敵なIDEです。&lt;br /&gt;
+IntelliJの最新版であるver.13はJavaFXもサポートされているので、
+今回はこれを使ってJavaFXの簡単なアプリケーションを作ってみたいと思います。&lt;br /&gt;
+6日目の記事で&lt;a href=&#34;http://twitter.com/khasunuma&#34;&gt;@khasunuma&lt;/a&gt;さんが書かれた、
+「&lt;a href=&#34;http://www.coppermine.jp/docs/programming/2013/12/efxclipse.html&#34;&gt;e(fx)clipseで作るJavaFXアプリケーション&lt;/a&gt;」のIntelliJ版ですね。&lt;/p&gt;
+
+&lt;h2 id=&#34;早速作ってみる&#34;&gt;早速作ってみる&lt;/h2&gt;
+
+&lt;p&gt;IntelliJを初めて起動すると以下のような画面が表示されるので、右側にある「Create New project」を選択します。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_16.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;今度はプロジェクトの作成画面が表示されるので、
+左側からプロジェクトのタイプとして「JavaFX Application」を選択、右側の「Project name」に任意のプロジェクト名を入れます。
+今回は「HelloJavaFX」という名前にしました。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_17.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finishボタンをクリックすると、プロジェクトが作られます。
+プロジェクトには簡単なファイルが3つ用意されていて、それぞれ以下のような内容になっています。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_18.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_19.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_20.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Mainクラスがちゃんと書かれているのでこれだけでも動きます。
+初めてJavaFXのアプリケーションを作る人に必要最低限のファイルとコードを示すのに十分です。
+これ以上のコードがあると、本来は不必要なものまで必要だと勘違いしてしまうと思います。
+ただControllerとFXMLは空っぽなので、このままだと枠しか表示されなくて面白くない&amp;hellip;。&lt;br /&gt;
+ボタンをクリックしたら文字を表示するというぐらいはやりたいので、
+ボタンとラベルをFXMLに追加していきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?import javafx.geometry.Insets?&amp;gt;
+&amp;lt;?import javafx.scene.layout.GridPane?&amp;gt;
+
+&amp;lt;?import javafx.scene.control.Button?&amp;gt;
+&amp;lt;?import javafx.scene.control.Label?&amp;gt;
+&amp;lt;GridPane fx:controller=&amp;quot;sample.Controller&amp;quot;
+          xmlns:fx=&amp;quot;http://javafx.com/fxml&amp;quot; alignment=&amp;quot;center&amp;quot; hgap=&amp;quot;10&amp;quot; vgap=&amp;quot;10&amp;quot;&amp;gt;
+
+    &amp;lt;Label fx:id=&amp;quot;label&amp;quot; GridPane.columnIndex=&amp;quot;0&amp;quot; GridPane.rowIndex=&amp;quot;0&amp;quot;/&amp;gt;
+    &amp;lt;Button fx:id=&amp;quot;button&amp;quot; text=&amp;quot;OK&amp;quot; onAction=&amp;quot;#click&amp;quot; 
+            GridPane.columnIndex=&amp;quot;0&amp;quot; GridPane.rowIndex=&amp;quot;1&amp;quot; GridPane.halignment=&amp;quot;CENTER&amp;quot;/&amp;gt;
+
+&amp;lt;/GridPane&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちなみに、以下のような感じでちょっとだけ入力すると補完候補が出てきます。
+この辺はIntelliJ様々です。他のIDEもできるのかもしれないですけど。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_21.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;次はControllerに動作を書いていきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package sample;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+
+public class Controller
+{
+    @FXML
+    private Label label;
+
+    @FXML
+    private Button button;
+
+    public void click()
+    {
+        label.setText(&amp;quot;ボタンをクリックしたよ！&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コードの左側に表示されているマークをクリックすると、
+@FXMLでマッピングしたコンポーネントにジャンプできます。
+この辺もちょっとしたことですけど嬉しい機能です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_22.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;起動する&#34;&gt;起動する&lt;/h2&gt;
+
+&lt;p&gt;では、実際に起動してみます。
+IntelliJでは右上に実行のアイコンが表示されているので、これをクリックします。
+mainメソッドを持つクラスが自動的に認識されているので、特に設定は必要ないようです。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_23.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;表示されたウィンドウの真ん中に表示されたボタンをクリックすると、
+文字が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_24.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;本当はScene Builderとか使えば、レイアウトが楽だったりするのですが、
+IntelliJだけでも補完機能が優れているので、何となくレイアウトできてしまったりします。
+実は今回試してみるまで、&lt;code&gt;GridPane&lt;/code&gt;のレイアウトで使う&lt;code&gt;GridPane.columnIndex&lt;/code&gt;という属性は知らなかった&amp;hellip;。
+補完で出てきてくれたので、何となくこういう意味なんだろうなというノリで作れてしまいました。&lt;/p&gt;
+
+&lt;p&gt;というわけで、他のIDEの事情はちょっと分からないのですが、
+IntelliJを使うことで、以外と簡単にJavaFXのアプリが作れることが分かって頂けると嬉しいなぁと思ったりしています。&lt;/p&gt;
+
+&lt;p&gt;最後に、IntelliJのAdvent CalendarじゃなくてJavaFXのAdvent Calendarです、念のため :P&lt;/p&gt;
+
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -91,17 +869,140 @@ package sample; import javafx.</description>
       <pubDate>Thu, 05 Sep 2013 03:15:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/09/05/run-javafx/</guid>
-      <description>『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。 作るのはそれほど難しい話ではないので、ちょっとした解説を加えつつ紹介しようと思う。
-実行モジュールもあとで提示するので確認して頂ければ幸い。
-IDEはIntelliJ IDEAを使った。IntelliJ IDEAにはJavaFXモジュール用のプロジェクトを作ることができるのでそれを利用する。 ビルドすると親切なことにjarファイルだけでなく、JNLPやHTMLファイルを生成してくれるので非常に便利。
-ビルドされた実行モジュールを見てもらった方が分かり易いと思い、 Appletとしてブラウザ上で動かそうと思ったのだが、 IDEAが生成してくれたHTMLをSafariで開いても、いつまでたっても起動しない。 HTMLのソースを見てみると、dtjava.jsというJavaScriptを使って起動しようとしているようだが、 少なくともSafariではうんともすんとも言わない。 他のブラウザなら動作するのだろうかと思い、Chromeで実行すると、今度は「このブラウザではサポートされていない」という趣旨の メッセージが表示される。多分Macだとダメなのだろう。もし起動する方法を知っていたら教えて頂きたい。
-ということで、Appletとして動かすことは諦めたので、JNLPファイルへのリンクを提示する。
-JavaFXApp.jnlp
-このJNLPをダウンロードして起動すると、バブルソートが実行される。 OSXの場合だと、セキュリティによって起動できないかもしれない。 その場合、ダウンロードしたJNLPファイルをCtrl＋クリックして「このアプリケーションで開く」-&amp;gt; 「Java Web Start」とメニューを 選択して行けば、起動しても良いか尋ねてくれるので、ここから起動が出来ると思う。
-アプリについて ソート対象となる100本の黒ラインはランダムに並んでいて、現在処理中のラインを赤で表している。 実際に動作を見ると、短い黒ラインがだんだんと左側に寄って行くのが分かる。
-コード 初期データはCollections.shuffle(Collection)でシャッフルする。
-for (int i = 1; i &amp;lt;= N; i++) { data.add(i); } Collections.shuffle(data);  ステージの初期化。黒ラインと赤ラインを表すPathを2つ。 repaint()メソッドで描画した結果から必要になった幅をステージの幅として設定する。+10はパディング分になる。
-path.setStrokeWidth(3.0); path.setStroke(Color.GRAY); currentPath.setStrokeWidth(4.0); currentPath.setStroke(Color.RED); root.getChildren().add(path); root.getChildren().add(currentPath); final int width = repaint(); primaryStage.setTitle(&amp;quot;Bubble Sort&amp;quot;); primaryStage.setResizable(false); primaryStage.setScene(new Scene(root, width + 10, VIEW_HEIGHT)); primaryStage.show();  実際のライン描画処理。 JavaFXではTimelineクラスを使うと秒毎の処理が書けるので簡単にアニメーションを作ることができる。 待機時間無しだとソートが一瞬で終わってしまい、過程を見ることができないので、 ここでは待機時間に10ミリ秒を指定している。new Duration(10)の部分。</description>
+      <description>
+
+&lt;p&gt;『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。
+作るのはそれほど難しい話ではないので、ちょっとした解説を加えつつ紹介しようと思う。&lt;/p&gt;
+
+&lt;p&gt;実行モジュールもあとで提示するので確認して頂ければ幸い。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;p&gt;IDEはIntelliJ IDEAを使った。IntelliJ IDEAにはJavaFXモジュール用のプロジェクトを作ることができるのでそれを利用する。
+ビルドすると親切なことにjarファイルだけでなく、JNLPやHTMLファイルを生成してくれるので非常に便利。&lt;/p&gt;
+
+&lt;p&gt;ビルドされた実行モジュールを見てもらった方が分かり易いと思い、
+Appletとしてブラウザ上で動かそうと思ったのだが、
+IDEAが生成してくれたHTMLをSafariで開いても、いつまでたっても起動しない。
+HTMLのソースを見てみると、dtjava.jsというJavaScriptを使って起動しようとしているようだが、
+少なくともSafariではうんともすんとも言わない。
+他のブラウザなら動作するのだろうかと思い、Chromeで実行すると、今度は「このブラウザではサポートされていない」という趣旨の
+メッセージが表示される。多分Macだとダメなのだろう。もし起動する方法を知っていたら教えて頂きたい。&lt;/p&gt;
+
+&lt;p&gt;ということで、Appletとして動かすことは諦めたので、JNLPファイルへのリンクを提示する。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://dl.dropboxusercontent.com/u/46295066/javafx/BubbleSort/JavaFXApp.jnlp&#34;&gt;JavaFXApp.jnlp&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;このJNLPをダウンロードして起動すると、バブルソートが実行される。
+OSXの場合だと、セキュリティによって起動できないかもしれない。
+その場合、ダウンロードしたJNLPファイルをCtrl＋クリックして「このアプリケーションで開く」-&amp;gt; 「Java Web Start」とメニューを
+選択して行けば、起動しても良いか尋ねてくれるので、ここから起動が出来ると思う。&lt;/p&gt;
+
+&lt;h2 id=&#34;アプリについて&#34;&gt;アプリについて&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_15.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ソート対象となる100本の黒ラインはランダムに並んでいて、現在処理中のラインを赤で表している。
+実際に動作を見ると、短い黒ラインがだんだんと左側に寄って行くのが分かる。&lt;/p&gt;
+
+&lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;初期データは&lt;code&gt;Collections.shuffle(Collection)&lt;/code&gt;でシャッフルする。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;for (int i = 1; i &amp;lt;= N; i++) {
+    data.add(i);
+}
+Collections.shuffle(data);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ステージの初期化。黒ラインと赤ラインを表すPathを2つ。
+repaint()メソッドで描画した結果から必要になった幅をステージの幅として設定する。+10はパディング分になる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;path.setStrokeWidth(3.0);
+path.setStroke(Color.GRAY);
+currentPath.setStrokeWidth(4.0);
+currentPath.setStroke(Color.RED);
+root.getChildren().add(path);
+root.getChildren().add(currentPath);
+
+final int width = repaint();
+
+primaryStage.setTitle(&amp;quot;Bubble Sort&amp;quot;);
+primaryStage.setResizable(false);
+primaryStage.setScene(new Scene(root, width + 10, VIEW_HEIGHT));
+primaryStage.show();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実際のライン描画処理。
+JavaFXではTimelineクラスを使うと秒毎の処理が書けるので簡単にアニメーションを作ることができる。
+待機時間無しだとソートが一瞬で終わってしまい、過程を見ることができないので、
+ここでは待機時間に10ミリ秒を指定している。&lt;code&gt;new Duration(10)&lt;/code&gt;の部分。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;timeline.getKeyFrames().addAll(
+        new KeyFrame(new Duration(10), new EventHandler&amp;lt;ActionEvent&amp;gt;()
+        {
+            @Override
+            public void handle(ActionEvent actionEvent)
+            {
+                if (data.get(counter) &amp;gt; data.get(counter + 1)) {
+                    flag = true;
+                    Collections.swap(data, counter, counter + 1);
+                }
+
+                counter++;
+
+                repaint();
+
+                if (counter &amp;gt;= N - 1 - k) {
+                    if (!flag) {
+                        repaint();
+                        timeline.stop();
+                    }
+                    flag = false;
+                    counter = 0;
+                    k++;
+                }
+            }
+         })
+);
+timeline.setCycleCount(Timeline.INDEFINITE);
+timeline.play();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;バブルソートなので入れ替えが発生しなくなるまでソートを繰り返す。
+入れ替えの発生有無は&lt;code&gt;flag&lt;/code&gt;によって制御している。この&lt;code&gt;flag&lt;/code&gt;がfalseのまま最終ラインまで処理されると、
+&lt;code&gt;timeline.stop()&lt;/code&gt;を呼び出し、タイムラインを停止する。&lt;/p&gt;
+
+&lt;p&gt;入れ替えが発生した場合は、下記のrepaint()メソッドを呼び出し、
+画面の再描画を行っている。
+JavaFXでラインを引く場合、&lt;code&gt;MoveTo&lt;/code&gt;クラスで座標を移動し、&lt;code&gt;LineTo&lt;/code&gt;クラスで指定座標までのラインを引く。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;int repaint()
+{
+    path.getElements().clear();
+    currentPath.getElements().clear();
+    int position = 10;
+    int localCounter = 0;
+    for (Integer i : data) {
+        if (counter == localCounter) {
+            currentPath.getElements().add(new MoveTo(position, (VIEW_HEIGHT - 10)));
+            currentPath.getElements().add(new LineTo(position, ((VIEW_HEIGHT - 10) - (i * 2))));
+        }
+        else {
+            path.getElements().add(new MoveTo(position, (VIEW_HEIGHT - 10)));
+            path.getElements().add(new LineTo(position, ((VIEW_HEIGHT - 10) - (i * 2))));
+        }
+        position += 5;
+        localCounter++;
+    }
+
+    return position;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ソースコードはbitbucketにあるので完全版はそちらを参照してください。
+&lt;a href=&#34;https://bitbucket.org/kokuzawa/bubblesort&#34;&gt;https://bitbucket.org/kokuzawa/bubblesort&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -110,17 +1011,71 @@ path.setStrokeWidth(3.0); path.setStroke(Color.GRAY); currentPath.setStrokeWidth
       <pubDate>Fri, 07 Dec 2012 21:05:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2012/12/07/openjfxwokonnpairusiyoutositecuo-zhe-sitaji-lu/</guid>
-      <description>JavaFX Advent Calendar 2012の7日目のエントリーです。
-昨日は@fukai_yasさんの「AppletでFXMLを使って罠にハマる」です。
-明日は@btnrougeさんです。
-JOptionPaneが使いたい JavaFX 2.2.3で業務に利用する簡単なツールを作っていたのですが、入力エラーを通知する為に、 SwingでいうところのJOptionPane相当のものを探したのですがみつかりませんでした。 誰か知っている人はいないだろうかとTwitterでつぶやいてみたところ、@skrbさんよりこんなお返事を頂きました。
-@kokuzawa Project Sandboxというのがあって、そこでJOptionPaneのように使えるDialogクラスを提供してますよ。正式にはJavaFX 8で入る予定です。 http://t.co/w6AswYKA
-&amp;mdash; Yuichi Sakuraba (@skrb) 2012年11月30日 
-Project SandboxでJOptionPane相当のDialogsクラスが提供されているということ。JavaFX 8 に入るらしい。 すばらしい！すばらしいけど、今使いたい。そこでひとまずProject Sandboxを動かしてみる事にしました。
-OpenJFXをビルドする Project SandboxはOpenJFXのSandboxプロジェクトで、これを利用する為には、Mercurialに登録されているソースをコンパイルする必要があるようです。 そこでOpenJFXのページに書かれているビルド手順を実行します。 でもこれ、記述が古い。JDKのフォルダ構成とか、今のものとはかなり違う。さて困った。
-そこで新たな情報を求めていると、Building OpenJFXという、 まさに望んだ通りのページがありました。手順は次のようになります。 また、コンパイルにはJDK 8 が必要です。
- mkdir -p ~/open-jfx cd ~/open-jfx hg clone http://hg.openjdk.java.net/openjfx/8/master cd master mkdir -p artifacts/sdk/rt/lib cp -r &amp;lt;PATH TO JDK&amp;gt;/jre/lib/jfxrt.jar artifacts/sdk/rt/lib hg clone http://hg.openjdk.java.net/openjfx/8/master/rt cd rt ant  今度こそ、コンパイル出来そうな感じです。最後のantを実行すると、何個かのモジュールのjarが出来上がっていきます。 が、javafx-ui-commonというモジュールのコンパイルが通りません。JDKのバージョンの問題かもしれないと思ったのですが、 JDK 8 はJDK 8 b65というもので、この時点では最新のものです。 ここで1日試行錯誤を繰り返したものの、解決の糸口はなく、ビルドはあきらめる事にしました。</description>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://atnd.org/events/33874&#34;&gt;JavaFX Advent Calendar 2012&lt;/a&gt;の7日目のエントリーです。&lt;br /&gt;
+昨日は&lt;a href=&#34;https://twitter.com/fukai_yas&#34;&gt;@fukai_yas&lt;/a&gt;さんの「&lt;a href=&#34;http://blog.livedoor.jp/fukai_yas/archives/20772650.html&#34;&gt;AppletでFXMLを使って罠にハマる&lt;/a&gt;」です。&lt;br /&gt;
+明日は&lt;a href=&#34;https://twitter.com/btnrouge&#34;&gt;@btnrouge&lt;/a&gt;さんです。&lt;/p&gt;
+
+&lt;h2 id=&#34;joptionpaneが使いたい&#34;&gt;JOptionPaneが使いたい&lt;/h2&gt;
+
+&lt;p&gt;JavaFX 2.2.3で業務に利用する簡単なツールを作っていたのですが、入力エラーを通知する為に、
+SwingでいうところのJOptionPane相当のものを探したのですがみつかりませんでした。
+誰か知っている人はいないだろうかとTwitterでつぶやいてみたところ、@skrbさんよりこんなお返事を頂きました。&lt;/p&gt;
+
+&lt;p&gt;&lt;blockquote class=&#34;twitter-tweet&#34; data-lang=&#34;ja&#34;&gt;&lt;p lang=&#34;ja&#34; dir=&#34;ltr&#34;&gt;&lt;a href=&#34;https://twitter.com/kokuzawa&#34;&gt;@kokuzawa&lt;/a&gt; Project Sandboxというのがあって、そこでJOptionPaneのように使えるDialogクラスを提供してますよ。正式にはJavaFX 8で入る予定です。 &lt;a href=&#34;http://t.co/w6AswYKA&#34;&gt;http://t.co/w6AswYKA&lt;/a&gt;&lt;/p&gt;&amp;mdash; Yuichi Sakuraba (@skrb) &lt;a href=&#34;https://twitter.com/skrb/status/274416797602705408&#34;&gt;2012年11月30日&lt;/a&gt;&lt;/blockquote&gt; &lt;script async src=&#34;//platform.twitter.com/widgets.js&#34; charset=&#34;utf-8&#34;&gt;&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;Project SandboxでJOptionPane相当のDialogsクラスが提供されているということ。JavaFX 8 に入るらしい。
+すばらしい！すばらしいけど、今使いたい。そこでひとまずProject Sandboxを動かしてみる事にしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;openjfxをビルドする&#34;&gt;OpenJFXをビルドする&lt;/h2&gt;
+
+&lt;p&gt;Project SandboxはOpenJFXのSandboxプロジェクトで、これを利用する為には、Mercurialに登録されているソースをコンパイルする必要があるようです。
+そこで&lt;a href=&#34;http://openjdk.java.net/projects/openjfx/getting-started.html&#34;&gt;OpenJFXのページ&lt;/a&gt;に書かれているビルド手順を実行します。
+でもこれ、記述が古い。JDKのフォルダ構成とか、今のものとはかなり違う。さて困った。&lt;/p&gt;
+
+&lt;p&gt;そこで新たな情報を求めていると、&lt;a href=&#34;https://wikis.oracle.com/display/OpenJDK/Building+OpenJFX&#34;&gt;Building OpenJFX&lt;/a&gt;という、
+まさに望んだ通りのページがありました。手順は次のようになります。
+また、コンパイルにはJDK 8 が必要です。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;mkdir -p ~/open-jfx&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cd ~/open-jfx&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hg clone http://hg.openjdk.java.net/openjfx/8/master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cd master&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;mkdir -p artifacts/sdk/rt/lib&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cp -r &amp;lt;PATH TO JDK&amp;gt;/jre/lib/jfxrt.jar artifacts/sdk/rt/lib&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;hg clone http://hg.openjdk.java.net/openjfx/8/master/rt&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;cd rt&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ant&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;今度こそ、コンパイル出来そうな感じです。最後のantを実行すると、何個かのモジュールのjarが出来上がっていきます。
+が、javafx-ui-commonというモジュールのコンパイルが通りません。JDKのバージョンの問題かもしれないと思ったのですが、
+JDK 8 はJDK 8 b65というもので、この時点では最新のものです。
+ここで1日試行錯誤を繰り返したものの、解決の糸口はなく、ビルドはあきらめる事にしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;やっぱりjoptionpaneが使いたい&#34;&gt;やっぱりJOptionPaneが使いたい&lt;/h2&gt;
+
+&lt;p&gt;OpenJFXのコンパイルにかなりの時間を取られたのですが、本来の目的はJOptionPane相当のものが使いたいだけです。
+最初に教えて頂いた&lt;a href=&#34;http://fxexperience.com/2012/10/announcing-the-javafx-ui-controls-sandbox/&#34;&gt;ページ&lt;/a&gt;のコメント欄を読んでいると、
+Marco Jakobさんという方がJavaFX 2.2でも利用できるDialogsがあると書いています。やったね、これじゃん！&lt;/p&gt;
+
+&lt;p&gt;ということで、早速&lt;a href=&#34;http://edu.makery.ch/blog/2012/10/30/javafx-2-dialogs/&#34;&gt;リンク先&lt;/a&gt;に行ってみると、
+使い方が大変詳しく記述されています。詳しくはリンク先をご覧頂くとして、例えば下記のようなコードを書くだけで、
+ダイアログが表示されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Dialogs.showErrorDialog(stage, null, &amp;quot;名前が入力されていません。&amp;quot;, &amp;quot;Error&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;JavaFX 8 になると、これ以外にも業務で利用できそうなTreeTableViewなど、様々なもの増えるようです。
+JDK 8 が待ち遠しいですが、現状ではコンパイルもままならないので、今回さわったDialogsクラスをしばらくメインで使わせてもらうつもりです。
+しかし、JavaFXはUIが綺麗で楽しくなりますね。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

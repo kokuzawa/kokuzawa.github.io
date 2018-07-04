@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Sun, 28 Feb 2016 01:56:31 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,10 +17,96 @@
       <pubDate>Sun, 28 Feb 2016 01:56:31 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</guid>
-      <description>IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、 デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。 Docker上にコンテナを起動できる環境はできている前提になります。
-環境  OS: Mac OSX 10.11.3 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27) メモリ: 16GB Docker version 1.9.1  アプリの準備 どんなアプリでも良いのですが最終的な生成物はwarファイルにします。 今回はMavenプロジェクトで下記のようなフォルダ構成にします。
-docker-wildfly-example/ ├── Dockerfile ├── container_settings.json ├── docker-wildfly-example.iml ├── pom.xml └── src └── main ├── java │ └── org │ └── katsumi │ └── HelloBean.java └── webapp ├── WEB-INF │ └── web.xml └── index.xhtml  肝心なDockerfileの内容は下記のようになります。
-# WildFlyのイメージを取得 FROM jboss/wildfly:latest # MAINTAINER MAINTAINER Katsumi # アプリケーションのデプロイ COPY target/docker-wildfly-example.</description>
+      <description>
+
+&lt;p&gt;IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、
+デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。
+Docker上にコンテナを起動できる環境はできている前提になります。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: Mac OSX 10.11.3&lt;/li&gt;
+&lt;li&gt;Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27)&lt;/li&gt;
+&lt;li&gt;メモリ: 16GB&lt;/li&gt;
+&lt;li&gt;Docker version 1.9.1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;アプリの準備&#34;&gt;アプリの準備&lt;/h2&gt;
+
+&lt;p&gt;どんなアプリでも良いのですが最終的な生成物はwarファイルにします。
+今回はMavenプロジェクトで下記のようなフォルダ構成にします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker-wildfly-example/
+├── Dockerfile
+├── container_settings.json
+├── docker-wildfly-example.iml
+├── pom.xml
+└── src
+    └── main
+        ├── java
+        │   └── org
+        │       └── katsumi
+        │           └── HelloBean.java
+        └── webapp
+            ├── WEB-INF
+            │   └── web.xml
+            └── index.xhtml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;肝心なDockerfileの内容は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# WildFlyのイメージを取得
+FROM jboss/wildfly:latest
+
+# MAINTAINER
+MAINTAINER Katsumi
+
+# アプリケーションのデプロイ
+COPY target/docker-wildfly-example.war /opt/jboss/wildfly/standalone/deployments/
+
+# ポートの解放
+EXPOSE 9999
+
+# WildFlyの実行
+CMD [&amp;quot;/opt/jboss/wildfly/bin/standalone.sh&amp;quot;, &amp;quot;-b&amp;quot;, &amp;quot;0.0.0.0&amp;quot;, &amp;quot;--debug&amp;quot;, &amp;quot;9999&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;mvn package&lt;/code&gt;することで生成される&lt;code&gt;target/docker-wildfly-example.war&lt;/code&gt;ファイルを
+コンテナ上の&lt;code&gt;/opt/jboss/wildfly/standalone/deployments/&lt;/code&gt;に配置することで
+WildFly起動時に自動的にデプロイさせます。
+また、デバッグ用のポートとして&lt;code&gt;9999&lt;/code&gt;を使用するため&lt;code&gt;EXPOSE&lt;/code&gt;に指定します。&lt;/p&gt;
+
+&lt;p&gt;デバッグはリモートデバッグをすることになるので、
+WildFly起動オプションに&lt;code&gt;--debug&lt;/code&gt;を付与して&lt;code&gt;9999&lt;/code&gt;ポートを指定します。&lt;/p&gt;
+
+&lt;h2 id=&#34;実行環境の構築&#34;&gt;実行環境の構築&lt;/h2&gt;
+
+&lt;p&gt;IntelliJ IDEAにDocker PluginがインストールされているとRun/Debug ConfigurationsにDocker Deploymentを追加することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_41.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Debugポートに9999を指定すると画面下部にワーニングが表示されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Warning: Debug port forwarding not found
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このワーニングの右側にFixボタンを表示されるのでこれをクリックすると
+port設定をしたjsonファイルの保存先を聞かれるので任意の場所に保存します。
+アプリケーションツリーにあるcontainer_settings.jsonがそれになります。
+このファイルはContainerタブのJSON fileの項目に設定されます。&lt;/p&gt;
+
+&lt;p&gt;やっていることはContainerタブのport bindingsで9999ポートを追加したのと同じことなのですが、
+port bindingsに設定してもワーニングが消えません。
+ワーニングは消えなくてもport bindingsの設定は有効になるので
+ワーニングが気にならないようであればport bindingsに設定しても良いです。
+ただし注意点としてjsonファイルとport bindingsの両方を指定するとport bindingsの方の設定が無視されるようです。
+9999以外のポートをバインドする場合は注意する必要があります。&lt;/p&gt;
+
+&lt;p&gt;これでデバッグ起動すればステップ実行ができるようになります。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -29,17 +115,58 @@ docker-wildfly-example/ ├── Dockerfile ├── container_settings.json �
       <pubDate>Thu, 11 Feb 2016 16:49:26 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/02/11/dockerdeshi-meruvmwoli-yong-sitakai-fa/</guid>
-      <description>結構前からDockerの事を聞いていてそれは仮想化技術だと認識していました。 なんで今まで触ってこなかったのかというと仮想化環境を作るにはそれなりの マシンスペックが必要なのだろうと。つまり貧弱なマシンを使っている僕には関係ない。 自宅のMac Book Proが壊れて新しくなったり、 会社のPCのスペックが上がったりしたのでこれは触りどきかと思って今手をつけてみたわけです。 というわけでまさに触り始めなわけで開発まではたどり着いていません。タイトル嘘という方向で。
-最初に何をしたかというと、DockerToolBoxというやつをインストールしました。 Homebrewでも入れられるみたいですがどこかのサイトにHomebrewで入れるとなかなか最新にならないよという 至極まっとうな記載があったのでひとまず最新がいいなあと思い、インストールモジュールをダウンロードしてみました。
-これ、インストールすると目に見えて分かるのは３つのソフトがインストールされるということです。
- Docker Quickstart Terminal Kitematic (Beta) VirtualBox  もしかしたら見えないところに他のソフトがインストールされているのかもしれませんが、 まだよくわかっていません。
-最初にDocker Quickstart Terminalを起動します。 これはOSXのターミナルが起動します。ここの中でCUIで操作するようです。 で、ちょっとハマったのは起動したターミナルに別タブを開いてそこでDockerの起動とかしようとしても 仮想マシンに接続できないようで理解するまで時間がかかりました。
-Docker Quickstart Terminalを起動すると仮想マシンがdefaultという名前で起動します。 これはVirtualBoxを起動するとわかります。 今のところVirtualBoxを使って何かするということはなさそうだという理解です。 このdefaultの仮想マシンですが、間違ってログアウトしてしまったらログインのIDとパスワードがわからなくて難儀しました。 どうやらCore Linuxというものを使っているらしくそれのデフォルトのIDとパスワードでログインできるようです。 こういうDockerとは直接関係ない機能を試してみたくなるところが僕の悪いところで、 Dockerそのものをまだちゃんと触れていない状態です。
-Kitematicはいろいろな人がアップしたDockerイメージが登録されているDockerHubというところへの アクセスをGUI経由でできるソフトのようです。 Dockerイメージとかもうよくわからないので、この本を買ってちゃんと勉強することにしました。
-  
-まだ最初の方しか読んでいませんが、 ざっくり言うとMavenみたいな感じですね！多分。
-というわけでこれからしばらくはDockerを使ってみたいと思っています。</description>
+      <description>&lt;p&gt;結構前からDockerの事を聞いていてそれは仮想化技術だと認識していました。
+なんで今まで触ってこなかったのかというと仮想化環境を作るにはそれなりの
+マシンスペックが必要なのだろうと。つまり貧弱なマシンを使っている僕には関係ない。
+自宅のMac Book Proが壊れて新しくなったり、
+会社のPCのスペックが上がったりしたのでこれは触りどきかと思って今手をつけてみたわけです。
+というわけでまさに触り始めなわけで開発まではたどり着いていません。タイトル嘘という方向で。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;p&gt;最初に何をしたかというと、DockerToolBoxというやつをインストールしました。
+Homebrewでも入れられるみたいですがどこかのサイトにHomebrewで入れるとなかなか最新にならないよという
+至極まっとうな記載があったのでひとまず最新がいいなあと思い、インストールモジュールをダウンロードしてみました。&lt;/p&gt;
+
+&lt;p&gt;これ、インストールすると目に見えて分かるのは３つのソフトがインストールされるということです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Docker Quickstart Terminal&lt;/li&gt;
+&lt;li&gt;Kitematic (Beta)&lt;/li&gt;
+&lt;li&gt;VirtualBox&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;もしかしたら見えないところに他のソフトがインストールされているのかもしれませんが、
+まだよくわかっていません。&lt;/p&gt;
+
+&lt;p&gt;最初にDocker Quickstart Terminalを起動します。
+これはOSXのターミナルが起動します。ここの中でCUIで操作するようです。
+で、ちょっとハマったのは起動したターミナルに別タブを開いてそこでDockerの起動とかしようとしても
+仮想マシンに接続できないようで理解するまで時間がかかりました。&lt;/p&gt;
+
+&lt;p&gt;Docker Quickstart Terminalを起動すると仮想マシンがdefaultという名前で起動します。
+これはVirtualBoxを起動するとわかります。
+今のところVirtualBoxを使って何かするということはなさそうだという理解です。
+このdefaultの仮想マシンですが、間違ってログアウトしてしまったらログインのIDとパスワードがわからなくて難儀しました。
+どうやらCore Linuxというものを使っているらしくそれのデフォルトのIDとパスワードでログインできるようです。
+こういうDockerとは直接関係ない機能を試してみたくなるところが僕の悪いところで、
+Dockerそのものをまだちゃんと触れていない状態です。&lt;/p&gt;
+
+&lt;p&gt;Kitematicはいろいろな人がアップしたDockerイメージが登録されているDockerHubというところへの
+アクセスをGUI経由でできるソフトのようです。
+Dockerイメージとかもうよくわからないので、この本を買ってちゃんと勉強することにしました。&lt;/p&gt;
+
+&lt;p&gt;&lt;iframe src=&#34;http://rcm-fe.amazon-adsystem.com/e/cm?lt1=_blank&amp;bc1=FFFFFF&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=moonwhaleblog-22&amp;o=9&amp;p=8&amp;l=as1&amp;m=amazon&amp;f=ifr&amp;ref=qf_sp_asin_til&amp;asins=479814102X&#34; style=&#34;width:120px;height:240px;&#34; scrolling=&#34;no&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+&lt;br/&gt;
+&lt;br/&gt;&lt;/p&gt;
+
+&lt;p&gt;まだ最初の方しか読んでいませんが、
+ざっくり言うとMavenみたいな感じですね！多分。&lt;/p&gt;
+
+&lt;p&gt;というわけでこれからしばらくはDockerを使ってみたいと思っています。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

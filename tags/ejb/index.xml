@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Sun, 22 Nov 2015 22:33:53 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/ejb/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/ejb/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,13 +17,131 @@
       <pubDate>Sun, 22 Nov 2015 22:33:53 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
-      <description>WildFly Swarmを試すのも今日で３回目です。 だんだんと実装方法に慣れてきました。 この辺で当初の目的であったWildFly SwarmでEJBを使ってみたいと思います。 EJBが使えないのならSpring Bootで全然構わないわけで、 EJBが使えるかどうかはとても大事なところです。
-EJBを組み込む EJBのモジュールを組み込みます。 よくよく考えてみると、EJBだけでは動きを確認するのが大変なので、 リクエストの受け口だけはJAXRSで作ります。 なので、JAXRSのモジュールも合わせて組み込みます。
-また、JAXRSのリソースから@InjectでEJBをDIするにはWeldも必要です。 そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。
-&amp;lt;dependencies&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs-weld&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-ejb&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;/dependencies&amp;gt;  EJBを使ったアプリケーションを作る まずはEJBです。
-package org.katsumi.ejb; import javax.ejb.Stateless; @Stateless public class HelloEjb { public String say() { return &amp;quot;Hello!&amp;quot;; } }  EJBを呼び出すRESTリソースです。
-package org.katsumi.ejb; import javax.inject.Inject; import javax.ws.rs.GET; import javax.ws.rs.Path; @Path(&amp;quot;/hello&amp;quot;) public class HelloResource { @Inject private HelloEjb helloEjb; @GET public String hello() { return helloEjb.</description>
+      <description>
+
+&lt;p&gt;WildFly Swarmを試すのも今日で３回目です。
+だんだんと実装方法に慣れてきました。
+この辺で当初の目的であったWildFly SwarmでEJBを使ってみたいと思います。
+EJBが使えないのならSpring Bootで全然構わないわけで、
+EJBが使えるかどうかはとても大事なところです。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;ejbを組み込む&#34;&gt;EJBを組み込む&lt;/h2&gt;
+
+&lt;p&gt;EJBのモジュールを組み込みます。
+よくよく考えてみると、EJBだけでは動きを確認するのが大変なので、
+リクエストの受け口だけはJAXRSで作ります。
+なので、JAXRSのモジュールも合わせて組み込みます。&lt;/p&gt;
+
+&lt;p&gt;また、JAXRSのリソースから&lt;code&gt;@Inject&lt;/code&gt;でEJBをDIするにはWeldも必要です。
+そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependencies&amp;gt;
+    &amp;lt;dependency&amp;gt;
+        &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+        &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs-weld&amp;lt;/artifactId&amp;gt;
+        &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
+    &amp;lt;/dependency&amp;gt;
+    &amp;lt;dependency&amp;gt;
+        &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+        &amp;lt;artifactId&amp;gt;wildfly-swarm-ejb&amp;lt;/artifactId&amp;gt;
+        &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
+    &amp;lt;/dependency&amp;gt;
+&amp;lt;/dependencies&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;ejbを使ったアプリケーションを作る&#34;&gt;EJBを使ったアプリケーションを作る&lt;/h2&gt;
+
+&lt;p&gt;まずはEJBです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.ejb;
+
+import javax.ejb.Stateless;
+
+@Stateless
+public class HelloEjb
+{
+    public String say()
+    {
+        return &amp;quot;Hello!&amp;quot;;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;EJBを呼び出すRESTリソースです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.ejb;
+
+import javax.inject.Inject;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+
+@Path(&amp;quot;/hello&amp;quot;)
+public class HelloResource
+{
+    @Inject
+    private HelloEjb helloEjb;
+
+    @GET
+    public String hello()
+    {
+        return helloEjb.say();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.ejb;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+@ApplicationPath(&amp;quot;/rest&amp;quot;)
+public class MyApplication extends Application
+{
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;実行する&#34;&gt;実行する&lt;/h2&gt;
+
+&lt;p&gt;今回はMainクラスを作るのではなく、Warファイルを生成し、
+それを実行する形にします。
+まずpom.xmlのpackagingをwarにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;packaging&amp;gt;war&amp;lt;/packaging&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;さらにwarファイルを生成するので下記のプラグインをpom.xmlに追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugins&amp;gt;
+    &amp;lt;plugin&amp;gt;
+        &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
+        &amp;lt;artifactId&amp;gt;maven-war-plugin&amp;lt;/artifactId&amp;gt;
+        &amp;lt;version&amp;gt;2.6&amp;lt;/version&amp;gt;
+        &amp;lt;configuration&amp;gt;
+            &amp;lt;failOnMissingWebXml&amp;gt;false&amp;lt;/failOnMissingWebXml&amp;gt;
+        &amp;lt;/configuration&amp;gt;
+    &amp;lt;/plugin&amp;gt;
+    &amp;lt;plugin&amp;gt;
+        &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+        &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
+        &amp;lt;version&amp;gt;${version.wildfly-swarm}&amp;lt;/version&amp;gt;
+    &amp;lt;/plugin&amp;gt;
+&amp;lt;/plugins&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;準備ができたので下記のコマンドで実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;mvn wildfly-swarm:run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;WildFLy SwarmでEJBも問題なく呼び出せることがわかりました。
+あとはJPAを使うことができれば、システム開発で使う一通りの機能が使えること確認できそうです。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

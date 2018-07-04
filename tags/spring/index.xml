@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Tue, 15 Oct 2013 00:16:00 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/spring/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/spring/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,15 +17,114 @@
       <pubDate>Tue, 15 Oct 2013 00:16:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/10/15/springframework/</guid>
-      <description>久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。 サイトは今風になって素敵なんだけど。
-MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。 Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。 Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。
-Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。 maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。
-distribution.xml:
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;assembly xmlns=&amp;quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd&amp;quot;&amp;gt; &amp;lt;id&amp;gt;distribution&amp;lt;/id&amp;gt; &amp;lt;formats&amp;gt; &amp;lt;format&amp;gt;zip&amp;lt;/format&amp;gt; &amp;lt;/formats&amp;gt; &amp;lt;dependencySets&amp;gt; &amp;lt;dependencyset&amp;gt; &amp;lt;unpack&amp;gt;false&amp;lt;/unpack&amp;gt; &amp;lt;scope&amp;gt;runtime&amp;lt;/scope&amp;gt; &amp;lt;outputDirectory&amp;gt;/out&amp;lt;/outputDirectory&amp;gt; &amp;lt;/dependencyset&amp;gt; &amp;lt;/dependencySets&amp;gt; &amp;lt;/assembly&amp;gt;  ファイルの内容を簡単に説明すると、format には出力形式として zip, tar, tar.gz が指定できる。 unpack では、取得する jar ファイルを解凍して一つの jar とするかどうかを指定する。 scope は、Maven の dependency の scope と同じ意味なので、必要な値を指定、 outputDirectory は zip の出力先を指定する。
-次にpom.xmlにプラグインの追加とdistribution.xmlの場所を定義する必要がある。
-pom.xml:
-&amp;lt;build&amp;gt; &amp;lt;plugins&amp;gt; &amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;maven-assembly-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.2.1&amp;lt;/version&amp;gt; &amp;lt;configuration&amp;gt; &amp;lt;descriptors&amp;gt; &amp;lt;descriptor&amp;gt;distributions.xml&amp;lt;/descriptor&amp;gt; &amp;lt;/descriptors&amp;gt; &amp;lt;/configuration&amp;gt; &amp;lt;/plugin&amp;gt; &amp;lt;/plugins&amp;gt; &amp;lt;/build&amp;gt;  Spring Framework のライブラリはリポジトリを別途指定する必要があるので、それを pom.</description>
+      <description>&lt;p&gt;久しぶりにSpringのサイトを見に行ったら、Spring Framework一式がZIPでダウンロードできなくなってた。
+サイトは今風になって素敵なんだけど。&lt;/p&gt;
+
+&lt;p&gt;MavenとかGradleを使って取得するのが正しい方法として挙げられているけれども、一式を取得する方法は特に記載がない。
+Mavenを利用したことがなくて一式欲しいという需要があるようなので、ここで一つの方法を書いてみようと思う。
+Gradleの方が記述が簡単そうだけど、ちゃんと使ったことがないので今回はMavenを利用する。&lt;/p&gt;
+
+&lt;p&gt;Mavenでは maven-asembly-plugin がこの要望を満たしてくれる。
+maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必要なので、それを用意する。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;distribution.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
+&amp;lt;assembly xmlns=&amp;quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2&amp;quot;
+          xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+          xsi:schemaLocation=&amp;quot;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2
+                              http://maven.apache.org/xsd/assembly-1.1.2.xsd&amp;quot;&amp;gt;
+    &amp;lt;id&amp;gt;distribution&amp;lt;/id&amp;gt;
+    &amp;lt;formats&amp;gt;
+        &amp;lt;format&amp;gt;zip&amp;lt;/format&amp;gt;
+    &amp;lt;/formats&amp;gt;
+    &amp;lt;dependencySets&amp;gt;
+        &amp;lt;dependencyset&amp;gt;
+            &amp;lt;unpack&amp;gt;false&amp;lt;/unpack&amp;gt;
+            &amp;lt;scope&amp;gt;runtime&amp;lt;/scope&amp;gt;
+            &amp;lt;outputDirectory&amp;gt;/out&amp;lt;/outputDirectory&amp;gt;
+        &amp;lt;/dependencyset&amp;gt;
+    &amp;lt;/dependencySets&amp;gt;
+&amp;lt;/assembly&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ファイルの内容を簡単に説明すると、format には出力形式として zip, tar, tar.gz が指定できる。
+unpack では、取得する jar ファイルを解凍して一つの jar とするかどうかを指定する。
+scope は、Maven の dependency の scope と同じ意味なので、必要な値を指定、
+outputDirectory は zip の出力先を指定する。&lt;/p&gt;
+
+&lt;p&gt;次にpom.xmlにプラグインの追加とdistribution.xmlの場所を定義する必要がある。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;pom.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;build&amp;gt;
+    &amp;lt;plugins&amp;gt;
+        &amp;lt;plugin&amp;gt;
+            &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
+            &amp;lt;artifactId&amp;gt;maven-assembly-plugin&amp;lt;/artifactId&amp;gt;
+            &amp;lt;version&amp;gt;2.2.1&amp;lt;/version&amp;gt;
+            &amp;lt;configuration&amp;gt;
+                &amp;lt;descriptors&amp;gt;
+                    &amp;lt;descriptor&amp;gt;distributions.xml&amp;lt;/descriptor&amp;gt;
+                &amp;lt;/descriptors&amp;gt;
+            &amp;lt;/configuration&amp;gt;
+        &amp;lt;/plugin&amp;gt;
+    &amp;lt;/plugins&amp;gt;
+&amp;lt;/build&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Spring Framework のライブラリはリポジトリを別途指定する必要があるので、それを pom.xml に定義する。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;pom.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;repositories&amp;gt;
+    &amp;lt;repository&amp;gt;
+        &amp;lt;id&amp;gt;com.springsource.repository.bundles.release&amp;lt;/id&amp;gt;
+        &amp;lt;name&amp;gt;SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases&amp;lt;/name&amp;gt;
+        &amp;lt;url&amp;gt;http://repository.springsource.com/maven/bundles/release&amp;lt;/url&amp;gt;
+    &amp;lt;/repository&amp;gt;
+    &amp;lt;repository&amp;gt;
+        &amp;lt;id&amp;gt;com.springsource.repository.bundle.external&amp;lt;/id&amp;gt;
+        &amp;lt;name&amp;gt;SpringSource Enterprise Bundle Repository - External Bundle Releases&amp;lt;/name&amp;gt;
+        &amp;lt;url&amp;gt;http://repository.springsource.com/maven/bundles/external&amp;lt;/url&amp;gt;
+    &amp;lt;/repository&amp;gt;
+    &amp;lt;repository&amp;gt;
+        &amp;lt;id&amp;gt;com.springsource.repository.libraries.release&amp;lt;/id&amp;gt;
+        &amp;lt;name&amp;gt;SpringSource Enterprise Bundle Repository - SpringSource Library Releases&amp;lt;/name&amp;gt;
+        &amp;lt;url&amp;gt;http://repository.springsource.com/maven/libraries/release&amp;lt;/url&amp;gt;
+    &amp;lt;/repository&amp;gt;
+    &amp;lt;repository&amp;gt;
+        &amp;lt;id&amp;gt;com.springsource.repository.libraries.external&amp;lt;/id&amp;gt;
+        &amp;lt;name&amp;gt;SpringSource Enterprise Bundle Repository - External Library Releases&amp;lt;/name&amp;gt;
+        &amp;lt;url&amp;gt;http://repository.springsource.com/maven/libraries/external&amp;lt;/url&amp;gt;
+    &amp;lt;/repository&amp;gt;
+&amp;lt;/repositories&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あとは Spring framework の実体を指す dependency を追加すれば完成。
+これは&lt;a href=&#34;http://ebr.springsource.com/repository/app/library/version/detail?name=org.springframework.spring&amp;amp;version=3.2.3.RELEASE&#34;&gt;ここ&lt;/a&gt;を
+参考にすれば良いと思う。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;pom.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.springframework&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;org.springframework.spring-library&amp;lt;/artifactId&amp;gt;
+    &amp;lt;type&amp;gt;libd&amp;lt;/type&amp;gt;
+    &amp;lt;version&amp;gt;3.2.3.RELEASE&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでpom.xmlが完成したので、あとは以下のコマンドを実行すればdistribution.xmlで定義したoutディレクトリに
+Spring Frameworkのjarファイル一式が含まれたzipファイルが生成されるはず。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ mvn assembly:assembly
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Best regards.&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Tue, 27 Jan 2015 23:46:21 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/hibernate/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/hibernate/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,10 +17,18 @@
       <pubDate>Tue, 27 Jan 2015 23:46:21 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</guid>
-      <description>どのバージョンからなのかはわからないが、Hibernate-4.3.8.Finalではpersistence.xmlのproviderに記載するHibernateのプロバイダクラスがdeprecatedになっていた。
-&amp;lt;provider&amp;gt;org.hibernate.ejb.HibernatePersistence&amp;lt;/provider&amp;gt;  上記を下記に置き換える必要がある。
-&amp;lt;provider&amp;gt;org.hibernate.jpa.HibernatePersistenceProvider&amp;lt;/provider&amp;gt;  </description>
+      <description>&lt;p&gt;どのバージョンからなのかはわからないが、Hibernate-4.3.8.Finalではpersistence.xmlのproviderに記載するHibernateのプロバイダクラスがdeprecatedになっていた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;provider&amp;gt;org.hibernate.ejb.HibernatePersistence&amp;lt;/provider&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記を下記に置き換える必要がある。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;provider&amp;gt;org.hibernate.jpa.HibernatePersistenceProvider&amp;lt;/provider&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

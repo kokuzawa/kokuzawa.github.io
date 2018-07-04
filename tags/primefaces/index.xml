@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Thu, 28 Jun 2018 01:16:27 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/primefaces/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/primefaces/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,12 +17,45 @@
       <pubDate>Thu, 28 Jun 2018 01:16:27 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2018/06/28/bug-primefaces/</guid>
-      <description>要約 PrimeFaces-6.2 の Tree コンポーネントにバグがあります。
- この問題は報告済みです。 対応状況や詳しい内容は下記を参照してください。
-Tree: &#34;StackOverflowError&#34; when a node is dropped to own child node
-   再現方法 再現はとても簡単です。 PrimeFaces の Showcase で、 Node 0 をドラッグして Node 0.0 にドロップするだけです。
- この操作を実施するとエラー画面が表示されます。 以前はスタックトレースが画面に表示されたのですが、 新しいデザインになってからは表示がされず、何が起きたのかよくわからないかもしれません。 ローカル環境でこの操作を実施すると、下記のエラーが発生します。
- java.lang.StackOverflowError at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202) at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202) at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202) at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)     </description>
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_要約&#34;&gt;要約&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;PrimeFaces-6.2 の Tree コンポーネントにバグがあります。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;この問題は報告済みです。
+対応状況や詳しい内容は下記を参照してください。&lt;br&gt;
+&lt;a href=&#34;https://github.com/primefaces/primefaces/issues/3771&#34;&gt;Tree: &#34;StackOverflowError&#34; when a node is dropped to own child node&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_再現方法&#34;&gt;再現方法&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;再現はとても簡単です。
+PrimeFaces の &lt;a href=&#34;https://www.primefaces.org/showcase/ui/data/tree/dragdrop.xhtml&#34;&gt;Showcase&lt;/a&gt; で、
+&lt;code&gt;Node 0&lt;/code&gt; をドラッグして &lt;code&gt;Node 0.0&lt;/code&gt; にドロップするだけです。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;この操作を実施するとエラー画面が表示されます。
+以前はスタックトレースが画面に表示されたのですが、
+新しいデザインになってからは表示がされず、何が起きたのかよくわからないかもしれません。
+ローカル環境でこの操作を実施すると、下記のエラーが発生します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;java.lang.StackOverflowError
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
@@ -31,10 +64,40 @@ Tree: &#34;StackOverflowError&#34; when a node is dropped to own child node
       <pubDate>Mon, 04 Dec 2017 01:40:41 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2017/12/04/primefaces-dblclick/</guid>
-      <description>今作っているWebアプリでリンクをダブルクリックで動作させるという要求が出たので、 どうやって実現するのか調べてみました。
- 通常のリンクを実装してみる PrimeFacesの commandLink コンポーネントでリンクを実装します。
- &amp;lt;p:commandLink value=&#34;Single Click&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;     ダブルクリックで動作するリンクを実装してみる commandLink コンポーネントで実装すると、 onclick イベントで動作するようにレンダリングされてしまうので、 link コンポーネントで実装します。 href を指定するのがコツです。 link コンポーネントでは dblclick イベントだけを発生させ、実際の呼び出しは remoteCommand コンポーネントで行います。
- &amp;lt;p:link href=&#34;#&#34; value=&#34;Double Click&#34; ondblclick=&#34;dblClickEvent()&#34; /&amp;gt; &amp;lt;p:remoteCommand name=&#34;dblClickEvent&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;     </description>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;今作っているWebアプリでリンクをダブルクリックで動作させるという要求が出たので、
+どうやって実現するのか調べてみました。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_通常のリンクを実装してみる&#34;&gt;通常のリンクを実装してみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;PrimeFacesの &lt;code&gt;commandLink&lt;/code&gt; コンポーネントでリンクを実装します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;p:commandLink value=&#34;Single Click&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_ダブルクリックで動作するリンクを実装してみる&#34;&gt;ダブルクリックで動作するリンクを実装してみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;code&gt;commandLink&lt;/code&gt; コンポーネントで実装すると、 &lt;code&gt;onclick&lt;/code&gt; イベントで動作するようにレンダリングされてしまうので、
+&lt;code&gt;link&lt;/code&gt; コンポーネントで実装します。 &lt;code&gt;href&lt;/code&gt; を指定するのがコツです。
+&lt;code&gt;link&lt;/code&gt; コンポーネントでは &lt;code&gt;dblclick&lt;/code&gt; イベントだけを発生させ、実際の呼び出しは &lt;code&gt;remoteCommand&lt;/code&gt; コンポーネントで行います。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;p:link href=&#34;#&#34; value=&#34;Double Click&#34; ondblclick=&#34;dblClickEvent()&#34; /&amp;gt;
+&amp;lt;p:remoteCommand name=&#34;dblClickEvent&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
@@ -43,18 +106,122 @@ Tree: &#34;StackOverflowError&#34; when a node is dropped to own child node
       <pubDate>Sun, 25 Dec 2016 15:10:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/</guid>
-      <description>この記事はJava EE Advent Calendar 2016の25日目です。
-昨日は@kikutaroさんの「実はJava EEに含まれるJavaMailについて」でした。
-現在業務でJSFを使っています。 導入当初はRIであるMojarraのみを利用しようと考えていたのですが、 業務アプリで多い、ツリーやグリッドで数多くのアクションを実装しなければならず、 一つ一つをJavaScriptで実装していくには時間が足りないという判断のもとに、 それらを簡易に実現できるPrimeFacesを利用することにしました。 採用を決定した段階での最新バージョンはPrimeFaces-6.0です。 PrimeFacesは充実したコンポーネント群を持っているので、 必要なコンポーネントはほぼ見つけることができるかと思います。
-さて、今回はその中でダイアログコンポーネントについて説明します。 PrimeFacesのDemoを見るとわかるのですが、 このダイアログコンポーネントを表示するための方法が二通り用意されています。
-一つ目は静的にダイアログを表示する方法です。
-XHTML:
-&amp;lt;p:dialog widgetVar=&amp;quot;sampleDialog&amp;quot;&amp;gt; ... &amp;lt;/p:dialog&amp;gt; &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplete=&amp;quot;PF(&#39;sampleDialog&#39;).show()&amp;quot;/&amp;gt;  二つ目の方法は動的にダイアログを表示する方法です。
-ManagedBean:
-public void onShowDialog() { RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;); }  XHTML:
-&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;  二つ目の方法は指定したXHTMLをiframe内に表示して、それをダイアログとして表示してくれます。 一つ目の方法と異なり、 ダイアログ内のコンテンツを別XHTMLに分けることができるのでコードの見通しが良くなるかと思います。 また、表示時にダイアログのオプションを指定することができますが、 何も指定しないと、モーダレス、リサイズ可能、コンテンツが640pxで固定されたダイアログが表示されます。 ダイアログをリサイズしてもコンテンツが640pxで固定されているので、追従して広がることがありません。 もし、リサイズに合わせてコンテンツも追従するようにしたければ、 表示時に下記のようなオプションを付与します。
-public void onShowDialog() { final Map&amp;lt;String, Object&amp;gt; options = new HashMap&amp;lt;&amp;gt;(); options.put(&amp;quot;width&amp;quot;, 640); options.put(&amp;quot;contentWidth&amp;quot;, &amp;quot;100%&amp;quot;); RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, options, null); }  このようにすることで、ダイアログの初期表示の幅は640px、コンテンツの幅は100%となり、 コンテンツがリサイズに追従するようになります。</description>
+      <description>
+
+&lt;p&gt;この記事は&lt;a href=&#34;http://qiita.com/advent-calendar/2016/javaee&#34;&gt;Java EE Advent Calendar 2016&lt;/a&gt;の25日目です。&lt;br /&gt;
+昨日は&lt;a href=&#34;http://qiita.com/kikutaro&#34;&gt;@kikutaro&lt;/a&gt;さんの「&lt;a href=&#34;http://qiita.com/kikutaro/items/a524038ca7306a8bfee3&#34;&gt;実はJava EEに含まれるJavaMailについて&lt;/a&gt;」でした。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;現在業務でJSFを使っています。
+導入当初はRIであるMojarraのみを利用しようと考えていたのですが、
+業務アプリで多い、ツリーやグリッドで数多くのアクションを実装しなければならず、
+一つ一つをJavaScriptで実装していくには時間が足りないという判断のもとに、
+それらを簡易に実現できるPrimeFacesを利用することにしました。
+採用を決定した段階での最新バージョンはPrimeFaces-6.0です。
+PrimeFacesは充実したコンポーネント群を持っているので、
+必要なコンポーネントはほぼ見つけることができるかと思います。&lt;/p&gt;
+
+&lt;p&gt;さて、今回はその中でダイアログコンポーネントについて説明します。
+PrimeFacesのDemoを見るとわかるのですが、
+このダイアログコンポーネントを表示するための方法が二通り用意されています。&lt;/p&gt;
+
+&lt;p&gt;一つ目は静的にダイアログを表示する方法です。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;XHTML:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:dialog widgetVar=&amp;quot;sampleDialog&amp;quot;&amp;gt;
+  ...
+&amp;lt;/p:dialog&amp;gt;
+
+&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplete=&amp;quot;PF(&#39;sampleDialog&#39;).show()&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;二つ目の方法は動的にダイアログを表示する方法です。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;ManagedBean:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onShowDialog()
+{
+    RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;XHTML:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;二つ目の方法は指定したXHTMLをiframe内に表示して、それをダイアログとして表示してくれます。
+一つ目の方法と異なり、
+ダイアログ内のコンテンツを別XHTMLに分けることができるのでコードの見通しが良くなるかと思います。
+また、表示時にダイアログのオプションを指定することができますが、
+何も指定しないと、モーダレス、リサイズ可能、コンテンツが640pxで固定されたダイアログが表示されます。
+ダイアログをリサイズしてもコンテンツが640pxで固定されているので、追従して広がることがありません。
+もし、リサイズに合わせてコンテンツも追従するようにしたければ、
+表示時に下記のようなオプションを付与します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onShowDialog()
+{
+    final Map&amp;lt;String, Object&amp;gt; options = new HashMap&amp;lt;&amp;gt;();
+    options.put(&amp;quot;width&amp;quot;, 640);
+    options.put(&amp;quot;contentWidth&amp;quot;, &amp;quot;100%&amp;quot;);
+    RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, options, null);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このようにすることで、ダイアログの初期表示の幅は640px、コンテンツの幅は100%となり、
+コンテンツがリサイズに追従するようになります。&lt;/p&gt;
+
+&lt;p&gt;さらにパラメータを渡すことも可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onShowDialog()
+{
+    final Map&amp;lt;String, List&amp;lt;String&amp;gt;&amp;gt; params = new HashMap&amp;lt;&amp;gt;();
+    params.put(&amp;quot;id&amp;quot;, Collections.singletonList(&amp;quot;123&amp;quot;));
+    RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, null, params);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;パラメータはiframeのsrc属性に付与され、&lt;code&gt;/contextPath/dialog.xhtml?id=123&lt;/code&gt;という値になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;ちょっとしたコツ&#34;&gt;ちょっとしたコツ&lt;/h2&gt;
+
+&lt;p&gt;ここまではドキュメントを読めば大体の内容は記載されているのですが、
+以下は実体験に伴う内容です。&lt;/p&gt;
+
+&lt;p&gt;ダイアログは簡単に表示できますが、
+コンポーネントの構成次第で最初の一回は表示され、2回目以降は表示されないという問題が発生します。
+具体的には下記のような構成とした場合です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:panel rendered=”#{bean.showPanel}”&amp;gt;
+    &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;
+&amp;lt;/p:panel&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;親コンポーネントにrendered属性が付与されている場合、
+2回目以降のダイアログの表示が行われません。
+バグの可能性もありますが、現状での回避策は下記のように、
+rendered属性が付与された親コンポーネントの外に隠しボタンを用意し、
+実際のボタンがクリックされた際に隠しボタンをクリックするようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:commandButton id=&amp;quot;hiddenButton&amp;quot; actionListener=”#{bean.onShowDialog}” 
+                 style=&amp;quot;visibility: hidden;&amp;quot;/&amp;gt;
+&amp;lt;p:panel rendered=&amp;quot;#{bean.showPanel}&amp;quot;&amp;gt;
+    &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplate=&amp;quot;$(&#39;#hiddenButton&#39;).click()&amp;quot;/&amp;gt;
+&amp;lt;/p:panel&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンポーネントの組み合わせによっては落とし穴もあるよ、ということでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.primefaces.org/showcase/ui/df/data.xhtml&#34;&gt;PrimeFaces ShowCace&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

@@ -8,8 +8,9 @@
     <language>ja-jp</language>
     <lastBuildDate>Sat, 25 Nov 2017 22:00:04 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/about/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/about/index.xml" rel="self" type="application/rss+xml" />
     
     
   </channel>
 </rss>
+

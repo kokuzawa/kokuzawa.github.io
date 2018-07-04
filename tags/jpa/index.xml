@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Tue, 27 Jan 2015 23:46:21 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/jpa/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/jpa/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,9 +17,16 @@
       <pubDate>Tue, 27 Jan 2015 23:46:21 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/01/27/deprecated-org-dot-hibernate-dot-ejb-dot-hibernatepersistence/</guid>
-      <description>どのバージョンからなのかはわからないが、Hibernate-4.3.8.Finalではpersistence.xmlのproviderに記載するHibernateのプロバイダクラスがdeprecatedになっていた。
-&amp;lt;provider&amp;gt;org.hibernate.ejb.HibernatePersistence&amp;lt;/provider&amp;gt;  上記を下記に置き換える必要がある。
-&amp;lt;provider&amp;gt;org.hibernate.jpa.HibernatePersistenceProvider&amp;lt;/provider&amp;gt;  </description>
+      <description>&lt;p&gt;どのバージョンからなのかはわからないが、Hibernate-4.3.8.Finalではpersistence.xmlのproviderに記載するHibernateのプロバイダクラスがdeprecatedになっていた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;provider&amp;gt;org.hibernate.ejb.HibernatePersistence&amp;lt;/provider&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;上記を下記に置き換える必要がある。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;provider&amp;gt;org.hibernate.jpa.HibernatePersistenceProvider&amp;lt;/provider&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
     </item>
     
     <item>
@@ -28,13 +35,127 @@
       <pubDate>Fri, 31 Jan 2014 22:52:45 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/01/31/entityexistsexception/</guid>
-      <description>@kikutaro_さんのブログで、 EclipseLinkの一意制約例外について書かれた 「EclipseLinkで一意制約の例外を拾ってみたけど…」 の記事が Twitterで言及されていたので、ちょっと読んでたらjavax.persistence.EntityExistsExceptionがスローされないってあって、 あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。
-で、まあググると確かにスローされないって言っている人が沢山いたけど、 やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。
-（コードにはlombokを適用してます）
-persistence.xml:
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;persistence xmlns=&amp;quot;http://java.sun.com/xml/ns/persistence&amp;quot; version=&amp;quot;2.0&amp;quot;&amp;gt; &amp;lt;persistence-unit name=&amp;quot;testPU&amp;quot; transaction-type=&amp;quot;RESOURCE_LOCAL&amp;quot;&amp;gt; &amp;lt;provider&amp;gt;org.eclipse.persistence.jpa.PersistenceProvider&amp;lt;/provider&amp;gt; &amp;lt;class&amp;gt;entity.Account&amp;lt;/class&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.driver&amp;quot; value=&amp;quot;org.apache.derby.jdbc.ClientDriver&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.url&amp;quot; value=&amp;quot;jdbc:derby://localhost/test;create=true&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.user&amp;quot; value=&amp;quot;APP&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;javax.persistence.jdbc.password&amp;quot; value=&amp;quot;APP&amp;quot;/&amp;gt; &amp;lt;property name=&amp;quot;eclipselink.ddl-generation&amp;quot; value=&amp;quot;drop-and-create-tables&amp;quot;/&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;/persistence-unit&amp;gt; &amp;lt;/persistence&amp;gt;  Account.java:
-@Entity @NoArgsConstructor @RequiredArgsConstructor public class Account { @Getter @NonNull @Id private Long id; @Getter @Setter @NonNull private String name; }  AccountTest.java:
-@Test(expected = EntityExistsException.class) public void testPersist() throws Exception { Account account = new Account(1L, &amp;quot;名前&amp;quot;); em.</description>
+      <description>&lt;p&gt;&lt;a href=&#34;https://twitter.com/kikutaro_&#34;&gt;@kikutaro_&lt;/a&gt;さんのブログで、
+EclipseLinkの一意制約例外について書かれた
+「&lt;a href=&#34;http://kikutaro777.hatenablog.com/entry/2013/04/24/225439&#34;&gt;EclipseLinkで一意制約の例外を拾ってみたけど…&lt;/a&gt;」
+の記事が Twitterで言及されていたので、ちょっと読んでたら&lt;code&gt;javax.persistence.EntityExistsException&lt;/code&gt;がスローされないってあって、
+あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;p&gt;で、まあググると確かにスローされないって言っている人が沢山いたけど、
+やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。&lt;br /&gt;
+（コードにはlombokを適用してます）&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;persistence.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;persistence xmlns=&amp;quot;http://java.sun.com/xml/ns/persistence&amp;quot; version=&amp;quot;2.0&amp;quot;&amp;gt;
+    &amp;lt;persistence-unit name=&amp;quot;testPU&amp;quot; transaction-type=&amp;quot;RESOURCE_LOCAL&amp;quot;&amp;gt;
+        &amp;lt;provider&amp;gt;org.eclipse.persistence.jpa.PersistenceProvider&amp;lt;/provider&amp;gt;
+        &amp;lt;class&amp;gt;entity.Account&amp;lt;/class&amp;gt;
+        &amp;lt;properties&amp;gt;
+            &amp;lt;property name=&amp;quot;javax.persistence.jdbc.driver&amp;quot; value=&amp;quot;org.apache.derby.jdbc.ClientDriver&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;javax.persistence.jdbc.url&amp;quot; value=&amp;quot;jdbc:derby://localhost/test;create=true&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;javax.persistence.jdbc.user&amp;quot; value=&amp;quot;APP&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;javax.persistence.jdbc.password&amp;quot; value=&amp;quot;APP&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;eclipselink.ddl-generation&amp;quot; value=&amp;quot;drop-and-create-tables&amp;quot;/&amp;gt;
+        &amp;lt;/properties&amp;gt;
+    &amp;lt;/persistence-unit&amp;gt;
+&amp;lt;/persistence&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;Account.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Entity
+@NoArgsConstructor
+@RequiredArgsConstructor
+public class Account
+{
+    @Getter
+    @NonNull
+    @Id
+    private Long id;
+
+    @Getter @Setter
+    @NonNull
+    private String name;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;AccountTest.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Test(expected = EntityExistsException.class)
+public void testPersist() throws Exception
+{
+    Account account = new Account(1L, &amp;quot;名前&amp;quot;);
+    em.persist(account);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;accountテーブルには事前にid=1のデータを投入。&lt;br /&gt;
+この状態で実行すると下記のようなエラーがでる。確かに&lt;code&gt;EntityExistsException&lt;/code&gt;はスローされない。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;javax.persistence.PersistenceException: Exception [EclipseLink-4002] (Eclipse Persistence Services - 2.5.1.v20130918-f2b9fc5): org.eclipse.persistence.exceptions.DatabaseException
+Internal Exception: java.sql.SQLIntegrityConstraintViolationException: このステートメントは、ユニークまたは主キー制約、または &#39;ACCOUNT&#39; 上で定義された &#39;SQL140131234011701&#39; によって識別されるユニーク索引において重複キー値の原因となる可能性があったため、打ち切られました。
+Error Code: -1
+Call: INSERT INTO account (ID, NAME) VALUES (?, ?)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;うーん、仕様としては存在しているのだから、何かが間違っているのか&amp;hellip;&lt;br /&gt;
+わからないので、EclipseLinkのコードを追ってみることに。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;org.eclipse.persistence.internal.jpa.EntityManagerImpl.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;try {
+    getActivePersistenceContext(checkForTransaction(false)).registerNewObjectForPersist(entity, new IdentityHashMap());
+} catch (RuntimeException exception) {
+    if (exception instanceof ValidationException) {
+        throw new EntityExistsException(exception.getLocalizedMessage(), exception);
+    }
+    throw exception;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コードを見る限り、&lt;code&gt;EntityManager#persist()&lt;/code&gt;で&lt;code&gt;EntityExistsException&lt;/code&gt;をスローしているように見える。
+この&lt;code&gt;ValidationException&lt;/code&gt;とは何なのか？どこから来たんだろう&amp;hellip;。
+というわけでここからどんどん辿って行くと、最終的にフラグが立っている場合にチェックしていることが分かる。
+で、そのフラグがどこで立つのかをさらに辿って行くと、&lt;code&gt;eclipselink.validate-existence&lt;/code&gt;というプロパティを参照している様子。&lt;/p&gt;
+
+&lt;p&gt;ああ、これはpersistence.xmlで設定できるやつだ、ということで下記をpersistence.xmlに設定する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;property name=&amp;quot;eclipselink.validate-existence&amp;quot; value=&amp;quot;true&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;もう一回実行してみた。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;javax.persistence.EntityExistsException: 
+Exception Description: Cannot persist detached object [Account(id=1, name=名前)]. 
+Class&amp;gt; entity.Account Primary Key&amp;gt; 1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;でた！確証を得るためにEclipseLinkのドキュメントを見てみる。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;http://www.eclipse.org/eclipselink/documentation/2.5/jpa/extensions/p_validate_existence.htm&#34;&gt;EclipseLink&lt;/a&gt;&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Use the eclipselink.validate-existence persistence property configures to specify if EclipseLink should verify an object&amp;rsquo;s existence on persist().&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;「eclipselink.validate-existenceプロパティを使用して、EclipseLinkがpersist()でオブジェクトの存在を検証するかどうかを指定します。」
+ということなのでこれで合っているようだけど、デフォルトがfalseなので検証しないようだ。
+ただ、ちょっと気になるのは使用方法の部分、&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;EclipseLink will throw an error if a validated object is not in the persistence context.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;not in the persistence context ってことは存在しない場合にエラーがスローされるの？&lt;br /&gt;
+この記述あってるのかなぁ？英語は得意じゃないので解釈が間違っているのかもしれない。
+あ、persistence context に存在しないってことは、DBに存在していてfindしていなければエラーになるってことかな。&lt;/p&gt;
+
+&lt;p&gt;Enjoy !&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -43,11 +164,147 @@ persistence.xml:
       <pubDate>Sun, 03 Nov 2013 01:39:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/11/03/unit-test-of-jpa/</guid>
-      <description>JPAで作ったデータアクセスクラスのテストをJUnitで作る際に、EntityManagerの扱いが問題になってきます。 プロダクトコードだと、PersistenceUnitのtransactionTypeをJTAとするため、 この設定のままユニットテストを実行には、APサーバが起動している必要があります。 この状態だとJenkinsに食わせたりするときに色々大変だし、 そもそもテスト用にはデータベースを別にしたいので、設定をテスト時だけ書き直す必要が出てきて面倒です。 そこでプロダクトコードとテストコードで参照するPersistenceUnitを変更するようにしてみました。
-ファイル構成 ファイルは下記のように、プロダクトコードとテストコード用にそれぞれpersistence.xmlを用意します。
-root └ src ├ main │ ├ java │ │ ├ Account.java │ │ └ AccountFacade.java │ └ resources │ └ META-INF │ └ persistence.xml └ test ├ java │ └ AccountFacadeTest.java └ resources └ META-INF └ persistence.xml  プロダクトコードのpersistence.xmlはこんな感じ。 transaction-typeをJTAにしているので、jta-data-sourceにAPサーバで設定したデータソース名を指定しています。
-persistence.xml:
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;persistence xmlns=&amp;quot;http://java.sun.com/xml/ns/persistence&amp;quot; version=&amp;quot;2.0&amp;quot;&amp;gt; &amp;lt;persistence-unit name=&amp;quot;mytestPU&amp;quot; transaction-type=&amp;quot;JTA&amp;quot;&amp;gt; &amp;lt;jta-data-source&amp;gt;jdbc/mytest&amp;lt;/jta-data-source&amp;gt; &amp;lt;properties&amp;gt; &amp;lt;property name=&amp;quot;eclipselink.ddl-generation&amp;quot; value=&amp;quot;create-tables&amp;quot;/&amp;gt; &amp;lt;/properties&amp;gt; &amp;lt;/persistence-unit&amp;gt; &amp;lt;/persistence&amp;gt;  テストコードのpersistence.xmlはこんな感じ。 プロダクトコードとは違い、APサーバが起動していなくてもユニットテストが実行できるように transaction-typeをRESOURCE_LOCALにしています。</description>
+      <description>
+
+&lt;p&gt;JPAで作ったデータアクセスクラスのテストをJUnitで作る際に、EntityManagerの扱いが問題になってきます。
+プロダクトコードだと、PersistenceUnitのtransactionTypeをJTAとするため、
+この設定のままユニットテストを実行には、APサーバが起動している必要があります。
+この状態だとJenkinsに食わせたりするときに色々大変だし、
+そもそもテスト用にはデータベースを別にしたいので、設定をテスト時だけ書き直す必要が出てきて面倒です。
+そこでプロダクトコードとテストコードで参照するPersistenceUnitを変更するようにしてみました。&lt;/p&gt;
+
+&lt;h2 id=&#34;ファイル構成&#34;&gt;ファイル構成&lt;/h2&gt;
+
+&lt;p&gt;ファイルは下記のように、プロダクトコードとテストコード用にそれぞれpersistence.xmlを用意します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root
+ └ src
+   ├ main
+   │  ├ java
+   │  │  ├ Account.java
+   │  │  └ AccountFacade.java
+   │  └ resources
+   │     └ META-INF
+   │        └ persistence.xml
+   └ test
+      ├ java
+      │  └ AccountFacadeTest.java
+      └ resources
+         └ META-INF
+            └ persistence.xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;プロダクトコードのpersistence.xmlはこんな感じ。
+transaction-typeをJTAにしているので、jta-data-sourceにAPサーバで設定したデータソース名を指定しています。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;persistence.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;persistence xmlns=&amp;quot;http://java.sun.com/xml/ns/persistence&amp;quot; version=&amp;quot;2.0&amp;quot;&amp;gt;
+    &amp;lt;persistence-unit name=&amp;quot;mytestPU&amp;quot; transaction-type=&amp;quot;JTA&amp;quot;&amp;gt;
+        &amp;lt;jta-data-source&amp;gt;jdbc/mytest&amp;lt;/jta-data-source&amp;gt;
+        &amp;lt;properties&amp;gt;
+            &amp;lt;property name=&amp;quot;eclipselink.ddl-generation&amp;quot; value=&amp;quot;create-tables&amp;quot;/&amp;gt;
+        &amp;lt;/properties&amp;gt;
+    &amp;lt;/persistence-unit&amp;gt;
+&amp;lt;/persistence&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;テストコードのpersistence.xmlはこんな感じ。
+プロダクトコードとは違い、APサーバが起動していなくてもユニットテストが実行できるように
+transaction-typeをRESOURCE_LOCALにしています。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;persistence.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;persistence xmlns=&amp;quot;http://java.sun.com/xml/ns/persistence&amp;quot; version=&amp;quot;2.0&amp;quot;&amp;gt;
+    &amp;lt;persistence-unit name=&amp;quot;mytestTPU&amp;quot; transaction-type=&amp;quot;RESOURCE_LOCAL&amp;quot;&amp;gt;
+        &amp;lt;provider&amp;gt;org.eclipse.persistence.jpa.PersistenceProvider&amp;lt;/provider&amp;gt;
+        &amp;lt;class&amp;gt;org.mytest.entity.Account&amp;lt;/class&amp;gt;
+        &amp;lt;properties&amp;gt;
+            &amp;lt;property name=&amp;quot;javax.persistence.jdbc.driver&amp;quot; value=&amp;quot;org.postgresql.Driver&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;javax.persistence.jdbc.url&amp;quot; value=&amp;quot;jdbc:postgresql://localhost:5432/mytest_test&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;javax.persistence.jdbc.user&amp;quot; value=&amp;quot;demo&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;javax.persistence.jdbc.password&amp;quot; value=&amp;quot;demo&amp;quot;/&amp;gt;
+            &amp;lt;property name=&amp;quot;eclipselink.ddl-generation&amp;quot; value=&amp;quot;drop-and-create-tables&amp;quot;/&amp;gt;
+        &amp;lt;/properties&amp;gt;
+    &amp;lt;/persistence-unit&amp;gt;
+&amp;lt;/persistence&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あとは下記のコードを用意します。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Account.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Entity
+public class Account
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long accountId;
+    private String email;
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;AccountFacade.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@RequestScoped
+@Transactional
+public class AccountFacade
+{
+    @PersistentContext(unitName = &amp;quot;mytestPU&amp;quot;)
+    private EntityManager em;
+
+    public void persist(Account account)
+    {
+        Objects.requireNonNull(account);
+        em.persist(account);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;AccountFacadeTest.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public class AccountFacadeTest
+{
+    private EntityManager em;
+    private AccountFacade accountFacade = new AccountFacade();
+
+    @Before
+    public void setUp() throws Exception
+    {
+        em = Persistence.createEntityManagerFactory(&amp;quot;mytestTPU&amp;quot;).createEntityManager();
+        accountFacade.em = em;
+    }
+
+    @After
+    public void tearDown() throws Exception
+    {
+        em.close();
+    }
+
+    @Test
+    public void testPersist() throws Exception
+    {
+        final Account account = new Account(&amp;quot;xxxxx@hoge.com&amp;quot;);
+
+        em.getTransaction().begin();
+        accountFacade.persist(account);
+        em.getTransaction().commit();
+
+        assert account.getAccountId() &amp;gt; 0;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;テストコードではmytestTPUからEntityManagerを生成します。
+プロダクトコードでは@Transactionalでトランザクションを管理していますが、
+テストコードでは@Transactionalでのトランザクション管理はできないので、
+トランザクション制御のためのコードを書く必要があります。&lt;/p&gt;
+
+&lt;p&gt;Best Regards.&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -56,17 +313,66 @@ persistence.xml:
       <pubDate>Sun, 27 Jan 2013 12:08:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/</guid>
-      <description> JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
-数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
-アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
-コード 検証に利用するコードは下記の通り。 Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、 永続化されたBookエンティティのうち、bookname=&#39;name1&#39;のレコードを抽出する。 また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。
- 検証 まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。 約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。 簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、 tachされたエンティティの数が増加すると、それに比例して劣化していく。
-次に改善後の結果。 約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。
-改善方法 では、何をすれば改善するのか。 結論から言えば、エンティティをdetachすれば良い。 detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。 そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、 あとでEclipseLinkのソースコードを確認してみようと思う。 ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。
-検証コードでは、ループ内の最後に下記2行を追加した。
-em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。 ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、 片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。
-ちなみにflushやclearに関しては次の本が詳しい。
- </description>
+      <description>
+
+&lt;p&gt;JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。
+サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、
+ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。&lt;/p&gt;
+
+&lt;p&gt;数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、
+想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。
+そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。&lt;/p&gt;
+
+&lt;h2 id=&#34;アプリ構成&#34;&gt;アプリ構成&lt;/h2&gt;
+
+&lt;p&gt;JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。&lt;/p&gt;
+
+&lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;検証に利用するコードは下記の通り。
+Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、
+永続化されたBookエンティティのうち、&lt;code&gt;bookname=&#39;name1&#39;&lt;/code&gt;のレコードを抽出する。
+また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/kokuzawa/4646983.js&#34;&gt;&lt;/script&gt;
+
+&lt;h2 id=&#34;検証&#34;&gt;検証&lt;/h2&gt;
+
+&lt;p&gt;まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。
+約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。
+簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、
+tachされたエンティティの数が増加すると、それに比例して劣化していく。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;次に改善後の結果。
+約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_5.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;改善方法&#34;&gt;改善方法&lt;/h2&gt;
+
+&lt;p&gt;では、何をすれば改善するのか。
+結論から言えば、エンティティをdetachすれば良い。
+detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。
+そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、
+あとでEclipseLinkのソースコードを確認してみようと思う。
+ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。&lt;/p&gt;
+
+&lt;p&gt;検証コードでは、ループ内の最後に下記2行を追加した。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;em.flush();
+em.clear();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;em.flush()&lt;/code&gt;を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。
+ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、
+片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。&lt;/p&gt;
+
+&lt;p&gt;ちなみにflushやclearに関しては次の本が詳しい。&lt;/p&gt;
+
+&lt;iframe src=&#34;http://rcm-jp.amazon.co.jp/e/cm?lt1=_blank&amp;bc1=FFFFFF&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=moonwhaleblog-22&amp;o=9&amp;p=8&amp;l=as1&amp;m=amazon&amp;f=ifr&amp;ref=qf_sp_asin_til&amp;asins=4798124605&#34; style=&#34;width:120px;height:240px;&#34; scrolling=&#34;no&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+</description>
     </item>
     
     <item>
@@ -75,11 +381,56 @@ em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエン�
       <pubDate>Wed, 07 Nov 2012 00:56:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2012/11/07/fu-he-kiwoshi-tutaorderby/</guid>
-      <description>JPAで複合キークラスを使ってOrderByをやろうとしたら、メタデータの設定方法が分からなかったんだけど、分かってみれば簡単な話だった。
-複合キーって何？ JPAのエンティティには複数の@Idアノテーションが付与できないので、DBのテーブルに主キーが複数ある場合はその主キーをひとまとめにしたクラスを作成する。エンティティ上では、@EmbeddedIdアノテーションを付与すれば、その作成クラスを主キーとして指定できる。これを複合キーといって、実際には下記のようなクラス構成となる。（EntityPK.javaが複合キー）
-@Entity public class Entity { @EmbeddedId private EntityPK entityPK; public EntityPK getEntityPK() { return entityPK; } }  @Embeddable public class EntityPK implements Serializable { @Column private Integer key1; @Column private Integer key2; }  CriteriaQueryでSQLを構築 この複合キーがあるエンティティに対してCriteriaQueryを使ってSQLを構築する。
-final CriteriaBuilder cb = entityManager.getCriteriaBuilder(); final CriteriaQuery&amp;lt;Entity&amp;gt; query = cb.createQuery(Entity.class); final Root&amp;lt;Entity&amp;gt; root = query.from(Entity.class); query.select(root).orderBy(cb.asc(root.get(Entity_.entityPK) .get(EntityPK_.key1)));  ここでポイントとなるのが、key1でソートしようとした場合、いきなり cb.asc(root.get(EntityPK_.key1)) と指定はできないので、 cb.asc(root.get(Entity_.entityPK).get(EntityPK_.key1)) のように連鎖した呼び出しにする必要がある、ということ。</description>
+      <description>
+
+&lt;p&gt;JPAで複合キークラスを使ってOrderByをやろうとしたら、メタデータの設定方法が分からなかったんだけど、分かってみれば簡単な話だった。&lt;/p&gt;
+
+&lt;h3 id=&#34;複合キーって何&#34;&gt;複合キーって何？&lt;/h3&gt;
+
+&lt;p&gt;JPAのエンティティには複数の@Idアノテーションが付与できないので、DBのテーブルに主キーが複数ある場合はその主キーをひとまとめにしたクラスを作成する。エンティティ上では、@EmbeddedIdアノテーションを付与すれば、その作成クラスを主キーとして指定できる。これを複合キーといって、実際には下記のようなクラス構成となる。（EntityPK.javaが複合キー）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Entity
+public class Entity
+{
+    @EmbeddedId
+    private EntityPK entityPK;
+
+    public EntityPK getEntityPK()
+    {
+        return entityPK;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Embeddable
+public class EntityPK implements Serializable
+{
+    @Column
+    private Integer key1;
+
+    @Column
+    private Integer key2;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;criteriaqueryでsqlを構築&#34;&gt;CriteriaQueryでSQLを構築&lt;/h3&gt;
+
+&lt;p&gt;この複合キーがあるエンティティに対してCriteriaQueryを使ってSQLを構築する。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+final CriteriaQuery&amp;lt;Entity&amp;gt; query = cb.createQuery(Entity.class);
+final Root&amp;lt;Entity&amp;gt; root = query.from(Entity.class);
+query.select(root).orderBy(cb.asc(root.get(Entity_.entityPK)
+    .get(EntityPK_.key1)));
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここでポイントとなるのが、key1でソートしようとした場合、いきなり
+&lt;code&gt;cb.asc(root.get(EntityPK_.key1))&lt;/code&gt; と指定はできないので、
+&lt;code&gt;cb.asc(root.get(Entity_.entityPK).get(EntityPK_.key1))&lt;/code&gt;
+のように連鎖した呼び出しにする必要がある、ということ。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

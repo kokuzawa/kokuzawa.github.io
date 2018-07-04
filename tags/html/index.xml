@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Sun, 03 May 2015 22:12:37 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/html/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/html/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,13 +17,52 @@
       <pubDate>Sun, 03 May 2015 22:12:37 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/05/03/translate-google/</guid>
-      <description>子供用の英単語帳Webアプリを作っています。 単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、 Googleが提供しているテキスト読み上げAPIというのを見つけました。
-使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。 この例ではoneという単語を読み上げてくれます。
-http://translate.google.com/translate_tts?tl=en&amp;amp;q=one  これをHTMLに組み込みます。 HTMLで音声を再生するためにはaudioタグを利用します。 下記のように組み込むことで音声を再生するためのコントロールを表示することができます。
-&amp;lt;video src=&amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot; controls /&amp;gt;  こんな感じになります。
-実際のアプリはJSF-2.2でFaceletを利用しています。 このタグを組み込んだ場合、最初の一回目は正しく再生されますが 2回目以降が再生されません。 なぜダメなのか結局分からなかったのですが、 UI的にはaudioコントロールを表示したくなかったので、 タグを埋め込むのではなくJavaScriptで再生するようにしました。
-&amp;lt;script&amp;gt; function play() { var audio = document.createElement(&amp;quot;audio&amp;quot;); audio.src = &amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot;; audio.play(); } &amp;lt;/script&amp;gt; &amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;play()&amp;quot;&amp;gt;再生&amp;lt;/a&amp;gt;  この場合audioコントロールは表示されないのですが、 再生リンクをクリックするたびに正しく再生されます。</description>
+      <description>&lt;p&gt;子供用の英単語帳Webアプリを作っています。
+単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、
+Googleが提供しているテキスト読み上げAPIというのを見つけました。&lt;/p&gt;
+
+&lt;p&gt;使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。
+この例ではoneという単語を読み上げてくれます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;p&gt;これをHTMLに組み込みます。
+HTMLで音声を再生するためにはaudioタグを利用します。
+下記のように組み込むことで音声を再生するためのコントロールを表示することができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;video src=&amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot; controls /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こんな感じになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;video src=&#34;http://translate.google.com/translate_tts?tl=en&amp;q=one&#34; controls /&gt;&lt;/p&gt;
+
+&lt;p&gt;実際のアプリはJSF-2.2でFaceletを利用しています。
+このタグを組み込んだ場合、最初の一回目は正しく再生されますが
+2回目以降が再生されません。
+なぜダメなのか結局分からなかったのですが、
+UI的にはaudioコントロールを表示したくなかったので、
+タグを埋め込むのではなくJavaScriptで再生するようにしました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script&amp;gt;
+function play() {
+  var audio = document.createElement(&amp;quot;audio&amp;quot;);
+  audio.src = &amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot;;
+  audio.play();
+}
+&amp;lt;/script&amp;gt;
+
+&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;play()&amp;quot;&amp;gt;再生&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この場合audioコントロールは表示されないのですが、
+再生リンクをクリックするたびに正しく再生されます。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Sat, 10 May 2014 18:50:20 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/angularjs/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/angularjs/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,13 +17,103 @@
       <pubDate>Sat, 10 May 2014 18:50:20 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/05/10/chu-metefalseangularjs/</guid>
-      <description>AngularJS + JAX-RS + JPA でアプリを作ってます。 今回 AngularJS を初めて使っているんですがとても便利ですね。 どの辺りがと言われると、具体的に答えられるほど使い込んでいないので答えに窮するのですが、 今分かっている範囲では、テストが簡単にできるのが良い感じです。
-基本 AngularJS を利用するためには当たり前ですが、jsファイルを呼び出す必要があります。 これは AngularJS の公式サイトからダウンロードできるので、そこから取得しました。 ダウンロードしたファイルを任意の場所に配置し、下記を head タグの間に追加します。
-&amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;  あと、下記の ng-app を忘れずに html タグに追加します。 これは、このページが AngularJS のページだよと宣言するためのディレクティブだそうです。
-&amp;lt;html ng-app&amp;gt;  初期値の設定 AngularJS は ng-repeat というディレクティブを利用することで繰り返し処理をすることができます。 繰り返し処理で出力するデータは下記のように ng-init を利用して初期値を設定することができます。 まあ、下記のコードだと繰り返し処理をさせる意味はあまりないのですが&amp;hellip;。
-&amp;lt;html ng-app&amp;gt; &amp;lt;head&amp;gt; &amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;div ng-init=&amp;quot;names = [&#39;Taro&#39;, &#39;Jiro&#39;, &#39;Hanako&#39;]&amp;quot;&amp;gt; &amp;lt;div ng-repeat=&amp;quot;name in names&amp;quot;&amp;gt; {{name}} &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;  これを実行すると以下のような画面が表示されます。
-Taro Jiro Hanako  とても簡単です。 ここで表示している Taro, Jiro, Hanako の値を API から取得して表示しようとした場合は下記のようなコードになります。</description>
+      <description>
+
+&lt;p&gt;AngularJS + JAX-RS + JPA でアプリを作ってます。
+今回 AngularJS を初めて使っているんですがとても便利ですね。
+どの辺りがと言われると、具体的に答えられるほど使い込んでいないので答えに窮するのですが、
+今分かっている範囲では、テストが簡単にできるのが良い感じです。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;基本&#34;&gt;基本&lt;/h2&gt;
+
+&lt;p&gt;AngularJS を利用するためには当たり前ですが、jsファイルを呼び出す必要があります。
+これは AngularJS の&lt;a href=&#34;https://angularjs.org&#34;&gt;公式サイト&lt;/a&gt;からダウンロードできるので、そこから取得しました。
+ダウンロードしたファイルを任意の場所に配置し、下記を &lt;code&gt;head&lt;/code&gt; タグの間に追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あと、下記の &lt;code&gt;ng-app&lt;/code&gt; を忘れずに &lt;code&gt;html&lt;/code&gt; タグに追加します。
+これは、このページが AngularJS のページだよと宣言するためのディレクティブだそうです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html ng-app&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;初期値の設定&#34;&gt;初期値の設定&lt;/h2&gt;
+
+&lt;p&gt;AngularJS は &lt;code&gt;ng-repeat&lt;/code&gt; というディレクティブを利用することで繰り返し処理をすることができます。
+繰り返し処理で出力するデータは下記のように &lt;code&gt;ng-init&lt;/code&gt; を利用して初期値を設定することができます。
+まあ、下記のコードだと繰り返し処理をさせる意味はあまりないのですが&amp;hellip;。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html ng-app&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;div ng-init=&amp;quot;names = [&#39;Taro&#39;, &#39;Jiro&#39;, &#39;Hanako&#39;]&amp;quot;&amp;gt;
+      &amp;lt;div ng-repeat=&amp;quot;name in names&amp;quot;&amp;gt;
+        {{name}}
+      &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを実行すると以下のような画面が表示されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Taro
+Jiro
+Hanako
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;とても簡単です。
+ここで表示している Taro, Jiro, Hanako の値を API から取得して表示しようとした場合は下記のようなコードになります。&lt;/p&gt;
+
+&lt;p&gt;{% raw %}&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html ng-app=&amp;quot;myApp&amp;quot;&amp;gt;
+  &amp;lt;head&amp;gt;
+    &amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script src=&amp;quot;angular-resource.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+    &amp;lt;script&amp;gt;
+      var myApp = angular.module(&#39;myApp&#39;, [&#39;ngResource&#39;]);
+
+      myApp.factory(&#39;testService&#39;, [&#39;$resource&#39;, function($resource)
+      {
+        return $resource(&#39;/test/rest/names&#39;, {query: {method: &#39;GET&#39;, isArray: true}});
+      }]);
+
+      myApp.controller(&#39;myCtrl&#39;, [&#39;testService&#39;, &#39;$scope&#39;, function(testService, $scope)
+      {
+        $scope.names = testService.query();
+      }]);
+    &amp;lt;/script&amp;gt;
+  &amp;lt;/head&amp;gt;
+  &amp;lt;body&amp;gt;
+    &amp;lt;div ng-controller=&amp;quot;myCtrl&amp;quot;&amp;gt;
+      &amp;lt;div ng-repeat=&amp;quot;name in names&amp;quot;&amp;gt;
+        {{name}}
+      &amp;lt;/div&amp;gt;
+    &amp;lt;/div&amp;gt;
+  &amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;{% endraw %}&lt;/p&gt;
+
+&lt;h3 id=&#34;参考&#34;&gt;参考&lt;/h3&gt;
+
+&lt;p&gt;以下のサイトを参考にしました。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://angularjs.org&#34;&gt;AngularJS 公式サイト&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dotinstall.com/lessons/basic_angularjs&#34;&gt;ドットインストール - AngularJS入門&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

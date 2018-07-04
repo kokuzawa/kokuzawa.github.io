@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Thu, 20 Oct 2016 13:41:21 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/freemarker/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/freemarker/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,16 +17,57 @@
       <pubDate>Thu, 20 Oct 2016 13:41:21 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/10/20/java-freemarker-noparse/</guid>
-      <description> FreeMarker-2.3.23でinterpolation部分をそのまま出力したい。
-ただし、テンプレート文字列部分はユーザが自由に入力ができて、さらに、それがFreeMarkerのテンプレートだとは認識していない場合を想定。 つまり、ユーザが${hello}と入力したら、出力結果は${hello}となって欲しい。 調べてみると、下記のようにinterpolation部分を${r&amp;quot;...&amp;quot;}で括ればそのまま出力されるみたい。
-TEMPLATE:
-${r&amp;quot;${hello}&amp;quot;}  OUTPUT:
-${hello}  ということは、ユーザの入力した文字列からinterpolation部分を抽出して、${r&amp;quot;...&amp;quot;}で括るように置換してあげればよさそうだけど、 ユーザが${helloとしか入力しない場合に置換できないし、interpolation部分だけでなく、 &amp;lt;#if&amp;gt;などの制御タグもそのまま出力しなければならないので、この方法はあまり現実的ではなさそう。 で、FreeMarkerのマニュアルを眺めてみると、noparseという項があってそれをみたら「あ、これだ！」となった。 下記のように書くとそのまま出力される。
-TEMPLATE:
-&amp;lt;#noparse&amp;gt; &amp;lt;#if greet&amp;gt; ${hello} &amp;lt;/#if&amp;gt; &amp;lt;/#noparse&amp;gt;  OUTPUT:
-&amp;lt;#if greet&amp;gt; ${hello} &amp;lt;/#if&amp;gt;  これならユーザが入力した部分を&amp;lt;#noparse&amp;gt;で括ってしまえばいいだけなので簡単。
-参考サイト  How to output ${expression} in Freemarker without it being interpreted? FreeMarker.org#noparse  </description>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://freemarker.org/&#34;&gt;FreeMarker-2.3.23&lt;/a&gt;でinterpolation部分をそのまま出力したい。&lt;/p&gt;
+
+&lt;p&gt;ただし、テンプレート文字列部分はユーザが自由に入力ができて、さらに、それがFreeMarkerのテンプレートだとは認識していない場合を想定。
+つまり、ユーザが&lt;code&gt;${hello}&lt;/code&gt;と入力したら、出力結果は&lt;code&gt;${hello}&lt;/code&gt;となって欲しい。
+調べてみると、下記のようにinterpolation部分を&lt;code&gt;${r&amp;quot;...&amp;quot;}&lt;/code&gt;で括ればそのまま出力されるみたい。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;TEMPLATE:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;${r&amp;quot;${hello}&amp;quot;}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;OUTPUT:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;${hello}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ということは、ユーザの入力した文字列からinterpolation部分を抽出して、&lt;code&gt;${r&amp;quot;...&amp;quot;}&lt;/code&gt;で括るように置換してあげればよさそうだけど、
+ユーザが&lt;code&gt;${hello&lt;/code&gt;としか入力しない場合に置換できないし、interpolation部分だけでなく、
+&lt;code&gt;&amp;lt;#if&amp;gt;&lt;/code&gt;などの制御タグもそのまま出力しなければならないので、この方法はあまり現実的ではなさそう。
+で、FreeMarkerのマニュアルを眺めてみると、&lt;code&gt;noparse&lt;/code&gt;という項があってそれをみたら「あ、これだ！」となった。
+下記のように書くとそのまま出力される。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;TEMPLATE:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;#noparse&amp;gt;
+  &amp;lt;#if greet&amp;gt;
+    ${hello}
+  &amp;lt;/#if&amp;gt;
+&amp;lt;/#noparse&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;OUTPUT:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;#if greet&amp;gt;
+  ${hello}
+&amp;lt;/#if&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これならユーザが入力した部分を&lt;code&gt;&amp;lt;#noparse&amp;gt;&lt;/code&gt;で括ってしまえばいいだけなので簡単。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考サイト&#34;&gt;参考サイト&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/5207613/how-to-output-expression-in-freemarker-without-it-being-interpreted&#34;&gt;How to output ${expression} in Freemarker without it being interpreted?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://freemarker.org/docs/ref_directive_noparse.html&#34;&gt;FreeMarker.org#noparse&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

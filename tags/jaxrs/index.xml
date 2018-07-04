@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Sat, 14 Nov 2015 16:08:44 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/jaxrs/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/jaxrs/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,13 +17,166 @@
       <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
-      <description>WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、 自分の必要なモジュールを取り込んで利用する形になるようです。
-JAXRSを組み込む 今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。 2015年11月時点での最新バージョンは1.0.0.Alpha5です。 pom.xmlに下記のdependencyを追加します。
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;dependency&amp;gt;  これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）
-JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、 下記のpluginもpom.xmlに追加します。
-&amp;lt;plugin&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;executions&amp;gt; &amp;lt;execution&amp;gt; &amp;lt;goals&amp;gt; &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt; &amp;lt;/goals&amp;gt; &amp;lt;/execution&amp;gt; &amp;lt;/executions&amp;gt; &amp;lt;/plugin&amp;gt;  JAXRSアプリケーションを作る WildFly Swarmの設定が一通り終わったので、次はJAXRSアプリケーションを作ります。 特別なことはなく、普通のJAXRSアプリケーションです。
-package org.katsumi; import javax.ws.rs.ApplicationPath; import javax.ws.rs.core.Application; @ApplicationPath(&amp;quot;/rest&amp;quot;) public class MyApplication extends Application { }  package org.katsumi; import javax.ws.rs.GET; import javax.ws.rs.Path; @Path(&amp;quot;/hello&amp;quot;) public class HelloResource { @GET public String hello() { return &amp;quot;Hello World!</description>
+      <description>
+
+&lt;p&gt;WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。
+この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、
+将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。
+WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、
+自分の必要なモジュールを取り込んで利用する形になるようです。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;jaxrsを組み込む&#34;&gt;JAXRSを組み込む&lt;/h2&gt;
+
+&lt;p&gt;今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。
+2015年11月時点での最新バージョンは1.0.0.Alpha5です。
+pom.xmlに下記のdependencyを追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
+&amp;lt;dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_39.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、
+下記のpluginもpom.xmlに追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugin&amp;gt;
+    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
+    &amp;lt;executions&amp;gt;
+        &amp;lt;execution&amp;gt;
+            &amp;lt;goals&amp;gt;
+                &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt;
+            &amp;lt;/goals&amp;gt;
+        &amp;lt;/execution&amp;gt;
+    &amp;lt;/executions&amp;gt;
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;jaxrsアプリケーションを作る&#34;&gt;JAXRSアプリケーションを作る&lt;/h2&gt;
+
+&lt;p&gt;WildFly Swarmの設定が一通り終わったので、次はJAXRSアプリケーションを作ります。
+特別なことはなく、普通のJAXRSアプリケーションです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+@ApplicationPath(&amp;quot;/rest&amp;quot;)
+public class MyApplication extends Application
+{
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+
+@Path(&amp;quot;/hello&amp;quot;)
+public class HelloResource
+{
+    @GET
+    public String hello()
+    {
+        return &amp;quot;Hello World!&amp;quot;;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;どうやってうごかすの&#34;&gt;どうやってうごかすの？&lt;/h2&gt;
+
+&lt;p&gt;JAXRSアプリケーションも作ったけれどどうやって動かすのか？&lt;br /&gt;
+WildFly Swarmでは通常のJavaアプリケーションのようにmainメソッドから動かします。
+そのため、mainメソッドを持つクラスを新たに作成します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.wildfly.swarm.container.Container;
+import org.wildfly.swarm.jaxrs.JAXRSArchive;
+
+public class Main
+{
+    public static void main(String... args) throws Exception
+    {
+        // コンテナの生成
+        // Archiveを生成する前にインスタンス化しておかないと実行時にエラーが発生
+        final Container container = new Container();
+
+        // ShrinkWrapで仮想アーカイブを作成
+        final JAXRSArchive archive = ShrinkWrap.create(JAXRSArchive.class);
+        archive.addClass(MyApplication.class);
+        archive.addClass(HelloResource.class);
+        archive.addAllDependencies();
+
+        container.start().deploy(archive);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;mainメソッド内では、ShrinkWrapを利用して生成した仮想アーカイブを起動したコンテナにデプロイします。
+コード中のコメントにも書きましたが、アーカイブを作る前にコンテナをインスタンス化しておかないと、
+実行時にエラーになります。これで半日悩んだ..orz&lt;/p&gt;
+
+&lt;p&gt;で、ここで作ったMainクラスをswarm-pluginに教える必要があります。
+設定を追加したwildfly-swarm-pluginが下記になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugin&amp;gt;
+    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
+    &amp;lt;configuration&amp;gt;
+        &amp;lt;mainClass&amp;gt;org.katsumi.Main&amp;lt;/mainClass&amp;gt;
+    &amp;lt;/configuration&amp;gt;
+    &amp;lt;executions&amp;gt;
+        &amp;lt;execution&amp;gt;
+            &amp;lt;goals&amp;gt;
+                &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt;
+            &amp;lt;/goals&amp;gt;
+        &amp;lt;/execution&amp;gt;
+    &amp;lt;/executions&amp;gt;
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Mavenでビルド後に下記の方法で実行することができます。&lt;/p&gt;
+
+&lt;h3 id=&#34;ideの場合&#34;&gt;IDEの場合&lt;/h3&gt;
+
+&lt;p&gt;Mainクラスを実行&lt;/p&gt;
+
+&lt;h3 id=&#34;mavenを利用する場合&#34;&gt;Mavenを利用する場合&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;mvn wildfly-swarm:run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;jarファイルを実行する場合&#34;&gt;Jarファイルを実行する場合&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;jar -jar target/projectname-swarm.jar
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;余談&#34;&gt;余談&lt;/h2&gt;
+
+&lt;p&gt;今回のアプリですが、IntelliJ IDEA 15で作っています。
+インストールしたままの環境でMavenビルドをしたのですが、下記エラーが発生してビルドができない状態でした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;java.lang.NoClassDefFoundError: org/eclipse/aether/RepositorySystemSession
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;原因はMavenのバージョンが古いためで、IntellijにデフォルトでバンドルされているMavenのバージョンは3.0.5であり、
+このバージョンではエラーが発生するので、別途バージョン3.2.5をインストールしてそれを参照するようにしました。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

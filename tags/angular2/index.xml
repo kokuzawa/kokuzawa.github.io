@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Wed, 28 Dec 2016 11:02:35 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/angular2/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/angular2/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,11 +17,114 @@
       <pubDate>Wed, 28 Dec 2016 11:02:35 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/12/28/primeng/</guid>
-      <description>昨日、 Angular2 アプリを IntelliJ IDEA で動かすところまでやってみました。 今日は本来の目的である PrimeNG を使ってみます。
-PrimeNG とは JSF の実装の一つである PrimeFaces と同じところが作っている Angular2 用の Rich UI Components です。 PrimeFaces とほぼ同じ（まだ PrimeNG の方が少ない）コンポーネント群を Angular2 から利用できるプロダクトです。 現在の最新バージョンは 1.1.2 です。
-PrimeNG のインストール PrimeNG の Setup に書いてありますが、 プロジェクトフォルダで下記コマンドを実行します。
-$npm install primeng --save  PrimeNG を組み込む PrimeNG のインストールはできたので昨日作ったアプリに PrimeNG を組み込んでみます。 まず、PrimeNG 用の css が用意されているのでそれを追加します。 css の定義を index.html に書いてみたのですが、 表示された画面で確認すると css ファイルが見つからない状態となります。 色々試行錯誤した結果、src/style.css ファイルに下記を追加することで期待した css が読み込まれることが分かりました。
-@import url(&#39;../node_modules/primeng/resources/themes/omega/theme.css&#39;); @import url(&#39;../node_modules/primeng/resources/primeng.min.css&#39;);  読み込まれるというは正確ではなく、インポートした css が style.</description>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/&#34;&gt;昨日&lt;/a&gt;、 Angular2 アプリを IntelliJ IDEA で動かすところまでやってみました。
+今日は本来の目的である PrimeNG を使ってみます。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;primeng-とは&#34;&gt;PrimeNG とは&lt;/h2&gt;
+
+&lt;p&gt;JSF の実装の一つである PrimeFaces と同じところが作っている Angular2 用の Rich UI Components です。
+PrimeFaces とほぼ同じ（まだ PrimeNG の方が少ない）コンポーネント群を Angular2 から利用できるプロダクトです。
+現在の最新バージョンは 1.1.2 です。&lt;/p&gt;
+
+&lt;h2 id=&#34;primeng-のインストール&#34;&gt;PrimeNG のインストール&lt;/h2&gt;
+
+&lt;p&gt;PrimeNG の &lt;a href=&#34;http://www.primefaces.org/primeng/#/setup&#34;&gt;Setup&lt;/a&gt; に書いてありますが、
+プロジェクトフォルダで下記コマンドを実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$npm install primeng --save
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;primeng-を組み込む&#34;&gt;PrimeNG を組み込む&lt;/h2&gt;
+
+&lt;p&gt;PrimeNG のインストールはできたので昨日作ったアプリに PrimeNG を組み込んでみます。
+まず、PrimeNG 用の css が用意されているのでそれを追加します。
+css の定義を index.html に書いてみたのですが、
+表示された画面で確認すると css ファイルが見つからない状態となります。
+色々試行錯誤した結果、&lt;code&gt;src/style.css&lt;/code&gt; ファイルに下記を追加することで期待した css が読み込まれることが分かりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;@import url(&#39;../node_modules/primeng/resources/themes/omega/theme.css&#39;);
+@import url(&#39;../node_modules/primeng/resources/primeng.min.css&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;読み込まれるというは正確ではなく、インポートした css が style.css ファイル内に展開されて、
+それが html のヘッダに組み込まれるというのが正しい表現になります。
+おそらくビルド時にそういうことをしているのだと思うのですが、
+Angular のビルドフローがよくわかっていないのでなんとも言えません。
+&lt;code&gt;src/style.css&lt;/code&gt; に何も書いていないと html にも組み込まれないので何か判定があるのかと。&lt;/p&gt;
+
+&lt;p&gt;で、実はこれだけだと片手落ちで、&lt;a href=&#34;http://fontawesome.io&#34;&gt;Font Awesome&lt;/a&gt; で提供されている css と font 群を取り込まないと、
+PrimeNG でのアイコン表示ができない状態となります。
+まず、Font Awesome のサイトでフォントアイコンをダウンロードします。
+プロジェクトの src フォルダ直下に resources フォルダを作り、
+その下にダウンロードしたモジュール内にある、css フォルダと fonts フォルダをコピーします。
+独自で取り込んだ css などをどこに配置するのが Angular として正しいのかよくわからないので、
+PrimeNG の Showcace のソースコードと同じ構成にしてみました。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;src/style.css&lt;/code&gt; にインポートを追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;@import url(&#39;/resources/css/font-awesome.min.css&#39;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;primeng-の-button-コンポーネントを配置&#34;&gt;PrimeNG の Button コンポーネントを配置&lt;/h2&gt;
+
+&lt;p&gt;事前の準備ができたので、PrimeNG のコンポーネントの中から Button コンポーネントを配置します。
+&lt;code&gt;src/app/app.component.html&lt;/code&gt; に下記のコードを追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;button pButton type=&amp;quot;button&amp;quot; icon=&amp;quot;fa-check&amp;quot; iconPos=&amp;quot;left&amp;quot;&amp;gt;&amp;lt;/button&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に &lt;code&gt;src/app/app.module.ts&lt;/code&gt; を下記のように変更します。
+diff がハイライトされていませんが差分表示です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;  import { BrowserModule } from &#39;@angular/platform-browser&#39;;
+  import { NgModule } from &#39;@angular/core&#39;;
+  import { FormsModule } from &#39;@angular/forms&#39;;
+  import { HttpModule } from &#39;@angular/http&#39;;
+
+  import { AppComponent } from &#39;./app.component&#39;;
++ import {ButtonModule} from &#39;primeng/primeng&#39;;
+
+  @NgModule({
+    declarations: [
+      AppComponent
+    ],
+    imports: [
+      BrowserModule,
+      FormsModule,
+-     HttpModule
++     HttpModule,
++     ButtonModule
+    ],
+    providers: [],
+    bootstrap: [AppComponent]
+  })
+  export class AppModule { }
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;実行&#34;&gt;実行&lt;/h2&gt;
+
+&lt;p&gt;実行すると下記の画面が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_43.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;PrimeNG のドキュメントを見ても module.ts ファイルを編集などは書いてないので、
+この辺りのことは Angular を知っていればわかることなのかなぁとなんとなくモヤモヤした感じです。
+実際仕組みがわかれば大したことをしていない気がするので、
+もう少し色々試してみようと思います。
+次はボタンへのイベントハンドリングをしてみようかと考えています。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.primefaces.org/primeng/#/button&#34;&gt;PrimeNG Demo&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -30,18 +133,118 @@ $npm install primeng --save  PrimeNG を組み込む PrimeNG のインストー�
       <pubDate>Wed, 28 Dec 2016 00:39:11 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/</guid>
-      <description>Angular2のアプリをIntelliJ IDEAで動かすまでの試行錯誤の記録です。
-環境  macOS Sierra IntelliJ IDEA 2016.3  Angular2のインストール Angular2を動かすのにはNode.jsが必要なので、最初にNode.jsをインストールします。 macOSの場合、homebrewでnodebrewを入れるのが良さそうです。 nodebrewはNode.jsのバージョン管理システムだそうです。
-$brew install nodebrew  nodebrewインストール直後だと、カレントのNode.jsが選択されていないため、 Node.jsのコマンドを打ってもそんなコマンドはないと怒られてしまいます。 そこで、カレントのNode.jsを選択します。 選択方法ですが、まずインストールされているNode.jsのバージョンを知る必要があるので、 下記コマンドを実行し、バージョンリストを表示します。
-$nodebrew list  バージョンが表示されたら、利用したいバージョンを指定した下記コマンドを実行します。 私の環境ではv7.3.0がインストールされていたので、これをカレントにします。
-$nodebrew use v7.3.0  これでNode.jsが使えるようになりました。
-次に目的のAngular2をインストールするわけですが、 ここではコマンドラインツールであるangular-cliをインストールします。 インストールはnpm(Node Package Manager)を使います。
-$npm install -g angular-cli  これでAngular2アプリを作る準備ができました。
-Angular2アプリを作る 早速アプリを作りたいのですが、IntelliJ IDEAではAngularプロジェクトを作るメニューはありません。 プラグイン等であるのかもしれませんが、プレーンな状態ではできないので、 Angular-cliを使って雛形のプロジェクトを作成します。 プロジェクトを作りたいフォルダに移動して下記コマンドを実行します。
-$ng new angular-start  これで雛形のアプリが作成されました。 angular-startフォルダに移動して下記コマンドを実行すると、http://localhost:4200/で最初の画面が表示されます。
-$ng serve  IntelliJ IDEAに読み込む ここまでの作業でAngular2の動作するアプリはできましたが、 IntelliJ IDEAでの編集はまだできません。 IntelliJ IDEAで編集するために下記手順でプロジェクトを読み込みます。
- File -&amp;gt; New -&amp;gt; Project from Existing Sources&amp;hellip; を選択してangular-startフォルダを選択する Import ProjectダイアログでCreate Project from existing sourcesを選択してNextボタンをクリックする 以降は何も変更せず、Nextボタンをクリックする Finishボタンが表示されたらそれをクリックする  これでソースの読み込みは完了しました。</description>
+      <description>
+
+&lt;p&gt;Angular2のアプリをIntelliJ IDEAで動かすまでの試行錯誤の記録です。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra&lt;/li&gt;
+&lt;li&gt;IntelliJ IDEA 2016.3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;angular2のインストール&#34;&gt;Angular2のインストール&lt;/h2&gt;
+
+&lt;p&gt;Angular2を動かすのにはNode.jsが必要なので、最初にNode.jsをインストールします。
+macOSの場合、homebrewでnodebrewを入れるのが良さそうです。
+nodebrewはNode.jsのバージョン管理システムだそうです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$brew install nodebrew
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;nodebrewインストール直後だと、カレントのNode.jsが選択されていないため、
+Node.jsのコマンドを打ってもそんなコマンドはないと怒られてしまいます。
+そこで、カレントのNode.jsを選択します。
+選択方法ですが、まずインストールされているNode.jsのバージョンを知る必要があるので、
+下記コマンドを実行し、バージョンリストを表示します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$nodebrew list
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;バージョンが表示されたら、利用したいバージョンを指定した下記コマンドを実行します。
+私の環境ではv7.3.0がインストールされていたので、これをカレントにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$nodebrew use v7.3.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでNode.jsが使えるようになりました。&lt;/p&gt;
+
+&lt;p&gt;次に目的のAngular2をインストールするわけですが、
+ここではコマンドラインツールであるangular-cliをインストールします。
+インストールはnpm(Node Package Manager)を使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$npm install -g angular-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでAngular2アプリを作る準備ができました。&lt;/p&gt;
+
+&lt;h2 id=&#34;angular2アプリを作る&#34;&gt;Angular2アプリを作る&lt;/h2&gt;
+
+&lt;p&gt;早速アプリを作りたいのですが、IntelliJ IDEAではAngularプロジェクトを作るメニューはありません。
+プラグイン等であるのかもしれませんが、プレーンな状態ではできないので、
+Angular-cliを使って雛形のプロジェクトを作成します。
+プロジェクトを作りたいフォルダに移動して下記コマンドを実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ng new angular-start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで雛形のアプリが作成されました。
+angular-startフォルダに移動して下記コマンドを実行すると、&lt;code&gt;http://localhost:4200/&lt;/code&gt;で最初の画面が表示されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ng serve
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;intellij-ideaに読み込む&#34;&gt;IntelliJ IDEAに読み込む&lt;/h2&gt;
+
+&lt;p&gt;ここまでの作業でAngular2の動作するアプリはできましたが、
+IntelliJ IDEAでの編集はまだできません。
+IntelliJ IDEAで編集するために下記手順でプロジェクトを読み込みます。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;File -&amp;gt; New -&amp;gt; Project from Existing Sources&amp;hellip; を選択してangular-startフォルダを選択する&lt;/li&gt;
+&lt;li&gt;Import ProjectダイアログでCreate Project from existing sourcesを選択してNextボタンをクリックする&lt;/li&gt;
+&lt;li&gt;以降は何も変更せず、Nextボタンをクリックする&lt;/li&gt;
+&lt;li&gt;Finishボタンが表示されたらそれをクリックする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;これでソースの読み込みは完了しました。&lt;/p&gt;
+
+&lt;h2 id=&#34;intellij-ideaで実行する&#34;&gt;IntelliJ IDEAで実行する&lt;/h2&gt;
+
+&lt;p&gt;Run -&amp;gt; Edit Configurations&amp;hellip; を選択してRun/Debug Configurationsダイアログを表示します。
+下記イメージではnpmの実行設定を既に作成した状態になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_42.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;イメージ右側のNode Interpreterの部分、選択された状態となっていますが、
+これはIntelliJ IDEAにNodeJSプラグインをインストールしていないと選択されません。
+ですので、事前にNodeJSプラグインをインストールする必要があります。&lt;/p&gt;
+
+&lt;p&gt;package.json, Scripts, Argumentsの部分が空白となっていると思うので、
+イメージ内で設定しているように設定します。
+これで実行する準備が整いました。
+実行するとコマンドラインで&lt;code&gt;ng serve&lt;/code&gt;とした時と同様のログがコンソールに出力されるのが確認できると思います。
+最初の時と同じように、起動後&lt;code&gt;http://localhost:4200&lt;/code&gt;にアクセスすることで最初の画面を表示することができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;コマンドラインからプロジェクトを作った後にIntelliJ IDEAに読み込ませるのがちょっと面倒です。
+プラグインでAngular2のプロジェクトが作れるようになると良いのですが、
+今の所できなさそうです。（どこかにあるのかな？）
+ただし、一度読み込ませてしまえば、後は使い慣れたIntelliJ IDEA上で編集ができるし、
+補完も効くので開発効率が良さそうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.gitbook.com/book/albatrosary/start-angular/details&#34;&gt;Start Angular&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Sun, 07 Sep 2014 22:04:16 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/solr/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/solr/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,9 +17,80 @@
       <pubDate>Sun, 07 Sep 2014 22:04:16 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/09/07/apache-solrnidui-sitejavadewen-shu-jian-suo-wosuru/</guid>
-      <description>前回 Apache Solrに対してJavaで文書登録をして、APIでその結果が取得できるところまでやってみました。 今回はAPIではなく、登録した文書をJavaで検索してみようと思います。
-環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot™ 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Javaで文書検索 文書登録時と同じく、Apache Solrjが必要です。 ライブラリの取得方法は前回を参照して頂くとして、早速サンプルコードです。
-import org.apache.solr.client.solrj.SolrQuery; import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.solrj.impl.HttpSolrServer; import org.apache.solr.client.solrj.response.QueryResponse; import org.apache.solr.common.SolrDocument; import org.apache.solr.common.SolrDocumentList; public class SolrClient { public static void main(String... args) throws Exception { final SolrServer solr = new HttpSolrServer(&amp;quot;http://localhost:8983/solr/collection1&amp;quot;); final SolrQuery solrQuery = new SolrQuery(); solrQuery.set(&amp;quot;q&amp;quot;, &amp;quot;ストリーム&amp;quot;); final QueryResponse response = solr.</description>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://kokuzawa.github.io/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/&#34;&gt;前回&lt;/a&gt;
+Apache Solrに対してJavaで文書登録をして、APIでその結果が取得できるところまでやってみました。
+今回はAPIではなく、登録した文書をJavaで検索してみようと思います。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: Mac OSX 10.9.4&lt;/li&gt;
+&lt;li&gt;Java: Oracle Corporation Java HotSpot™ 64-Bit Server VM (1.8.0 25.0-b70)&lt;/li&gt;
+&lt;li&gt;メモリ: 4GB&lt;/li&gt;
+&lt;li&gt;Apache Solr-4.10.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;javaで文書検索&#34;&gt;Javaで文書検索&lt;/h2&gt;
+
+&lt;p&gt;文書登録時と同じく、Apache Solrjが必要です。
+ライブラリの取得方法は前回を参照して頂くとして、早速サンプルコードです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
+import org.apache.solr.common.SolrDocumentList;
+
+public class SolrClient
+{
+    public static void main(String... args) throws Exception
+    {
+        final SolrServer solr = new HttpSolrServer(&amp;quot;http://localhost:8983/solr/collection1&amp;quot;);
+        final SolrQuery solrQuery = new SolrQuery();
+        solrQuery.set(&amp;quot;q&amp;quot;, &amp;quot;ストリーム&amp;quot;);
+        final QueryResponse response = solr.query(solrQuery);
+        final SolrDocumentList results = response.getResults();
+        final SolrDocument document = results.get(0);
+        System.out.println(document.get(&amp;quot;id&amp;quot;));
+        System.out.println(document.get(&amp;quot;content_type&amp;quot;));
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;条件は前回と同じ「ストリーム」を指定します。
+上記を実行すると以下のような出力結果になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;javamagazinevol16.pdf
+[application/pdf]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;サポートしているファイルタイプ&#34;&gt;サポートしているファイルタイプ&lt;/h2&gt;
+
+&lt;p&gt;PDFファイルの登録と検索ができることは確認しましたが、他のファイルはどうなのか気になります。
+業務アプリとして利用するにはOfficeファイル、みんなが大好きExcelは検索したいところです。
+Solrのリファレンスガイドを読むと下記のファイルをサポートしているようです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;xml, json, csv, pdf, doc, docx, ppt, pptx, xls, xlsx, odt, odp, ods, rtf, htm, html
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;業務で必要となりそうなファイルは大体そろっていますが個人的にはiWorkの文書もサポートして欲しいところ&amp;hellip;。
+内部的にはApache Tikaを利用しているので、iWorkもサポートされているはずと思い試してみたのですが、
+下記エラーが出て登録ができませんでした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;Exception in thread &amp;quot;main&amp;quot; org.apache.solr.client.solrj.SolrServerException: error reading streams
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.createMethod(HttpSolrServer.java:434)
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:210)
+	at org.apache.solr.client.solrj.impl.HttpSolrServer.request(HttpSolrServer.java:206)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;何か方法があるのかもしれませんが、今日のところは時間切れ。
+あとでまた調べてみたいと思います。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -28,15 +99,146 @@ import org.apache.solr.client.solrj.SolrQuery; import org.apache.solr.client.sol
       <pubDate>Fri, 05 Sep 2014 00:12:34 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/09/05/apache-solrdequan-wen-jian-suo-nihong-reru/</guid>
-      <description>Javaで簡単に全文検索を体験するには Apache Solr (ソーラー)が便利です。
-今回は現時点での最新バージョンである 4.10.0 を利用して全文検索を体験したいと思います。
-環境  OS: Mac OSX 10.9.4 Java: Oracle Corporation Java HotSpot&amp;trade; 64-Bit Server VM (1.8.0 25.0-b70) メモリ: 4GB Apache Solr-4.10.0  Solrを起動する SolrはWebアプリケーションの形になっています。 ZIPファイルをダウンロードして解凍すると、distフォルダにWARファイルが入っているので、 これをアプリケーションサーバにデプロイすれば良さそうですが、 今回はexampleフォルダにあるstart.jarを単独起動させます。
-java -jar start.jar  起動するとログが出力されて分かるのですが、Jettyを内包しているようです。 数秒で起動するので、下記URLにアクセスして起動していることを確認します。
-http://localhost:8983/solr/  文書登録 Solrを紹介しているサイトを確認すると、XMLファイルを読み込ませてインデックスを作成する例が多く見つかります。 ですが、実際の業務としてはOfficeファイルやPDFなどのファイルの内容をインデックス化したいという要求の方が多いので、 XMLではなく、それらのファイルを読み込ませてインデックスを作ってみることにします。 おそらく起動したSolr管理画面からもファイルの登録ができると思うのですが、 今回はJavaで書いたプログラムからファイルの登録を実行します。
-JavaからSolrにアクセスするにはApache Solrjというライブラリが必要です。 これはMavenに登録されているのでそこから取得します。
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.apache.solr&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;solr-solrj&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.10.0&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;compile&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt;  SolrjからPDFファイルを登録するサンプルコードです。
-import org.apache.solr.client.solrj.SolrServer; import org.apache.solr.client.solrj.impl.HttpSolrServer; import org.apache.solr.client.solrj.request.AbstractUpdateRequest; import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest; import java.io.File; public class App { public static void main(String.</description>
+      <description>
+
+&lt;p&gt;Javaで簡単に全文検索を体験するには Apache Solr (ソーラー)が便利です。&lt;br /&gt;
+今回は現時点での最新バージョンである 4.10.0 を利用して全文検索を体験したいと思います。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: Mac OSX 10.9.4&lt;/li&gt;
+&lt;li&gt;Java: Oracle Corporation Java HotSpot&amp;trade; 64-Bit Server VM (1.8.0 25.0-b70)&lt;/li&gt;
+&lt;li&gt;メモリ: 4GB&lt;/li&gt;
+&lt;li&gt;Apache Solr-4.10.0&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;solrを起動する&#34;&gt;Solrを起動する&lt;/h2&gt;
+
+&lt;p&gt;SolrはWebアプリケーションの形になっています。
+ZIPファイルをダウンロードして解凍すると、distフォルダにWARファイルが入っているので、
+これをアプリケーションサーバにデプロイすれば良さそうですが、
+今回はexampleフォルダにあるstart.jarを単独起動させます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;java -jar start.jar
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;起動するとログが出力されて分かるのですが、Jettyを内包しているようです。
+数秒で起動するので、下記URLにアクセスして起動していることを確認します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://localhost:8983/solr/
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;文書登録&#34;&gt;文書登録&lt;/h2&gt;
+
+&lt;p&gt;Solrを紹介しているサイトを確認すると、XMLファイルを読み込ませてインデックスを作成する例が多く見つかります。
+ですが、実際の業務としてはOfficeファイルやPDFなどのファイルの内容をインデックス化したいという要求の方が多いので、
+XMLではなく、それらのファイルを読み込ませてインデックスを作ってみることにします。
+おそらく起動したSolr管理画面からもファイルの登録ができると思うのですが、
+今回はJavaで書いたプログラムからファイルの登録を実行します。&lt;/p&gt;
+
+&lt;p&gt;JavaからSolrにアクセスするにはApache Solrjというライブラリが必要です。
+これはMavenに登録されているのでそこから取得します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.apache.solr&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;solr-solrj&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;4.10.0&amp;lt;/version&amp;gt;
+    &amp;lt;scope&amp;gt;compile&amp;lt;/scope&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;SolrjからPDFファイルを登録するサンプルコードです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import org.apache.solr.client.solrj.SolrServer;
+import org.apache.solr.client.solrj.impl.HttpSolrServer;
+import org.apache.solr.client.solrj.request.AbstractUpdateRequest;
+import org.apache.solr.client.solrj.request.ContentStreamUpdateRequest;
+
+import java.io.File;
+
+public class App
+{
+    public static void main(String... args) throws Exception
+    {
+        final SolrServer solr = 
+                new HttpSolrServer(&amp;quot;http://localhost:8983/solr/collection1&amp;quot;);
+        final ContentStreamUpdateRequest update = 
+                new ContentStreamUpdateRequest(&amp;quot;/update/extract&amp;quot;);
+        update.addFile(
+                new File(&amp;quot;/Users/Katsumi/Downloads/javamagazinevol16.pdf&amp;quot;), 
+                &amp;quot;application/pdf&amp;quot;);
+        update.setParam(&amp;quot;literal.id&amp;quot;, &amp;quot;javamagazinevol16.pdf&amp;quot;);
+        update.setAction(AbstractUpdateRequest.ACTION.COMMIT, true, true);
+        solr.request(update);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ちょうど手元に以前ダウンロードした「Javaマガジン日本語版 vol16」があったので、
+それを登録しています。実行するとわかるのですがcommons-loggingのクラスがない旨を表すエラーがでます。
+Mavenの依存ライブラリには含まれていないようなのですが、内部で使っているのでしょうね。
+しょうがないので、commons-loggingも取得するようにMavenに追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;commons-logging&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;commons-logging&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.2&amp;lt;/version&amp;gt;
+    &amp;lt;scope&amp;gt;runtime&amp;lt;/scope&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;再度実行すると今度はエラーも発生せずに正常に終了しました。
+登録したPDFファイルは66ページ、24.6MBですが、数秒で登録が終わりました。&lt;/p&gt;
+
+&lt;h2 id=&#34;文書検索&#34;&gt;文書検索&lt;/h2&gt;
+
+&lt;p&gt;以下のURLを実行して登録されていることを確認します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://localhost:8983/solr/collection1/select?q=ストリーム&amp;amp;wt=xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;PDFファイル中に「ストリーム」という単語があるので、これを検索条件（q）としています。
+また、検索結果フォーマット（wt）はxmlを指定します。他にjsonも指定できるようです。
+検索結果は以下のようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;response&amp;gt;
+  &amp;lt;lst name=&amp;quot;responseHeader&amp;quot;&amp;gt;
+    &amp;lt;int name=&amp;quot;status&amp;quot;&amp;gt;0&amp;lt;/int&amp;gt;
+    &amp;lt;int name=&amp;quot;QTime&amp;quot;&amp;gt;1&amp;lt;/int&amp;gt;
+    &amp;lt;lst name=&amp;quot;params&amp;quot;&amp;gt;
+      &amp;lt;str name=&amp;quot;q&amp;quot;&amp;gt;ストリーム&amp;lt;/str&amp;gt;
+      &amp;lt;str name=&amp;quot;wt&amp;quot;&amp;gt;xml&amp;lt;/str&amp;gt;
+    &amp;lt;/lst&amp;gt;
+  &amp;lt;/lst&amp;gt;
+  &amp;lt;result name=&amp;quot;response&amp;quot; numFound=&amp;quot;1&amp;quot; start=&amp;quot;0&amp;quot;&amp;gt;
+    &amp;lt;doc&amp;gt;
+      &amp;lt;arr name=&amp;quot;links&amp;quot;&amp;gt;...&amp;lt;/arr&amp;gt;
+      &amp;lt;str name=&amp;quot;id&amp;quot;&amp;gt;javamagazinevol16.pdf&amp;lt;/str&amp;gt;
+      &amp;lt;date name=&amp;quot;last_modified&amp;quot;&amp;gt;2014-05-21T07:44:33Z&amp;lt;/date&amp;gt;
+      &amp;lt;arr name=&amp;quot;title&amp;quot;&amp;gt;
+        &amp;lt;str/&amp;gt;
+      &amp;lt;/arr&amp;gt;
+      &amp;lt;arr name=&amp;quot;content_type&amp;quot;&amp;gt;
+        &amp;lt;str&amp;gt;application/pdf&amp;lt;/str&amp;gt;
+      &amp;lt;/arr&amp;gt;
+      &amp;lt;arr name=&amp;quot;content&amp;quot;&amp;gt;
+        &amp;lt;str&amp;gt;
+          JAVA //MARCH/APRIL 2014 / 注目のキーワ ドー： ラムダ式 / Nashorn / 日付と時間 / 組込み
+          ...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次回はJavaから文書検索をしてみたいと思います。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Change at Sep 6, 2014&lt;/strong&gt;&lt;br /&gt;
+誤字脱字を修正。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

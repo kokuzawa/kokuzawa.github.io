@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Tue, 11 Dec 2012 01:46:00 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/wii/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/wii/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,18 +17,182 @@
       <pubDate>Tue, 11 Dec 2012 01:46:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2012/12/11/wiiremotejdeyou-bou-on-osx-10-dot-8-7/</guid>
-      <description>Java Advent Calendar 2012の11日目のエントリーです。
-昨日は@cero_tさんです。
-明日は@snuffkinさんです。
-クリスマスだから楽しいことをしよう ということで、WiiUも発売したことだし、今更ながら、WiiRemoteJを取り上げてみたいと思います。 WiiRemoteJはBluetoothを利用して、WiiリモコンでJavaのアプリを操作するためのライブラリです。 最新版はv1.6というのがあるようなのですが、見つけることができなかったため、v1.4を使ってみたいと思います。
-OSX 10.8.7 Mountain Lionで動かす 今回やりたいことは、Macbook Pro上にWiiリモコンのレシーバーとなるアプリを起動し、 Wiiリモコンを使ってそのアプリを操作する、ということです。 レシーバーアプリは下記2つのライブラリが必要になります。
- BlueCove.jar WiiRemoteJ.jar  BlueCoveはJavaのBluetoothを利用する為のAPIの規約であるJSR-82の実装ライブラリです。 WiiRemoteJを動かす為に必要になります。 BlueCoveの最新版は2.1.0です。ところがこのBlueCove-2.1.0、Mountain Lion上では動かす事ができません。 Mountain Lionで動かす為には、まだ正式にリリースされていないBlueCove-2.1.1-SNAPSHOTを利用する必要があります。
-ただ、この2.1.1-SNAPSHOTも問題があります。 BlueCoveはBluetoothにアクセスする為に/System/Library/Frameworks/IOBluetooth.frameworkというフレームワークを利用しているのですが、 BlueCove-2.1.1-SNAPSHOTはこのIOBluetooth.frameworkに対応できていないため、実行時にエラーが発生してしまいます。
-という訳で、このままでは実行できそうにありません。 そこで、ここで提供されている、 BlueCove-2.1.1-SNAPSHOTで操作できるIOBluetooth.frameworkに置き換えることにします。 置き換える事により、他のアプリで問題が発生するかもしれません。 置き換える前に、元のIOBluetooth.frameworkのバックアップを作る事をお勧めします。
-さあ、ここまでできれば、あとはレシーバーを作るだけです。
-レシーバーを実装する 下記が実装コードになります。動作は単純で、1ボタン、2ボタン、マイナスボタン、プラスボタン、Aボタン、Bボタン、十字キーを押した場合は、 それを標準出力に表示、ホームボタンを押したらレシーバーを終了します。
-import java.io.IOException; import java.util.logging.Level; import java.util.logging.Logger; import wiiremotej.WiiRemote; import wiiremotej.WiiRemoteJ; import wiiremotej.event.WRAccelerationEvent; import wiiremotej.event.WRButtonEvent; import wiiremotej.event.WRStatusEvent; import wiiremotej.event.WiiRemoteAdapter; import wiiremotej.event.WiiRemoteDiscoveredEvent; import wiiremotej.event.WiiRemoteDiscoveryListener; /** * WiiRemoteJサンプルアプリ * @author Katsumi */ public class Wii extends WiiRemoteAdapter implements WiiRemoteDiscoveryListener { private WiiRemote _remote; public static void main(String.</description>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://atnd.org/events/33871&#34;&gt;Java Advent Calendar 2012&lt;/a&gt;の11日目のエントリーです。&lt;br /&gt;
+昨日は&lt;a href=&#34;https://twitter.com/cero_t&#34;&gt;@cero_t&lt;/a&gt;さんです。&lt;br /&gt;
+明日は&lt;a href=&#34;https://twitter.com/snuffkin&#34;&gt;@snuffkin&lt;/a&gt;さんです。&lt;/p&gt;
+
+&lt;h2 id=&#34;クリスマスだから楽しいことをしよう&#34;&gt;クリスマスだから楽しいことをしよう&lt;/h2&gt;
+
+&lt;p&gt;ということで、WiiUも発売したことだし、今更ながら、WiiRemoteJを取り上げてみたいと思います。
+WiiRemoteJはBluetoothを利用して、WiiリモコンでJavaのアプリを操作するためのライブラリです。
+最新版はv1.6というのがあるようなのですが、見つけることができなかったため、v1.4を使ってみたいと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;osx-10-8-7-mountain-lionで動かす&#34;&gt;OSX 10.8.7 Mountain Lionで動かす&lt;/h2&gt;
+
+&lt;p&gt;今回やりたいことは、Macbook Pro上にWiiリモコンのレシーバーとなるアプリを起動し、
+Wiiリモコンを使ってそのアプリを操作する、ということです。
+レシーバーアプリは下記2つのライブラリが必要になります。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://code.google.com/p/bluecove/&#34;&gt;BlueCove.jar&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://dl.qj.net/wii/homebrew/wiiremotej-v14.html&#34;&gt;WiiRemoteJ.jar&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;BlueCoveはJavaのBluetoothを利用する為のAPIの規約であるJSR-82の実装ライブラリです。
+WiiRemoteJを動かす為に必要になります。
+BlueCoveの最新版は2.1.0です。ところがこのBlueCove-2.1.0、Mountain Lion上では動かす事ができません。
+Mountain Lionで動かす為には、まだ正式にリリースされていないBlueCove-2.1.1-SNAPSHOTを利用する必要があります。&lt;/p&gt;
+
+&lt;p&gt;ただ、この2.1.1-SNAPSHOTも問題があります。
+BlueCoveはBluetoothにアクセスする為に/System/Library/Frameworks/IOBluetooth.frameworkというフレームワークを利用しているのですが、
+BlueCove-2.1.1-SNAPSHOTはこのIOBluetooth.frameworkに対応できていないため、実行時にエラーが発生してしまいます。&lt;/p&gt;
+
+&lt;p&gt;という訳で、このままでは実行できそうにありません。
+そこで、&lt;a href=&#34;https://groups.google.com/forum/#!msg/bluecove-users/7jWv1V1GC-4/jCHnASj1pbMJ&#34;&gt;ここ&lt;/a&gt;で提供されている、
+BlueCove-2.1.1-SNAPSHOTで操作できるIOBluetooth.frameworkに置き換えることにします。
+置き換える事により、他のアプリで問題が発生するかもしれません。
+置き換える前に、元のIOBluetooth.frameworkのバックアップを作る事をお勧めします。&lt;/p&gt;
+
+&lt;p&gt;さあ、ここまでできれば、あとはレシーバーを作るだけです。&lt;/p&gt;
+
+&lt;h2 id=&#34;レシーバーを実装する&#34;&gt;レシーバーを実装する&lt;/h2&gt;
+
+&lt;p&gt;下記が実装コードになります。動作は単純で、1ボタン、2ボタン、マイナスボタン、プラスボタン、Aボタン、Bボタン、十字キーを押した場合は、
+それを標準出力に表示、ホームボタンを押したらレシーバーを終了します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import wiiremotej.WiiRemote;
+import wiiremotej.WiiRemoteJ;
+import wiiremotej.event.WRAccelerationEvent;
+import wiiremotej.event.WRButtonEvent;
+import wiiremotej.event.WRStatusEvent;
+import wiiremotej.event.WiiRemoteAdapter;
+import wiiremotej.event.WiiRemoteDiscoveredEvent;
+import wiiremotej.event.WiiRemoteDiscoveryListener;
+
+/**
+ * WiiRemoteJサンプルアプリ
+ * @author Katsumi
+ */
+public class Wii extends WiiRemoteAdapter implements WiiRemoteDiscoveryListener
+{
+    private WiiRemote _remote;
+
+    public static void main(String... args)
+    {
+        Wii wii = new Wii();
+        WiiRemoteJ.findRemotes(wii, 1);
+    }
+
+    @Override
+    public void wiiRemoteDiscovered(WiiRemoteDiscoveredEvent evt)
+    {
+        _remote = evt.getWiiRemote();
+        try {
+            _remote.setAccelerometerEnabled(true);
+            _remote.setSpeakerEnabled(true);
+            _remote.setLEDIlluminated(0, true);
+        }
+        catch (IOException | IllegalStateException ex) {
+            Logger.getLogger(Wii.class.getName()).log(Level.SEVERE, null, ex);
+            if (null != _remote &amp;amp;&amp;amp; _remote.isConnected()) {
+                _remote.disconnect();
+            }
+        }
+
+        _remote.addWiiRemoteListener(this);
+    }
+
+    @Override
+    public void disconnected()
+    {
+    }
+
+    @Override
+    public void findFinished(int numFound)
+    {
+    }
+
+    @Override
+    public void statusReported(WRStatusEvent evt)
+    {
+    }
+
+    @Override
+    public void accelerationInputReceived(WRAccelerationEvent evt)
+    {
+    }
+
+    @Override
+    public void buttonInputReceived(WRButtonEvent evt)
+    {
+        if (evt.wasPressed(WRButtonEvent.TWO)) {
+            System.out.println(&amp;quot;2&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.ONE)) {
+            System.out.println(&amp;quot;1&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.B)) {
+            System.out.println(&amp;quot;B&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.A)) {
+            System.out.println(&amp;quot;A&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.MINUS)) {
+            System.out.println(&amp;quot;Minus&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.PLUS)) {
+            System.out.println(&amp;quot;Plus&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.LEFT)) {
+            System.out.println(&amp;quot;Left&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.RIGHT)) {
+            System.out.println(&amp;quot;Right&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.DOWN)) {
+            System.out.println(&amp;quot;Down&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.UP)) {
+            System.out.println(&amp;quot;Up&amp;quot;);
+        }
+        else if (evt.wasPressed(WRButtonEvent.HOME)) {
+            if (null != _remote &amp;amp;&amp;amp; _remote.isConnected()) {
+                _remote.disconnect();
+            }
+            System.exit(0);
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;動かしてみる&#34;&gt;動かしてみる&lt;/h2&gt;
+
+&lt;p&gt;レシーバー起動時のVMオプションに下記を設定します。
+このオプションを設定しないと、実行時にエラーが発生します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;-Dbluecove.jsr82.psm_minimum_off=true
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;レシーバー起動後にWiiリモコンの電池脇にある赤いSyncボタンを押す必要があります。数秒待つとアプリとWiiリモコンが繋がります。&lt;/p&gt;
+
+&lt;p&gt;実際に動かしているときの動画です。&lt;/p&gt;
+
+&lt;iframe width=&#34;560&#34; height=&#34;315&#34; src=&#34;https://www.youtube.com/embed/DzjeZHDwMFI&#34; frameborder=&#34;0&#34; allowfullscreen&gt;&lt;/iframe&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;本当はボタンを押したらWiiリモコンで音を鳴らすということもしてみたかったのですが、
+エラーが出て音源ファイルがWiiリモコンにうまく転送されませんでした。
+仕組みとしては、アプリ側からのアクションでWiiリモコン側で音を鳴らす事もできるはずです。
+音が出せるようになれば、ちょっとしたパーティーゲームができそうなので、この時期にはもってこいの遊びではないでしょうか。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

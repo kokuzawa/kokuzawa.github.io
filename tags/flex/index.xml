@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Fri, 12 Feb 2016 23:53:41 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/flex/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/flex/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,8 +17,12 @@
       <pubDate>Fri, 12 Feb 2016 23:53:41 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/02/12/apache-flex-kasutamuhetudadesekiyuriteiera/</guid>
-      <description>ちょっと前の話だけれども、 Apache Flex でHTTPリクエストを投げる際にカスタムヘッダを設定するとセキュリティエラーが発生するようになった。 詳細は下記。
-https://bugbase.adobe.com/index.cfm?event=bug&amp;amp;id=3759971</description>
+      <description>&lt;p&gt;ちょっと前の話だけれども、
+Apache Flex でHTTPリクエストを投げる際にカスタムヘッダを設定するとセキュリティエラーが発生するようになった。
+詳細は下記。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://bugbase.adobe.com/index.cfm?event=bug&amp;amp;id=3759971&#34;&gt;https://bugbase.adobe.com/index.cfm?event=bug&amp;amp;id=3759971&lt;/a&gt;&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -27,12 +31,110 @@ https://bugbase.adobe.com/index.cfm?event=bug&amp;amp;id=3759971</description>
       <pubDate>Mon, 27 May 2013 01:12:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/05/27/how-to-cancel-drag-and-drop-on-esc-key/</guid>
-      <description>Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。
-標準機能としてはありませんが、これ以降のバージョンで対応されている可能性もあるという前提になります。
-実はDrag and DropをEscキーを使ってキャンセルできることは知りませんでした。 Windowsでもできるようですが、普段使っているMacでもできることにさっき気がついたぐらいなので、 そんな操作を利用している人は少ないのではないかと思ってました。 ですが、検索してみると意外と多くの人が利用しているようです。
-実装する 機能が無いので実装することにします。
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;s:Application xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot; xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot; xmlns:mx=&amp;quot;library://ns.adobe.com/flex/mx&amp;quot; creationComplete=&amp;quot;creationComplete(event)&amp;quot;&amp;gt; &amp;lt;fx:Script&amp;gt;&amp;lt;![CDATA[ import mx.events.FlexEvent; import mx.managers.DragManager; import mx.managers.dragClasses.DragProxy; protected function creationComplete(event:FlexEvent):void { addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void { if (event.keyCode == Keyboard.ESCAPE) { DragManager.acceptDragDrop(null); myTree.hideDropFeedback(null); myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP)); var dragProxy:DragProxy = DragManager.mx_internal::dragProxy; if (dragProxy) { dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP)); } } }); } ]]&amp;gt;&amp;lt;/fx:Script&amp;gt; &amp;lt;s:layout&amp;gt; &amp;lt;s:HorizontalLayout/&amp;gt; &amp;lt;/s:layout&amp;gt; &amp;lt;mx:Tree id=&amp;quot;myTree&amp;quot; width=&amp;quot;200&amp;quot; height=&amp;quot;300&amp;quot; dragMoveEnabled=&amp;quot;true&amp;quot; dragEnabled=&amp;quot;true&amp;quot; dropEnabled=&amp;quot;true&amp;quot; labelField=&amp;quot;@label&amp;quot;&amp;gt; &amp;lt;mx:XMLListCollection id=&amp;quot;treeData&amp;quot;&amp;gt; &amp;lt;fx:XMLList&amp;gt; &amp;lt;node label=&amp;quot;Mail Box&amp;quot;&amp;gt; &amp;lt;node label=&amp;quot;Inbox&amp;quot;&amp;gt; &amp;lt;node label=&amp;quot;AAAAA&amp;quot;/&amp;gt; &amp;lt;node label=&amp;quot;BBBBB&amp;quot;/&amp;gt; &amp;lt;node label=&amp;quot;CCCCC&amp;quot;/&amp;gt; &amp;lt;/node&amp;gt; &amp;lt;node label=&amp;quot;Outbox&amp;quot;&amp;gt; &amp;lt;node label=&amp;quot;DDDDD&amp;quot;/&amp;gt; &amp;lt;node label=&amp;quot;EEEEE&amp;quot;/&amp;gt; &amp;lt;/node&amp;gt; &amp;lt;/node&amp;gt; &amp;lt;/fx:XMLList&amp;gt; &amp;lt;/mx:XMLListCollection&amp;gt; &amp;lt;/mx:Tree&amp;gt; &amp;lt;/s:Application&amp;gt;  大したことはしてなくて、重要なのは下記の部分。</description>
+      <description>
+
+&lt;p&gt;Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。&lt;br /&gt;
+標準機能としてはありませんが、これ以降のバージョンで対応されている可能性もあるという前提になります。&lt;/p&gt;
+
+&lt;p&gt;実はDrag and DropをEscキーを使ってキャンセルできることは知りませんでした。
+Windowsでもできるようですが、普段使っているMacでもできることにさっき気がついたぐらいなので、
+そんな操作を利用している人は少ないのではないかと思ってました。
+ですが、検索してみると意外と多くの人が利用しているようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;実装する&#34;&gt;実装する&lt;/h2&gt;
+
+&lt;p&gt;機能が無いので実装することにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
+&amp;lt;s:Application xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot;
+               xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot;
+               xmlns:mx=&amp;quot;library://ns.adobe.com/flex/mx&amp;quot;
+               creationComplete=&amp;quot;creationComplete(event)&amp;quot;&amp;gt;
+
+    &amp;lt;fx:Script&amp;gt;&amp;lt;![CDATA[
+        import mx.events.FlexEvent;
+        import mx.managers.DragManager;
+        import mx.managers.dragClasses.DragProxy;
+
+        protected function creationComplete(event:FlexEvent):void
+        {
+            addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
+            {
+                if (event.keyCode == Keyboard.ESCAPE) {
+                    DragManager.acceptDragDrop(null);
+                    myTree.hideDropFeedback(null);
+                    myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
+                    var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
+                    if (dragProxy) {
+                        dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
+                    }
+                }
+            });
+        }
+        ]]&amp;gt;&amp;lt;/fx:Script&amp;gt;
+
+    &amp;lt;s:layout&amp;gt;
+        &amp;lt;s:HorizontalLayout/&amp;gt;
+    &amp;lt;/s:layout&amp;gt;
+
+    &amp;lt;mx:Tree id=&amp;quot;myTree&amp;quot;
+             width=&amp;quot;200&amp;quot;
+             height=&amp;quot;300&amp;quot;
+             dragMoveEnabled=&amp;quot;true&amp;quot;
+             dragEnabled=&amp;quot;true&amp;quot;
+             dropEnabled=&amp;quot;true&amp;quot;
+             labelField=&amp;quot;@label&amp;quot;&amp;gt;
+        &amp;lt;mx:XMLListCollection id=&amp;quot;treeData&amp;quot;&amp;gt;
+            &amp;lt;fx:XMLList&amp;gt;
+                &amp;lt;node label=&amp;quot;Mail Box&amp;quot;&amp;gt;
+                    &amp;lt;node label=&amp;quot;Inbox&amp;quot;&amp;gt;
+                        &amp;lt;node label=&amp;quot;AAAAA&amp;quot;/&amp;gt;
+                        &amp;lt;node label=&amp;quot;BBBBB&amp;quot;/&amp;gt;
+                        &amp;lt;node label=&amp;quot;CCCCC&amp;quot;/&amp;gt;
+                    &amp;lt;/node&amp;gt;
+                    &amp;lt;node label=&amp;quot;Outbox&amp;quot;&amp;gt;
+                        &amp;lt;node label=&amp;quot;DDDDD&amp;quot;/&amp;gt;
+                        &amp;lt;node label=&amp;quot;EEEEE&amp;quot;/&amp;gt;
+                    &amp;lt;/node&amp;gt;
+                &amp;lt;/node&amp;gt;
+            &amp;lt;/fx:XMLList&amp;gt;
+        &amp;lt;/mx:XMLListCollection&amp;gt;
+    &amp;lt;/mx:Tree&amp;gt;
+
+&amp;lt;/s:Application&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;大したことはしてなくて、重要なのは下記の部分。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
+{
+    if (event.keyCode == Keyboard.ESCAPE) {
+        DragManager.acceptDragDrop(null);
+        myTree.hideDropFeedback(null);
+        myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
+        var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
+        if (dragProxy) {
+            dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
+        }
+    }
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;簡単に説明すると、まず、ツリーコンポーネントの上以外でもEscキーをハンドリングする必要があるので、キーイベントのリスナーはApplicationに付けます。
+で、Escが叩かれたらdrag-and-dropをキャンセルさせるためにコンポーネントに通知します。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;DragManager.acceptDragDrop(null);&lt;/code&gt;でドロップを無効に、ドラッグすると移動先にラインが表示されるので、
+&lt;code&gt;myTree.hideDropFeedback(null);&lt;/code&gt;でラインを消します。
+ドラッグ中はマウスをダウンしたままなので、キャンセルに合わせてツリーコンポーネントに対して
+&lt;code&gt;myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));&lt;/code&gt;を通知します。&lt;/p&gt;
+
+&lt;p&gt;そのあとがちょっと特殊で、mx_internalでDragManagerの内部変数を参照し、マウスアップイベントを通知します。
+この通知が無いと、ドラッグ操作をキャンセルしたと認識されません。&lt;/p&gt;
+
+&lt;p&gt;もっと良いやり方や、最新バージョンだと出来るよとか教えて頂けると嬉しいです :D&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

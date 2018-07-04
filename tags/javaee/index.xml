@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Wed, 04 Jul 2018 01:54:11 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/javaee/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/javaee/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,16 +17,119 @@
       <pubDate>Wed, 04 Jul 2018 01:54:11 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/</guid>
-      <description>以前、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。
-その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、 JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。
- 環境   macOS High Sierra
-  Java&amp;#8482; SE Runtime Environment (build 1.8.0_91-b14)
-  WildFly 13.0.0.Final
-     実装 フルセットのコードは下記にあります。
-https://github.com/kokuzawa/sandbox/tree/master/websocket-example
- 通常のJSFの設定の他に、下記設定がweb.xmlに必要です。
- web.xml &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;javax.faces.ENABLE_CDI_RESOLVER_CHAIN&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;javax.faces.ENABLE_WEBSOCKET_ENDPOINT&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt;   管理BeanはApplicationScopeの必要があります。
- PushBean.java import javax.enterprise.context.ApplicationScoped; import javax.faces.push.Push; import javax.faces.push.PushContext; import javax.inject.Named; import java.io.Serializable; import java.util.Calendar; @Named @ApplicationScoped public class PushBean implements Serializable { @Push(channel = &#34;clock&#34;) private PushContext push; public void clockAction() { final Calendar now = Calendar.</description>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/&#34;&gt;以前&lt;/a&gt;、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。&lt;br&gt;
+その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、
+JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_環境&#34;&gt;環境&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;macOS High Sierra&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Java&amp;#8482; SE Runtime Environment (build 1.8.0_91-b14)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;WildFly 13.0.0.Final&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_実装&#34;&gt;実装&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;フルセットのコードは下記にあります。&lt;br&gt;
+&lt;a href=&#34;https://github.com/kokuzawa/sandbox/tree/master/websocket-example&#34; class=&#34;bare&#34;&gt;https://github.com/kokuzawa/sandbox/tree/master/websocket-example&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;通常のJSFの設定の他に、下記設定がweb.xmlに必要です。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;web.xml&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&amp;lt;context-param&amp;gt;
+    &amp;lt;param-name&amp;gt;javax.faces.ENABLE_CDI_RESOLVER_CHAIN&amp;lt;/param-name&amp;gt;
+    &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt;
+&amp;lt;/context-param&amp;gt;
+&amp;lt;context-param&amp;gt;
+    &amp;lt;param-name&amp;gt;javax.faces.ENABLE_WEBSOCKET_ENDPOINT&amp;lt;/param-name&amp;gt;
+    &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt;
+&amp;lt;/context-param&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;管理BeanはApplicationScopeの必要があります。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;PushBean.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;import javax.enterprise.context.ApplicationScoped;
+import javax.faces.push.Push;
+import javax.faces.push.PushContext;
+import javax.inject.Named;
+import java.io.Serializable;
+import java.util.Calendar;
+
+@Named
+@ApplicationScoped
+public class PushBean implements Serializable
+{
+    @Push(channel = &#34;clock&#34;)
+    private PushContext push;
+
+    public void clockAction()
+    {
+        final Calendar now = Calendar.getInstance();
+
+        final String time = now.get(Calendar.HOUR_OF_DAY) + &#34;:&#34; +
+                now.get(Calendar.MINUTE) + &#34;:&#34; + now.get(Calendar.SECOND);
+
+        push.send(time);
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;XHTMLで重要なのは下記だけです。
+&lt;code&gt;websocket&lt;/code&gt; タグの &lt;code&gt;chaannel&lt;/code&gt; 属性で指定した値と、管理Beanの &lt;code&gt;Push&lt;/code&gt; アノテーションで指定した値が一致する必要があります。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;index.xhtml&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-xhtml&#34; data-lang=&#34;xhtml&#34;&gt;&amp;lt;f:websocket channel=&#34;clock&#34; onmessage=&#34;socketListener&#34; /&amp;gt;
+
+&amp;lt;script type=&#34;text/javascript&#34;&amp;gt;
+    function socketListener(message, channel, event) {
+        document.getElementById(&#34;clockId&#34;).innerHTML += message + &#34;&amp;amp;lt;br/&amp;amp;gt;&#34;;
+    }
+&amp;lt;/script&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_実行&#34;&gt;実行&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;起動オプションに下記を設定することで、WildFlyがJavaEE8モードで起動します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;-Dee8.preview.mode=true&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;前回と異なり、余計な設定をしなくても問題なく実行できました。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
@@ -35,12 +138,45 @@ https://github.com/kokuzawa/sandbox/tree/master/websocket-example
       <pubDate>Thu, 28 Jun 2018 01:16:27 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2018/06/28/bug-primefaces/</guid>
-      <description>要約 PrimeFaces-6.2 の Tree コンポーネントにバグがあります。
- この問題は報告済みです。 対応状況や詳しい内容は下記を参照してください。
-Tree: &#34;StackOverflowError&#34; when a node is dropped to own child node
-   再現方法 再現はとても簡単です。 PrimeFaces の Showcase で、 Node 0 をドラッグして Node 0.0 にドロップするだけです。
- この操作を実施するとエラー画面が表示されます。 以前はスタックトレースが画面に表示されたのですが、 新しいデザインになってからは表示がされず、何が起きたのかよくわからないかもしれません。 ローカル環境でこの操作を実施すると、下記のエラーが発生します。
- java.lang.StackOverflowError at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202) at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202) at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202) at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)     </description>
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_要約&#34;&gt;要約&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;PrimeFaces-6.2 の Tree コンポーネントにバグがあります。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;この問題は報告済みです。
+対応状況や詳しい内容は下記を参照してください。&lt;br&gt;
+&lt;a href=&#34;https://github.com/primefaces/primefaces/issues/3771&#34;&gt;Tree: &#34;StackOverflowError&#34; when a node is dropped to own child node&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_再現方法&#34;&gt;再現方法&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;再現はとても簡単です。
+PrimeFaces の &lt;a href=&#34;https://www.primefaces.org/showcase/ui/data/tree/dragdrop.xhtml&#34;&gt;Showcase&lt;/a&gt; で、
+&lt;code&gt;Node 0&lt;/code&gt; をドラッグして &lt;code&gt;Node 0.0&lt;/code&gt; にドロップするだけです。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;この操作を実施するとエラー画面が表示されます。
+以前はスタックトレースが画面に表示されたのですが、
+新しいデザインになってからは表示がされず、何が起きたのかよくわからないかもしれません。
+ローカル環境でこの操作を実施すると、下記のエラーが発生します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;java.lang.StackOverflowError
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)
+at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
@@ -49,10 +185,40 @@ Tree: &#34;StackOverflowError&#34; when a node is dropped to own child node
       <pubDate>Mon, 04 Dec 2017 01:40:41 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2017/12/04/primefaces-dblclick/</guid>
-      <description>今作っているWebアプリでリンクをダブルクリックで動作させるという要求が出たので、 どうやって実現するのか調べてみました。
- 通常のリンクを実装してみる PrimeFacesの commandLink コンポーネントでリンクを実装します。
- &amp;lt;p:commandLink value=&#34;Single Click&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;     ダブルクリックで動作するリンクを実装してみる commandLink コンポーネントで実装すると、 onclick イベントで動作するようにレンダリングされてしまうので、 link コンポーネントで実装します。 href を指定するのがコツです。 link コンポーネントでは dblclick イベントだけを発生させ、実際の呼び出しは remoteCommand コンポーネントで行います。
- &amp;lt;p:link href=&#34;#&#34; value=&#34;Double Click&#34; ondblclick=&#34;dblClickEvent()&#34; /&amp;gt; &amp;lt;p:remoteCommand name=&#34;dblClickEvent&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;     </description>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;今作っているWebアプリでリンクをダブルクリックで動作させるという要求が出たので、
+どうやって実現するのか調べてみました。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_通常のリンクを実装してみる&#34;&gt;通常のリンクを実装してみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;PrimeFacesの &lt;code&gt;commandLink&lt;/code&gt; コンポーネントでリンクを実装します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;p:commandLink value=&#34;Single Click&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_ダブルクリックで動作するリンクを実装してみる&#34;&gt;ダブルクリックで動作するリンクを実装してみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;code&gt;commandLink&lt;/code&gt; コンポーネントで実装すると、 &lt;code&gt;onclick&lt;/code&gt; イベントで動作するようにレンダリングされてしまうので、
+&lt;code&gt;link&lt;/code&gt; コンポーネントで実装します。 &lt;code&gt;href&lt;/code&gt; を指定するのがコツです。
+&lt;code&gt;link&lt;/code&gt; コンポーネントでは &lt;code&gt;dblclick&lt;/code&gt; イベントだけを発生させ、実際の呼び出しは &lt;code&gt;remoteCommand&lt;/code&gt; コンポーネントで行います。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;p:link href=&#34;#&#34; value=&#34;Double Click&#34; ondblclick=&#34;dblClickEvent()&#34; /&amp;gt;
+&amp;lt;p:remoteCommand name=&#34;dblClickEvent&#34; action=&#34;#{bean.onClick}&#34; /&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
@@ -61,10 +227,67 @@ Tree: &#34;StackOverflowError&#34; when a node is dropped to own child node
       <pubDate>Fri, 25 Dec 2015 20:50:08 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
-      <description>以前、「WildFlyでJdbcRealm」 という記事を書きました。 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、 忘れないようにメモしておきます。
-差分 WildFly 8.0.0.Finalの時の設定:
-&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt; &amp;lt;authentication&amp;gt; &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt; &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;HEX&amp;quot;/&amp;gt; &amp;lt;/login-module&amp;gt; &amp;lt;/authentication&amp;gt; &amp;lt;/security-domain&amp;gt;  WildFly 9.0.1.Finalの設定:
-&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt; &amp;lt;authentication&amp;gt; &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt; &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt; &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?</description>
+      <description>
+
+&lt;p&gt;以前、「&lt;a href=&#34;http://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/&#34;&gt;WildFlyでJdbcRealm&lt;/a&gt;」 という記事を書きました。
+これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。
+大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、
+忘れないようにメモしておきます。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;差分&#34;&gt;差分&lt;/h2&gt;
+
+&lt;p&gt;WildFly 8.0.0.Finalの時の設定:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt;
+    &amp;lt;authentication&amp;gt;
+        &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt;
+            &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt;
+            &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt;
+            &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt;
+            &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt;
+            &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;HEX&amp;quot;/&amp;gt;
+        &amp;lt;/login-module&amp;gt;
+    &amp;lt;/authentication&amp;gt;
+&amp;lt;/security-domain&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;WildFly 9.0.1.Finalの設定:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt;
+    &amp;lt;authentication&amp;gt;
+        &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt;
+            &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt;
+            &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt;
+            &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt;
+            &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt;
+            &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;base64&amp;quot;/&amp;gt;
+        &amp;lt;/login-module&amp;gt;
+    &amp;lt;/authentication&amp;gt;
+&amp;lt;/security-domain&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;違いは module-option の hashEncoding の値。
+8.0.0.Finalの時は&lt;code&gt;HEX&lt;/code&gt;であり、9.0.1.Finalでは&lt;code&gt;base64&lt;/code&gt;にしています。
+これはパスワードのハッシュエンコーディングの形式を指定している部分なのですが、
+9.0.1.FinalではHEXを認識していない模様。
+なので、DBに登録するパスワードのハッシュ文字列も設定に合わせて&lt;code&gt;HEX&lt;/code&gt;から&lt;code&gt;base64&lt;/code&gt;に変更します。&lt;/p&gt;
+
+&lt;h2 id=&#34;パスワードのハッシュ文字列生成方法&#34;&gt;パスワードのハッシュ文字列生成方法&lt;/h2&gt;
+
+&lt;p&gt;WildFlyには&lt;code&gt;base64&lt;/code&gt;のハッシュ文字列を生成するモジュールが入っているようです。
+以下のコマンドで指定文字列のBase64ハッシュ値を取得することができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;java -cp $JBOSS_HOME/modules/system/layers/base/org/picketbox/main/picketbox-4.9.2.Final.jar org.jboss.security.Base64Encoder [任意文字列] SHA-256
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;参考サイト&#34;&gt;参考サイト&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.eisele.net/2015/01/jdbc-realm-wildfly820-primefaces51.html&#34;&gt;JDBC Realm and Form Based Authentication with WildFly 8.2.0.Final, Primefaces 5.1 and MySQL 5&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -73,17 +296,200 @@ Tree: &#34;StackOverflowError&#34; when a node is dropped to own child node
       <pubDate>Sun, 20 Dec 2015 10:32:29 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/</guid>
-      <description>これは JavaEE Advent Calendar 2015 の20日目の記事です。
-昨日は@yumix_hさんの「「帰ってきたGlassFish Users Group Japan勉強会」の未発表資料」でした。
-明日は@emaggameさんです。
-Server Sent Eventsとは Server Sent Events (SSE) はサーバから送られたイベントという意味の通り、push型のデータ通信を行うことができます。 これはHTML5で追加された新機能です。 同じくpush型のデータ通信を行う方法としてWebsocketがありますが、WebsocketがHTTPとは別のプロトコルで通信をするのに対し、 SSEではHTTPプロトコルを利用します。そのため、既存のHTTPを利用した通信との互換性が高いというメリットがある反面、 Websocketのような双方向の通信を行うことはできません。 HTTPプロトコルでpush通信を実現するため、SSEではサーバからのレスポンスを受けても接続を終了せずに継続させます。 こうすることで、サーバ側からのデータを継続して受信することを実現します。 このようにSSEはHTTPプロトコルで接続を行うのですが、クライアントがSSEだと認識できるデータを送ってもらう必要があります。 そこで、サーバはMIMEタイプにtext/event-streamを設定する必要があります。
-JavaEE8にSSEのサポートが入るようですが、一足先にJAX-RSのRIであるJerseyでこの機能を試すことができます。
-Server Sent Eventsを試す 今回実行した環境は下記の通りです。
- OS: Mac OSX 10.11.1 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27) APサーバ: GlasshFish-4.1.1 ブラウザ: Safari-9.0.1  実際のコードはGithubにあるので、 コードを見れば分かる方は以降の実装の説明を読むより、 そちらを見ていただいた方が早いかと思います。
-sandbox/sse-example
-実装の説明 Mavenを利用しているので、最初に下記のDependencyを追加します。 2015/12/10時点のMaven Centralの最新版は2.22.1のようです。
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.jersey.media&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jersey-media-sse&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.22.1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  サーバ側のリソースはMIMEタイプにtext/event-streamを設定する他に、 org.glassfish.jersey.media.sse.EventOutputを返却する必要があります。
-@GET @Produces(SseFeature.SERVER_SENT_EVENTS) public EventOutput getServerSentEvents() { .</description>
+      <description>
+
+&lt;p&gt;これは &lt;a href=&#34;http://qiita.com/advent-calendar/2015/javaee&#34;&gt;JavaEE Advent Calendar 2015&lt;/a&gt; の20日目の記事です。&lt;br /&gt;
+昨日は&lt;a href=&#34;https://twitter.com/yumix_h&#34;&gt;@yumix_h&lt;/a&gt;さんの「&lt;a href=&#34;http://yumix.hatenablog.jp/entry/2015/12/19/205954&#34;&gt;「帰ってきたGlassFish Users Group Japan勉強会」の未発表資料&lt;/a&gt;」でした。&lt;br /&gt;
+明日は&lt;a href=&#34;https://twitter.com/emaggame&#34;&gt;@emaggame&lt;/a&gt;さんです。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;server-sent-eventsとは&#34;&gt;Server Sent Eventsとは&lt;/h2&gt;
+
+&lt;p&gt;Server Sent Events (SSE) はサーバから送られたイベントという意味の通り、push型のデータ通信を行うことができます。
+これはHTML5で追加された新機能です。
+同じくpush型のデータ通信を行う方法としてWebsocketがありますが、WebsocketがHTTPとは別のプロトコルで通信をするのに対し、
+SSEではHTTPプロトコルを利用します。そのため、既存のHTTPを利用した通信との互換性が高いというメリットがある反面、
+Websocketのような双方向の通信を行うことはできません。
+HTTPプロトコルでpush通信を実現するため、SSEではサーバからのレスポンスを受けても接続を終了せずに継続させます。
+こうすることで、サーバ側からのデータを継続して受信することを実現します。
+このようにSSEはHTTPプロトコルで接続を行うのですが、クライアントがSSEだと認識できるデータを送ってもらう必要があります。
+そこで、サーバはMIMEタイプに&lt;code&gt;text/event-stream&lt;/code&gt;を設定する必要があります。&lt;/p&gt;
+
+&lt;p&gt;JavaEE8にSSEのサポートが入るようですが、一足先にJAX-RSのRIであるJerseyでこの機能を試すことができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;server-sent-eventsを試す&#34;&gt;Server Sent Eventsを試す&lt;/h2&gt;
+
+&lt;p&gt;今回実行した環境は下記の通りです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: Mac OSX 10.11.1&lt;/li&gt;
+&lt;li&gt;Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27)&lt;/li&gt;
+&lt;li&gt;APサーバ: GlasshFish-4.1.1&lt;/li&gt;
+&lt;li&gt;ブラウザ: Safari-9.0.1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;実際のコードはGithubにあるので、
+コードを見れば分かる方は以降の実装の説明を読むより、
+そちらを見ていただいた方が早いかと思います。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://github.com/kokuzawa/sandbox/tree/master/sse-example&#34;&gt;sandbox/sse-example&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;実装の説明&#34;&gt;実装の説明&lt;/h2&gt;
+
+&lt;p&gt;Mavenを利用しているので、最初に下記のDependencyを追加します。
+2015/12/10時点のMaven Centralの最新版は2.22.1のようです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;org.glassfish.jersey.media&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;jersey-media-sse&amp;lt;/artifactId&amp;gt;
+  &amp;lt;version&amp;gt;2.22.1&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;サーバ側のリソースはMIMEタイプに&lt;code&gt;text/event-stream&lt;/code&gt;を設定する他に、
+&lt;code&gt;org.glassfish.jersey.media.sse.EventOutput&lt;/code&gt;を返却する必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@GET
+@Produces(SseFeature.SERVER_SENT_EVENTS)
+public EventOutput getServerSentEvents()
+{
+    ...
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;EventOutput&lt;/code&gt;を返却するだけだと、クライアントとの接続が確立しているだけの状態なので、
+実際にクライアントに送信するデータを書き込む必要があります。
+書き込みは&lt;code&gt;EventOutput#write(OutboundEvent)&lt;/code&gt;で行います。
+単純には下記のような実装になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final EventOutput eventOutput = new EventOutput();
+final OutboundEvent.Builder builder = new OutboundEvent.Builder();
+builder.name(&amp;quot;message-to-client&amp;quot;);
+builder.data(String.class, &amp;quot;Hello world !&amp;quot;);
+eventOutput.write(builder.build());
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;builder.name(...)&lt;/code&gt;で指定している文字列はクライアント側でイベントのマッピングをするために利用します。&lt;/p&gt;
+
+&lt;p&gt;今回クライアントはJavascriptにします。
+JavascriptでSSEを利用するには&lt;code&gt;EventSource&lt;/code&gt;クラスを利用します。
+&lt;code&gt;EventSource&lt;/code&gt;を利用した実装は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var eventList = document.getElementById(&amp;quot;eventList&amp;quot;);
+var eventSource = new EventSource(&amp;quot;http://localhost:8080/sse-example/api/sse/events&amp;quot;);
+eventSource.addEventListener(&amp;quot;message-to-client&amp;quot;, function (e) {
+    var newElement = document.createElement(&amp;quot;li&amp;quot;);
+    newElement.innerHTML = &amp;quot;message: &amp;quot; + e.data;
+    eventList.appendChild(newElement);
+});
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;EventSourceコンストラクタの引数でAPIエンドポイントを指定します。
+addEventListenerでサーバからのイベントをハンドリングします。
+この時、リスナーに設定するイベント名として、サーバ側コードで指定したイベント名を指定します。
+この例では&amp;rdquo;message-to-client&amp;rdquo;です。&lt;/p&gt;
+
+&lt;p&gt;さて、実際のコードの説明です。&lt;br /&gt;
+ユースケースとして複数のユーザがそれぞれブラウザの画面を表示している状態で、
+データが登録されると、開いている画面に登録された旨を伝えるメッセージを表示することを考えます。
+まず必要なのは接続を確立するために&lt;code&gt;EventOutput&lt;/code&gt;を返却するサービスです。
+&lt;code&gt;EventOutput&lt;/code&gt;はクライアントごとにインスタンスが必要なので、
+接続が確立した&lt;code&gt;EventOutput&lt;/code&gt;を格納するためのリストも合わせて定義します。
+これらを踏まえて下記のコードを作ります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private List&amp;lt;EventOutput&amp;gt; eventOutputs = new ArrayList&amp;lt;&amp;gt;();
+
+@GET
+@Path(&amp;quot;events&amp;quot;)
+@Produces(SseFeature.SERVER_SENT_EVENTS)
+public EventOutput getServerSentEvents()
+{
+    final EventOutput eventOutput = new EventOutput();
+    eventOutputs.add(eventOutput);
+    return eventOutput;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次に登録をするためのサービスを作ります。が、実際に何かを登録するのは実装が面倒なので、
+サービスが呼ばれたら各クライアントにメッセージをpushするだけにします。
+こんな感じです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@PUT
+@Path(&amp;quot;put&amp;quot;)
+public void putData() throws IOException
+{
+    for (EventOutput eventOutput : eventOutputs) {
+        final OutboundEvent.Builder builder = new OutboundEvent.Builder();
+        builder.name(&amp;quot;message-to-client&amp;quot;);
+        builder.data(String.class, &amp;quot;登録された！&amp;quot;);
+        eventOutput.write(builder.build());
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでサービス側は実装完了です。
+Javascriptクライアントを実装する前に正しく動くかcurlコマンドで確認してみます。
+接続確立のサービスを下記のように呼び出します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl http://localhost:8080/sse-example/api/sse/events
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;プロンプトが待ち状態になりました。接続されたままになったのでうまくいったようです！
+別のプロンプトから次のコマンドを実行して最初のプロンプトに通知されるか確認します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;curl -X PUT http://localhost:8080/sse-example/api/sse/put
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;最初のプロンプトの方に以下のメッセージが表示されました。こちらもうまくいったようです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;event: message-to-client
+data: 登録された！
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;サービス側が正常に動作することが確認できたので、
+次にJavascriptクライアントを作ります。
+HTMLを含めた全コードは下記のようになりました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;
+    &amp;lt;title&amp;gt;SSE Example&amp;lt;/title&amp;gt;
+    &amp;lt;script&amp;gt;
+        function startup() {
+            var eventList = document.getElementById(&amp;quot;eventList&amp;quot;);
+            var eventSource = new EventSource(&amp;quot;http://localhost:8080/sse-example/api/sse/events&amp;quot;);
+            eventSource.addEventListener(&amp;quot;message-to-client&amp;quot;, function (e) {
+                var newElement = document.createElement(&amp;quot;li&amp;quot;);
+                newElement.innerHTML = &amp;quot;message: &amp;quot; + e.data;
+                eventList.appendChild(newElement);
+            });
+        }
+    &amp;lt;/script&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body onload=&amp;quot;startup()&amp;quot;&amp;gt;
+    &amp;lt;h1&amp;gt;イベント表示:&amp;lt;/h1&amp;gt;
+    &amp;lt;ul id=&amp;quot;eventList&amp;quot;&amp;gt;&amp;lt;/ul&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;このようにSSEの実装は比較的簡単に行うことがでます。
+ただ最初にも書いたようにSSEは一方向通信なので、push通信だけでなく双方向通信を行いたい場合は
+Websocketを利用することになります。
+利用シーンとしてはWebsocketの方が多くなりそうですが、
+既存のアプリにpush通知機能を実装するという観点からであれば、
+HTTPプロトコルで動作するSSEを利用した方が良いケースがあるかもしれないですね。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考にしたサイト&#34;&gt;参考にしたサイト&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://jersey.java.net/documentation/latest/sse.html&#34;&gt;Chapter 15. Server-Sent Events (SSE) Support&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -92,13 +498,110 @@ sandbox/sse-example
       <pubDate>Sat, 20 Dec 2014 10:22:07 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
-      <description>Java EE Advent Calendar 2014の20日の記事です。
-昨日は@yoshioteradaさんの「Java EE 8 の新機能概要のご紹介」でした。
-明日は@suke_masaさんです。
-Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思ったところが始まりです。 サーバーがWildFlyだからRESTEasyが含まれているので、JerseyではなくRESTEasyを使えば良いのだけれども、 アプリ内でJersey MultiPartを使っているのでひとまずバージョンアップを試みたのですが、 いろいろ問題があって結局RESTEasyに置き換えました。
-実際の運用はTomcatを使っているので、Tomcatでも動作する設定を考慮しています。 なので、WildFlyオンリーで考えた場合は不要な設定があるかもしれません。
-環境  OS: Mac OSX Yosemite 10.10 Java: Java™ SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  pom.xml 下記のdiendencyが必要です。JettisonじゃなくてJacksonを使いたいのでそのdependencyも追加しています。 あとファイルアップロードも使いたいので、resteasy-multipart-providerも入れています。 resteasy-springに依存してRESTEasyのコアライブラリは入るので定義の必要ありません。 Tomcatの場合、サーバにはJAX-RSの実装は入っていないのでscopeはcompileを指定します。 WildFlyの場合はscopeをcompileにすると起動時にエラーが発生するのでprovidedを指定します。 これは既にRESTEasyがサーバに含まれているから。
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-servlet-initializer&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-multipart-provider&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-jackson-provider&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt; &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;resteasy-spring&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  web.xml web.xml には下記を追加します。 url-pattarnが/*以外の場合はresteasy.</description>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2014/javaee&#34;&gt;Java EE Advent Calendar 2014&lt;/a&gt;の20日の記事です。&lt;br /&gt;
+昨日は&lt;a href=&#34;https://twitter.com/yoshioterada&#34;&gt;@yoshioterada&lt;/a&gt;さんの「&lt;a href=&#34;http://yoshio3.com/2014/12/19/java-ee-8-new-features/&#34;&gt;Java EE 8 の新機能概要のご紹介&lt;/a&gt;」でした。&lt;br /&gt;
+明日は&lt;a href=&#34;https://twitter.com/suke_masa&#34;&gt;@suke_masa&lt;/a&gt;さんです。&lt;/p&gt;
+
+&lt;p&gt;Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思ったところが始まりです。
+サーバーがWildFlyだからRESTEasyが含まれているので、JerseyではなくRESTEasyを使えば良いのだけれども、
+アプリ内でJersey MultiPartを使っているのでひとまずバージョンアップを試みたのですが、
+いろいろ問題があって結局RESTEasyに置き換えました。&lt;/p&gt;
+
+&lt;p&gt;実際の運用はTomcatを使っているので、Tomcatでも動作する設定を考慮しています。
+なので、WildFlyオンリーで考えた場合は不要な設定があるかもしれません。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: Mac OSX Yosemite 10.10&lt;/li&gt;
+&lt;li&gt;Java: Java™ SE Runtime Environment (build 1.8.0-b132)&lt;/li&gt;
+&lt;li&gt;メモリ: 4GB&lt;/li&gt;
+&lt;li&gt;WildFly 8.0.0.Final&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;pom-xml&#34;&gt;pom.xml&lt;/h2&gt;
+
+&lt;p&gt;下記のdiendencyが必要です。JettisonじゃなくてJacksonを使いたいのでそのdependencyも追加しています。
+あとファイルアップロードも使いたいので、&lt;code&gt;resteasy-multipart-provider&lt;/code&gt;も入れています。
+&lt;code&gt;resteasy-spring&lt;/code&gt;に依存してRESTEasyのコアライブラリは入るので定義の必要ありません。
+Tomcatの場合、サーバにはJAX-RSの実装は入っていないのでscopeはcompileを指定します。
+WildFlyの場合はscopeをcompileにすると起動時にエラーが発生するのでprovidedを指定します。
+これは既にRESTEasyがサーバに含まれているから。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;resteasy-servlet-initializer&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt;
+    &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;resteasy-multipart-provider&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt;
+    &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;resteasy-jackson-provider&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;resteasy-spring&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;web-xml&#34;&gt;web.xml&lt;/h2&gt;
+
+&lt;p&gt;web.xml には下記を追加します。
+url-pattarnが&lt;code&gt;/*&lt;/code&gt;以外の場合は&lt;code&gt;resteasy.servlet.mapping.prefix&lt;/code&gt;の設定が必要です。
+&lt;code&gt;resteasy.scan&lt;/code&gt;で自動的にJAX-RSのコンポーネントをスキャンする設定ができるのですが、
+springと連携する場合は自動スキャンはしちゃダメ。
+自動スキャンしようとすると&lt;code&gt;org.jboss.resteasy.plugins.spring.SpringContextLoaderListener&lt;/code&gt;でエラーになります。&lt;/p&gt;
+
+&lt;p&gt;ということは、@Providerとか@PathがついたクラスはすべてSpringのコンポーネントにしておく必要があります。
+あとApplicationのサブクラスはなくても大丈夫です。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;org.jboss.resteasy.plugins.spring.SpringContextLoaderListener&lt;/code&gt;を追加しているので、
+&lt;code&gt;org.springframework.web.context.ContextLoaderListener&lt;/code&gt;は指定しちゃダメ。
+指定すると起動に失敗します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;  &amp;lt;context-param&amp;gt;
+    &amp;lt;param-name&amp;gt;resteasy.servlet.mapping.prefix&amp;lt;/param-name&amp;gt;
+    &amp;lt;param-value&amp;gt;/rest&amp;lt;/param-value&amp;gt;
+  &amp;lt;/context-param&amp;gt;
+  
+  &amp;lt;listener&amp;gt;
+    &amp;lt;listener-class&amp;gt;org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap&amp;lt;/listener-class&amp;gt;
+  &amp;lt;/listener&amp;gt;
+
+  &amp;lt;listener&amp;gt;
+    &amp;lt;listener-class&amp;gt;org.jboss.resteasy.plugins.spring.SpringContextLoaderListener&amp;lt;/listener-class&amp;gt;
+  &amp;lt;/listener&amp;gt;
+  
+  &amp;lt;servlet&amp;gt;
+    &amp;lt;servlet-name&amp;gt;Resteasy&amp;lt;/servlet-name&amp;gt;
+    &amp;lt;servlet-class&amp;gt;org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher&amp;lt;/servlet-class&amp;gt;
+  &amp;lt;/servlet&amp;gt;
+  &amp;lt;servlet-mapping&amp;gt;
+    &amp;lt;servlet-name&amp;gt;Resteasy&amp;lt;/servlet-name&amp;gt;
+    &amp;lt;url-pattern&amp;gt;/rest/*&amp;lt;/url-pattern&amp;gt;
+  &amp;lt;/servlet-mapping&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;これでJAX-RSのリソースクラスにも@AutowiredでDIできるようになります。
+RESTEasyのドキュメントに詳細に書いてあるんだけど、web.xmlの設定方法がServletのバージョンを考慮したパターンとか
+いろいろありすぎて逆に困る。結局いろいろ試した末に上記の設定にたどり着きました。&lt;/p&gt;
+
+&lt;p&gt;同じようなことをしようとしている人の何かの参考になれば。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -107,14 +610,124 @@ Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思った
       <pubDate>Sat, 23 Aug 2014 15:50:18 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
-      <description>今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。
-WildFly の設定 WildFly 8.0.0.Final に JDBCRealm を構築します。
-まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。
-Security Domain を追加します。 追加は WildFly の GUI コンソールから行います。 追加する Security Domain は Name: app, Cache Type: default です。
-追加した Security Domain を開き、Login Module を追加します。 追加する Login Modile は Code: Database, Flg: required です。
-追加した Login Module に Module Option を追加します。
-追加する Module Option は下記表になります。 dsJndiName で指定するのは事前に登録した Datasource です。
-   Key Value     dsJndiName java:/jdbc/realmSample   hashAlgorithm SHA-256   hashEncoding HEX   principalsQuery SELECT password FROM accounts WHERE email = ?</description>
+      <description>
+
+&lt;p&gt;今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;wildfly-の設定&#34;&gt;WildFly の設定&lt;/h2&gt;
+
+&lt;p&gt;WildFly 8.0.0.Final に JDBCRealm を構築します。&lt;br /&gt;
+まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_28.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Security Domain を追加します。
+追加は WildFly の GUI コンソールから行います。
+追加する Security Domain は Name: app, Cache Type: default です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_29.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;追加した Security Domain を開き、Login Module を追加します。
+追加する Login Modile は Code: Database, Flg: required です。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_30.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;追加した Login Module に Module Option を追加します。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_31.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;追加する Module Option は下記表になります。
+dsJndiName で指定するのは事前に登録した Datasource です。&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align=&#34;left&#34;&gt;Key&lt;/th&gt;
+&lt;th align=&#34;left&#34;&gt;Value&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;dsJndiName&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;java:/jdbc/realmSample&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;hashAlgorithm&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;SHA-256&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;hashEncoding&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;HEX&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;principalsQuery&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;SELECT password FROM accounts WHERE email = ?&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td align=&#34;left&#34;&gt;rolesQuery&lt;/td&gt;
+&lt;td align=&#34;left&#34;&gt;SELECT r.rolename, &amp;lsquo;Roles&amp;rsquo; FROM roles r, accounts a WHERE r.accountid = a.accountid AND a.email = ?&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;h2 id=&#34;データの投入&#34;&gt;データの投入&lt;/h2&gt;
+
+&lt;p&gt;最初に作ったテーブルにデータを投入します。
+パスワードに設定するのは、SHA256で暗号化、HEXエンコードした文字列です。
+ここでは &amp;lsquo;test&amp;rsquo; という文字列をパスワードにしています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;INSERT INTO accounts (email, password) VALUES (&#39;hoge&#39;, &#39;9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08&#39;);
+INSERT INTO roles (rolename, accountid) VALUES (&#39;MEMBER&#39;, 1);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;jboss-web-xml-の設定&#34;&gt;jboss-web.xml の設定&lt;/h2&gt;
+
+&lt;p&gt;追加した Security Domain を利用するために、jboss-web.xml へ Security Domain を指定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;security-domain&amp;gt;app&amp;lt;/security-domain&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;web-xml-の設定&#34;&gt;web.xml の設定&lt;/h2&gt;
+
+&lt;p&gt;BASIC認証が行われるように web.xml を設定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;security-role&amp;gt;
+    &amp;lt;role-name&amp;gt;MEMBER&amp;lt;/role-name&amp;gt;
+&amp;lt;/security-role&amp;gt;
+
+&amp;lt;security-constraint&amp;gt;
+    &amp;lt;web-resource-collection&amp;gt;
+        &amp;lt;web-resource-name&amp;gt;Member Resource&amp;lt;/web-resource-name&amp;gt;
+        &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;
+    &amp;lt;/web-resource-collection&amp;gt;
+    &amp;lt;auth-constraint&amp;gt;
+        &amp;lt;role-name&amp;gt;MEMBER&amp;lt;/role-name&amp;gt;
+    &amp;lt;/auth-constraint&amp;gt;
+&amp;lt;/security-constraint&amp;gt;
+
+&amp;lt;login-config&amp;gt;
+    &amp;lt;auth-method&amp;gt;BASIC&amp;lt;/auth-method&amp;gt;
+    &amp;lt;realm-name&amp;gt;Authentication&amp;lt;/realm-name&amp;gt;
+&amp;lt;/login-config&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これですべての設定が完了です。
+WildFly にアプリをデプロイしてアクセスするとBASIC認証のダイアログが表示されると思います。
+そこで事前に登録したアカウント情報を入力すると認証に成功するはずです。&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Oct 28, 2014 脱字修正&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -123,17 +736,158 @@ Security Domain を追加します。 追加は WildFly の GUI コンソール�
       <pubDate>Sun, 22 Dec 2013 09:20:55 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/12/22/jaxrs-upload-multiple-files/</guid>
-      <description>この記事はJava Advent Calendar 2013の22日目の記事です。
-昨日は@nagaseyasuhitoさんの「mvn siteのtips三連発」でした。
-明日は monzou さんです。
-ファイルアップロードを実現するために何を使っていますか？
-私はもっぱらJAX-RSを使っています。
-ファイルアップロードはAX-RSの仕様には含まれていないのですが、ほとんどの実装でサポートされているようです。 その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。
-今回利用したJerseyはGlassFish4に含まれているものを利用します。
-ライブラリとしては以下のjarになります。
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.jersey.media&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jersey-media-multipart&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;2.4.1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。
-&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=UTF-8&amp;quot;/&amp;gt; &amp;lt;title&amp;gt;JAX-RS upload multiple files example&amp;lt;/title&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;form enctype=&amp;quot;multipart/form-data&amp;quot; method=&amp;quot;post&amp;quot; action=&amp;quot;rest/upload/multipleFiles&amp;quot;&amp;gt; &amp;lt;div&amp;gt;&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;file&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;div&amp;gt;&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;file&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt; &amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Upload&amp;quot;&amp;gt; &amp;lt;/form&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;  で、実際にリクエストを受け取るJavaのコード。
-package org.katsumi.resources; import org.glassfish.jersey.media.multipart.FormDataBodyPart; import org.glassfish.jersey.media.multipart.FormDataParam; import javax.ws.rs.Consumes; import javax.ws.rs.POST; import javax.ws.rs.Path; import javax.ws.rs.Produces; import javax.</description>
+      <description>
+
+&lt;p&gt;この記事は&lt;a href=&#34;http://www.adventar.org/calendars/145&#34;&gt;Java Advent Calendar 2013&lt;/a&gt;の22日目の記事です。&lt;br /&gt;
+昨日は&lt;a href=&#34;https://twitter.com/nagaseyasuhito&#34;&gt;@nagaseyasuhito&lt;/a&gt;さんの「&lt;a href=&#34;http://www.nagaseyasuhito.net/2013/12/21/368/&#34;&gt;mvn siteのtips三連発&lt;/a&gt;」でした。&lt;br /&gt;
+明日は monzou さんです。&lt;/p&gt;
+
+&lt;p&gt;ファイルアップロードを実現するために何を使っていますか？&lt;br /&gt;
+私はもっぱらJAX-RSを使っています。&lt;/p&gt;
+
+&lt;p&gt;ファイルアップロードはAX-RSの仕様には含まれていないのですが、ほとんどの実装でサポートされているようです。
+その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。&lt;/p&gt;
+
+&lt;p&gt;今回利用したJerseyはGlassFish4に含まれているものを利用します。&lt;br /&gt;
+ライブラリとしては以下のjarになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.glassfish.jersey.media&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;jersey-media-multipart&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;2.4.1&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=UTF-8&amp;quot;/&amp;gt;
+    &amp;lt;title&amp;gt;JAX-RS upload multiple files example&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;form enctype=&amp;quot;multipart/form-data&amp;quot; method=&amp;quot;post&amp;quot; action=&amp;quot;rest/upload/multipleFiles&amp;quot;&amp;gt;
+        &amp;lt;div&amp;gt;&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;file&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt;
+        &amp;lt;div&amp;gt;&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;file&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt;
+        &amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Upload&amp;quot;&amp;gt;
+    &amp;lt;/form&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;で、実際にリクエストを受け取るJavaのコード。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.resources;
+
+import org.glassfish.jersey.media.multipart.FormDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataParam;
+
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+
+/**
+ * 複数ファイルのアップロードサンプル
+ * @author Katsumi
+ * @since 2013/12/21
+ */
+@Path(&amp;quot;/upload&amp;quot;)
+public class Upload
+{
+    @POST
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path(&amp;quot;/multipleFiles&amp;quot;)
+    public String upload(@FormDataParam(&amp;quot;file&amp;quot;)List&amp;lt;FormDataBodyPart&amp;gt; bodyParts) throws IOException
+    {
+        for (FormDataBodyPart part : bodyParts) {
+            Files.copy(part.getValueAs(InputStream.class),
+                    Paths.get(&amp;quot;/Users/Katsumi/Downloads&amp;quot;, part.getFormDataContentDisposition().getFileName()));
+        }
+        return &amp;quot;finish!!&amp;quot;;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;fileフィールドの値は、@FormDataParam(&amp;ldquo;file&amp;rdquo;)アノテーションを引数につけることで受け取ることができます。
+また、今回は複数のファイルを受け取るので、引数の方を&lt;code&gt;java.util.List&lt;/code&gt;にしています。
+&lt;code&gt;FormDataBodyPart&lt;/code&gt;に実際のファイルの情報が含まれているので、ここから必要なものを取り出します。&lt;/p&gt;
+
+&lt;p&gt;ネットで検索すると、ファイルのアップロードを受け取る際に、
+&lt;code&gt;InputStream&lt;/code&gt;と&lt;code&gt;FormDataContentDisposition&lt;/code&gt;の2つをパラメータとして受け取るサンプルが良く見つかりますが、
+&lt;code&gt;FormDataBodyPart&lt;/code&gt;にはこの2つの情報が含まれているので、こちらを利用した方が良いのではないかと思います。&lt;/p&gt;
+
+&lt;p&gt;ちなみに、&lt;code&gt;FormDataBodyPart&lt;/code&gt;から&lt;code&gt;InputStream&lt;/code&gt;を取り出すには&lt;code&gt;getValueAs(InputStream.class)&lt;/code&gt;を利用します。&lt;br /&gt;
+ここがちょっと分かりにくいところかもしれません。&lt;/p&gt;
+
+&lt;p&gt;あと、このコードだと、日本語ファイル名の場合に文字化けしてしまうので適切なエンコードが必要になりますが、
+文字コードの変換部分は今回の本質的な部分ではないので割愛します。&lt;/p&gt;
+
+&lt;p&gt;もう一点、今回の実装で注意する部分があります。&lt;br /&gt;
+JAX-RSのリソースクラスをweb.xmlで登録しているのですが、マルチパートを処理するに当たり登録対象として
+&lt;code&gt;org.glassfish.jersey.media.multipart.MultiPartFeature&lt;/code&gt;クラスを含める必要あるようです。
+ですので、web.xmlの該当部分は下記のような宣言としています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;servlet&amp;gt;
+    &amp;lt;servlet-name&amp;gt;MyApplication&amp;lt;/servlet-name&amp;gt;
+    &amp;lt;servlet-class&amp;gt;org.glassfish.jersey.servlet.ServletContainer&amp;lt;/servlet-class&amp;gt;
+    &amp;lt;init-param&amp;gt;
+        &amp;lt;param-name&amp;gt;jersey.config.server.provider.classnames&amp;lt;/param-name&amp;gt;
+        &amp;lt;param-value&amp;gt;
+            org.katsumi.resources.Upload,
+            org.glassfish.jersey.media.multipart.MultiPartFeature
+        &amp;lt;/param-value&amp;gt;
+    &amp;lt;/init-param&amp;gt;
+&amp;lt;/servlet&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;完全なコードは&lt;a href=&#34;https://bitbucket.org/kokuzawa/jaxrs-rs-upload-multiple-files/src&#34;&gt;Bitbacket&lt;/a&gt;にアップしています。&lt;/p&gt;
+
+&lt;h2 id=&#34;ちょっと発展&#34;&gt;ちょっと発展&lt;/h2&gt;
+
+&lt;p&gt;HTML5ではファイルインプットフィールドにmultiple属性が追加されました。&lt;br /&gt;
+これを使うと、一つのファイルフィールドで複数のファイルを設定できるようになります。&lt;/p&gt;
+
+&lt;p&gt;HTMLをmultipleに変更します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;meta http-equiv=&amp;quot;Content-Type&amp;quot; content=&amp;quot;text/html; charset=UTF-8&amp;quot;/&amp;gt;
+    &amp;lt;title&amp;gt;JAX-RS upload multiple files example&amp;lt;/title&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+    &amp;lt;form enctype=&amp;quot;multipart/form-data&amp;quot; method=&amp;quot;post&amp;quot; 
+          action=&amp;quot;rest/upload/multipleFiles&amp;quot;&amp;gt;
+        &amp;lt;div&amp;gt;&amp;lt;input type=&amp;quot;file&amp;quot; name=&amp;quot;file&amp;quot; multiple=&amp;quot;multiple&amp;quot;/&amp;gt;&amp;lt;/div&amp;gt;
+        &amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;Upload&amp;quot;&amp;gt;
+    &amp;lt;/form&amp;gt;
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ファイルを複数選択します。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_27.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Uploadボタンをクリックするとファイルが無事アップロードできました。
+Javaのコードの修正は必要ないですね。当たり前と言えば当たり前なのですが&amp;hellip; :P&lt;/p&gt;
+
+&lt;p&gt;ファイルアップロードというと面倒な処理を書かないといけないと思うかもしれませんが、
+JAX-RSというかJerseyを利用すると、このように簡単にアップロードを行うことができます。&lt;/p&gt;
+
+&lt;p&gt;皆さんも試してみてはいかがでしょうか？&lt;/p&gt;
+
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -142,21 +896,93 @@ package org.katsumi.resources; import org.glassfish.jersey.media.multipart.FormD
       <pubDate>Fri, 14 Jun 2013 01:53:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/06/14/javaee7-release/</guid>
-      <description>JavaEE 7 がというかGlassFish 4 がリリースされた。
-会社でテストサーバとして使っているのは、GlassFish 3.1.2.2 なので早速入れ替えてみた。 余談だが運用サーバはTomcatなので、どちらかというとテストサーバの方が性能が良い。
-で、意気揚々と起動してみた訳なのだが、起動できない。
-理由は単純で、GlassFish 4 はJDK7が必須にもかかわらず、プロジェクトのJDKのバージョンがJDK6なのである。 まあコンパイル時にサーバのクラスのバージョンよりも古いバージョンでコンパイルしているよ、という警告が出ていたので 何となくは思っていたのだが、改めて起動できないとちょっとショックではある。
-ひとまず、DataSourceの設定が今までと同じように出来ることは確認したので、 それについて書こうと思う。
-ドライバの配置 GlassFishで利用できるJDBCドライバには下記のものがある。
-Administration Guide:
- ■ IBM DB2 Database Type 2 Driver
-■ IBM DB2 Database Type 4 Driver
-■ Java DB/Derby Type 4 Driver
-■ MySQL Server Database Type 4 Driver
-■ Oracle 10 Database Driver
-■ Oracle 11 Database Driver
-■ PostgreSQL Type 4 Driver
-■ DataDirect Type 4 Driver for IBM DB2 Database</description>
+      <description>
+
+&lt;p&gt;JavaEE 7 がというかGlassFish 4 がリリースされた。&lt;br /&gt;
+会社でテストサーバとして使っているのは、GlassFish 3.1.2.2 なので早速入れ替えてみた。
+余談だが運用サーバはTomcatなので、どちらかというとテストサーバの方が性能が良い。&lt;/p&gt;
+
+&lt;p&gt;で、意気揚々と起動してみた訳なのだが、起動できない。&lt;br /&gt;
+理由は単純で、GlassFish 4 はJDK7が必須にもかかわらず、プロジェクトのJDKのバージョンがJDK6なのである。
+まあコンパイル時にサーバのクラスのバージョンよりも古いバージョンでコンパイルしているよ、という警告が出ていたので
+何となくは思っていたのだが、改めて起動できないとちょっとショックではある。&lt;/p&gt;
+
+&lt;p&gt;ひとまず、DataSourceの設定が今までと同じように出来ることは確認したので、
+それについて書こうと思う。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;ドライバの配置&#34;&gt;ドライバの配置&lt;/h2&gt;
+
+&lt;p&gt;GlassFishで利用できるJDBCドライバには下記のものがある。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://glassfish.java.net/docs/4.0/administration-guide.pdf&#34;&gt;Administration Guide&lt;/a&gt;:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;■ IBM DB2 Database Type 2 Driver&lt;br /&gt;
+■ IBM DB2 Database Type 4 Driver&lt;br /&gt;
+■ Java DB/Derby Type 4 Driver&lt;br /&gt;
+■ MySQL Server Database Type 4 Driver&lt;br /&gt;
+■ Oracle 10 Database Driver&lt;br /&gt;
+■ Oracle 11 Database Driver&lt;br /&gt;
+■ PostgreSQL Type 4 Driver&lt;br /&gt;
+■ DataDirect Type 4 Driver for IBM DB2 Database&lt;br /&gt;
+■ DataDirect Type 4 Driver for IBM Informix&lt;br /&gt;
+■ DataDirect Type 4 Driver for Microsoft SQL Server Database&lt;br /&gt;
+■ DataDirect Type 4 Driver for MySQL Server Database&lt;br /&gt;
+■ DataDirect Type 4 Driver for Oracle 11 Database&lt;br /&gt;
+■ DataDirect Type 4 Driver for Sybase Database&lt;br /&gt;
+■ Inet Oraxo Driver for Oracle Database&lt;br /&gt;
+■ Inet Merlia Driver for Microsoft SQL Server Database&lt;br /&gt;
+■ Inet Sybelux Driver for Sybase Database&lt;br /&gt;
+■ JConnect Type 4 Driver for Sybase ASE 12.5 Database&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;沢山あるので困らないと思う。主に使っているのはPostgreSQLなので、今回はそのドライバを使うことにした。
+ドライバといってもjarファイルなので、ダウンロードしてきたjarファイルをGlassFishが認識できるクラスパスに配置する必要がある。
+これもAdministration Guideに記載があり、下記にあるように&lt;code&gt;domain-dir/lib&lt;/code&gt;に配置すれば良いようだ。以前との変更点は無い。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&lt;a href=&#34;https://glassfish.java.net/docs/4.0/administration-guide.pdf&#34;&gt;Administration Guide&lt;/a&gt;:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+&lt;p&gt;Making the JDBC Driver JAR Files Accessible
+To integrate the JDBC driver into a GlassFish Server domain, copy the JAR files into the domain-dir/lib directory, then restart the server.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;サーバを起動したら&lt;code&gt;localhost:4848&lt;/code&gt;にアクセスし、Resources -&amp;gt; JDBC -&amp;gt; JDBC Connection Pools と選択する。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_11.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Newボタンをクリックすると、コネクションプールの作成画面に変わる。
+今回はPostgreSQLのDataSourceを作るので、Resource Typeは&lt;code&gt;javax.sql.DataSource&lt;/code&gt;、Database Driver Vendorは&lt;code&gt;Postgresql&lt;/code&gt;を選択する。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_12.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;必要事項の入力が終わったらNextボタンをクリックしよう。
+すると、コネクションプールの詳細な設定画面が表示されるが、上の方の設定はひとまず変更せず、
+一番下にあるAdditional Propertiesを設定する。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_13.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;設定が終わったらFinishボタンをクリックしよう。っとその前に上の方の設定にPingというのがあるので、
+これをONにしておく。ここをONにしておけば、コネクションプールがちゃんとDBと接続できるか確認してくれるのだ。
+うまく接続できれば画面上部に成功を表すメッセージが表示されるはず。&lt;/p&gt;
+
+&lt;p&gt;次にResources -&amp;gt; JDBC -&amp;gt; JDBC Resources と選択する。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_14.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Newボタンをクリックしてリソース設定画面を表示する。
+Pool Nameにはさっき作成したコネクションプールを指定する。あとはJNDI Nameに任意の名前を設定してOKボタンをクリックすればJNDIリソースの完成だ。
+このリソースは、こんな風に取得することができる。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final Context ctx = new InitialContext();
+final DataSource dataSource = (DataSource) ctx.lookup(&amp;quot;jdbc/demo&amp;quot;);
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここまで設定できれば、あとは色々なWebアプリから利用するだけ。
+なんだかJavaEE 7 にはあまり関係がないが、今までと同じように設定が出来るということを報告しておく。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -165,17 +991,66 @@ Administration Guide:
       <pubDate>Sun, 27 Jan 2013 12:08:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/</guid>
-      <description> JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。
-数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。
-アプリ構成 JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。
-コード 検証に利用するコードは下記の通り。 Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、 永続化されたBookエンティティのうち、bookname=&#39;name1&#39;のレコードを抽出する。 また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。
- 検証 まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。 約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。 簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、 tachされたエンティティの数が増加すると、それに比例して劣化していく。
-次に改善後の結果。 約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。
-改善方法 では、何をすれば改善するのか。 結論から言えば、エンティティをdetachすれば良い。 detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。 そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、 あとでEclipseLinkのソースコードを確認してみようと思う。 ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。
-検証コードでは、ループ内の最後に下記2行を追加した。
-em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。 ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、 片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。
-ちなみにflushやclearに関しては次の本が詳しい。
- </description>
+      <description>
+
+&lt;p&gt;JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。
+サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、
+ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。&lt;/p&gt;
+
+&lt;p&gt;数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、
+想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。
+そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。&lt;/p&gt;
+
+&lt;h2 id=&#34;アプリ構成&#34;&gt;アプリ構成&lt;/h2&gt;
+
+&lt;p&gt;JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。&lt;/p&gt;
+
+&lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
+
+&lt;p&gt;検証に利用するコードは下記の通り。
+Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、
+永続化されたBookエンティティのうち、&lt;code&gt;bookname=&#39;name1&#39;&lt;/code&gt;のレコードを抽出する。
+また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。&lt;/p&gt;
+
+&lt;script src=&#34;https://gist.github.com/kokuzawa/4646983.js&#34;&gt;&lt;/script&gt;
+
+&lt;h2 id=&#34;検証&#34;&gt;検証&lt;/h2&gt;
+
+&lt;p&gt;まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。
+約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。
+簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、
+tachされたエンティティの数が増加すると、それに比例して劣化していく。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;次に改善後の結果。
+約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_5.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;改善方法&#34;&gt;改善方法&lt;/h2&gt;
+
+&lt;p&gt;では、何をすれば改善するのか。
+結論から言えば、エンティティをdetachすれば良い。
+detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。
+そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、
+あとでEclipseLinkのソースコードを確認してみようと思う。
+ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。&lt;/p&gt;
+
+&lt;p&gt;検証コードでは、ループ内の最後に下記2行を追加した。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;em.flush();
+em.clear();
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;em.flush()&lt;/code&gt;を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。
+ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、
+片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。&lt;/p&gt;
+
+&lt;p&gt;ちなみにflushやclearに関しては次の本が詳しい。&lt;/p&gt;
+
+&lt;iframe src=&#34;http://rcm-jp.amazon.co.jp/e/cm?lt1=_blank&amp;bc1=FFFFFF&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=moonwhaleblog-22&amp;o=9&amp;p=8&amp;l=as1&amp;m=amazon&amp;f=ifr&amp;ref=qf_sp_asin_til&amp;asins=4798124605&#34; style=&#34;width:120px;height:240px;&#34; scrolling=&#34;no&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+</description>
     </item>
     
     <item>
@@ -184,14 +1059,91 @@ em.flush(); em.clear();  em.flush()を呼び出しているのは、Bookエン�
       <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</guid>
-      <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
-(Bootstrapのalert alert-errorを適用)
-これに対してTableレイアウトは以下のような出力になります。
-どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。 MessagesコンポーネントはHTMLをカスタマイズする事ができません。 正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、 そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、 com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。 もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。 そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。
-BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。 このクローズボタンをクリックする事により、エラー情報を消すことができます。 クローズボタンを出すには、HTMLを下記のように記載する必要があります。
-&amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;Summary Message&amp;lt;/h4&amp;gt; Detail Message &amp;lt;/div&amp;gt;  これをJSF合成コンポーネントにします。 webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)
-alert.xhtml:
-&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt; &amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xmlns:cc=&amp;quot;http://java.sun.com/jsf/composite&amp;quot; xmlns:c=&amp;quot;http://java.sun.com/jsp/jstl/core&amp;quot;&amp;gt; &amp;lt;!-- INTERFACE --&amp;gt; &amp;lt;cc:interface&amp;gt; &amp;lt;/cc:interface&amp;gt; &amp;lt;!-- IMPLEMENTATION --&amp;gt; &amp;lt;cc:implementation&amp;gt; &amp;lt;c:forEach var=&amp;quot;message&amp;quot; items=&amp;quot;#{facesContext.messageList}&amp;quot;&amp;gt; &amp;lt;c:if test=&amp;quot;#{message.severity == &#39;ERROR 2&#39;}&amp;quot;&amp;gt; &amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;#{message.</description>
+      <description>&lt;p&gt;JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。
+出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。
+listレイアウトは以下のような出力になります。&lt;br /&gt;
+(Bootstrapの&lt;code&gt;alert alert-error&lt;/code&gt;を適用)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;これに対してTableレイアウトは以下のような出力になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。
+MessagesコンポーネントはHTMLをカスタマイズする事ができません。
+正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、
+そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、
+com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。
+もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。
+そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。&lt;/p&gt;
+
+&lt;p&gt;BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。
+このクローズボタンをクリックする事により、エラー情報を消すことができます。
+クローズボタンを出すには、HTMLを下記のように記載する必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt;
+    &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt;
+    &amp;lt;h4&amp;gt;Summary Message&amp;lt;/h4&amp;gt;
+    Detail Message
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これをJSF合成コンポーネントにします。
+webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;alert.xhtml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt;
+&amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; 
+      &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;
+&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;
+      xmlns:cc=&amp;quot;http://java.sun.com/jsf/composite&amp;quot;
+      xmlns:c=&amp;quot;http://java.sun.com/jsp/jstl/core&amp;quot;&amp;gt;
+
+    &amp;lt;!-- INTERFACE --&amp;gt;
+    &amp;lt;cc:interface&amp;gt;
+    &amp;lt;/cc:interface&amp;gt;
+
+    &amp;lt;!-- IMPLEMENTATION --&amp;gt;
+    &amp;lt;cc:implementation&amp;gt;
+        &amp;lt;c:forEach var=&amp;quot;message&amp;quot; items=&amp;quot;#{facesContext.messageList}&amp;quot;&amp;gt;
+            &amp;lt;c:if test=&amp;quot;#{message.severity == &#39;ERROR 2&#39;}&amp;quot;&amp;gt;
+                &amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt;
+                    &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; 
+                            data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt;
+                    &amp;lt;h4&amp;gt;#{message.summary}&amp;lt;/h4&amp;gt;
+                    #{message.detail}
+                &amp;lt;/div&amp;gt;
+            &amp;lt;/c:if&amp;gt;
+        &amp;lt;/c:forEach&amp;gt;
+    &amp;lt;/cc:implementation&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JSF合成コンポーネントはinterfaceの部分にコンポーネントの属性を、implementationの部分に実装を書きます。
+今回は属性は不要なので、実装部分だけになります。
+FacesMessageはFacesContext.messageListから取得します。
+コンポーネントはエラーメッセージが設定されている場合のみ表示します。
+エラーメッセージはFacesMessage.severityがFacesMessage.SEVERITY_ERRORのものになりますが、
+EL式ではStatic fieldを比較値として比較できません。
+そのため、FacesMessage.SEVERITY_ERRORの文字列表現である&amp;rsquo;ERROR 2&amp;rsquo;と比較し、一致するものをエラーメッセージとして判定します。
+また、複数設定されている場合を考慮して、forEachを利用し、FacesMessageの数だけAlertsコンポーネントを表示します。&lt;/p&gt;
+
+&lt;p&gt;配置したJSF合成コンポーネントは、&lt;a href=&#34;http://java.sun.com/jsf/composite/bootstrap&#34;&gt;http://java.sun.com/jsf/composite/bootstrap&lt;/a&gt; というネームスペースで利用できます。
+&lt;a href=&#34;http://java.sun.com/jsf/composite/&#34;&gt;http://java.sun.com/jsf/composite/&lt;/a&gt; にフォルダ名であるbootstrapを付けるだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html xmlns:bs=&amp;quot;http://java.sun.com/jsf/composite/bootstrap&amp;quot;&amp;gt;
+    &amp;lt;bs:alert/&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実際に表示すると以下のようになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_3.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;エラーメッセージの右上にクローズボタンが表示され、クリックする事によりメッセージを閉じることができるようになりました。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -200,16 +1152,182 @@ alert.xhtml:
       <pubDate>Sat, 15 Dec 2012 15:50:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2012/12/15/point-to-point-on-jms/</guid>
-      <description>JavaEE Advent Calendar 2012の15日目のエントリーです。
-昨日は@yoshioteradaさんのJava EE 7 WebSocket Client Sample Application with JavaFXです。
-明日は@akirakoyasuさんです。
-普段は使わないJMSを使う おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。 世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。 分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。 おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。
-そんな事もあって、JMSの知識が皆無だったわけですが、 JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。
-必要なもの  GlassFish-3.1.2.2 jms-api-1.1-rev-1.jar  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;javax.jms&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;jms-api&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.1-rev-1&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;   imq-4.5.2.jar  &amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.glassfish.mq&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;imq&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;4.5.2&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、 今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。 また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、 こちらも容易に入手可能です。
-事前準備 GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、 ポートへのアクセスを許可する必要があるかもしれません。
-メッセージプロデューサーを作る メッセージを送信するプロデューサーを作ります。
-package jp.co.baykraft.jmsexample; import com.sun.messaging.ConnectionConfiguration; import com.sun.messaging.QueueConnectionFactory; import javax.jms.JMSException; import javax.jms.Queue; import javax.jms.QueueConnection; import javax.jms.QueueSender; import javax.jms.QueueSession; import javax.</description>
+      <description>
+
+&lt;p&gt;&lt;a href=&#34;http://atnd.org/events/33783&#34;&gt;JavaEE Advent Calendar 2012&lt;/a&gt;の15日目のエントリーです。&lt;br /&gt;
+昨日は&lt;a href=&#34;https://twitter.com/yoshioterada&#34;&gt;@yoshioterada&lt;/a&gt;さんの&lt;a href=&#34;http://yoshio3.com/2012/12/14/javaee7-websocket-client-with-javafx/&#34;&gt;Java EE 7 WebSocket Client Sample Application with JavaFX&lt;/a&gt;です。&lt;br /&gt;
+明日は&lt;a href=&#34;https://twitter.com/akirakoyasu&#34;&gt;@akirakoyasu&lt;/a&gt;さんです。&lt;/p&gt;
+
+&lt;h2 id=&#34;普段は使わないjmsを使う&#34;&gt;普段は使わないJMSを使う&lt;/h2&gt;
+
+&lt;p&gt;おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。
+世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。
+分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。
+おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。&lt;/p&gt;
+
+&lt;p&gt;そんな事もあって、JMSの知識が皆無だったわけですが、
+JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。&lt;/p&gt;
+
+&lt;h2 id=&#34;必要なもの&#34;&gt;必要なもの&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;GlassFish-3.1.2.2&lt;/li&gt;
+&lt;li&gt;jms-api-1.1-rev-1.jar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;javax.jms&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;jms-api&amp;lt;/artifactId&amp;gt;
+  &amp;lt;version&amp;gt;1.1-rev-1&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ul&gt;
+&lt;li&gt;imq-4.5.2.jar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+  &amp;lt;groupId&amp;gt;org.glassfish.mq&amp;lt;/groupId&amp;gt;
+  &amp;lt;artifactId&amp;gt;imq&amp;lt;/artifactId&amp;gt;
+  &amp;lt;version&amp;gt;4.5.2&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、
+今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。
+また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、
+こちらも容易に入手可能です。&lt;/p&gt;
+
+&lt;h2 id=&#34;事前準備&#34;&gt;事前準備&lt;/h2&gt;
+
+&lt;p&gt;GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、
+ポートへのアクセスを許可する必要があるかもしれません。&lt;/p&gt;
+
+&lt;h2 id=&#34;メッセージプロデューサーを作る&#34;&gt;メッセージプロデューサーを作る&lt;/h2&gt;
+
+&lt;p&gt;メッセージを送信するプロデューサーを作ります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package jp.co.baykraft.jmsexample;
+
+import com.sun.messaging.ConnectionConfiguration;
+import com.sun.messaging.QueueConnectionFactory;
+import javax.jms.JMSException;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.jms.TextMessage;
+
+/**
+ * メッセージを送信するクラスです。
+ * @author Katsumi
+ */
+public class Sender
+{
+    public static void main(String... args) throws JMSException
+    {
+        QueueConnectionFactory factory = new QueueConnectionFactory();
+        factory.setProperty(ConnectionConfiguration.imqAddressList, 
+            &amp;quot;localhost:7676&amp;quot;);
+        QueueConnection connection = factory.createQueueConnection();
+        QueueSession session = connection.createQueueSession(false, 
+            QueueSession.AUTO_ACKNOWLEDGE);
+        Queue queue = session.createQueue(&amp;quot;KQueue&amp;quot;);
+
+        QueueSender sender = session.createSender(queue);
+        TextMessage message = session.createTextMessage();
+        message.setText(&amp;quot;メッセージ&amp;quot;);
+        sender.send(message);
+
+        connection.close();
+
+        System.out.println(&amp;quot;Finished.&amp;quot;);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;session.createQueue(&amp;quot;KQueue&amp;quot;)&lt;/code&gt;でKQueueという文字列を指定していますが、これは任意の文字列です。
+メッセージを受信する側でも同じ文字列を指定してメッセージを受け取ります。&lt;/p&gt;
+
+&lt;h2 id=&#34;メッセージコンシューマを作る&#34;&gt;メッセージコンシューマを作る&lt;/h2&gt;
+
+&lt;p&gt;次にメッセージを受信するコンシューマを作ります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package jp.co.baykraft.jmsexample;
+
+import com.sun.messaging.ConnectionConfiguration;
+import com.sun.messaging.QueueConnectionFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.jms.JMSException;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueReceiver;
+import javax.jms.QueueSession;
+import javax.jms.TextMessage;
+
+/**
+ * メッセージを受診するクラスです。
+ * @author Katsumi
+ */
+public class Receiver
+{
+    public static void main(String... args) throws JMSException
+    {
+        QueueConnectionFactory factory = new QueueConnectionFactory();
+        factory.setProperty(ConnectionConfiguration.imqAddressList, 
+            &amp;quot;localhost:7676&amp;quot;);
+        QueueConnection connection = factory.createQueueConnection();
+        QueueSession session = connection.createQueueSession(false, 
+            QueueSession.CLIENT_ACKNOWLEDGE);
+        Queue queue = session.createQueue(&amp;quot;KQueue&amp;quot;);
+
+        QueueReceiver receiver = session.createReceiver(queue);
+        receiver.setMessageListener(new MessageListener() {
+            @Override
+            public void onMessage(Message msg)
+            {
+                try {
+                    TextMessage message = (TextMessage) msg;
+                    message.acknowledge();
+                    System.out.println(message.getText());
+                }
+                catch (JMSException ex) {
+                    Logger.getLogger(Receiver.class.getName())
+                          .log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+
+        connection.start();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;動かしてみよう&#34;&gt;動かしてみよう&lt;/h2&gt;
+
+&lt;p&gt;さて、コードも作ったので動かしてみます。
+送信するメッセージはキューに溜め込まれるので、コンシューマを起動しておかなくても大丈夫です。
+まずはプロデューサーを起動すると、「メッセージ」という文字列がメッセージプロバイダに送られます。&lt;/p&gt;
+
+&lt;p&gt;次にコンシューマを起動します。
+コンシューマを起動すると、メッセージプロバイダのKQueueに溜め込まれたメッセージが受信されます。
+コンシューマのコードの&lt;code&gt;QueueSession.CLIENT_ACKNOWLEDGE&lt;/code&gt;の指定ですが、この指定の場合、
+コンシューマ側で&lt;code&gt;TextMessage#acknowledge()&lt;/code&gt;メソッドを呼び出すまで、キュー上のメッセージは削除されません。
+コンシューマ側の処理が失敗した場合はキュー上のメッセージを削除したくないのでこの指定にしています。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;GlassFishを起動するだけでメッセージプロバイダが起動されるのは非常に便利です。
+メッセージプロバイダを起動しておけば、簡単なメッセージの送受信アプリが作れます。
+キューの名前をコンシューマ毎に切り替えれば、複数クライアントのアプリも出来そうです。
+JMSの本来の利用目的とは違うのかもしれませんが、こんな簡単なアプリから触ってみると楽しいと思います。
+それにしても、GlassFishは最高ですね。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

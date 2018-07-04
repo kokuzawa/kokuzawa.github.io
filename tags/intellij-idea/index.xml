@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Wed, 28 Dec 2016 00:39:11 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/intellij-idea/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/intellij-idea/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,17 +17,116 @@
       <pubDate>Wed, 28 Dec 2016 00:39:11 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/12/28/intellij-ideaangular2/</guid>
-      <description>Angular2のアプリをIntelliJ IDEAで動かすまでの試行錯誤の記録です。
-環境  macOS Sierra IntelliJ IDEA 2016.3  Angular2のインストール Angular2を動かすのにはNode.jsが必要なので、最初にNode.jsをインストールします。 macOSの場合、homebrewでnodebrewを入れるのが良さそうです。 nodebrewはNode.jsのバージョン管理システムだそうです。
-$brew install nodebrew  nodebrewインストール直後だと、カレントのNode.jsが選択されていないため、 Node.jsのコマンドを打ってもそんなコマンドはないと怒られてしまいます。 そこで、カレントのNode.jsを選択します。 選択方法ですが、まずインストールされているNode.jsのバージョンを知る必要があるので、 下記コマンドを実行し、バージョンリストを表示します。
-$nodebrew list  バージョンが表示されたら、利用したいバージョンを指定した下記コマンドを実行します。 私の環境ではv7.3.0がインストールされていたので、これをカレントにします。
-$nodebrew use v7.3.0  これでNode.jsが使えるようになりました。
-次に目的のAngular2をインストールするわけですが、 ここではコマンドラインツールであるangular-cliをインストールします。 インストールはnpm(Node Package Manager)を使います。
-$npm install -g angular-cli  これでAngular2アプリを作る準備ができました。
-Angular2アプリを作る 早速アプリを作りたいのですが、IntelliJ IDEAではAngularプロジェクトを作るメニューはありません。 プラグイン等であるのかもしれませんが、プレーンな状態ではできないので、 Angular-cliを使って雛形のプロジェクトを作成します。 プロジェクトを作りたいフォルダに移動して下記コマンドを実行します。
-$ng new angular-start  これで雛形のアプリが作成されました。 angular-startフォルダに移動して下記コマンドを実行すると、http://localhost:4200/で最初の画面が表示されます。
-$ng serve  IntelliJ IDEAに読み込む ここまでの作業でAngular2の動作するアプリはできましたが、 IntelliJ IDEAでの編集はまだできません。 IntelliJ IDEAで編集するために下記手順でプロジェクトを読み込みます。
- File -&amp;gt; New -&amp;gt; Project from Existing Sources&amp;hellip; を選択してangular-startフォルダを選択する Import ProjectダイアログでCreate Project from existing sourcesを選択してNextボタンをクリックする 以降は何も変更せず、Nextボタンをクリックする Finishボタンが表示されたらそれをクリックする  これでソースの読み込みは完了しました。</description>
+      <description>
+
+&lt;p&gt;Angular2のアプリをIntelliJ IDEAで動かすまでの試行錯誤の記録です。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra&lt;/li&gt;
+&lt;li&gt;IntelliJ IDEA 2016.3&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;angular2のインストール&#34;&gt;Angular2のインストール&lt;/h2&gt;
+
+&lt;p&gt;Angular2を動かすのにはNode.jsが必要なので、最初にNode.jsをインストールします。
+macOSの場合、homebrewでnodebrewを入れるのが良さそうです。
+nodebrewはNode.jsのバージョン管理システムだそうです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$brew install nodebrew
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;nodebrewインストール直後だと、カレントのNode.jsが選択されていないため、
+Node.jsのコマンドを打ってもそんなコマンドはないと怒られてしまいます。
+そこで、カレントのNode.jsを選択します。
+選択方法ですが、まずインストールされているNode.jsのバージョンを知る必要があるので、
+下記コマンドを実行し、バージョンリストを表示します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$nodebrew list
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;バージョンが表示されたら、利用したいバージョンを指定した下記コマンドを実行します。
+私の環境ではv7.3.0がインストールされていたので、これをカレントにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$nodebrew use v7.3.0
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでNode.jsが使えるようになりました。&lt;/p&gt;
+
+&lt;p&gt;次に目的のAngular2をインストールするわけですが、
+ここではコマンドラインツールであるangular-cliをインストールします。
+インストールはnpm(Node Package Manager)を使います。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$npm install -g angular-cli
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これでAngular2アプリを作る準備ができました。&lt;/p&gt;
+
+&lt;h2 id=&#34;angular2アプリを作る&#34;&gt;Angular2アプリを作る&lt;/h2&gt;
+
+&lt;p&gt;早速アプリを作りたいのですが、IntelliJ IDEAではAngularプロジェクトを作るメニューはありません。
+プラグイン等であるのかもしれませんが、プレーンな状態ではできないので、
+Angular-cliを使って雛形のプロジェクトを作成します。
+プロジェクトを作りたいフォルダに移動して下記コマンドを実行します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ng new angular-start
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これで雛形のアプリが作成されました。
+angular-startフォルダに移動して下記コマンドを実行すると、&lt;code&gt;http://localhost:4200/&lt;/code&gt;で最初の画面が表示されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;$ng serve
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;intellij-ideaに読み込む&#34;&gt;IntelliJ IDEAに読み込む&lt;/h2&gt;
+
+&lt;p&gt;ここまでの作業でAngular2の動作するアプリはできましたが、
+IntelliJ IDEAでの編集はまだできません。
+IntelliJ IDEAで編集するために下記手順でプロジェクトを読み込みます。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;File -&amp;gt; New -&amp;gt; Project from Existing Sources&amp;hellip; を選択してangular-startフォルダを選択する&lt;/li&gt;
+&lt;li&gt;Import ProjectダイアログでCreate Project from existing sourcesを選択してNextボタンをクリックする&lt;/li&gt;
+&lt;li&gt;以降は何も変更せず、Nextボタンをクリックする&lt;/li&gt;
+&lt;li&gt;Finishボタンが表示されたらそれをクリックする&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;これでソースの読み込みは完了しました。&lt;/p&gt;
+
+&lt;h2 id=&#34;intellij-ideaで実行する&#34;&gt;IntelliJ IDEAで実行する&lt;/h2&gt;
+
+&lt;p&gt;Run -&amp;gt; Edit Configurations&amp;hellip; を選択してRun/Debug Configurationsダイアログを表示します。
+下記イメージではnpmの実行設定を既に作成した状態になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_42.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;イメージ右側のNode Interpreterの部分、選択された状態となっていますが、
+これはIntelliJ IDEAにNodeJSプラグインをインストールしていないと選択されません。
+ですので、事前にNodeJSプラグインをインストールする必要があります。&lt;/p&gt;
+
+&lt;p&gt;package.json, Scripts, Argumentsの部分が空白となっていると思うので、
+イメージ内で設定しているように設定します。
+これで実行する準備が整いました。
+実行するとコマンドラインで&lt;code&gt;ng serve&lt;/code&gt;とした時と同様のログがコンソールに出力されるのが確認できると思います。
+最初の時と同じように、起動後&lt;code&gt;http://localhost:4200&lt;/code&gt;にアクセスすることで最初の画面を表示することができます。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;コマンドラインからプロジェクトを作った後にIntelliJ IDEAに読み込ませるのがちょっと面倒です。
+プラグインでAngular2のプロジェクトが作れるようになると良いのですが、
+今の所できなさそうです。（どこかにあるのかな？）
+ただし、一度読み込ませてしまえば、後は使い慣れたIntelliJ IDEA上で編集ができるし、
+補完も効くので開発効率が良さそうです。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://www.gitbook.com/book/albatrosary/start-angular/details&#34;&gt;Start Angular&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -36,10 +135,96 @@ $ng serve  IntelliJ IDEAに読み込む ここまでの作業でAngular2の動�
       <pubDate>Sun, 28 Feb 2016 01:56:31 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</guid>
-      <description>IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、 デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。 Docker上にコンテナを起動できる環境はできている前提になります。
-環境  OS: Mac OSX 10.11.3 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27) メモリ: 16GB Docker version 1.9.1  アプリの準備 どんなアプリでも良いのですが最終的な生成物はwarファイルにします。 今回はMavenプロジェクトで下記のようなフォルダ構成にします。
-docker-wildfly-example/ ├── Dockerfile ├── container_settings.json ├── docker-wildfly-example.iml ├── pom.xml └── src └── main ├── java │ └── org │ └── katsumi │ └── HelloBean.java └── webapp ├── WEB-INF │ └── web.xml └── index.xhtml  肝心なDockerfileの内容は下記のようになります。
-# WildFlyのイメージを取得 FROM jboss/wildfly:latest # MAINTAINER MAINTAINER Katsumi # アプリケーションのデプロイ COPY target/docker-wildfly-example.</description>
+      <description>
+
+&lt;p&gt;IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、
+デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。
+Docker上にコンテナを起動できる環境はできている前提になります。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: Mac OSX 10.11.3&lt;/li&gt;
+&lt;li&gt;Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27)&lt;/li&gt;
+&lt;li&gt;メモリ: 16GB&lt;/li&gt;
+&lt;li&gt;Docker version 1.9.1&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;アプリの準備&#34;&gt;アプリの準備&lt;/h2&gt;
+
+&lt;p&gt;どんなアプリでも良いのですが最終的な生成物はwarファイルにします。
+今回はMavenプロジェクトで下記のようなフォルダ構成にします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;docker-wildfly-example/
+├── Dockerfile
+├── container_settings.json
+├── docker-wildfly-example.iml
+├── pom.xml
+└── src
+    └── main
+        ├── java
+        │   └── org
+        │       └── katsumi
+        │           └── HelloBean.java
+        └── webapp
+            ├── WEB-INF
+            │   └── web.xml
+            └── index.xhtml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;肝心なDockerfileの内容は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;# WildFlyのイメージを取得
+FROM jboss/wildfly:latest
+
+# MAINTAINER
+MAINTAINER Katsumi
+
+# アプリケーションのデプロイ
+COPY target/docker-wildfly-example.war /opt/jboss/wildfly/standalone/deployments/
+
+# ポートの解放
+EXPOSE 9999
+
+# WildFlyの実行
+CMD [&amp;quot;/opt/jboss/wildfly/bin/standalone.sh&amp;quot;, &amp;quot;-b&amp;quot;, &amp;quot;0.0.0.0&amp;quot;, &amp;quot;--debug&amp;quot;, &amp;quot;9999&amp;quot;]
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;code&gt;mvn package&lt;/code&gt;することで生成される&lt;code&gt;target/docker-wildfly-example.war&lt;/code&gt;ファイルを
+コンテナ上の&lt;code&gt;/opt/jboss/wildfly/standalone/deployments/&lt;/code&gt;に配置することで
+WildFly起動時に自動的にデプロイさせます。
+また、デバッグ用のポートとして&lt;code&gt;9999&lt;/code&gt;を使用するため&lt;code&gt;EXPOSE&lt;/code&gt;に指定します。&lt;/p&gt;
+
+&lt;p&gt;デバッグはリモートデバッグをすることになるので、
+WildFly起動オプションに&lt;code&gt;--debug&lt;/code&gt;を付与して&lt;code&gt;9999&lt;/code&gt;ポートを指定します。&lt;/p&gt;
+
+&lt;h2 id=&#34;実行環境の構築&#34;&gt;実行環境の構築&lt;/h2&gt;
+
+&lt;p&gt;IntelliJ IDEAにDocker PluginがインストールされているとRun/Debug ConfigurationsにDocker Deploymentを追加することができます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_41.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Debugポートに9999を指定すると画面下部にワーニングが表示されます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Warning: Debug port forwarding not found
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このワーニングの右側にFixボタンを表示されるのでこれをクリックすると
+port設定をしたjsonファイルの保存先を聞かれるので任意の場所に保存します。
+アプリケーションツリーにあるcontainer_settings.jsonがそれになります。
+このファイルはContainerタブのJSON fileの項目に設定されます。&lt;/p&gt;
+
+&lt;p&gt;やっていることはContainerタブのport bindingsで9999ポートを追加したのと同じことなのですが、
+port bindingsに設定してもワーニングが消えません。
+ワーニングは消えなくてもport bindingsの設定は有効になるので
+ワーニングが気にならないようであればport bindingsに設定しても良いです。
+ただし注意点としてjsonファイルとport bindingsの両方を指定するとport bindingsの方の設定が無視されるようです。
+9999以外のポートをバインドする場合は注意する必要があります。&lt;/p&gt;
+
+&lt;p&gt;これでデバッグ起動すればステップ実行ができるようになります。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -48,13 +233,28 @@ docker-wildfly-example/ ├── Dockerfile ├── container_settings.json �
       <pubDate>Mon, 01 Apr 2013 22:35:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/04/01/edit-breakpoints/</guid>
-      <description>IntelliJも他のIDE同様デバッグが簡単にできます。
-もちろん複数のスレッドを同時にデバッグできるのですが、初期設定だと一つのスレッドが終わるまですべてのスレッドがSuspendされます。 最初はこういうものかなと思っていたんですが、設定で切り替えることができるようです。
-手順 ブレークポイントをCtrl+クリックしてEditメニューを選択します。
-表示されたポップアップのSuspendのところ、Allにチェックが入っていると思います。 これをThreadに変更します。もし今後すべての動作をThreadにするのであれば、右にある「Make Default」ボタンをクリックします。
-これでスレッド毎にSuspendされるようになりました。
-Best regards,
-Katsumi</description>
+      <description>
+
+&lt;p&gt;IntelliJも他のIDE同様デバッグが簡単にできます。&lt;br /&gt;
+もちろん複数のスレッドを同時にデバッグできるのですが、初期設定だと一つのスレッドが終わるまですべてのスレッドがSuspendされます。
+最初はこういうものかなと思っていたんですが、設定で切り替えることができるようです。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
+
+&lt;p&gt;ブレークポイントをCtrl+クリックしてEditメニューを選択します。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_9.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;表示されたポップアップのSuspendのところ、Allにチェックが入っていると思います。
+これをThreadに変更します。もし今後すべての動作をThreadにするのであれば、右にある「Make Default」ボタンをクリックします。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_10.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;これでスレッド毎にSuspendされるようになりました。&lt;/p&gt;
+
+&lt;p&gt;Best regards,&lt;br /&gt;
+Katsumi&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -63,15 +263,45 @@ Katsumi</description>
       <pubDate>Thu, 21 Mar 2013 00:04:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/03/21/generate-glassfish-web-dot-xml-automatically/</guid>
-      <description>NetBeansだとsun-web.xmlとして自動生成されるファイルのことです。 JavaEE6のドキュメントを読む限り、 glassfish-web.xmlが正式名称のようですが&amp;hellip;。
-このファイル、通常は必要ないのですが、GlassFishのBASIC認証とかDIGEST認証にJDBCレルムを使おうとすると必要になります。 XMLファイルなので、DTDのパスとか&amp;hellip;まあその辺の入力が面倒な訳で、テンプレートは検索すれば見つかりますけど、出来ればIntelliJで生成できないかなと。
-手順 画面上部のツールバーからProject Structureを選択。もしくはCmd+;
-表示された画面からModules-&amp;gt;Webと選択し、右ペイン中にあるAdd Aplication Server specific descriptorボタンをクリック。
-表示されたポップアップのApplication ServerをGlassfish Serverに、Descriptorは選択肢が2つで最後にOracleとなっている方を選択。 (以下のイメージでは既にOracleを設定済みなのでSunしか表示されていない。)
-これでglassfish-web.xmlのテンプレートが自動生成される。
-glassfish-web.xml:
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;!DOCTYPE glassfish-web-app PUBLIC &amp;quot;-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN&amp;quot; &amp;quot;http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd&amp;quot;&amp;gt; &amp;lt;glassfish-web-app&amp;gt; &amp;lt;/glassfish-web-app&amp;gt;  あとはここに必要な記述を追加して行くだけ。IntelliJは補完が強力なので、ここまでファイルが出来てくれれば後は楽。</description>
+      <description>
+
+&lt;p&gt;NetBeansだとsun-web.xmlとして自動生成されるファイルのことです。
+JavaEE6の&lt;a href=&#34;http://docs.oracle.com/javaee/6/tutorial/doc/javaeetutorial6.pdf&#34; target=&#34;_blank&#34;&gt;ドキュメント&lt;/a&gt;を読む限り、
+glassfish-web.xmlが正式名称のようですが&amp;hellip;。&lt;/p&gt;
+
+&lt;p&gt;このファイル、通常は必要ないのですが、GlassFishのBASIC認証とかDIGEST認証にJDBCレルムを使おうとすると必要になります。
+XMLファイルなので、DTDのパスとか&amp;hellip;まあその辺の入力が面倒な訳で、テンプレートは検索すれば見つかりますけど、出来ればIntelliJで生成できないかなと。&lt;/p&gt;
+
+&lt;h2 id=&#34;手順&#34;&gt;手順&lt;/h2&gt;
+
+&lt;p&gt;画面上部のツールバーからProject Structureを選択。もしくはCmd+;&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_6.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;表示された画面からModules-&amp;gt;Webと選択し、右ペイン中にあるAdd Aplication Server specific descriptorボタンをクリック。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_7.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;表示されたポップアップのApplication ServerをGlassfish Serverに、Descriptorは選択肢が2つで最後にOracleとなっている方を選択。
+(以下のイメージでは既にOracleを設定済みなのでSunしか表示されていない。)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_8.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;これでglassfish-web.xmlのテンプレートが自動生成される。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;glassfish-web.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE glassfish-web-app PUBLIC &amp;quot;-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN&amp;quot;
+    &amp;quot;http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd&amp;quot;&amp;gt;
+&amp;lt;glassfish-web-app&amp;gt;
+&amp;lt;/glassfish-web-app&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あとはここに必要な記述を追加して行くだけ。IntelliJは補完が強力なので、ここまでファイルが出来てくれれば後は楽。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+

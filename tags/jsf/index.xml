@@ -8,7 +8,7 @@
     <language>ja-jp</language>
     <lastBuildDate>Wed, 04 Jul 2018 01:54:11 +0900</lastBuildDate>
     
-	<atom:link href="https://kokuzawa.github.io/tags/jsf/index.xml" rel="self" type="application/rss+xml" />
+        <atom:link href="https://kokuzawa.github.io/tags/jsf/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -17,16 +17,119 @@
       <pubDate>Wed, 04 Jul 2018 01:54:11 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2018/07/04/websocket-part2/</guid>
-      <description>以前、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。
-その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、 JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。
- 環境   macOS High Sierra
-  Java&amp;#8482; SE Runtime Environment (build 1.8.0_91-b14)
-  WildFly 13.0.0.Final
-     実装 フルセットのコードは下記にあります。
-https://github.com/kokuzawa/sandbox/tree/master/websocket-example
- 通常のJSFの設定の他に、下記設定がweb.xmlに必要です。
- web.xml &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;javax.faces.ENABLE_CDI_RESOLVER_CHAIN&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;javax.faces.ENABLE_WEBSOCKET_ENDPOINT&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt;   管理BeanはApplicationScopeの必要があります。
- PushBean.java import javax.enterprise.context.ApplicationScoped; import javax.faces.push.Push; import javax.faces.push.PushContext; import javax.inject.Named; import java.io.Serializable; import java.util.Calendar; @Named @ApplicationScoped public class PushBean implements Serializable { @Push(channel = &#34;clock&#34;) private PushContext push; public void clockAction() { final Calendar now = Calendar.</description>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/&#34;&gt;以前&lt;/a&gt;、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。&lt;br&gt;
+その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、
+JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_環境&#34;&gt;環境&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;macOS High Sierra&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Java&amp;#8482; SE Runtime Environment (build 1.8.0_91-b14)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;WildFly 13.0.0.Final&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_実装&#34;&gt;実装&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;フルセットのコードは下記にあります。&lt;br&gt;
+&lt;a href=&#34;https://github.com/kokuzawa/sandbox/tree/master/websocket-example&#34; class=&#34;bare&#34;&gt;https://github.com/kokuzawa/sandbox/tree/master/websocket-example&lt;/a&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;通常のJSFの設定の他に、下記設定がweb.xmlに必要です。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;web.xml&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&amp;lt;context-param&amp;gt;
+    &amp;lt;param-name&amp;gt;javax.faces.ENABLE_CDI_RESOLVER_CHAIN&amp;lt;/param-name&amp;gt;
+    &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt;
+&amp;lt;/context-param&amp;gt;
+&amp;lt;context-param&amp;gt;
+    &amp;lt;param-name&amp;gt;javax.faces.ENABLE_WEBSOCKET_ENDPOINT&amp;lt;/param-name&amp;gt;
+    &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt;
+&amp;lt;/context-param&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;管理BeanはApplicationScopeの必要があります。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;PushBean.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;import javax.enterprise.context.ApplicationScoped;
+import javax.faces.push.Push;
+import javax.faces.push.PushContext;
+import javax.inject.Named;
+import java.io.Serializable;
+import java.util.Calendar;
+
+@Named
+@ApplicationScoped
+public class PushBean implements Serializable
+{
+    @Push(channel = &#34;clock&#34;)
+    private PushContext push;
+
+    public void clockAction()
+    {
+        final Calendar now = Calendar.getInstance();
+
+        final String time = now.get(Calendar.HOUR_OF_DAY) + &#34;:&#34; +
+                now.get(Calendar.MINUTE) + &#34;:&#34; + now.get(Calendar.SECOND);
+
+        push.send(time);
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;XHTMLで重要なのは下記だけです。
+&lt;code&gt;websocket&lt;/code&gt; タグの &lt;code&gt;chaannel&lt;/code&gt; 属性で指定した値と、管理Beanの &lt;code&gt;Push&lt;/code&gt; アノテーションで指定した値が一致する必要があります。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;index.xhtml&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-xhtml&#34; data-lang=&#34;xhtml&#34;&gt;&amp;lt;f:websocket channel=&#34;clock&#34; onmessage=&#34;socketListener&#34; /&amp;gt;
+
+&amp;lt;script type=&#34;text/javascript&#34;&amp;gt;
+    function socketListener(message, channel, event) {
+        document.getElementById(&#34;clockId&#34;).innerHTML += message + &#34;&amp;amp;lt;br/&amp;amp;gt;&#34;;
+    }
+&amp;lt;/script&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_実行&#34;&gt;実行&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;起動オプションに下記を設定することで、WildFlyがJavaEE8モードで起動します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;-Dee8.preview.mode=true&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;前回と異なり、余計な設定をしなくても問題なく実行できました。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
     </item>
     
     <item>
@@ -35,13 +138,116 @@ https://github.com/kokuzawa/sandbox/tree/master/websocket-example
       <pubDate>Thu, 12 Jan 2017 00:29:21 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/</guid>
-      <description>JSF 2.3 では新しい機能として Websocket が追加されます。
-JSF 2.3 はまだリリースされていませんが、先日 JSF 2.3-m09 が公開されたので、 これを使って Websocket を試してみようと思います。
-環境  macOS Sierra Java&amp;trade; SE Runtime Environment (build 1.8.0_91-b14) WildFly 10.1.0.Final Payara Server 4.1.1.164  はじめに 今回やったことは下記に書いてあることそのままです。
-http://blog.payara.fish/jsf-2.3-the-websocket-quickstart-under-payara-server
-ボタンをクリックすることでサーバサイドから時間を取得してそれを表示するアプリを作ります。 アプリの作り方は上記サイトを見てもらえばわかると思うので、ここでは上記のサイトには書かれていない、 JavaEE8に対応していない現状のAPサーバで JSF 2.3 を有効にする方法について説明します。
-WildFly 10.1.0.Final で試す まず、普段利用している WildFly で動かそうとしてみました。 WildFly で JSF 2.3 を有効にするためには、WildFly が内包する JSF を無効にする必要があります。 無効にする方法は、下記の記述をした WEB-INF/jboss-deployment-structure.xml を用意します。
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt; &amp;lt;jboss-deployment-structure xmlns=&amp;quot;urn:jboss:deployment-structure:1.2&amp;quot;&amp;gt; &amp;lt;deployment&amp;gt; &amp;lt;exclude-subsystems&amp;gt; &amp;lt;subsystem name=&amp;quot;jsf&amp;quot;/&amp;gt; &amp;lt;/exclude-subsystems&amp;gt; &amp;lt;/deployment&amp;gt; &amp;lt;/jboss-deployment-structure&amp;gt;  JSF 2.</description>
+      <description>
+
+&lt;p&gt;JSF 2.3 では新しい機能として Websocket が追加されます。&lt;br /&gt;
+JSF 2.3 はまだリリースされていませんが、先日 JSF 2.3-m09 が公開されたので、
+これを使って Websocket を試してみようと思います。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;macOS Sierra&lt;/li&gt;
+&lt;li&gt;Java&amp;trade; SE Runtime Environment (build 1.8.0_91-b14)&lt;/li&gt;
+&lt;li&gt;WildFly 10.1.0.Final&lt;/li&gt;
+&lt;li&gt;Payara Server 4.1.1.164&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;はじめに&#34;&gt;はじめに&lt;/h2&gt;
+
+&lt;p&gt;今回やったことは下記に書いてあることそのままです。&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;http://blog.payara.fish/jsf-2.3-the-websocket-quickstart-under-payara-server&#34;&gt;http://blog.payara.fish/jsf-2.3-the-websocket-quickstart-under-payara-server&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ボタンをクリックすることでサーバサイドから時間を取得してそれを表示するアプリを作ります。
+アプリの作り方は上記サイトを見てもらえばわかると思うので、ここでは上記のサイトには書かれていない、
+JavaEE8に対応していない現状のAPサーバで JSF 2.3 を有効にする方法について説明します。&lt;/p&gt;
+
+&lt;h2 id=&#34;wildfly-10-1-0-final-で試す&#34;&gt;WildFly 10.1.0.Final で試す&lt;/h2&gt;
+
+&lt;p&gt;まず、普段利用している WildFly で動かそうとしてみました。
+WildFly で JSF 2.3 を有効にするためには、WildFly が内包する JSF を無効にする必要があります。
+無効にする方法は、下記の記述をした &lt;code&gt;WEB-INF/jboss-deployment-structure.xml&lt;/code&gt; を用意します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
+&amp;lt;jboss-deployment-structure xmlns=&amp;quot;urn:jboss:deployment-structure:1.2&amp;quot;&amp;gt;
+
+    &amp;lt;deployment&amp;gt;
+        &amp;lt;exclude-subsystems&amp;gt;
+            &amp;lt;subsystem name=&amp;quot;jsf&amp;quot;/&amp;gt;
+        &amp;lt;/exclude-subsystems&amp;gt;
+    &amp;lt;/deployment&amp;gt;
+
+&amp;lt;/jboss-deployment-structure&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JSF 2.3 の jar ファイルは &lt;code&gt;WEB-INF/lib&lt;/code&gt; フォルダに配置します。
+この状態で WildFly にデプロイし、表示した画面でボタンをクリックすると下記のエラーが発生してしまいます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Caused by: javax.faces.el.EvaluationException: javax.el.PropertyNotFoundException: /index.xhtml @15,73 action=&amp;quot;#{pushBean.clockAction}&amp;quot;: Target Unreachable, identifier &#39;pushBean&#39; resolved to null
+	at javax.faces.component.MethodBindingMethodExpressionAdapter.invoke(MethodBindingMethodExpressionAdapter.java:94)
+	at com.sun.faces.application.ActionListenerImpl.processAction(ActionListenerImpl.java:102)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ApplicationScoped を付与した PushBean クラスがインスタンス化されていないようです。
+スコープを変えたり、色々試してみたのですが動作は変わらないので諦めました。
+動かす方法をご存知でしたら教えて頂けると嬉しいです。&lt;/p&gt;
+
+&lt;h2 id=&#34;payara-server-で試す&#34;&gt;Payara Server で試す&lt;/h2&gt;
+
+&lt;p&gt;参考にしたサイトは Payara を使っているので、次に Payara で試してみることにしました。
+Payara も JSF を内包しているので何もせずにデプロイすると下記エラーが発生します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;Caused by: java.lang.reflect.MalformedParameterizedTypeException
+	at sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl.validateConstructorArguments(ParameterizedTypeImpl.java:58)
+	at sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl.&amp;lt;init&amp;gt;(ParameterizedTypeImpl.java:51)
+	at sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl.make(ParameterizedTypeImpl.java:92)
+	at sun.reflect.generics.factory.CoreReflectionFactory.makeParameterizedType(CoreReflectionFactory.java:105)
+	at sun.reflect.generics.visitor.Reifier.visitClassTypeSignature(Reifier.java:140)
+	at sun.reflect.generics.tree.ClassTypeSignature.accept(ClassTypeSignature.java:49)
+	at sun.reflect.generics.visitor.Reifier.reifyTypeArguments(Reifier.java:68)
+	at sun.reflect.generics.visitor.Reifier.visitClassTypeSignature(Reifier.java:138)
+	at sun.reflect.generics.tree.ClassTypeSignature.accept(ClassTypeSignature.java:49)
+	at sun.reflect.generics.repository.ClassRepository.getSuperclass(ClassRepository.java:90)
+	at java.lang.Class.getGenericSuperclass(Class.java:777)
+	at javax.enterprise.util.TypeLiteral.getTypeParameter(TypeLiteral.java:103)
+	at javax.enterprise.util.TypeLiteral.getType(TypeLiteral.java:66)
+	at com.sun.faces.cdi.CdiUtils.&amp;lt;clinit&amp;gt;(CdiUtils.java:76)
+	... 65 more
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Payara が内包する JSF を無効にする方法がわからなかったのですが、
+Payara の場合は視点が違っていて、内包する JSF を無効にするのではなく、
+Bundle した JSF を有効にする設定をしなければならないようです。
+Bundle した JSF を有効にする方法は下記の記述をした &lt;code&gt;WEB-INF/glassfish-web.xml&lt;/code&gt; を用意します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE glassfish-web-app PUBLIC
+        &amp;quot;-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN&amp;quot;
+        &amp;quot;http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd&amp;quot;&amp;gt;
+&amp;lt;glassfish-web-app&amp;gt;
+    &amp;lt;class-loader delegate=&amp;quot;false&amp;quot; /&amp;gt;
+    &amp;lt;property name=&amp;quot;useBundledJsf&amp;quot; value=&amp;quot;true&amp;quot; /&amp;gt;
+&amp;lt;/glassfish-web-app&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;設定さえわかれば何も難しい話ではなかったんですが、
+設定方法がわからなくて時間がかかってしまいました。
+特に Payara の方は全然情報が見つからなくて苦戦&amp;hellip;。
+基本的にはリリースされてJavaEE8対応されたAPサーバで動かすことになるので知らなくても問題ないわけですが、
+早期に試そうとすると色々とハードルがあり大変です。まあそれが楽しかったりするんですけどね。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.payara.fish/jsf-2.3-the-websocket-quickstart-under-payara-server&#34;&gt;JSF 2.3 - The WebSocket Quickstart under Payara Server&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://stackoverflow.com/questions/10782528/how-to-update-mojarra-version-in-glassfish&#34;&gt;How to update Mojarra version in GlassFish&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -50,17 +256,120 @@ WildFly 10.1.0.Final で試す まず、普段利用している WildFly で動�
       <pubDate>Sun, 25 Dec 2016 15:10:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/</guid>
-      <description>この記事はJava EE Advent Calendar 2016の25日目です。
-昨日は@kikutaroさんの「実はJava EEに含まれるJavaMailについて」でした。
-現在業務でJSFを使っています。 導入当初はRIであるMojarraのみを利用しようと考えていたのですが、 業務アプリで多い、ツリーやグリッドで数多くのアクションを実装しなければならず、 一つ一つをJavaScriptで実装していくには時間が足りないという判断のもとに、 それらを簡易に実現できるPrimeFacesを利用することにしました。 採用を決定した段階での最新バージョンはPrimeFaces-6.0です。 PrimeFacesは充実したコンポーネント群を持っているので、 必要なコンポーネントはほぼ見つけることができるかと思います。
-さて、今回はその中でダイアログコンポーネントについて説明します。 PrimeFacesのDemoを見るとわかるのですが、 このダイアログコンポーネントを表示するための方法が二通り用意されています。
-一つ目は静的にダイアログを表示する方法です。
-XHTML:
-&amp;lt;p:dialog widgetVar=&amp;quot;sampleDialog&amp;quot;&amp;gt; ... &amp;lt;/p:dialog&amp;gt; &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplete=&amp;quot;PF(&#39;sampleDialog&#39;).show()&amp;quot;/&amp;gt;  二つ目の方法は動的にダイアログを表示する方法です。
-ManagedBean:
-public void onShowDialog() { RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;); }  XHTML:
-&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;  二つ目の方法は指定したXHTMLをiframe内に表示して、それをダイアログとして表示してくれます。 一つ目の方法と異なり、 ダイアログ内のコンテンツを別XHTMLに分けることができるのでコードの見通しが良くなるかと思います。 また、表示時にダイアログのオプションを指定することができますが、 何も指定しないと、モーダレス、リサイズ可能、コンテンツが640pxで固定されたダイアログが表示されます。 ダイアログをリサイズしてもコンテンツが640pxで固定されているので、追従して広がることがありません。 もし、リサイズに合わせてコンテンツも追従するようにしたければ、 表示時に下記のようなオプションを付与します。
-public void onShowDialog() { final Map&amp;lt;String, Object&amp;gt; options = new HashMap&amp;lt;&amp;gt;(); options.put(&amp;quot;width&amp;quot;, 640); options.put(&amp;quot;contentWidth&amp;quot;, &amp;quot;100%&amp;quot;); RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, options, null); }  このようにすることで、ダイアログの初期表示の幅は640px、コンテンツの幅は100%となり、 コンテンツがリサイズに追従するようになります。</description>
+      <description>
+
+&lt;p&gt;この記事は&lt;a href=&#34;http://qiita.com/advent-calendar/2016/javaee&#34;&gt;Java EE Advent Calendar 2016&lt;/a&gt;の25日目です。&lt;br /&gt;
+昨日は&lt;a href=&#34;http://qiita.com/kikutaro&#34;&gt;@kikutaro&lt;/a&gt;さんの「&lt;a href=&#34;http://qiita.com/kikutaro/items/a524038ca7306a8bfee3&#34;&gt;実はJava EEに含まれるJavaMailについて&lt;/a&gt;」でした。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;現在業務でJSFを使っています。
+導入当初はRIであるMojarraのみを利用しようと考えていたのですが、
+業務アプリで多い、ツリーやグリッドで数多くのアクションを実装しなければならず、
+一つ一つをJavaScriptで実装していくには時間が足りないという判断のもとに、
+それらを簡易に実現できるPrimeFacesを利用することにしました。
+採用を決定した段階での最新バージョンはPrimeFaces-6.0です。
+PrimeFacesは充実したコンポーネント群を持っているので、
+必要なコンポーネントはほぼ見つけることができるかと思います。&lt;/p&gt;
+
+&lt;p&gt;さて、今回はその中でダイアログコンポーネントについて説明します。
+PrimeFacesのDemoを見るとわかるのですが、
+このダイアログコンポーネントを表示するための方法が二通り用意されています。&lt;/p&gt;
+
+&lt;p&gt;一つ目は静的にダイアログを表示する方法です。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;XHTML:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:dialog widgetVar=&amp;quot;sampleDialog&amp;quot;&amp;gt;
+  ...
+&amp;lt;/p:dialog&amp;gt;
+
+&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplete=&amp;quot;PF(&#39;sampleDialog&#39;).show()&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;二つ目の方法は動的にダイアログを表示する方法です。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;ManagedBean:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onShowDialog()
+{
+    RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;XHTML:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;二つ目の方法は指定したXHTMLをiframe内に表示して、それをダイアログとして表示してくれます。
+一つ目の方法と異なり、
+ダイアログ内のコンテンツを別XHTMLに分けることができるのでコードの見通しが良くなるかと思います。
+また、表示時にダイアログのオプションを指定することができますが、
+何も指定しないと、モーダレス、リサイズ可能、コンテンツが640pxで固定されたダイアログが表示されます。
+ダイアログをリサイズしてもコンテンツが640pxで固定されているので、追従して広がることがありません。
+もし、リサイズに合わせてコンテンツも追従するようにしたければ、
+表示時に下記のようなオプションを付与します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onShowDialog()
+{
+    final Map&amp;lt;String, Object&amp;gt; options = new HashMap&amp;lt;&amp;gt;();
+    options.put(&amp;quot;width&amp;quot;, 640);
+    options.put(&amp;quot;contentWidth&amp;quot;, &amp;quot;100%&amp;quot;);
+    RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, options, null);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このようにすることで、ダイアログの初期表示の幅は640px、コンテンツの幅は100%となり、
+コンテンツがリサイズに追従するようになります。&lt;/p&gt;
+
+&lt;p&gt;さらにパラメータを渡すことも可能です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onShowDialog()
+{
+    final Map&amp;lt;String, List&amp;lt;String&amp;gt;&amp;gt; params = new HashMap&amp;lt;&amp;gt;();
+    params.put(&amp;quot;id&amp;quot;, Collections.singletonList(&amp;quot;123&amp;quot;));
+    RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, null, params);
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;パラメータはiframeのsrc属性に付与され、&lt;code&gt;/contextPath/dialog.xhtml?id=123&lt;/code&gt;という値になります。&lt;/p&gt;
+
+&lt;h2 id=&#34;ちょっとしたコツ&#34;&gt;ちょっとしたコツ&lt;/h2&gt;
+
+&lt;p&gt;ここまではドキュメントを読めば大体の内容は記載されているのですが、
+以下は実体験に伴う内容です。&lt;/p&gt;
+
+&lt;p&gt;ダイアログは簡単に表示できますが、
+コンポーネントの構成次第で最初の一回は表示され、2回目以降は表示されないという問題が発生します。
+具体的には下記のような構成とした場合です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:panel rendered=”#{bean.showPanel}”&amp;gt;
+    &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;
+&amp;lt;/p:panel&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;親コンポーネントにrendered属性が付与されている場合、
+2回目以降のダイアログの表示が行われません。
+バグの可能性もありますが、現状での回避策は下記のように、
+rendered属性が付与された親コンポーネントの外に隠しボタンを用意し、
+実際のボタンがクリックされた際に隠しボタンをクリックするようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:commandButton id=&amp;quot;hiddenButton&amp;quot; actionListener=”#{bean.onShowDialog}” 
+                 style=&amp;quot;visibility: hidden;&amp;quot;/&amp;gt;
+&amp;lt;p:panel rendered=&amp;quot;#{bean.showPanel}&amp;quot;&amp;gt;
+    &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplate=&amp;quot;$(&#39;#hiddenButton&#39;).click()&amp;quot;/&amp;gt;
+&amp;lt;/p:panel&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;コンポーネントの組み合わせによっては落とし穴もあるよ、ということでした。&lt;/p&gt;
+
+&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.primefaces.org/showcase/ui/df/data.xhtml&#34;&gt;PrimeFaces ShowCace&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -69,14 +378,49 @@ public void onShowDialog() { final Map&amp;lt;String, Object&amp;gt; options = n
       <pubDate>Wed, 14 Dec 2016 01:28:24 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/12/14/remotecommand-in-composite/</guid>
-      <description>JSFにはcompositeというカスタムコンポーネントを作るための仕組みがあります。 PrimeFaces-6.0にはManagedBeanのメソッドを呼び出すためのremoteCommandというコンポーネントがあります。 この二つを使ってカスタムコンポーネントを作ったところ、ManagedBeanのメソッドが呼ばれないという問題が発生しました。
-まず、JSFのcomposite機能を使って下記のような二つのコンポーネントを作りました。
-sample1.xhtml:
-&amp;lt;composite:implementation&amp;gt; &amp;lt;p:tree&amp;gt; &amp;lt;p:ajax event=&amp;quot;select&amp;quot; oncomplate=&amp;quot;afterSelected()&amp;quot;/&amp;gt; &amp;lt;/p:tree&amp;gt; &amp;lt;p:remoteCommand name=&amp;quot;afterSelected&amp;quot; actionListener=&amp;quot;#{bean.method1}&amp;quot;/&amp;gt; &amp;lt;/composite:implementation&amp;gt;  sample2.xhtml:
-&amp;lt;composite:implementation&amp;gt; &amp;lt;p:tree&amp;gt; &amp;lt;p:ajax event=&amp;quot;select&amp;quot; oncomplate=&amp;quot;afterSelected()&amp;quot;/&amp;gt; &amp;lt;/p:tree&amp;gt; &amp;lt;p:remoteCommand name=&amp;quot;afterSelected&amp;quot; actionListener=&amp;quot;#{bean.method2}&amp;quot;/&amp;gt; &amp;lt;/composite:implementation&amp;gt;  そしてこれらを一つのXHTMLに組み込みます。
-main.xhtml:
-&amp;lt;my:sample1/&amp;gt; &amp;lt;my:sample2/&amp;gt;  sample1側のツリーノードを選択した際にbean.method1が呼ばれることを想定していたのですが、 呼ばれることなく画面がリフレッシュされました。それぞれのカスタムコンポーネント内の remoteCommandのnameの値が重複していると、エラーが発生することなくメソッドが呼ばれないという現象が発生します。
-当たり前と言えば当たり前なのですが、 似たようなコンポーネントを作るとやらかしてしまいそうなので注意しないと。</description>
+      <description>&lt;p&gt;JSFにはcompositeというカスタムコンポーネントを作るための仕組みがあります。
+PrimeFaces-6.0にはManagedBeanのメソッドを呼び出すためのremoteCommandというコンポーネントがあります。
+この二つを使ってカスタムコンポーネントを作ったところ、ManagedBeanのメソッドが呼ばれないという問題が発生しました。&lt;/p&gt;
+
+&lt;!-- more --&gt;
+
+&lt;p&gt;まず、JSFのcomposite機能を使って下記のような二つのコンポーネントを作りました。&lt;/p&gt;
+
+&lt;p&gt;sample1.xhtml:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;composite:implementation&amp;gt;
+  &amp;lt;p:tree&amp;gt;
+    &amp;lt;p:ajax event=&amp;quot;select&amp;quot; oncomplate=&amp;quot;afterSelected()&amp;quot;/&amp;gt;
+  &amp;lt;/p:tree&amp;gt;
+  &amp;lt;p:remoteCommand name=&amp;quot;afterSelected&amp;quot; actionListener=&amp;quot;#{bean.method1}&amp;quot;/&amp;gt;
+&amp;lt;/composite:implementation&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sample2.xhtml:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;composite:implementation&amp;gt;
+  &amp;lt;p:tree&amp;gt;
+    &amp;lt;p:ajax event=&amp;quot;select&amp;quot; oncomplate=&amp;quot;afterSelected()&amp;quot;/&amp;gt;
+  &amp;lt;/p:tree&amp;gt;
+  &amp;lt;p:remoteCommand name=&amp;quot;afterSelected&amp;quot; actionListener=&amp;quot;#{bean.method2}&amp;quot;/&amp;gt;
+&amp;lt;/composite:implementation&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;そしてこれらを一つのXHTMLに組み込みます。&lt;/p&gt;
+
+&lt;p&gt;main.xhtml:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;my:sample1/&amp;gt;
+&amp;lt;my:sample2/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;sample1側のツリーノードを選択した際に&lt;code&gt;bean.method1&lt;/code&gt;が呼ばれることを想定していたのですが、
+呼ばれることなく画面がリフレッシュされました。それぞれのカスタムコンポーネント内の
+remoteCommandのnameの値が重複していると、エラーが発生することなくメソッドが呼ばれないという現象が発生します。&lt;/p&gt;
+
+&lt;p&gt;当たり前と言えば当たり前なのですが、
+似たようなコンポーネントを作るとやらかしてしまいそうなので注意しないと。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -85,12 +429,134 @@ main.xhtml:
       <pubDate>Mon, 16 Nov 2015 22:58:09 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
-      <description>昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。
-JSFを組み込む 仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。 あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。
-&amp;lt;dependency&amp;gt; &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt; &amp;lt;artifactId&amp;gt;wildfly-swarm-jsf&amp;lt;/artifactId&amp;gt; &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt; &amp;lt;/dependency&amp;gt;  JSFアプリケーションを作る JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、 動くことが分かれば良いのでXHTMLファイルだけを作るだけにします。
-&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt; &amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xmlns:h=&amp;quot;http://xmlns.jcp.org/jsf/html&amp;quot;&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h:outputText value=&amp;quot;Hello JSF!&amp;quot;/&amp;gt; &amp;lt;/body&amp;gt; &amp;lt;/html&amp;gt;  あと、JAXRSの時と違い、web.xmlを作る必要があります。
-&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt; &amp;lt;web-app xmlns=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee&amp;quot; xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot; xsi:schemaLocation=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&amp;quot; version=&amp;quot;3.1&amp;quot;&amp;gt; &amp;lt;context-param&amp;gt; &amp;lt;param-name&amp;gt;javax.faces.PROJECT_STAGE&amp;lt;/param-name&amp;gt; &amp;lt;param-value&amp;gt;Development&amp;lt;/param-value&amp;gt; &amp;lt;/context-param&amp;gt; &amp;lt;servlet&amp;gt; &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt; &amp;lt;servlet-class&amp;gt;javax.faces.webapp.FacesServlet&amp;lt;/servlet-class&amp;gt; &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt; &amp;lt;/servlet&amp;gt; &amp;lt;servlet-mapping&amp;gt; &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt; &amp;lt;url-pattern&amp;gt;*.xhtml&amp;lt;/url-pattern&amp;gt; &amp;lt;/servlet-mapping&amp;gt; &amp;lt;/web-app&amp;gt;  動かす JAXRSの時と同じく、mainメソッドから実行するため、mainメソッドを持つクラスを作ります。 今回はJAXRSArchiveではなく、WARArchieをデプロイします。
-package org.katsumi.jsf; import org.</description>
+      <description>
+
+&lt;p&gt;昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;jsfを組み込む&#34;&gt;JSFを組み込む&lt;/h2&gt;
+
+&lt;p&gt;仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。
+あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;wildfly-swarm-jsf&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;jsfアプリケーションを作る&#34;&gt;JSFアプリケーションを作る&lt;/h2&gt;
+
+&lt;p&gt;JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、
+動くことが分かれば良いのでXHTMLファイルだけを作るだけにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt;
+&amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; 
+        &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;
+&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;
+      xmlns:h=&amp;quot;http://xmlns.jcp.org/jsf/html&amp;quot;&amp;gt;
+
+&amp;lt;body&amp;gt;
+    &amp;lt;h:outputText value=&amp;quot;Hello JSF!&amp;quot;/&amp;gt;
+&amp;lt;/body&amp;gt;
+
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;あと、JAXRSの時と違い、web.xmlを作る必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;web-app xmlns=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee&amp;quot;
+         xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
+         xsi:schemaLocation=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee
+         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&amp;quot;
+         version=&amp;quot;3.1&amp;quot;&amp;gt;
+
+    &amp;lt;context-param&amp;gt;
+        &amp;lt;param-name&amp;gt;javax.faces.PROJECT_STAGE&amp;lt;/param-name&amp;gt;
+        &amp;lt;param-value&amp;gt;Development&amp;lt;/param-value&amp;gt;
+    &amp;lt;/context-param&amp;gt;
+    
+    &amp;lt;servlet&amp;gt;
+        &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;servlet-class&amp;gt;javax.faces.webapp.FacesServlet&amp;lt;/servlet-class&amp;gt;
+        &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt;
+    &amp;lt;/servlet&amp;gt;
+    &amp;lt;servlet-mapping&amp;gt;
+        &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt;
+        &amp;lt;url-pattern&amp;gt;*.xhtml&amp;lt;/url-pattern&amp;gt;
+    &amp;lt;/servlet-mapping&amp;gt;
+&amp;lt;/web-app&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;動かす&#34;&gt;動かす&lt;/h2&gt;
+
+&lt;p&gt;JAXRSの時と同じく、mainメソッドから実行するため、mainメソッドを持つクラスを作ります。
+今回はJAXRSArchiveではなく、WARArchieをデプロイします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.jsf;
+
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
+import org.wildfly.swarm.container.Container;
+import org.wildfly.swarm.undertow.WARArchive;
+
+public class Main
+{
+    public static void main(String... args) throws Exception
+    {
+        final Container container = new Container();
+
+        final WARArchive warArchive = ShrinkWrap.create(WARArchive.class);
+        warArchive.addAsWebResource(
+                new ClassLoaderAsset(&amp;quot;index.xhtml&amp;quot;, Main.class.getClassLoader()), &amp;quot;index.xhtml&amp;quot;);
+        warArchive.addAsWebInfResource(
+                new ClassLoaderAsset(&amp;quot;WEB-INF/web.xml&amp;quot;, Main.class.getClassLoader()), &amp;quot;web.xml&amp;quot;);
+        warArchive.addAllDependencies();
+
+        container.start().deploy(warArchive);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実行方法は下記の３通りです。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;IDEでmainメソッドを実行&lt;/li&gt;
+&lt;li&gt;mvn wildfly-swarm:run&lt;/li&gt;
+&lt;li&gt;jar -jar target/projectname-swarm.jar&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;これで実際に実行しようとすると下記のエラーが発生します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;at org.wildfly.extension.undertow.deployment.UndertowDeploymentService$1.run(UndertowDeploymentService.java:85)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
+	at java.lang.Thread.run(Thread.java:745)
+	at org.jboss.threads.JBossThread.run(JBossThread.java:320)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これは&lt;code&gt;wildfly-swarm-weld&lt;/code&gt;を取り込んでいないためなので、
+下記の記述をpom.xmlに追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;wildfly-swarm-weld&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;ドキュメントを読んだだけではWeldが必要には見えなくて、
+結局サンプルコードと何遍も見比べる必要がありましたが、
+動いてしまえば、後は非常に快適です。
+次はEJBが使えるのか試してみないと。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -99,12 +565,50 @@ package org.katsumi.jsf; import org.</description>
       <pubDate>Sun, 03 May 2015 22:12:37 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/05/03/translate-google/</guid>
-      <description>子供用の英単語帳Webアプリを作っています。 単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、 Googleが提供しているテキスト読み上げAPIというのを見つけました。
-使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。 この例ではoneという単語を読み上げてくれます。
-http://translate.google.com/translate_tts?tl=en&amp;amp;q=one  これをHTMLに組み込みます。 HTMLで音声を再生するためにはaudioタグを利用します。 下記のように組み込むことで音声を再生するためのコントロールを表示することができます。
-&amp;lt;video src=&amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot; controls /&amp;gt;  こんな感じになります。
-実際のアプリはJSF-2.2でFaceletを利用しています。 このタグを組み込んだ場合、最初の一回目は正しく再生されますが 2回目以降が再生されません。 なぜダメなのか結局分からなかったのですが、 UI的にはaudioコントロールを表示したくなかったので、 タグを埋め込むのではなくJavaScriptで再生するようにしました。
-&amp;lt;script&amp;gt; function play() { var audio = document.createElement(&amp;quot;audio&amp;quot;); audio.src = &amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot;; audio.play(); } &amp;lt;/script&amp;gt; &amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;play()&amp;quot;&amp;gt;再生&amp;lt;/a&amp;gt;  この場合audioコントロールは表示されないのですが、 再生リンクをクリックするたびに正しく再生されます。</description>
+      <description>&lt;p&gt;子供用の英単語帳Webアプリを作っています。
+単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、
+Googleが提供しているテキスト読み上げAPIというのを見つけました。&lt;/p&gt;
+
+&lt;p&gt;使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。
+この例ではoneという単語を読み上げてくれます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;p&gt;これをHTMLに組み込みます。
+HTMLで音声を再生するためにはaudioタグを利用します。
+下記のように組み込むことで音声を再生するためのコントロールを表示することができます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;&amp;lt;video src=&amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot; controls /&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;こんな感じになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;video src=&#34;http://translate.google.com/translate_tts?tl=en&amp;q=one&#34; controls /&gt;&lt;/p&gt;
+
+&lt;p&gt;実際のアプリはJSF-2.2でFaceletを利用しています。
+このタグを組み込んだ場合、最初の一回目は正しく再生されますが
+2回目以降が再生されません。
+なぜダメなのか結局分からなかったのですが、
+UI的にはaudioコントロールを表示したくなかったので、
+タグを埋め込むのではなくJavaScriptで再生するようにしました。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script&amp;gt;
+function play() {
+  var audio = document.createElement(&amp;quot;audio&amp;quot;);
+  audio.src = &amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot;;
+  audio.play();
+}
+&amp;lt;/script&amp;gt;
+
+&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;play()&amp;quot;&amp;gt;再生&amp;lt;/a&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この場合audioコントロールは表示されないのですが、
+再生リンクをクリックするたびに正しく再生されます。&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -113,11 +617,92 @@ http://translate.google.com/translate_tts?tl=en&amp;amp;q=one  これをHTMLに�
       <pubDate>Tue, 23 Dec 2014 15:02:06 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/12/23/jsf-2-dot-3defacecontextwoinjectsuru/</guid>
-      <description>JSF-2.3の新しい機能として、UIViewRoot, ViewMap, ApplicationMap, ExternalContext, FacesContextがInjectできるようになります。 この記事ではFacesContextの古い取得方法であるFacesContext.getCurrentInstance()と、 Injectを利用した取得方法のサンプルを記載します。
-サンプルでは画面のボタンをクリックすると、&amp;lt;h:messages/&amp;gt;タグとFacesContext.addMessage(String, FacesMessage)を利用して 同じ画面上にインフォメーションメッセージを表示します。
-最初にFacesContextの古い取得方法を利用したManaged Beanです。
-import javax.enterprise.context.RequestScoped; import javax.faces.application.FacesMessage; import javax.faces.context.FacesContext; import javax.inject.Inject; import javax.inject.Named; @Named @RequestScoped public class IndexBean { public void doClick() { final FacesContext context = FacesContext.getCurrentInstance(); context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, &amp;quot;summary&amp;quot;, &amp;quot;detail&amp;quot;)); } }  次にInjectを利用してFacesContextを取得するManaged Beanです。
-import javax.enterprise.context.RequestScoped; import javax.faces.application.FacesMessage; import javax.faces.context.FacesContext; import javax.inject.Inject; import javax.inject.Named; @Named @RequestScoped public class IndexBean { @Inject private FacesContext context; public void doClick() { context.</description>
+      <description>&lt;p&gt;JSF-2.3の新しい機能として、UIViewRoot, ViewMap, ApplicationMap, ExternalContext, FacesContextがInjectできるようになります。
+この記事ではFacesContextの古い取得方法である&lt;code&gt;FacesContext.getCurrentInstance()&lt;/code&gt;と、
+Injectを利用した取得方法のサンプルを記載します。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;p&gt;サンプルでは画面のボタンをクリックすると、&lt;code&gt;&amp;lt;h:messages/&amp;gt;&lt;/code&gt;タグと&lt;code&gt;FacesContext.addMessage(String, FacesMessage)&lt;/code&gt;を利用して
+同じ画面上にインフォメーションメッセージを表示します。&lt;/p&gt;
+
+&lt;p&gt;最初にFacesContextの古い取得方法を利用したManaged Beanです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Named
+@RequestScoped
+public class IndexBean
+{
+    public void doClick()
+    {
+        final FacesContext context = FacesContext.getCurrentInstance();
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, &amp;quot;summary&amp;quot;, &amp;quot;detail&amp;quot;));
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;次にInjectを利用してFacesContextを取得するManaged Beanです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import javax.inject.Inject;
+import javax.inject.Named;
+
+@Named
+@RequestScoped
+public class IndexBean
+{
+    @Inject
+    private FacesContext context;
+
+    public void doClick()
+    {
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, &amp;quot;summary&amp;quot;, &amp;quot;detail&amp;quot;));
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;画面に表示するXHTMLは下記のようにしています。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE html
+        PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot;
+        &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;
+
+&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;
+      xmlns:h=&amp;quot;http://java.sun.com/jsf/html&amp;quot;&amp;gt;
+
+&amp;lt;h:head&amp;gt;
+    &amp;lt;title&amp;gt;Simple JSF Facelets page&amp;lt;/title&amp;gt;
+&amp;lt;/h:head&amp;gt;
+
+&amp;lt;h:body&amp;gt;
+    &amp;lt;h:form&amp;gt;
+        &amp;lt;h:messages showDetail=&amp;quot;true&amp;quot;/&amp;gt;
+        &amp;lt;h:commandButton actionListener=&amp;quot;#{indexBean.doClick}&amp;quot; value=&amp;quot;OK&amp;quot;/&amp;gt;
+    &amp;lt;/h:form&amp;gt;
+&amp;lt;/h:body&amp;gt;
+
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このアプリをWildFly-8.0.0.Finalにデプロイします。
+WildFlyにはJSFの実装が含まれているので、JSF-2.3が含まれるアプリをデプロイすると起動時にエラーになってしまいます。
+そこで、アプリに含まれるJSF実装を利用させるために、下記の設定をweb.xmlに追加します。
+パラメータを追加するだけで利用する実装を切り替えてくれるので便利ですね。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;context-param&amp;gt;
+    &amp;lt;param-name&amp;gt;org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL&amp;lt;/param-name&amp;gt;
+    &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt;
+&amp;lt;/context-param&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
     </item>
     
     <item>
@@ -126,9 +711,195 @@ import javax.enterprise.context.RequestScoped; import javax.faces.application.Fa
       <pubDate>Wed, 08 Oct 2014 02:29:57 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/10/08/jsffalsecsrfdui-ce/</guid>
-      <description>だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。 そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、 JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのように防げるのかを確認してみます。
-環境  OS: Mac OSX 10.9.4 Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132) メモリ: 4GB WildFly 8.0.0.Final  アプリを作る CSRFの脆弱性がある、といわれても具体例がないとなかなかイメージするのが難しいかもしれません。 そこで、ここでは実際に攻撃を受けるアプリを作り、脆弱性を露呈されてみたいと思います。 コードの構成は下記のようになります。
-JSFCSRFSample +- src | +- main | | +- java | | +- org.katsumi.bean | | +- FormBean.java | +- webapp | +- index.xhtml | +- result.xhtml | +- warning.xhtml | +- WEB-INF | +- jboss-web.xml | +- faces-config.xml | +- web.xml +- pom.</description>
+      <description>
+
+&lt;p&gt;だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。
+そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、
+JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのように防げるのかを確認してみます。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;OS: Mac OSX 10.9.4&lt;/li&gt;
+&lt;li&gt;Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132)&lt;/li&gt;
+&lt;li&gt;メモリ: 4GB&lt;/li&gt;
+&lt;li&gt;WildFly 8.0.0.Final&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;アプリを作る&#34;&gt;アプリを作る&lt;/h2&gt;
+
+&lt;p&gt;CSRFの脆弱性がある、といわれても具体例がないとなかなかイメージするのが難しいかもしれません。
+そこで、ここでは実際に攻撃を受けるアプリを作り、脆弱性を露呈されてみたいと思います。
+コードの構成は下記のようになります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;JSFCSRFSample
+    +- src
+    |  +- main
+    |  |   +- java
+    |  |       +- org.katsumi.bean
+    |  |           +- FormBean.java
+    |  +- webapp
+    |      +- index.xhtml
+    |      +- result.xhtml
+    |      +- warning.xhtml
+    |      +- WEB-INF
+    |          +- jboss-web.xml
+    |          +- faces-config.xml
+    |          +- web.xml
+    +- pom.xml
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;index.xhtmlページでボタンをクリックすることで、result.xhtmlページに遷移します。
+ユースケースとして、result.xhtmlでindex.xhtmlから受け取ったパラメータを登録して、その値を表示することを想定します。
+サンプルコードでは、index.xhmlから送信したパラメータをFormBean.javaで受け取り、
+その値を加工して結果を表示しています。
+index.xhtml、result.xhtml、FormBean.javaは下記のように非常にシンプルな構成です。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;index.xhtml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;
+      xmlns:h=&amp;quot;http://xmlns.jcp.org/jsf/html&amp;quot;
+      xmlns:f=&amp;quot;http://xmlns.jcp.org/jsf/core&amp;quot;&amp;gt;
+&amp;lt;f:view transient=&amp;quot;true&amp;quot;&amp;gt;
+    &amp;lt;h:button value=&amp;quot;Jump!&amp;quot; outcome=&amp;quot;/result?text=ああああ&amp;quot;/&amp;gt;
+&amp;lt;/f:view&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;result.xhtml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;
+      xmlns:h=&amp;quot;http://xmlns.jcp.org/jsf/html&amp;quot;
+      xmlns:f=&amp;quot;http://xmlns.jcp.org/jsf/core&amp;quot;&amp;gt;
+&amp;lt;f:view&amp;gt;
+    &amp;lt;f:metadata&amp;gt;
+        &amp;lt;f:viewParam name=&amp;quot;text&amp;quot; value=&amp;quot;#{formBean.text}&amp;quot;/&amp;gt;
+    &amp;lt;/f:metadata&amp;gt;
+    &amp;lt;p&amp;gt;結果を表示:&amp;lt;/p&amp;gt;
+    &amp;lt;h:outputText value=&amp;quot;#{formBean.text}&amp;quot;/&amp;gt;
+&amp;lt;/f:view&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;FormBean.java:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.bean;
+
+import lombok.Setter;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Named;
+
+@Named
+@RequestScoped
+public class FormBean
+{
+    @Setter
+    private String text;
+
+    public String getText()
+    {
+        return String.format(&amp;quot;登録しました「%s」&amp;quot;, text);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;攻撃する&#34;&gt;攻撃する&lt;/h2&gt;
+
+&lt;p&gt;準備はできたので、実際に動作させて攻撃してみます。
+起動後にindex.xhtmlにアクセスすると下記の画面が表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_32.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;「Jump!」ボタンをクリックすると、パラメータが送信されてresult.xhtmlが表示されます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_33.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;ここで、攻撃者が用意した下記のリンクを踏んだと仮定します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;http://localhost/jsf-csrf/result.xhtml?text=攻撃
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;同一ブラウザであれば、同じセッションIDがサーバーに送信されるはずなので、
+認証をセッションIDベースで行っている場合は問題なくスルーされるはずです。
+というわけで、下記の結果になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_34.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;意図していない文字列が登録されてしまいました。&lt;/p&gt;
+
+&lt;h2 id=&#34;対策をする&#34;&gt;対策をする&lt;/h2&gt;
+
+&lt;p&gt;このように悪意を持ったリンクを踏んでしまうと、
+ユーザの意図しない文字列を簡単に登録できてしまうという脆弱性がこのアプリには存在します。
+CSRFの対策は、元の画面にトークンを埋め込み、受け取り先でそのトークンの一致を検証することで
+正しいルートからのリクエストであることを判定する方法が一般的です。
+JSF 2.2からこの仕組みを利用できるようになっているので対策をします。&lt;/p&gt;
+
+&lt;p&gt;faces-config.xmlに下記を追記してresult.xhtmlページを保護します。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;faces-config.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;protected-views&amp;gt;
+    &amp;lt;url-pattern&amp;gt;/result.xhtml&amp;lt;/url-pattern&amp;gt;
+&amp;lt;/protected-views&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JSFでは保護されたページに不正にアクセスすると&lt;code&gt;javax.faces.application.ProtectedViewException&lt;/code&gt;がスローされます。
+そこで、保護されたページにアクセスした場合に表示されるエラーページの設定をweb.xmlに追記します。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;warning.xhtml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
+&amp;lt;!DOCTYPE html&amp;gt;
+&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;
+      xmlns:f=&amp;quot;http://xmlns.jcp.org/jsf/core&amp;quot;&amp;gt;
+&amp;lt;f:view&amp;gt;
+    &amp;lt;h1&amp;gt;不正なリクエストです。&amp;lt;/h1&amp;gt;
+&amp;lt;/f:view&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;&lt;strong&gt;web.xml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;error-page&amp;gt;
+    &amp;lt;exception-type&amp;gt;javax.faces.application.ProtectedViewException&amp;lt;/exception-type&amp;gt;
+    &amp;lt;location&amp;gt;/warning.xhtml&amp;lt;/location&amp;gt;
+&amp;lt;/error-page&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;攻撃者が用意した先ほどのリンクを送信すると下記の結果になりました。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_35.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;うまく機能しているようです。
+正しいルートでリクエストを送信すると、下記のようにトークンが付与されていることがわかります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_36.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;このようにJSFでもCSRF対策が簡単にできるようになりました。
+とはいってもそもそもGETでデータを登録しようとしているのが問題のような気もします。
+というのは、JSFのManagedBeanのプロパティへバインディングする形でPOSTリクエストを送信している場合、
+今回のような攻撃ができないからです。JSFでは画面表示時にコンポーネントツリーを形成していて、
+値のバインディングがそのツリーを利用して行われています。
+そのため、今回のようにリクエストパラメータを直接プロパティへバインディングしようとしなければ、
+簡単に攻撃できないように感じます（色々試してみたのですが攻撃できませんでした。
+攻撃方法があるようでしたらこっそり教えて頂けると嬉しいです）&lt;/p&gt;
+
+&lt;h2 id=&#34;参考文献&#34;&gt;参考文献&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://ja.wikipedia.org/wiki/クロスサイトリクエストフォージェリ&#34;&gt;クロスサイトリクエストフォージェリ - Wikipedia&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/JSF-CSRF-Demo/JSF2.2CsrfDemo.html&#34;&gt;Java Platform, Enterprise Edition 7: JSON Processing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
     </item>
     
     <item>
@@ -137,12 +908,46 @@ JSFCSRFSample +- src | +- main | | +- java | | +- org.katsumi.bean | | +- FormBe
       <pubDate>Wed, 12 Feb 2014 00:58:25 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/02/12/how-to-set-the-value-in-valuechangelistener/</guid>
-      <description>JSFには値が変更されたことをハンドリングするためのイベントとしてValueChangeEventが用意されています。 このイベントは、コンポーネントのValueChangeListenerによって発行されます。 ValueChangEventを利用してテキストフィールドに入力された値の検証を行っているのですが、 値が不正だった場合に、エラーを表示するのではなく正常な値を設定したい場合があります。
-このとき、単純にValueChangeListenerの中でテキストフィールドのプロパティに値を設定しても、画面には反映されません。 これは、ValueChangeEventがJSFのライフサイクルのUpdate Model Valuesフェーズの前に呼ばれるからであり、 ValueChangeListenerで設定した値はUpdate Model Valuesフェーズで入力値によって上書きされてしまうからです。
-これを解決するには、ValueChangeListenerにおいて、ちょっとした工夫が必要です。 以下にその例を示します。
-public void valueChangeListener(ValueChangeEvent event) { if (event.getPhaseId() == PhaseId.UPDATE_MODEL_VALUES) { property = &amp;quot;9:00&amp;quot;; } else { String value = (String) event.getNewValue(); if (false == value.matches(&amp;quot;([0-9]{1,2}|1[0-9]|2[0-3]):[0-5][0-9]&amp;quot;) { event.setPhaseId(PhaseId.UPDATE_MODEL_VALUES); event.queue(); } } }  この例では、時間の入力に対する検証を行い、不正な値が入力された場合にデフォルト値である「9:00」を設定しています。 値の検証をUpdate Model Valuesフェーズの前に実施し、値が不正である場合には、ValueChangeEventをUpdate Model Valuesフェーズにエンキューします。 このようにすることで、Update Model Valuesフェーズでもう一度ValueChangeListenerが呼び出されます。 二度ValueChangeListenerが呼ばれることになるので、イベントのフェーズIDを判定し、 Update Model Valuesフェーズで呼ばれた場合にデフォルト値を設定することで画面にその値を反映させます。
-JSFは、ライフサイクルを知っていないと対処が難しい場合があるのがちょっといけてないですね&amp;hellip;。 というわけで何かの参考になれば幸いです。
-Enjoy !</description>
+      <description>&lt;p&gt;JSFには値が変更されたことをハンドリングするためのイベントとしてValueChangeEventが用意されています。
+このイベントは、コンポーネントのValueChangeListenerによって発行されます。
+ValueChangEventを利用してテキストフィールドに入力された値の検証を行っているのですが、
+値が不正だった場合に、エラーを表示するのではなく正常な値を設定したい場合があります。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;p&gt;このとき、単純にValueChangeListenerの中でテキストフィールドのプロパティに値を設定しても、画面には反映されません。
+これは、ValueChangeEventがJSFのライフサイクルのUpdate Model Valuesフェーズの前に呼ばれるからであり、
+ValueChangeListenerで設定した値はUpdate Model Valuesフェーズで入力値によって上書きされてしまうからです。&lt;/p&gt;
+
+&lt;p&gt;これを解決するには、ValueChangeListenerにおいて、ちょっとした工夫が必要です。
+以下にその例を示します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void valueChangeListener(ValueChangeEvent event)
+{
+    if (event.getPhaseId() == PhaseId.UPDATE_MODEL_VALUES) {
+        property = &amp;quot;9:00&amp;quot;;
+    }
+    else {
+        String value = (String) event.getNewValue();
+        if (false == value.matches(&amp;quot;([0-9]{1,2}|1[0-9]|2[0-3]):[0-5][0-9]&amp;quot;) {
+            event.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
+            event.queue();
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;この例では、時間の入力に対する検証を行い、不正な値が入力された場合にデフォルト値である「9:00」を設定しています。
+値の検証をUpdate Model Valuesフェーズの前に実施し、値が不正である場合には、ValueChangeEventをUpdate Model Valuesフェーズにエンキューします。
+このようにすることで、Update Model Valuesフェーズでもう一度ValueChangeListenerが呼び出されます。
+二度ValueChangeListenerが呼ばれることになるので、イベントのフェーズIDを判定し、
+Update Model Valuesフェーズで呼ばれた場合にデフォルト値を設定することで画面にその値を反映させます。&lt;/p&gt;
+
+&lt;p&gt;JSFは、ライフサイクルを知っていないと対処が難しい場合があるのがちょっといけてないですね&amp;hellip;。
+というわけで何かの参考になれば幸いです。&lt;/p&gt;
+
+&lt;p&gt;Enjoy !&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -151,23 +956,157 @@ Enjoy !</description>
       <pubDate>Tue, 17 Dec 2013 00:12:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/12/18/jsf-2-dot-2-markup/</guid>
-      <description>この記事は、Java EE Advent Calendar 2013の18日目の記事です。
-昨日は @yumix_h さんの私がJava EE開発の現場から学んだことでした。
-明日は誕生日の @aoetk さんです。
-みなさんJSF使ってますか？
-JSFってちょっと取っ付きにくいところがありますよね。でもそんなJSFもバージョンが2.2になって、 ちょっと良い感じになってきたので使ってみませんか、 ということでJSFのマークアップについて書いてみたいと思います。
-デザイナーとプログラマの作業の分担 JSFはデザイナーとプログラマで作業が分担できるということを良く聞きます。 デザイナーを雇うほど大きなプロジェクトでJSFを使ったことがないし、 分担しているということもあまり見聞きしませんが、実際この分担というのはどういうことなんでしょう？
-デザイナーはHTMLは分かりますがJSFはわかりません。
-プログラマはHTMLもJSFも分かりますが、デザインセンスはそれを専属でやっているデザイナーのほうに 一日の長があると思うので、素直にデザインは任せた方が良いでしょう。
-このようにHTMLしか分からない人が、HTMLに注力できるようにするには、 そのファイルがHTMLとして認識、つまりAPサーバーを経由しなくても、ブラウザでレイアウトが表示できる必要があります。 昔のJSPのように、JSPのタグやスクリプトレットで動的にレイアウトをするようにしていると、 ブラウザでレイアウトが表示できないのでダメということですね。
-JSFはFaceletsというテンプレートエンジンを取り込んでいるので、 特別なファイルではなく、XHTMLとして画面を作ることができます。 そのため、JSFのコンポーネントを埋め込まなければ、このままブラウザで表示することができます。
-ですが、何も埋め込まないのでは静的なHPと何も変わらないので、 JSFのコンポーネントを埋め込んでいく必要があり、下記のようなコンポーネントを埋め込んでしまうと、 デザイナーが理解できない状態、ブラウザでレイアウトを確認できない状態になってしまいます。
-&amp;lt;h:commandButton value=&amp;quot;OK&amp;quot; action=&amp;quot; #{managedBean.doAction}&amp;quot;/&amp;gt;  ではどうしたら良いのでしょう？
-JSF 2.1 JSF 2.1では、例えば下記のようにHTMLのタグにJSFのコンポーネント名を設定することによって、 JSFのコンポーネントとして認識させることができます。もちろんJSF 2.2でもできます。
-&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;OK&amp;quot; jsfc=&amp;quot;h:commandButton&amp;quot; action=&amp;quot;#{managedBean.doAction}&amp;quot;/&amp;gt;  これをブラウザで表示してみます。
-h:commandButtonの方は見事に表示されませんが、jsfc属性で書いた方は普通のボタンとして表示されています。
-JSF 2.2 jsfc属性でJSFコンポーネントをHTMLとして認識させるのには十分でしたが、 それぞれのJSFコンポーネント名をいちいち記載するのは面倒でした。コンポーネント名を正確に覚えていなければならないし&amp;hellip;。 JSF 2.2ではそこがさらに改善され、下記のようにコンポーネント名を書かなくても、JSFコンポーネントとして認識してくれるようになりました。 namespaceはxmlns:jsf=&amp;quot;http://xmlns.jcp.org/jsf&amp;quot;です。
-&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;OK&amp;quot; jsf:action=&amp;quot;#{managedBean.doAction}&amp;quot;/&amp;gt;  詳しくはJava EE 7 Tutorialを参考にしてください。</description>
+      <description>
+
+&lt;p&gt;この記事は、&lt;a href=&#34;http://www.adventar.org/calendars/152&#34;&gt;Java EE Advent Calendar 2013&lt;/a&gt;の18日目の記事です。&lt;br /&gt;
+昨日は &lt;a href=&#34;https://twitter.com/yumix_h&#34;&gt;@yumix_h&lt;/a&gt; さんの&lt;a href=&#34;http://yumix.hatenablog.jp/entry/2013/12/17/235838&#34;&gt;私がJava EE開発の現場から学んだこと&lt;/a&gt;でした。&lt;br /&gt;
+明日は誕生日の &lt;a href=&#34;https://twitter.com/aoetk&#34;&gt;@aoetk&lt;/a&gt; さんです。&lt;/p&gt;
+
+&lt;p&gt;みなさんJSF使ってますか？&lt;br /&gt;
+JSFってちょっと取っ付きにくいところがありますよね。でもそんなJSFもバージョンが2.2になって、
+ちょっと良い感じになってきたので使ってみませんか、
+ということでJSFのマークアップについて書いてみたいと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;デザイナーとプログラマの作業の分担&#34;&gt;デザイナーとプログラマの作業の分担&lt;/h2&gt;
+
+&lt;p&gt;JSFはデザイナーとプログラマで作業が分担できるということを良く聞きます。
+デザイナーを雇うほど大きなプロジェクトでJSFを使ったことがないし、
+分担しているということもあまり見聞きしませんが、実際この分担というのはどういうことなんでしょう？&lt;/p&gt;
+
+&lt;p&gt;デザイナーはHTMLは分かりますがJSFはわかりません。&lt;br /&gt;
+プログラマはHTMLもJSFも分かりますが、デザインセンスはそれを専属でやっているデザイナーのほうに
+一日の長があると思うので、素直にデザインは任せた方が良いでしょう。&lt;/p&gt;
+
+&lt;p&gt;このようにHTMLしか分からない人が、HTMLに注力できるようにするには、
+そのファイルがHTMLとして認識、つまりAPサーバーを経由しなくても、ブラウザでレイアウトが表示できる必要があります。
+昔のJSPのように、JSPのタグやスクリプトレットで動的にレイアウトをするようにしていると、
+ブラウザでレイアウトが表示できないのでダメということですね。&lt;/p&gt;
+
+&lt;p&gt;JSFはFaceletsというテンプレートエンジンを取り込んでいるので、
+特別なファイルではなく、XHTMLとして画面を作ることができます。
+そのため、JSFのコンポーネントを埋め込まなければ、このままブラウザで表示することができます。&lt;/p&gt;
+
+&lt;p&gt;ですが、何も埋め込まないのでは静的なHPと何も変わらないので、
+JSFのコンポーネントを埋め込んでいく必要があり、下記のようなコンポーネントを埋め込んでしまうと、
+デザイナーが理解できない状態、ブラウザでレイアウトを確認できない状態になってしまいます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;h:commandButton value=&amp;quot;OK&amp;quot; action=&amp;quot; #{managedBean.doAction}&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ではどうしたら良いのでしょう？&lt;/p&gt;
+
+&lt;h2 id=&#34;jsf-2-1&#34;&gt;JSF 2.1&lt;/h2&gt;
+
+&lt;p&gt;JSF 2.1では、例えば下記のようにHTMLのタグにJSFのコンポーネント名を設定することによって、
+JSFのコンポーネントとして認識させることができます。もちろんJSF 2.2でもできます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;OK&amp;quot; jsfc=&amp;quot;h:commandButton&amp;quot; action=&amp;quot;#{managedBean.doAction}&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これをブラウザで表示してみます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_25.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;h:commandButtonの方は見事に表示されませんが、jsfc属性で書いた方は普通のボタンとして表示されています。&lt;/p&gt;
+
+&lt;h2 id=&#34;jsf-2-2&#34;&gt;JSF 2.2&lt;/h2&gt;
+
+&lt;p&gt;jsfc属性でJSFコンポーネントをHTMLとして認識させるのには十分でしたが、
+それぞれのJSFコンポーネント名をいちいち記載するのは面倒でした。コンポーネント名を正確に覚えていなければならないし&amp;hellip;。
+JSF 2.2ではそこがさらに改善され、下記のようにコンポーネント名を書かなくても、JSFコンポーネントとして認識してくれるようになりました。
+namespaceは&lt;code&gt;xmlns:jsf=&amp;quot;http://xmlns.jcp.org/jsf&amp;quot;&lt;/code&gt;です。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;input type=&amp;quot;submit&amp;quot; value=&amp;quot;OK&amp;quot; jsf:action=&amp;quot;#{managedBean.doAction}&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;詳しくは&lt;a href=&#34;http://docs.oracle.com/javaee/7/tutorial/doc/&#34;&gt;Java EE 7 Tutorial&lt;/a&gt;を参考にしてください。&lt;/p&gt;
+
+&lt;h2 id=&#34;ちょっと発展&#34;&gt;ちょっと発展&lt;/h2&gt;
+
+&lt;p&gt;ここまでで、JSFコンポーネントのマークアップが簡単だということが分かりました。
+ただ、ビジネスアプリでは必ず登場するテーブルのJSFコンポーネントはちょっと考え方を変えないと、
+HTMLとして認識させるのは難しそうです。&lt;/p&gt;
+
+&lt;p&gt;通常、JSFのテーブルコンポーネントは下記の形になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;h:dataTable var=&amp;quot;item&amp;quot; value=&amp;quot;#{managedBean.items}&amp;quot;&amp;gt;
+    &amp;lt;h:column&amp;gt;
+        &amp;lt;f:facet name=&amp;quot;header&amp;quot;&amp;gt;ヘッダ１&amp;lt;/f:facet&amp;gt;
+        &amp;lt;h:outputText value=&amp;quot;#{item.value1}&amp;quot;/&amp;gt;
+    &amp;lt;/h:column&amp;gt;
+    &amp;lt;h:column&amp;gt;
+        &amp;lt;f:facet name=&amp;quot;header&amp;quot;&amp;gt;ヘッダ２&amp;lt;/f:facet&amp;gt;
+        &amp;lt;h:outputText value=&amp;quot;#{item.value2}&amp;quot;/&amp;gt;
+    &amp;lt;/h:column&amp;gt;
+&amp;lt;/h:dataTable&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これ、前から思ってたんですけど、HTMLのテーブルタグに慣れていると、
+ちょっと直感的ではないのですぐに組み方を忘れてしまいませんか？
+僕はいつも忘れてしまいます。
+それにHTMLとして表示もできません。
+これをHTMLとして表示できるように、なるべくテーブルタグに近づけていきたいと思います。&lt;/p&gt;
+
+&lt;p&gt;まずは通常のテーブルタグを書きます。ここまではデザイナーの分担ですね。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;table&amp;gt;
+    &amp;lt;thead&amp;gt;
+        &amp;lt;tr&amp;gt;
+            &amp;lt;th&amp;gt;ヘッダ１&amp;lt;/th&amp;gt;
+            &amp;lt;th&amp;gt;ヘッダ２&amp;lt;/th&amp;gt;
+        &amp;lt;/tr&amp;gt;
+    &amp;lt;/thead&amp;gt;
+    &amp;lt;tbody&amp;gt;
+        &amp;lt;tr&amp;gt;
+            &amp;lt;td&amp;gt;値１&amp;lt;/td&amp;gt;
+            &amp;lt;td&amp;gt;値２&amp;lt;/td&amp;gt;
+        &amp;lt;/tr&amp;gt;
+    &amp;lt;/tbody&amp;gt;
+&amp;lt;/table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;ここにJSFのコンポーネントを組み込んでいきます。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;table&amp;gt;
+    &amp;lt;thead&amp;gt;
+        &amp;lt;tr&amp;gt;
+            &amp;lt;th&amp;gt;ヘッダ１&amp;lt;/th&amp;gt;
+            &amp;lt;th&amp;gt;ヘッダ２&amp;lt;/th&amp;gt;
+        &amp;lt;/tr&amp;gt;
+    &amp;lt;/thead&amp;gt;
+    &amp;lt;tbody&amp;gt;
+        &amp;lt;tr jsfc=&amp;quot;ui:repeat&amp;quot; var=&amp;quot;item&amp;quot; value=&amp;quot;#{managedBean.items}&amp;quot;&amp;gt;
+            &amp;lt;td&amp;gt;#{item.value1}&amp;lt;/td&amp;gt;
+            &amp;lt;td&amp;gt;#{item.value2}&amp;lt;/td&amp;gt;
+        &amp;lt;/tr&amp;gt;
+    &amp;lt;/tbody&amp;gt;
+&amp;lt;/table&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;tbodyのtrタグの部分にjsfc属性で&lt;code&gt;ui:repeat&lt;/code&gt;を組み込みます。
+JSF 2.2のjsfプレフックスは使えません。
+こうすることでサーバー経由で表示した&lt;code&gt;h:dataTable&lt;/code&gt;と同じになるはずです。
+そうそう、ちゃんとHTMLとして表示されなければ意味がないので確認してみます。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_26.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;分かりにくいのでボーダーを表示していますが、ちゃんとレイアウト通り表示されました。&lt;/p&gt;
+
+&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
+
+&lt;p&gt;こんな具合にJSFコンポーネントの情報を、HTMLのタグの属性として組み込めるようになっているので、
+今までよりもずっとデザイナーとプログラマの作業の分担がやり易くなっていると思います。
+まあ、デザイナーがいなくてもHTMLとして認識できるようにしておけば、
+いちいちサーバーを起動しなくてもレイアウトが確認できるので、
+JSFを使う場合は固有のタグではなく、HTMLの属性としてJSFを利用するようにした方が良いと思います。&lt;/p&gt;
+
+&lt;h2 id=&#34;補足&#34;&gt;補足&lt;/h2&gt;
+
+&lt;p&gt;IntelliJ IDEA 13 でもjsfプレフィックスでの補完は完全には効かなかったので、
+知らないとちょっと面倒かも :P&lt;/p&gt;
+
+&lt;p&gt;Enjoy!&lt;/p&gt;
+</description>
     </item>
     
     <item>
@@ -176,14 +1115,46 @@ JSF 2.2 jsfc属性でJSFコンポーネントをHTMLとして認識させるの�
       <pubDate>Mon, 10 Jun 2013 03:10:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/06/10/load-images-within-css-resources-in-jsf-2-dot-0/</guid>
-      <description> JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。
-Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。
-フォルダ構成は次のようになっています。（Mavenです）
-root +-- src +-- webapp +-- resources +-- css | +-- bootstrap.min.css +-- img +-- glyphicons-halflings.png  JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。
-&amp;lt;h:outputStylesheet library=&amp;quot;css&amp;quot; name=&amp;quot;bootstrap.min.css&amp;quot;/&amp;gt;  このとき、bootstrap.min.css内のイメージのパスは../img/glyphicons-halflings.pngとなっていますが、 このままでは画像が読み込まれません。まあ、パスからも明らかですね。
-問題を解決するには次のように、イメージのパスを変更する必要があります。
-background-image:url(&amp;quot;#{resource[&#39;img/glyphicons-halflings.png&#39;]}&amp;quot;)  Jun 20, 2013 追記 twitterで@den2snさんに教えてもらったのですが、outputStylesheetを下記のようにlibraryを削除して宣言することにより、 bootstrap.min.cssを書き換えなくても良くなります。
-&amp;lt;h:outputStylesheet name=&amp;quot;css/bootstrap.min.css&amp;quot;/&amp;gt;  </description>
+      <description>
+
+&lt;p&gt;JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。&lt;br /&gt;
+Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;p&gt;フォルダ構成は次のようになっています。（Mavenです）&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;root
+ +-- src
+     +-- webapp
+         +-- resources
+             +-- css
+             |   +-- bootstrap.min.css
+             +-- img
+                 +-- glyphicons-halflings.png
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;h:outputStylesheet library=&amp;quot;css&amp;quot; name=&amp;quot;bootstrap.min.css&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;このとき、bootstrap.min.css内のイメージのパスは&lt;code&gt;../img/glyphicons-halflings.png&lt;/code&gt;となっていますが、
+このままでは画像が読み込まれません。まあ、パスからも明らかですね。&lt;/p&gt;
+
+&lt;p&gt;問題を解決するには次のように、イメージのパスを変更する必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;background-image:url(&amp;quot;#{resource[&#39;img/glyphicons-halflings.png&#39;]}&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;jun-20-2013-追記&#34;&gt;Jun 20, 2013 追記&lt;/h2&gt;
+
+&lt;p&gt;twitterで&lt;a href=&#34;https://twitter.com/den2sn&#34;&gt;@den2sn&lt;/a&gt;さんに教えてもらったのですが、outputStylesheetを下記のようにlibraryを削除して宣言することにより、
+bootstrap.min.cssを書き換えなくても良くなります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;h:outputStylesheet name=&amp;quot;css/bootstrap.min.css&amp;quot;/&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+</description>
     </item>
     
     <item>
@@ -192,15 +1163,93 @@ background-image:url(&amp;quot;#{resource[&#39;img/glyphicons-halflings.png&#39;
       <pubDate>Sun, 13 Jan 2013 18:46:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/01/13/facesmessagetobootstrap/</guid>
-      <description>JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。 出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。 listレイアウトは以下のような出力になります。
-(Bootstrapのalert alert-errorを適用)
-これに対してTableレイアウトは以下のような出力になります。
-どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。 MessagesコンポーネントはHTMLをカスタマイズする事ができません。 正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、 そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、 com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。 もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。 そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。
-BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。 このクローズボタンをクリックする事により、エラー情報を消すことができます。 クローズボタンを出すには、HTMLを下記のように記載する必要があります。
-&amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;Summary Message&amp;lt;/h4&amp;gt; Detail Message &amp;lt;/div&amp;gt;  これをJSF合成コンポーネントにします。 webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)
-alert.xhtml:
-&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt; &amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt; &amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot; xmlns:cc=&amp;quot;http://java.sun.com/jsf/composite&amp;quot; xmlns:c=&amp;quot;http://java.sun.com/jsp/jstl/core&amp;quot;&amp;gt; &amp;lt;!-- INTERFACE --&amp;gt; &amp;lt;cc:interface&amp;gt; &amp;lt;/cc:interface&amp;gt; &amp;lt;!-- IMPLEMENTATION --&amp;gt; &amp;lt;cc:implementation&amp;gt; &amp;lt;c:forEach var=&amp;quot;message&amp;quot; items=&amp;quot;#{facesContext.messageList}&amp;quot;&amp;gt; &amp;lt;c:if test=&amp;quot;#{message.severity == &#39;ERROR 2&#39;}&amp;quot;&amp;gt; &amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt; &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt; &amp;lt;h4&amp;gt;#{message.</description>
+      <description>&lt;p&gt;JSFのMessagesコンポーネントは、Managed Beanで設定されたFacesMessageを出力する為のコンポーネントです。
+出力方法は、listとTableの二つのレイアウトを利用した方法があり、デフォルトはlistレイアウトです。
+listレイアウトは以下のような出力になります。&lt;br /&gt;
+(Bootstrapの&lt;code&gt;alert alert-error&lt;/code&gt;を適用)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_1.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;これに対してTableレイアウトは以下のような出力になります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_2.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;どちらもエラーを表示するには十分ですが、ユーザとしては確認したらエラー情報を消したいところです。
+MessagesコンポーネントはHTMLをカスタマイズする事ができません。
+正確にはレンダラをカスタマイズすれば、出力するHTMLを書き換える事が出来ますし、
+そういった情報を扱ったブログもありますが、Messagesレンダラのカスタマイズは、
+com.sunパッケージのクラスを継承して拡張する必要があり、JSFの実装依存のコードになってしまいます。
+もちろん独自で一からレンダラを書いても良いのですが、あまり現実的ではありません。
+そこで、標準のMessagesコンポーネントではなくBootstrapのAlertsコンポーネントを使うことにします。&lt;/p&gt;
+
+&lt;p&gt;BootstrapのAlertsコンポーネントはクローズボタンを表示する事ができます。
+このクローズボタンをクリックする事により、エラー情報を消すことができます。
+クローズボタンを出すには、HTMLを下記のように記載する必要があります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt;
+    &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt;
+    &amp;lt;h4&amp;gt;Summary Message&amp;lt;/h4&amp;gt;
+    Detail Message
+&amp;lt;/div&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これをJSF合成コンポーネントにします。
+webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを配置します。(フォルダ構成はMavenです)&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;alert.xhtml:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt;
+&amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; 
+      &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;
+&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;
+      xmlns:cc=&amp;quot;http://java.sun.com/jsf/composite&amp;quot;
+      xmlns:c=&amp;quot;http://java.sun.com/jsp/jstl/core&amp;quot;&amp;gt;
+
+    &amp;lt;!-- INTERFACE --&amp;gt;
+    &amp;lt;cc:interface&amp;gt;
+    &amp;lt;/cc:interface&amp;gt;
+
+    &amp;lt;!-- IMPLEMENTATION --&amp;gt;
+    &amp;lt;cc:implementation&amp;gt;
+        &amp;lt;c:forEach var=&amp;quot;message&amp;quot; items=&amp;quot;#{facesContext.messageList}&amp;quot;&amp;gt;
+            &amp;lt;c:if test=&amp;quot;#{message.severity == &#39;ERROR 2&#39;}&amp;quot;&amp;gt;
+                &amp;lt;div class=&amp;quot;alert alert-error&amp;quot;&amp;gt;
+                    &amp;lt;button type=&amp;quot;button&amp;quot; class=&amp;quot;close&amp;quot; 
+                            data-dismiss=&amp;quot;alert&amp;quot;&amp;gt;&amp;amp;times;&amp;lt;/button&amp;gt;
+                    &amp;lt;h4&amp;gt;#{message.summary}&amp;lt;/h4&amp;gt;
+                    #{message.detail}
+                &amp;lt;/div&amp;gt;
+            &amp;lt;/c:if&amp;gt;
+        &amp;lt;/c:forEach&amp;gt;
+    &amp;lt;/cc:implementation&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;JSF合成コンポーネントはinterfaceの部分にコンポーネントの属性を、implementationの部分に実装を書きます。
+今回は属性は不要なので、実装部分だけになります。
+FacesMessageはFacesContext.messageListから取得します。
+コンポーネントはエラーメッセージが設定されている場合のみ表示します。
+エラーメッセージはFacesMessage.severityがFacesMessage.SEVERITY_ERRORのものになりますが、
+EL式ではStatic fieldを比較値として比較できません。
+そのため、FacesMessage.SEVERITY_ERRORの文字列表現である&amp;rsquo;ERROR 2&amp;rsquo;と比較し、一致するものをエラーメッセージとして判定します。
+また、複数設定されている場合を考慮して、forEachを利用し、FacesMessageの数だけAlertsコンポーネントを表示します。&lt;/p&gt;
+
+&lt;p&gt;配置したJSF合成コンポーネントは、&lt;a href=&#34;http://java.sun.com/jsf/composite/bootstrap&#34;&gt;http://java.sun.com/jsf/composite/bootstrap&lt;/a&gt; というネームスペースで利用できます。
+&lt;a href=&#34;http://java.sun.com/jsf/composite/&#34;&gt;http://java.sun.com/jsf/composite/&lt;/a&gt; にフォルダ名であるbootstrapを付けるだけです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html xmlns:bs=&amp;quot;http://java.sun.com/jsf/composite/bootstrap&amp;quot;&amp;gt;
+    &amp;lt;bs:alert/&amp;gt;
+&amp;lt;/html&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;実際に表示すると以下のようになります。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_3.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;エラーメッセージの右上にクローズボタンが表示され、クリックする事によりメッセージを閉じることができるようになりました。&lt;/p&gt;
+</description>
     </item>
     
   </channel>
 </rss>
+
