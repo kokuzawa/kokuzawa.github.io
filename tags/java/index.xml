@@ -6,10 +6,186 @@
     <description>Recent content in Java on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 04 Jul 2018 01:54:11 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 06 Jul 2018 01:53:22 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/tags/java/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>JSON-B を試す</title>
+      <link>https://kokuzawa.github.io/blog/2018/07/06/jsonb-example/</link>
+      <pubDate>Fri, 06 Jul 2018 01:53:22 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/07/06/jsonb-example/</guid>
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_json_b_って何&#34;&gt;JSON-B って何？&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;JSON-B は Java オブジェクトを JSON メッセージに変換する、または JSON メッセージを Java オブジェクトに変換するためのライブラリです。
+Java EE 8 に含まれています。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_使ってみる&#34;&gt;使ってみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Java EE 8 に含まれますが、単独で使用することが可能です。
+下記の3つのライブラリを利用します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;javax.json.bind&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;javax.json.bind-api&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.0&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.eclipse&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;yasson&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.0&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;
+
+&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.glassfish&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;javax.json&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.1&amp;lt;/version&amp;gt;
+&amp;lt;/dependency&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;JSON メッセージに変換する Java オブジェクトクラスを用意します。
+あとで説明したいことがあるので、Immutable なクラスにしています。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;public class User
+{
+    private final String name;
+    private final int age;
+
+    public User(String name, int age)
+    {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public int getAge()
+    {
+        return age;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;最初は Java オブジェクトを JSON メッセージに変換してみます。
+&lt;code&gt;JsonbBuilder#create()&lt;/code&gt; メソッドはインターフェースに定義された static メソッドなので、
+Java 8 以降じゃないとコンパイルできません。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;import org.junit.Test;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+public class AppTest
+{
+    @Test
+    public void testToJson()
+    {
+        final Jsonb jsonb = JsonbBuilder.create();
+        final String result = jsonb.toJson(new User(&#34;katsumi&#34;, 40));
+        assertThat(result, is(&#34;{\&#34;age\&#34;:40,\&#34;name\&#34;:\&#34;katsumi\&#34;}&#34;));
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;次に JSON メッセージを Java オブジェクトに変換してみます。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;import org.junit.Test;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+public class AppTest
+{
+    @Test
+    public void testFromJson()
+    {
+        final Jsonb jsonb = JsonbBuilder.create();
+        final String text = &#34;{\&#34;age\&#34;:40,\&#34;name\&#34;:\&#34;katsumi\&#34;}&#34;;
+        final User user = jsonb.fromJson(text, User.class);
+        assertThat(user.getAge(), is(40));
+        assertThat(user.getName(), is(&#34;katsumi&#34;));
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;このまま実行すると &lt;code&gt;Jsonb#fromJson(String, Class&amp;lt;T&amp;gt;)&lt;/code&gt; メソッドでエラーになります。
+JSON メッセージを Java オブジェクトに変換するためにはデフォルトコンストラクタが必要なのですが、
+今回作成した User クラスは Immutable にしている関係でデフォルトコンストラクタがありません。
+そのため下記のエラーが発生します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;javax.json.bind.JsonbException: Can&#39;t create instance of a class: class org.katsumi.User, No default constructor found.&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;JSON-B にはカスタムコンストラクタをサポートする仕組みが用意されているので、
+User クラスのコンストラクタを下記のように変更しました。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbProperty;
+
+...
+
+    @JsonbCreator
+    public User(
+            @JsonbProperty(&#34;name&#34;) String name,
+            @JsonbProperty(&#34;age&#34;) int age)
+    {
+        this.name = name;
+        this.age = age;
+    }
+
+...&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;この修正後に再度実行すると処理が成功します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_参考&#34;&gt;参考&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://json-b.net/index.html&#34;&gt;JSON Binding (JSON-B)&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>[JSF 2.3] Websocket を試す（その２）</title>
