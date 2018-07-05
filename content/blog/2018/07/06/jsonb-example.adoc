@@ -1,0 +1,152 @@
+---
+title: "JSON-B を試す"
+date: 2018-07-06T01:53:22+09:00
+tags: ["Java","JSON-B"]
+draft: false
+---
+
+== JSON-B って何？
+
+JSON-B は Java オブジェクトを JSON メッセージに変換する、または JSON メッセージを Java オブジェクトに変換するためのライブラリです。
+Java EE 8 に含まれています。
+
+== 使ってみる
+
+Java EE 8 に含まれますが、単独で使用することが可能です。
+下記の3つのライブラリを利用します。
+
+[source,xml]
+----
+<dependency>
+    <groupId>javax.json.bind</groupId>
+    <artifactId>javax.json.bind-api</artifactId>
+    <version>1.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.eclipse</groupId>
+    <artifactId>yasson</artifactId>
+    <version>1.0</version>
+</dependency>
+
+<dependency>
+    <groupId>org.glassfish</groupId>
+    <artifactId>javax.json</artifactId>
+    <version>1.1</version>
+</dependency>
+----
+
+JSON メッセージに変換する Java オブジェクトクラスを用意します。
+あとで説明したいことがあるので、Immutable なクラスにしています。
+
+[source,java]
+----
+public class User
+{
+    private final String name;
+    private final int age;
+
+    public User(String name, int age)
+    {
+        this.name = name;
+        this.age = age;
+    }
+
+    public String getName()
+    {
+        return name;
+    }
+
+    public int getAge()
+    {
+        return age;
+    }
+}
+----
+
+最初は Java オブジェクトを JSON メッセージに変換してみます。
+`JsonbBuilder#create()` メソッドはインターフェースに定義された static メソッドなので、
+Java 8 以降じゃないとコンパイルできません。
+
+[source,java]
+----
+import org.junit.Test;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+public class AppTest
+{
+    @Test
+    public void testToJson()
+    {
+        final Jsonb jsonb = JsonbBuilder.create();
+        final String result = jsonb.toJson(new User("katsumi", 40));
+        assertThat(result, is("{\"age\":40,\"name\":\"katsumi\"}"));
+    }
+}
+----
+
+次に JSON メッセージを Java オブジェクトに変換してみます。
+
+[source,java]
+----
+import org.junit.Test;
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
+import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertThat;
+
+public class AppTest
+{
+    @Test
+    public void testFromJson()
+    {
+        final Jsonb jsonb = JsonbBuilder.create();
+        final String text = "{\"age\":40,\"name\":\"katsumi\"}";
+        final User user = jsonb.fromJson(text, User.class);
+        assertThat(user.getAge(), is(40));
+        assertThat(user.getName(), is("katsumi"));
+    }
+}
+----
+
+このまま実行すると `Jsonb#fromJson(String, Class<T>)` メソッドでエラーになります。
+JSON メッセージを Java オブジェクトに変換するためにはデフォルトコンストラクタが必要なのですが、
+今回作成した User クラスは Immutable にしている関係でデフォルトコンストラクタがありません。
+そのため下記のエラーが発生します。
+
+[source]
+----
+javax.json.bind.JsonbException: Can't create instance of a class: class org.katsumi.User, No default constructor found.
+----
+
+JSON-B にはカスタムコンストラクタをサポートする仕組みが用意されているので、
+User クラスのコンストラクタを下記のように変更しました。
+
+[source,java]
+----
+import javax.json.bind.annotation.JsonbCreator;
+import javax.json.bind.annotation.JsonbProperty;
+
+...
+
+    @JsonbCreator
+    public User(
+            @JsonbProperty("name") String name,
+            @JsonbProperty("age") int age)
+    {
+        this.name = name;
+        this.age = age;
+    }
+
+...
+----
+
+この修正後に再度実行すると処理が成功します。
+
+== 参考
+
+* http://json-b.net/index.html[JSON Binding (JSON-B)]
+
