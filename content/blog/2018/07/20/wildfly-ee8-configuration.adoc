@@ -1,0 +1,50 @@
+---
+title: "[WildFly] EE8プレビューモードで起動する"
+date: 2018-07-20T14:42:51+09:00
+tags: ["WildFly"]
+draft: false
+---
+
+== 環境
+
+* WildFly 13.0.0.Final
+
+== 起動方法
+
+WildFly 13.0.0.Final はデフォルトではEE7モードで起動します。
+EE8の機能を有効にするにはEE8プレビューモードを有効にします。
+これは、起動時に `ee8.preview.mode` を指定します。
+
+[source,sh]
+----
+./standalone.sh -Dee8.preview.mode=true
+----
+
+もう一つは、EE8プレビューモード用の設定ファイルを指定する方法です。
+EE8プレビューモード用の設定ファイルと通常の設定ファイルの違いは、
+システムプロパティへの `ee8.preview.mode` 定義の有無だけのようです。
+
+[source,sh]
+----
+./standalone.sh -c standalone-ee8.xml
+----
+
+== IntelliJ IDEA で起動
+
+通常の設定ファイルを利用する場合は、サーバ設定内のVM Optionsに `ee8.preview.mode` を設定します。
+
+----
+-Dee8.preview.mode=true
+----
+
+EE8プレビューモード用の設定ファイルを利用する場合は、
+VM Optionsに `jboss.server.default.config` を設定して、読み込む設定ファイルを指定します。
+
+----
+-Djboss.server.default.config=standalone-ee8.xml
+----
+
+== 参考
+
+* http://wildfly.org/news/2018/05/30/WildFly13-Final-Released/[WildFly 13 "Baker’s Dozen" is released!]
+
