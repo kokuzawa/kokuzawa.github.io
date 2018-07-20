@@ -6,10 +6,90 @@
     <description>Recent content in Wildfly on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 28 Feb 2016 01:56:31 +0900</lastBuildDate>
+    <lastBuildDate>Fri, 20 Jul 2018 14:42:51 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/tags/wildfly/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[WildFly] EE8プレビューモードで起動する</title>
+      <link>https://kokuzawa.github.io/blog/2018/07/20/wildfly-ee8-configuration/</link>
+      <pubDate>Fri, 20 Jul 2018 14:42:51 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/07/20/wildfly-ee8-configuration/</guid>
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_環境&#34;&gt;環境&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;WildFly 13.0.0.Final&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_起動方法&#34;&gt;起動方法&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;WildFly 13.0.0.Final はデフォルトではEE7モードで起動します。
+EE8の機能を有効にするにはEE8プレビューモードを有効にします。
+これは、起動時に &lt;code&gt;ee8.preview.mode&lt;/code&gt; を指定します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;./standalone.sh -Dee8.preview.mode=true&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;もう一つは、EE8プレビューモード用の設定ファイルを指定する方法です。
+EE8プレビューモード用の設定ファイルと通常の設定ファイルの違いは、
+システムプロパティへの &lt;code&gt;ee8.preview.mode&lt;/code&gt; 定義の有無だけのようです。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;./standalone.sh -c standalone-ee8.xml&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_intellij_idea_で起動&#34;&gt;IntelliJ IDEA で起動&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;通常の設定ファイルを利用する場合は、サーバ設定内のVM Optionsに &lt;code&gt;ee8.preview.mode&lt;/code&gt; を設定します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre&gt;-Dee8.preview.mode=true&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;EE8プレビューモード用の設定ファイルを利用する場合は、
+VM Optionsに &lt;code&gt;jboss.server.default.config&lt;/code&gt; を設定して、読み込む設定ファイルを指定します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre&gt;-Djboss.server.default.config=standalone-ee8.xml&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_参考&#34;&gt;参考&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://wildfly.org/news/2018/05/30/WildFly13-Final-Released/&#34;&gt;WildFly 13 &#34;Baker’s Dozen&#34; is released!&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>IntelliJ IDEAからDocker上のWildFlyでデバッグする</title>
