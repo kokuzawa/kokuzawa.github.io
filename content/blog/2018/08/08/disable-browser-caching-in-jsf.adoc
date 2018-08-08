@@ -13,7 +13,7 @@ JSFでブラウザのキャッシュを無効にする方法。JSFでプロジ�
 .CacheControlPhaseListener.java 
 [source,java]
 ----
-package io.github.kokuzawa;
+package io.github.kokuzawa.faces;
 
 import javax.faces.context.FacesContext;
 import javax.faces.event.PhaseEvent;
