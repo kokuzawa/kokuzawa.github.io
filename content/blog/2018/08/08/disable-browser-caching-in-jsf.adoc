@@ -1,0 +1,58 @@
+---
+title: "[JSF] ブラウザキャッシュを無効にする"
+date: 2018-08-08T23:11:26+09:00
+tags: ["Java","JSF"]
+draft: false
+---
+
+JSFでブラウザのキャッシュを無効にする方法。JSFでプロジェクトを始めるたびに検索するのがいい加減面倒になった、というわけでメモ。
+`javax.faces.event.PhaseListener` を実装したクラスで処理するので、一つ作っておけば全てのレスポンスに適用されます。
+作ったクラスは faces-config.xml に登録します。
+以下、必要最低限のコード。
+
+.CacheControlPhaseListener.java 
+[source,java]
+----
+package io.github.kokuzawa;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
+import javax.servlet.http.HttpServletResponse;
+
+public class CacheControlPhaseListener implements PhaseListener
+{
+    @Override
+    public void afterPhase(PhaseEvent phaseEvent)
+    {
+    }
+
+    @Override
+    public void beforePhase(PhaseEvent phaseEvent)
+    {
+        final FacesContext facesContext = phaseEvent.getFacesContext();
+        final HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        response.addHeader("Pragma", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        response.addHeader("Cache-Control", "no-store");
+        response.addHeader("Cache-Control", "must-revalidate");
+        response.addHeader("Expires", "Mon, 8 Aug 2006 10:00:00 GMT");
+    }
+
+    @Override
+    public PhaseId getPhaseId()
+    {
+        return PhaseId.RENDER_RESPONSE;
+    }
+}
+----
+
+.faces-config.xml
+[source,xml]
+----
+<lifecycle>
+    <phase-listener>io.github.kokuzawa.faces.CacheControlPhaseListener</phase-listener>
+</lifecycle>
+----
+
