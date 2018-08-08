@@ -6,10 +6,71 @@
     <description>Recent content in Blogs on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Fri, 20 Jul 2018 14:42:51 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 08 Aug 2018 23:11:26 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[JSF] ブラウザキャッシュを無効にする</title>
+      <link>https://kokuzawa.github.io/blog/2018/08/08/disable-browser-caching-in-jsf/</link>
+      <pubDate>Wed, 08 Aug 2018 23:11:26 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/08/08/disable-browser-caching-in-jsf/</guid>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;JSFでブラウザのキャッシュを無効にする方法。JSFでプロジェクトを始めるたびに検索するのがいい加減面倒になった、というわけでメモ。
+&lt;code&gt;javax.faces.event.PhaseListener&lt;/code&gt; を実装したクラスで処理するので、一つ作っておけば全てのレスポンスに適用されます。
+作ったクラスは faces-config.xml に登録します。
+以下、必要最低限のコード。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;CacheControlPhaseListener.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;package io.github.kokuzawa;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
+import javax.servlet.http.HttpServletResponse;
+
+public class CacheControlPhaseListener implements PhaseListener
+{
+    @Override
+    public void afterPhase(PhaseEvent phaseEvent)
+    {
+    }
+
+    @Override
+    public void beforePhase(PhaseEvent phaseEvent)
+    {
+        final FacesContext facesContext = phaseEvent.getFacesContext();
+        final HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        response.addHeader(&#34;Pragma&#34;, &#34;no-cache&#34;);
+        response.addHeader(&#34;Cache-Control&#34;, &#34;no-cache&#34;);
+        response.addHeader(&#34;Cache-Control&#34;, &#34;no-store&#34;);
+        response.addHeader(&#34;Cache-Control&#34;, &#34;must-revalidate&#34;);
+        response.addHeader(&#34;Expires&#34;, &#34;Mon, 8 Aug 2006 10:00:00 GMT&#34;);
+    }
+
+    @Override
+    public PhaseId getPhaseId()
+    {
+        return PhaseId.RENDER_RESPONSE;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;faces-config.xml&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&amp;lt;lifecycle&amp;gt;
+    &amp;lt;phase-listener&amp;gt;io.github.kokuzawa.faces.CacheControlPhaseListener&amp;lt;/phase-listener&amp;gt;
+&amp;lt;/lifecycle&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>[WildFly] EE8プレビューモードで起動する</title>

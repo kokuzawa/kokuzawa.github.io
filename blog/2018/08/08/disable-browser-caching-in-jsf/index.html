@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    [WildFly] EE8プレビューモードで起動する | KATSUMI KOKUZAWA&#39;S BLOG
+    [JSF] ブラウザキャッシュを無効にする | KATSUMI KOKUZAWA&#39;S BLOG
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="https://kokuzawa.github.io/blog/2018/07/20/wildfly-ee8-configuration/"/>
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2018/08/08/disable-browser-caching-in-jsf/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -62,84 +62,67 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>[WildFly] EE8プレビューモードで起動する</h1>
+      <h1>[JSF] ブラウザキャッシュを無効にする</h1>
       <div class="meta">
-        Jul 20, 2018 &nbsp;
+        Aug 8, 2018 &nbsp;
         
-          #<a href="/tags/wildfly">WildFly</a>&nbsp;
+          #<a href="/tags/java">Java</a>&nbsp;
+        
+          #<a href="/tags/jsf">JSF</a>&nbsp;
         
       </div>
     </div>
     <article>
-      <div class="sect1">
-<h2 id="_環境">環境</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p>WildFly 13.0.0.Final</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_起動方法">起動方法</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>WildFly 13.0.0.Final はデフォルトではEE7モードで起動します。
-EE8の機能を有効にするにはEE8プレビューモードを有効にします。
-これは、起動時に <code>ee8.preview.mode</code> を指定します。</p>
+      <div class="paragraph">
+<p>JSFでブラウザのキャッシュを無効にする方法。JSFでプロジェクトを始めるたびに検索するのがいい加減面倒になった、というわけでメモ。
+<code>javax.faces.event.PhaseListener</code> を実装したクラスで処理するので、一つ作っておけば全てのレスポンスに適用されます。
+作ったクラスは faces-config.xml に登録します。
+以下、必要最低限のコード。</p>
 </div>
 <div class="listingblock">
+<div class="title">CacheControlPhaseListener.java</div>
 <div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh">./standalone.sh -Dee8.preview.mode=true</code></pre>
+<pre class="highlight"><code class="language-java" data-lang="java">package io.github.kokuzawa;
+
+import javax.faces.context.FacesContext;
+import javax.faces.event.PhaseEvent;
+import javax.faces.event.PhaseId;
+import javax.faces.event.PhaseListener;
+import javax.servlet.http.HttpServletResponse;
+
+public class CacheControlPhaseListener implements PhaseListener
+{
+    @Override
+    public void afterPhase(PhaseEvent phaseEvent)
+    {
+    }
+
+    @Override
+    public void beforePhase(PhaseEvent phaseEvent)
+    {
+        final FacesContext facesContext = phaseEvent.getFacesContext();
+        final HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+        response.addHeader("Pragma", "no-cache");
+        response.addHeader("Cache-Control", "no-cache");
+        response.addHeader("Cache-Control", "no-store");
+        response.addHeader("Cache-Control", "must-revalidate");
+        response.addHeader("Expires", "Mon, 8 Aug 2006 10:00:00 GMT");
+    }
+
+    @Override
+    public PhaseId getPhaseId()
+    {
+        return PhaseId.RENDER_RESPONSE;
+    }
+}</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>もう一つは、EE8プレビューモード用の設定ファイルを指定する方法です。
-EE8プレビューモード用の設定ファイルと通常の設定ファイルの違いは、
-システムプロパティへの <code>ee8.preview.mode</code> 定義の有無だけのようです。</p>
 </div>
 <div class="listingblock">
+<div class="title">faces-config.xml</div>
 <div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh">./standalone.sh -c standalone-ee8.xml</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_intellij_idea_で起動">IntelliJ IDEA で起動</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>通常の設定ファイルを利用する場合は、サーバ設定内のVM Optionsに <code>ee8.preview.mode</code> を設定します。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>-Dee8.preview.mode=true</pre>
-</div>
-</div>
-<div class="paragraph">
-<p>EE8プレビューモード用の設定ファイルを利用する場合は、
-VM Optionsに <code>jboss.server.default.config</code> を設定して、読み込む設定ファイルを指定します。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre>-Djboss.server.default.config=standalone-ee8.xml</pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_参考">参考</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="http://wildfly.org/news/2018/05/30/WildFly13-Final-Released/">WildFly 13 "Baker’s Dozen" is released!</a></p>
-</li>
-</ul>
-</div>
+<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;lifecycle&gt;
+    &lt;phase-listener&gt;io.github.kokuzawa.faces.CacheControlPhaseListener&lt;/phase-listener&gt;
+&lt;/lifecycle&gt;</code></pre>
 </div>
 </div>
 
@@ -169,10 +152,8 @@ VM Optionsに <code>jboss.server.default.config</code> を設定して、読み�
   
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/07/06/jsonb-example/" rel="prev">JSON-B を試す</a></span>
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/07/20/wildfly-ee8-configuration/" rel="prev">[WildFly] EE8プレビューモードで起動する</a></span>
     
-    
-      <span class="next"><a href="https://kokuzawa.github.io/blog/2018/08/08/disable-browser-caching-in-jsf/" rel="next">[JSF] ブラウザキャッシュを無効にする</a> &rarr;</span>
     
   </nav>
 
