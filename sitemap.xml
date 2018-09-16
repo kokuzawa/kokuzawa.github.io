@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://kokuzawa.github.io/blog/2018/09/16/start-react/</loc>
+    <lastmod>2018-09-16T16:15:53+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://kokuzawa.github.io/blog/2018/08/08/disable-browser-caching-in-jsf/</loc>
     <lastmod>2018-08-08T23:11:26+09:00</lastmod>
   </url>
@@ -387,7 +392,7 @@
   
   <url>
     <loc>https://kokuzawa.github.io/blog/</loc>
-    <lastmod>2018-08-08T23:11:26+09:00</lastmod>
+    <lastmod>2018-09-16T16:15:53+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -531,7 +536,7 @@
   
   <url>
     <loc>https://kokuzawa.github.io/</loc>
-    <lastmod>2018-08-08T23:11:26+09:00</lastmod>
+    <lastmod>2018-09-16T16:15:53+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -556,6 +561,12 @@
   <url>
     <loc>https://kokuzawa.github.io/tags/primefaces/</loc>
     <lastmod>2018-06-28T01:16:27+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/tags/react/</loc>
+    <lastmod>2018-09-16T16:15:53+09:00</lastmod>
     <priority>0</priority>
   </url>
   

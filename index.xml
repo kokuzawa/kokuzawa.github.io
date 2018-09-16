@@ -6,10 +6,205 @@
     <description>Recent content on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 08 Aug 2018 23:11:26 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 16 Sep 2018 16:15:53 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[React] REST APIを呼び出す</title>
+      <link>https://kokuzawa.github.io/blog/2018/09/16/start-react/</link>
+      <pubDate>Sun, 16 Sep 2018 16:15:53 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/09/16/start-react/</guid>
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_環境&#34;&gt;環境&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;macOS High Sierra (バージョン 10.13.6)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Node v10.10.0&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;npm 6.4.1&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_概要&#34;&gt;概要&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;React で REST API を呼び出し、その結果を表示するアプリを作ります。
+呼び出す API は &lt;a href=&#34;https://zipaddress.net&#34;&gt;郵便番号-住所検索API&lt;/a&gt; です。
+郵便番号検索の API は色々あるのですが、こちらで公開されている API はクロスオリジン通信ができるため、これを利用します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_プロジェクトを作る&#34;&gt;プロジェクトを作る&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;はじめにReactプロジェクトを作ります。&lt;br&gt;
+下記コマンドで &lt;code&gt;start-react&lt;/code&gt; フォルダにプロジェクトが生成されます。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ npx create-react-app start-react&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;生成されたプロジェクトは下記構成になっているはず。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;start-react
+├── README.md
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── manifest.json
+└── src
+    ├── App.css
+    ├── App.js
+    ├── App.test.js
+    ├── index.css
+    ├── index.js
+    ├── logo.svg
+    └── registerServiceWorker.js&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_テンプレートを書き換える&#34;&gt;テンプレートを書き換える&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;code&gt;App.js&lt;/code&gt; を書き換えます。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;以下の3つのファンクションを追加します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;constructor&lt;/code&gt;: コンストラクタ&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;handleChange&lt;/code&gt;: 郵便番号入力欄の &lt;code&gt;onChange&lt;/code&gt; イベントで呼ばれるファンクション&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;code&gt;handleSubmit&lt;/code&gt;: フォームの &lt;code&gt;onSubmit&lt;/code&gt; イベントで呼ばれるファンクション&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;constructor(props) {
+    super(props);
+    this.state = {
+        zipcode: &#39;&#39;,
+        address: &#39;&#39;
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+}
+
+handleChange(e) {
+    this.setState({zipcode: e.target.value});
+}
+
+handleSubmit(e) {
+    fetch(`https://api.zipaddress.net/?zipcode=${this.state.zipcode}`, {
+        mode: &#39;cors&#39;
+    })
+        .then((response) =&amp;gt; {
+            return response.json();
+        })
+        .then((myJson) =&amp;gt; {
+            this.setState({address: myJson.data.fullAddress});
+        });
+    e.preventDefault();
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;次に表示部分を書き換えます。
+書き換えるのは以下の部分です。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;書き換え前&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;p className=&#34;App-intro&#34;&amp;gt;
+  To get started, edit &amp;lt;code&amp;gt;src/App.js&amp;lt;/code&amp;gt; and save to reload.
+&amp;lt;/p&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;書き換え後&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;form onSubmit={this.handleSubmit}&amp;gt;
+    &amp;lt;p className=&#34;App-intro&#34;&amp;gt;
+        &amp;lt;input type=&#34;text&#34; value={this.state.zipcode} onChange={this.handleChange}/&amp;gt;
+        &amp;lt;input type=&#34;submit&#34; value=&#34;検索&#34;/&amp;gt;
+    &amp;lt;/p&amp;gt;
+&amp;lt;/form&amp;gt;
+&amp;lt;p&amp;gt;{this.state.address}&amp;lt;/p&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_実行&#34;&gt;実行&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;下記のコマンドで実行します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;$ npm start&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_まとめ&#34;&gt;まとめ&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;コードの書き方とか、React Component のライフサイクルとかの説明を端折っているので、
+どうして画面が更新されるのだろうって思うかもしれないけど、この辺は公式ドキュメントを見てもらった方が正確だと思う。
+特にライフサイクルを知らないと、余計な画面更新をしてしまったりするので、よく読んでおいた方が良さそうです。
+&lt;a href=&#34;http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/&#34;&gt;ライフサイクル図&lt;/a&gt;が公開されているので、
+これを参考にするといいと思います。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_参考&#34;&gt;参考&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://reactjs.org/docs/forms.html&#34;&gt;Forms - React&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/&#34;&gt;React - ライフサイクル図&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;https://zipaddress.net&#34;&gt;郵便番号-住所検索API&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>[JSF] ブラウザキャッシュを無効にする</title>

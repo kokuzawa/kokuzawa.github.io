@@ -1,0 +1,318 @@
+
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    [React] REST APIを呼び出す | KATSUMI KOKUZAWA&#39;S BLOG
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2018/09/16/start-react/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="https://kokuzawa.github.io/index.xml" rel="alternate" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+  <link href="https://kokuzawa.github.io/index.xml" rel="feed" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+
+  
+  
+
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="https://kokuzawa.github.io/">KATSUMI KOKUZAWA&#39;S BLOG</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="/tags/"><i class="fas fa-tag fa-2x"></i></a></li>
+          <li><a href="https://twitter.com/kokuzawa" target="_blank"><i class="fab fa-twitter fa-2x"></i></a></li>
+          
+          <li><a href="https://github.com/kokuzawa" target="_blank"><i class="fab fa-github-alt fa-2x"></i></a></li>
+          <li><a href="https://kokuzawa.github.io/index.xml" type="application/rss+xml" target="_blank"><i class="fas fa-rss-square fa-2x"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>[React] REST APIを呼び出す</h1>
+      <div class="meta">
+        Sep 16, 2018 &nbsp;
+        
+          #<a href="/tags/react">React</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <div class="sect1">
+<h2 id="_環境">環境</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p>macOS High Sierra (バージョン 10.13.6)</p>
+</li>
+<li>
+<p>Node v10.10.0</p>
+</li>
+<li>
+<p>npm 6.4.1</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_概要">概要</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>React で REST API を呼び出し、その結果を表示するアプリを作ります。
+呼び出す API は <a href="https://zipaddress.net">郵便番号-住所検索API</a> です。
+郵便番号検索の API は色々あるのですが、こちらで公開されている API はクロスオリジン通信ができるため、これを利用します。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_プロジェクトを作る">プロジェクトを作る</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>はじめにReactプロジェクトを作ります。<br>
+下記コマンドで <code>start-react</code> フォルダにプロジェクトが生成されます。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">$ npx create-react-app start-react</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>生成されたプロジェクトは下記構成になっているはず。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">start-react
+├── README.md
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── manifest.json
+└── src
+    ├── App.css
+    ├── App.js
+    ├── App.test.js
+    ├── index.css
+    ├── index.js
+    ├── logo.svg
+    └── registerServiceWorker.js</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_テンプレートを書き換える">テンプレートを書き換える</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><code>App.js</code> を書き換えます。</p>
+</div>
+<div class="paragraph">
+<p>以下の3つのファンクションを追加します。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>constructor</code>: コンストラクタ</p>
+</li>
+<li>
+<p><code>handleChange</code>: 郵便番号入力欄の <code>onChange</code> イベントで呼ばれるファンクション</p>
+</li>
+<li>
+<p><code>handleSubmit</code>: フォームの <code>onSubmit</code> イベントで呼ばれるファンクション</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-js" data-lang="js">constructor(props) {
+    super(props);
+    this.state = {
+        zipcode: '',
+        address: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+}
+
+handleChange(e) {
+    this.setState({zipcode: e.target.value});
+}
+
+handleSubmit(e) {
+    fetch(`https://api.zipaddress.net/?zipcode=${this.state.zipcode}`, {
+        mode: 'cors'
+    })
+        .then((response) =&gt; {
+            return response.json();
+        })
+        .then((myJson) =&gt; {
+            this.setState({address: myJson.data.fullAddress});
+        });
+    e.preventDefault();
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>次に表示部分を書き換えます。
+書き換えるのは以下の部分です。</p>
+</div>
+<div class="listingblock">
+<div class="title">書き換え前</div>
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;p className="App-intro"&gt;
+  To get started, edit &lt;code&gt;src/App.js&lt;/code&gt; and save to reload.
+&lt;/p&gt;</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">書き換え後</div>
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;form onSubmit={this.handleSubmit}&gt;
+    &lt;p className="App-intro"&gt;
+        &lt;input type="text" value={this.state.zipcode} onChange={this.handleChange}/&gt;
+        &lt;input type="submit" value="検索"/&gt;
+    &lt;/p&gt;
+&lt;/form&gt;
+&lt;p&gt;{this.state.address}&lt;/p&gt;</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_実行">実行</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>下記のコマンドで実行します。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">$ npm start</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_まとめ">まとめ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>コードの書き方とか、React Component のライフサイクルとかの説明を端折っているので、
+どうして画面が更新されるのだろうって思うかもしれないけど、この辺は公式ドキュメントを見てもらった方が正確だと思う。
+特にライフサイクルを知らないと、余計な画面更新をしてしまったりするので、よく読んでおいた方が良さそうです。
+<a href="http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/">ライフサイクル図</a>が公開されているので、
+これを参考にするといいと思います。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_参考">参考</h2>
+<div class="sectionbody">
+<div class="ulist">
+<ul>
+<li>
+<p><a href="https://reactjs.org/docs/forms.html">Forms - React</a></p>
+</li>
+<li>
+<p><a href="http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/">React - ライフサイクル図</a></p>
+</li>
+<li>
+<p><a href="https://zipaddress.net">郵便番号-住所検索API</a></p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+
+      
+      
+      
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'katsumikokuzawasblog';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+  </main>
+  
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/08/08/disable-browser-caching-in-jsf/" rel="prev">[JSF] ブラウザキャッシュを無効にする</a></span>
+    
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      <img src="/images/avatar.png" width="64" height="64"><br>
+      Written by Katsumi Kokuzawa
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36546771-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+
