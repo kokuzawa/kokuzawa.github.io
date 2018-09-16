@@ -1,0 +1,137 @@
+---
+title: "[React] REST APIを呼び出す"
+date: 2018-09-16T16:15:53+09:00
+tags: [React]
+draft: false
+---
+
+== 環境
+
+* macOS High Sierra (バージョン 10.13.6)
+* Node v10.10.0
+* npm 6.4.1
+
+== 概要
+
+React で REST API を呼び出し、その結果を表示するアプリを作ります。
+呼び出す API は https://zipaddress.net[郵便番号-住所検索API] です。
+郵便番号検索の API は色々あるのですが、こちらで公開されている API はクロスオリジン通信ができるため、これを利用します。
+
+== プロジェクトを作る
+
+はじめにReactプロジェクトを作ります。 +
+下記コマンドで `start-react` フォルダにプロジェクトが生成されます。
+
+[source,sh]
+----
+$ npx create-react-app start-react
+----
+
+生成されたプロジェクトは下記構成になっているはず。
+
+[source,sh]
+----
+start-react
+├── README.md
+├── package-lock.json
+├── package.json
+├── public
+│   ├── favicon.ico
+│   ├── index.html
+│   └── manifest.json
+└── src
+    ├── App.css
+    ├── App.js
+    ├── App.test.js
+    ├── index.css
+    ├── index.js
+    ├── logo.svg
+    └── registerServiceWorker.js
+----
+
+== テンプレートを書き換える
+
+`App.js` を書き換えます。
+
+以下の3つのファンクションを追加します。
+
+* `constructor`: コンストラクタ
+* `handleChange`: 郵便番号入力欄の `onChange` イベントで呼ばれるファンクション
+* `handleSubmit`: フォームの `onSubmit` イベントで呼ばれるファンクション
+
+[source,js]
+----
+constructor(props) {
+    super(props);
+    this.state = {
+        zipcode: '',
+        address: ''
+    };
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+}
+
+handleChange(e) {
+    this.setState({zipcode: e.target.value});
+}
+
+handleSubmit(e) {
+    fetch(`https://api.zipaddress.net/?zipcode=${this.state.zipcode}`, {
+        mode: 'cors'
+    })
+        .then((response) => {
+            return response.json();
+        })
+        .then((myJson) => {
+            this.setState({address: myJson.data.fullAddress});
+        });
+    e.preventDefault();
+}
+----
+
+次に表示部分を書き換えます。
+書き換えるのは以下の部分です。
+
+.書き換え前
+[source,html]
+----
+<p className="App-intro">
+  To get started, edit <code>src/App.js</code> and save to reload.
+</p>
+----
+
+.書き換え後
+[source,html]
+----
+<form onSubmit={this.handleSubmit}>
+    <p className="App-intro">
+        <input type="text" value={this.state.zipcode} onChange={this.handleChange}/>
+        <input type="submit" value="検索"/>
+    </p>
+</form>
+<p>{this.state.address}</p>
+----
+
+== 実行
+
+下記のコマンドで実行します。
+
+[source,sh]
+----
+$ npm start
+----
+
+== まとめ
+
+コードの書き方とか、React Component のライフサイクルとかの説明を端折っているので、
+どうして画面が更新されるのだろうって思うかもしれないけど、この辺は公式ドキュメントを見てもらった方が正確だと思う。
+特にライフサイクルを知らないと、余計な画面更新をしてしまったりするので、よく読んでおいた方が良さそうです。
+http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/[ライフサイクル図]が公開されているので、
+これを参考にするといいと思います。
+
+== 参考
+
+* https://reactjs.org/docs/forms.html[Forms - React]
+* http://projects.wojtekmaj.pl/react-lifecycle-methods-diagram/[React - ライフサイクル図]
+* https://zipaddress.net[郵便番号-住所検索API]
+
