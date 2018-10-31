@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://kokuzawa.github.io/blog/2018/10/31/nginx-and-git/</loc>
+    <lastmod>2018-10-31T23:20:12+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://kokuzawa.github.io/blog/2018/09/16/start-react/</loc>
     <lastmod>2018-09-16T16:15:53+09:00</lastmod>
   </url>
@@ -392,7 +397,7 @@
   
   <url>
     <loc>https://kokuzawa.github.io/blog/</loc>
-    <lastmod>2018-09-16T16:15:53+09:00</lastmod>
+    <lastmod>2018-10-31T23:20:12+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -440,7 +445,7 @@
   
   <url>
     <loc>https://kokuzawa.github.io/tags/git/</loc>
-    <lastmod>2013-03-11T23:59:00+09:00</lastmod>
+    <lastmod>2018-10-31T23:20:12+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -536,7 +541,7 @@
   
   <url>
     <loc>https://kokuzawa.github.io/</loc>
-    <lastmod>2018-09-16T16:15:53+09:00</lastmod>
+    <lastmod>2018-10-31T23:20:12+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -555,6 +560,12 @@
   <url>
     <loc>https://kokuzawa.github.io/tags/maven/</loc>
     <lastmod>2015-04-07T23:24:07+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/tags/nginx/</loc>
+    <lastmod>2018-10-31T23:20:12+09:00</lastmod>
     <priority>0</priority>
   </url>
   
