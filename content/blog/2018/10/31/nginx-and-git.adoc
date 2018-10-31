@@ -1,0 +1,95 @@
+---
+title: "[Nginx] NginxでGitリポジトリを共有"
+date: 2018-10-31T23:20:12+09:00
+tags: [Nginx, Git]
+draft: false
+---
+
+== 環境
+
+* Windows 10
+* Windows Subsystem for Linux (Ubuntu)
+
+== 概要
+
+NginxでGitリポジトリを共有したい。
+
+== 必要なモジュールのインストール
+
+[source,sh]
+----
+sudo apt-get install nginx fcgiwrap spawn-fcgi
+----
+
+== fcgiwrap.socketを作成
+
+./var/run/fgciwrap.socket
+[source]
+----
+[Unit]
+Description=fcgiwrap Socket
+
+[Socket]
+ListenStream=/run/fcgiwrap.sock
+
+[Install]
+WantedBy=sockets.target
+----
+
+.permissionを変更
+[source,sh]
+----
+sudo chmod 666 fcgiwrap.socket
+----
+
+== /etc/nginx/sites-available/defaultを編集
+
+[source,diff]
+----
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
++    location ~ ^/git/.*\.git/(HEAD|info/refs|objects/info/.*|git-(upload|receive)-pack)$ {
++        client_max_body_size 0;
++        fastcgi_param SCRIPT_FILENAME /usr/lib/git-core/git-http-backend;
++        include fastcgi.conf;
++        fastcgi_pass unix:/var/run/fcgiwrap.socket;
++        fastcgi_split_path_info ^(/git)(/.*);
++        fastcgi_param SCRIPT_FILENAME /usr/lib/git-core/git-http-backend;
++        fastcgi_param GIT_PROJECT_ROOT /var/www/git;
++        fastcgi_param GIT_HTTP_EXPORT_ALL "";
++        fastcgi_param PATH_INFO $fastcgi_path_info;
++        fastcgi_param REMOTE_USER $remote_user;
++    }
+}
+----
+
+== Nginx起動
+
+[source,sh]
+----
+sudo service nginx start
+----
+
+== fcgiwrap起動
+
+[source,sh]
+----
+sudo /etc/init.d/fcgiwrap start
+----
+
+== Gitリポジトリ作成
+
+[source,sh]
+----
+sudo mkdir /var/www/git
+sudo git init --bare --shared=group /var/www/git/hoge.git
+sudo git config --file /var/www/git/hoge.git/config http.receivepack true
+sudo chgrp -R www-data /var/www/git/hoge.git
+----
+
+== 参考
+
+* http://www.pasokuma.net/linux/dev/git/gitnginx.html[window="_blank"]
+
