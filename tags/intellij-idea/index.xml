@@ -6,10 +6,115 @@
     <description>Recent content in Intellij Idea on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 28 Dec 2016 00:39:11 +0900</lastBuildDate>
+    <lastBuildDate>Sat, 17 Nov 2018 19:39:33 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/tags/intellij-idea/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[IDEA] blockdiagをIntelliJ IDEAで使う</title>
+      <link>https://kokuzawa.github.io/blog/2018/11/17/use-blockdiag-with-idea/</link>
+      <pubDate>Sat, 17 Nov 2018 19:39:33 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/11/17/use-blockdiag-with-idea/</guid>
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_環境&#34;&gt;環境&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;macOS Mojave&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;IntelliJ IDEA 2018.2.5&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_概要&#34;&gt;概要&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;IntelliJ IDEAにインストールしたAsciiDocプラグインで表示するAsciiDocファイルで、
+blockdiagのイメージを表示したい。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_書いてみる&#34;&gt;書いてみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;test.adocファイルを作成してblockdiagを書いてみる。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;test.adoc&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;[blockdiag]
+----
+blockdiag {
+  A -&amp;gt; B -&amp;gt; C -&amp;gt; D;
+  A -&amp;gt; E -&amp;gt; F -&amp;gt; G;
+}
+----&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;これでプレビューに表示されると思ったんだけど、エラーが表示された。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;literalblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre&gt;Failed to generate image: Could not find the &#39;blockdiag&#39;,
+&#39;blockdiag3&#39; executable in PATH; add it to the PATH
+or specify its location using the &#39;blockdiag&#39; document attribute
+blockdiag {
+  A -&amp;gt; B -&amp;gt; C -&amp;gt; D;
+  A -&amp;gt; E -&amp;gt; F -&amp;gt; G;
+}&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;あーなるほど。Macのアプリは.bash_profileのPATHの設定は引き継がないのか。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_対応方法&#34;&gt;対応方法&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;code&gt;launchctl&lt;/code&gt; を使えば、.bash_profileに設定している$PATHをアプリ起動時に引き継ぐようにできるらしいんだけど、
+なんとなく環境を弄るのはやりたくないので、adoc内にattributeを指定する方法で解決する。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;launchctlを使う場合&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;sudo launchctl config user path $PATH&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;attributeで解決する場合&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;:blockdiag: /usr/local/bin/blockdiag
+// ついでにフォントも指定してみる
+:blockdiag-fontpath: &#34;/System/Library/Fonts/Hiragino Sans GB.ttc&#34;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_参考&#34;&gt;参考&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://depressiverobot.com/2016/02/05/intellij-path.html&#34; class=&#34;bare&#34;&gt;http://depressiverobot.com/2016/02/05/intellij-path.html&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>IntelliJ IDEAでAngular2アプリを動かす</title>

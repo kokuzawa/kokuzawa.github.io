@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://kokuzawa.github.io/blog/2018/11/17/use-blockdiag-with-idea/</loc>
+    <lastmod>2018-11-17T19:39:33+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://kokuzawa.github.io/blog/2018/10/31/nginx-and-git/</loc>
     <lastmod>2018-10-31T23:20:12+09:00</lastmod>
   </url>
@@ -390,14 +395,26 @@
   </url>
   
   <url>
+    <loc>https://kokuzawa.github.io/tags/asciidoctor/</loc>
+    <lastmod>2018-11-17T19:39:33+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://kokuzawa.github.io/tags/atlassian/</loc>
     <lastmod>2012-12-16T20:40:00+09:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
+    <loc>https://kokuzawa.github.io/tags/blockdiag/</loc>
+    <lastmod>2018-11-17T19:39:33+09:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
     <loc>https://kokuzawa.github.io/blog/</loc>
-    <lastmod>2018-10-31T23:20:12+09:00</lastmod>
+    <lastmod>2018-11-17T19:39:33+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -475,7 +492,7 @@
   
   <url>
     <loc>https://kokuzawa.github.io/tags/intellij-idea/</loc>
-    <lastmod>2016-12-28T00:39:11+09:00</lastmod>
+    <lastmod>2018-11-17T19:39:33+09:00</lastmod>
     <priority>0</priority>
   </url>
   
@@ -541,7 +558,7 @@
   
   <url>
     <loc>https://kokuzawa.github.io/</loc>
-    <lastmod>2018-10-31T23:20:12+09:00</lastmod>
+    <lastmod>2018-11-17T19:39:33+09:00</lastmod>
     <priority>0</priority>
   </url>
   

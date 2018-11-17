@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    [Nginx] NginxでGitリポジトリを共有 | KATSUMI KOKUZAWA&#39;S BLOG
+    [IDEA] blockdiagをIntelliJ IDEAで使う | KATSUMI KOKUZAWA&#39;S BLOG
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="https://kokuzawa.github.io/blog/2018/10/31/nginx-and-git/"/>
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2018/11/17/use-blockdiag-with-idea/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -62,13 +62,15 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>[Nginx] NginxでGitリポジトリを共有</h1>
+      <h1>[IDEA] blockdiagをIntelliJ IDEAで使う</h1>
       <div class="meta">
-        Oct 31, 2018 &nbsp;
+        Nov 17, 2018 &nbsp;
         
-          #<a href="/tags/nginx">Nginx</a>&nbsp;
+          #<a href="/tags/asciidoctor">Asciidoctor</a>&nbsp;
         
-          #<a href="/tags/git">Git</a>&nbsp;
+          #<a href="/tags/blockdiag">blockdiag</a>&nbsp;
+        
+          #<a href="/tags/intellij-idea">Intellij IDEA</a>&nbsp;
         
       </div>
     </div>
@@ -79,10 +81,10 @@
 <div class="ulist">
 <ul>
 <li>
-<p>Windows 10</p>
+<p>macOS Mojave</p>
 </li>
 <li>
-<p>Windows Subsystem for Linux (Ubuntu)</p>
+<p>IntelliJ IDEA 2018.2.5</p>
 </li>
 </ul>
 </div>
@@ -92,99 +94,67 @@
 <h2 id="_概要">概要</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>NginxでGitリポジトリを共有したい。</p>
+<p>IntelliJ IDEAにインストールしたAsciiDocプラグインで表示するAsciiDocファイルで、
+blockdiagのイメージを表示したい。</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_必要なモジュールのインストール">必要なモジュールのインストール</h2>
+<h2 id="_書いてみる">書いてみる</h2>
 <div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh">sudo apt-get install nginx fcgiwrap spawn-fcgi</code></pre>
+<div class="paragraph">
+<p>test.adocファイルを作成してblockdiagを書いてみる。</p>
 </div>
+<div class="listingblock">
+<div class="title">test.adoc</div>
+<div class="content">
+<pre class="highlight"><code>[blockdiag]
+----
+blockdiag {
+  A -&gt; B -&gt; C -&gt; D;
+  A -&gt; E -&gt; F -&gt; G;
+}
+----</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>これでプレビューに表示されると思ったんだけど、エラーが表示された。</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Failed to generate image: Could not find the 'blockdiag',
+'blockdiag3' executable in PATH; add it to the PATH
+or specify its location using the 'blockdiag' document attribute
+blockdiag {
+  A -&gt; B -&gt; C -&gt; D;
+  A -&gt; E -&gt; F -&gt; G;
+}</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>あーなるほど。Macのアプリは.bash_profileのPATHの設定は引き継がないのか。</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_fcgiwrap_socketを作成">fcgiwrap.socketを作成</h2>
+<h2 id="_対応方法">対応方法</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><code>launchctl</code> を使えば、.bash_profileに設定している$PATHをアプリ起動時に引き継ぐようにできるらしいんだけど、
+なんとなく環境を弄るのはやりたくないので、adoc内にattributeを指定する方法で解決する。</p>
+</div>
 <div class="listingblock">
-<div class="title">/var/run/fgciwrap.socket</div>
+<div class="title">launchctlを使う場合</div>
 <div class="content">
-<pre class="highlight"><code>[Unit]
-Description=fcgiwrap Socket
-
-[Socket]
-ListenStream=/run/fcgiwrap.sock
-
-[Install]
-WantedBy=sockets.target</code></pre>
+<pre class="highlight"><code class="language-sh" data-lang="sh">sudo launchctl config user path $PATH</code></pre>
 </div>
 </div>
 <div class="listingblock">
-<div class="title">permissionを変更</div>
+<div class="title">attributeで解決する場合</div>
 <div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh">sudo chmod 666 fcgiwrap.socket</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_etcnginxsites_availabledefaultを編集">/etc/nginx/sites-available/defaultを編集</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-diff" data-lang="diff">server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
-+    location ~ ^/git/.*\.git/(HEAD|info/refs|objects/info/.*|git-(upload|receive)-pack)$ {
-+        client_max_body_size 0;
-+        fastcgi_param SCRIPT_FILENAME /usr/lib/git-core/git-http-backend;
-+        include fastcgi.conf;
-+        fastcgi_pass unix:/var/run/fcgiwrap.socket;
-+        fastcgi_split_path_info ^(/git)(/.*);
-+        fastcgi_param SCRIPT_FILENAME /usr/lib/git-core/git-http-backend;
-+        fastcgi_param GIT_PROJECT_ROOT /var/www/git;
-+        fastcgi_param GIT_HTTP_EXPORT_ALL "";
-+        fastcgi_param PATH_INFO $fastcgi_path_info;
-+        fastcgi_param REMOTE_USER $remote_user;
-+    }
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_nginx起動">Nginx起動</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh">sudo service nginx start</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_fcgiwrap起動">fcgiwrap起動</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh">sudo /etc/init.d/fcgiwrap start</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_gitリポジトリ作成">Gitリポジトリ作成</h2>
-<div class="sectionbody">
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-sh" data-lang="sh">sudo mkdir /var/www/git
-sudo git init --bare --shared=group /var/www/git/hoge.git
-sudo git config --file /var/www/git/hoge.git/config http.receivepack true
-sudo chgrp -R www-data /var/www/git/hoge.git</code></pre>
+<pre class="highlight"><code>:blockdiag: /usr/local/bin/blockdiag
+// ついでにフォントも指定してみる
+:blockdiag-fontpath: "/System/Library/Fonts/Hiragino Sans GB.ttc"</code></pre>
 </div>
 </div>
 </div>
@@ -195,7 +165,7 @@ sudo chgrp -R www-data /var/www/git/hoge.git</code></pre>
 <div class="ulist">
 <ul>
 <li>
-<p><a href="http://www.pasokuma.net/linux/dev/git/gitnginx.html" class="bare" target="_blank" rel="noopener">http://www.pasokuma.net/linux/dev/git/gitnginx.html</a></p>
+<p><a href="http://depressiverobot.com/2016/02/05/intellij-path.html" class="bare">http://depressiverobot.com/2016/02/05/intellij-path.html</a></p>
 </li>
 </ul>
 </div>
@@ -228,10 +198,8 @@ sudo chgrp -R www-data /var/www/git/hoge.git</code></pre>
   
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/09/16/start-react/" rel="prev">[React] REST APIを呼び出す</a></span>
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/10/31/nginx-and-git/" rel="prev">[Nginx] NginxでGitリポジトリを共有</a></span>
     
-    
-      <span class="next"><a href="https://kokuzawa.github.io/blog/2018/11/17/use-blockdiag-with-idea/" rel="next">[IDEA] blockdiagをIntelliJ IDEAで使う</a> &rarr;</span>
     
   </nav>
 
