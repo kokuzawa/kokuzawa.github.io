@@ -6,10 +6,164 @@
     <description>Recent content in Blogs on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sat, 17 Nov 2018 19:39:33 +0900</lastBuildDate>
+    <lastBuildDate>Sun, 18 Nov 2018 01:20:50 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Flowchart of Creating RESTful API</title>
+      <link>https://kokuzawa.github.io/blog/2018/11/18/flowchart-of-creating-api/</link>
+      <pubDate>Sun, 18 Nov 2018 01:20:50 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/11/18/flowchart-of-creating-api/</guid>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;うちのチームでAPIを作成する際に使用しているフローチャートを公開します。
+HTTPステータスコードですが、APサーバやフレームワークで勝手に返却するもの、
+APIを作成する上であまり利用しないものはあえて無視しています。
+まあ、これが最終形という訳ではなく、日々足したり引いたりしているのですが、
+指針としてはシンプルにできたかな、と思っています。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;imageblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;img src=&#34;https://kokuzawa.github.io/images/FlowchartOfCreatingAPI.svg&#34; alt=&#34;FlowchartOfCreatingAPI&#34;&gt;
+&lt;/div&gt;
+&lt;div class=&#34;title&#34;&gt;Figure 1. Flowchart of Creating RESTful API&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;dlist&#34;&gt;
+&lt;dl&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;Method&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;処理内容によってMethodを分けます。RESTful APIの基本です。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;入力値検証&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;入力値を検証します。Bean Validationでやる感じ。
+不正な入力を検知したら &lt;code&gt;400&lt;/code&gt; を返却します。
+何のパラメータが不正なのか、といった情報も返却すべきかもしれません。
+Bean Validationだと &lt;code&gt;ConstraintViolationException&lt;/code&gt; にそういった情報が入っています。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;認証&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;操作者のアカウントが登録されているか判定します。
+Basic認証とかです。
+認証できなければ &lt;code&gt;401&lt;/code&gt; を返却します。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;認可&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;権限判定です。
+読み込み権限しかないのか、書き込み権限があるのか、はたまた管理権限があるのかなど。
+権限がなければ &lt;code&gt;403&lt;/code&gt; を返却します。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;処理&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;ビジネスロジックです。
+ここでデータを色々弄ります。
+弄ろうとしたデータがなければ &lt;code&gt;404&lt;/code&gt; 、データが登録されていたら &lt;code&gt;409&lt;/code&gt; 、
+ヌルポとかランタイム系のエラーの場合は &lt;code&gt;500&lt;/code&gt; を返却します。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;非同期&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;あまり使わないかも。
+例えば、メール送信実行をリクエストしたけど、実際に送信されるのは10分後ですよ、などという場合に &lt;code&gt;202&lt;/code&gt; を返却します。
+返却データとして「10分後に実行します」というのがわかるようなデータを返すのが作法のようです。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;返却データ無&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;削除処理や、登録、更新処理で返却データが無い場合は &lt;code&gt;204&lt;/code&gt; を返却します。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;新規登録データ&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;POST(登録)の場合にここまできたら &lt;code&gt;201&lt;/code&gt; になります。
+それ以外は &lt;code&gt;200&lt;/code&gt; ですね。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_フローチャート図について&#34;&gt;フローチャート図について&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;ちなみに、上のフローチャート図は &lt;a href=&#34;http://blockdiag.com/ja/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;blockdiag&lt;/a&gt; を使って作りました。
+こんな感じです。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;blockdiag {
+    orientation = portrait;
+    edge_layout = flowchart;
+
+    Action [label=&#34;Start&#34;, shape=flowchart.terminator];
+    Method [label=&#34;Method&#34;, shape=flowchart.condition];
+    Validation [label=&#34;入力値検証&#34;, shape=flowchart.condition];
+    Authentication [label=&#34;認証&#34;, shape=flowchart.condition];
+    Authorization [label=&#34;認可&#34;, shape=flowchart.condition];
+    Process [label=&#34;処理&#34;, shape=flowchart.condition];
+    Async [label=&#34;非同期&#34;, shape=flowchart.condition];
+    Content [label=&#34;返却\nデータ無&#34;, shape=flowchart.condition];
+    New [label=&#34;新規登録\nデータ&#34;, shape=flowchart.condition];
+    400 [label=&#34;400&#34;, shape=flowchart.terminator, color=pink];
+    401 [label=&#34;401&#34;, shape=flowchart.terminator, color=pink];
+    403 [label=&#34;403&#34;, shape=flowchart.terminator, color=pink];
+    404 [label=&#34;404&#34;, shape=flowchart.terminator, color=pink];
+    409 [label=&#34;409&#34;, shape=flowchart.terminator, color=pink];
+    500 [label=&#34;500&#34;, shape=flowchart.terminator, color=pink];
+    202 [label=&#34;202&#34;, shape=flowchart.terminator, color=lightblue];
+    204 [label=&#34;204&#34;, shape=flowchart.terminator, color=lightblue];
+    200 [label=&#34;200&#34;, shape=flowchart.terminator, color=lightblue];
+    201 [label=&#34;201&#34;, shape=flowchart.terminator, color=lightblue];
+
+    // Action
+    Action -&amp;gt; Method;
+    Method -&amp;gt; GET[label=&#34;取得&#34;];
+    Method -&amp;gt; POST[label=&#34;登録&#34;];
+    Method -&amp;gt; PUT[label=&#34;更新&#34;];
+    Method -&amp;gt; DELETE[label=&#34;削除&#34;];
+
+    // Method
+    GET -&amp;gt; Validation;
+    POST -&amp;gt; Validation;
+    PUT -&amp;gt; Validation;
+    DELETE -&amp;gt; Validation;
+
+    // Validation
+    Validation -&amp;gt; Authentication[label=OK];
+    Validation -&amp;gt; 400[label=NG];
+
+    // Authentication
+    Authentication -&amp;gt; Authorization[label=OK];
+    Authentication -&amp;gt; 401[label=NG];
+
+    // Authorization
+    Authorization -&amp;gt; Process[label=OK];
+    Authorization -&amp;gt; 403[label=NG];
+
+    // Process
+    Process -&amp;gt; Async[label=OK];
+    Process -&amp;gt; 404[label=NG];
+    Process -&amp;gt; 409[label=NG];
+    Process -&amp;gt; 500[label=NG];
+
+    // Async
+    Async -&amp;gt; 202[label=YES];
+    Async -&amp;gt; Content[label=NO];
+
+    // Content
+    Content -&amp;gt; 204[label=YES];
+    Content -&amp;gt; New[label=NO];
+
+    // New
+    New -&amp;gt; 201[label=YES];
+    New -&amp;gt; 200[label=NO];
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;blockdiagはasciidocに埋め込めるので、テキストベースでドキュメントを管理するのに便利なんですよ。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>[IDEA] blockdiagをIntelliJ IDEAで使う</title>

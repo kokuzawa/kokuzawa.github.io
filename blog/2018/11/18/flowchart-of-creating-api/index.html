@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Flowchart of Creating RESTful API | KATSUMI KOKUZAWA&#39;S BLOG
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2018/11/18/flowchart-of-creating-api/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="https://kokuzawa.github.io/index.xml" rel="alternate" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+  <link href="https://kokuzawa.github.io/index.xml" rel="feed" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+
+  
+  
+
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="https://kokuzawa.github.io/">KATSUMI KOKUZAWA&#39;S BLOG</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="/tags/"><i class="fas fa-tag fa-2x"></i></a></li>
+          <li><a href="https://twitter.com/kokuzawa" target="_blank"><i class="fab fa-twitter fa-2x"></i></a></li>
+          
+          <li><a href="https://github.com/kokuzawa" target="_blank"><i class="fab fa-github-alt fa-2x"></i></a></li>
+          <li><a href="https://kokuzawa.github.io/index.xml" type="application/rss+xml" target="_blank"><i class="fas fa-rss-square fa-2x"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Flowchart of Creating RESTful API</h1>
+      <div class="meta">
+        Nov 18, 2018 &nbsp;
+        
+          #<a href="/tags/restful">RESTful</a>&nbsp;
+        
+          #<a href="/tags/jaxrs">JAXRS</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <div class="paragraph">
+<p>うちのチームでAPIを作成する際に使用しているフローチャートを公開します。
+HTTPステータスコードですが、APサーバやフレームワークで勝手に返却するもの、
+APIを作成する上であまり利用しないものはあえて無視しています。
+まあ、これが最終形という訳ではなく、日々足したり引いたりしているのですが、
+指針としてはシンプルにできたかな、と思っています。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/FlowchartOfCreatingAPI.svg" alt="FlowchartOfCreatingAPI">
+</div>
+<div class="title">Figure 1. Flowchart of Creating RESTful API</div>
+</div>
+<div class="dlist">
+<dl>
+<dt class="hdlist1">Method</dt>
+<dd>
+<p>処理内容によってMethodを分けます。RESTful APIの基本です。</p>
+</dd>
+<dt class="hdlist1">入力値検証</dt>
+<dd>
+<p>入力値を検証します。Bean Validationでやる感じ。
+不正な入力を検知したら <code>400</code> を返却します。
+何のパラメータが不正なのか、といった情報も返却すべきかもしれません。
+Bean Validationだと <code>ConstraintViolationException</code> にそういった情報が入っています。</p>
+</dd>
+<dt class="hdlist1">認証</dt>
+<dd>
+<p>操作者のアカウントが登録されているか判定します。
+Basic認証とかです。
+認証できなければ <code>401</code> を返却します。</p>
+</dd>
+<dt class="hdlist1">認可</dt>
+<dd>
+<p>権限判定です。
+読み込み権限しかないのか、書き込み権限があるのか、はたまた管理権限があるのかなど。
+権限がなければ <code>403</code> を返却します。</p>
+</dd>
+<dt class="hdlist1">処理</dt>
+<dd>
+<p>ビジネスロジックです。
+ここでデータを色々弄ります。
+弄ろうとしたデータがなければ <code>404</code> 、データが登録されていたら <code>409</code> 、
+ヌルポとかランタイム系のエラーの場合は <code>500</code> を返却します。</p>
+</dd>
+<dt class="hdlist1">非同期</dt>
+<dd>
+<p>あまり使わないかも。
+例えば、メール送信実行をリクエストしたけど、実際に送信されるのは10分後ですよ、などという場合に <code>202</code> を返却します。
+返却データとして「10分後に実行します」というのがわかるようなデータを返すのが作法のようです。</p>
+</dd>
+<dt class="hdlist1">返却データ無</dt>
+<dd>
+<p>削除処理や、登録、更新処理で返却データが無い場合は <code>204</code> を返却します。</p>
+</dd>
+<dt class="hdlist1">新規登録データ</dt>
+<dd>
+<p>POST(登録)の場合にここまできたら <code>201</code> になります。
+それ以外は <code>200</code> ですね。</p>
+</dd>
+</dl>
+</div>
+<div class="sect1">
+<h2 id="_フローチャート図について">フローチャート図について</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ちなみに、上のフローチャート図は <a href="http://blockdiag.com/ja/" target="_blank" rel="noopener">blockdiag</a> を使って作りました。
+こんな感じです。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code>blockdiag {
+    orientation = portrait;
+    edge_layout = flowchart;
+
+    Action [label="Start", shape=flowchart.terminator];
+    Method [label="Method", shape=flowchart.condition];
+    Validation [label="入力値検証", shape=flowchart.condition];
+    Authentication [label="認証", shape=flowchart.condition];
+    Authorization [label="認可", shape=flowchart.condition];
+    Process [label="処理", shape=flowchart.condition];
+    Async [label="非同期", shape=flowchart.condition];
+    Content [label="返却\nデータ無", shape=flowchart.condition];
+    New [label="新規登録\nデータ", shape=flowchart.condition];
+    400 [label="400", shape=flowchart.terminator, color=pink];
+    401 [label="401", shape=flowchart.terminator, color=pink];
+    403 [label="403", shape=flowchart.terminator, color=pink];
+    404 [label="404", shape=flowchart.terminator, color=pink];
+    409 [label="409", shape=flowchart.terminator, color=pink];
+    500 [label="500", shape=flowchart.terminator, color=pink];
+    202 [label="202", shape=flowchart.terminator, color=lightblue];
+    204 [label="204", shape=flowchart.terminator, color=lightblue];
+    200 [label="200", shape=flowchart.terminator, color=lightblue];
+    201 [label="201", shape=flowchart.terminator, color=lightblue];
+
+    // Action
+    Action -&gt; Method;
+    Method -&gt; GET[label="取得"];
+    Method -&gt; POST[label="登録"];
+    Method -&gt; PUT[label="更新"];
+    Method -&gt; DELETE[label="削除"];
+
+    // Method
+    GET -&gt; Validation;
+    POST -&gt; Validation;
+    PUT -&gt; Validation;
+    DELETE -&gt; Validation;
+
+    // Validation
+    Validation -&gt; Authentication[label=OK];
+    Validation -&gt; 400[label=NG];
+
+    // Authentication
+    Authentication -&gt; Authorization[label=OK];
+    Authentication -&gt; 401[label=NG];
+
+    // Authorization
+    Authorization -&gt; Process[label=OK];
+    Authorization -&gt; 403[label=NG];
+
+    // Process
+    Process -&gt; Async[label=OK];
+    Process -&gt; 404[label=NG];
+    Process -&gt; 409[label=NG];
+    Process -&gt; 500[label=NG];
+
+    // Async
+    Async -&gt; 202[label=YES];
+    Async -&gt; Content[label=NO];
+
+    // Content
+    Content -&gt; 204[label=YES];
+    Content -&gt; New[label=NO];
+
+    // New
+    New -&gt; 201[label=YES];
+    New -&gt; 200[label=NO];
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>blockdiagはasciidocに埋め込めるので、テキストベースでドキュメントを管理するのに便利なんですよ。</p>
+</div>
+</div>
+</div>
+
+      
+      
+      
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'katsumikokuzawasblog';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+  </main>
+  
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/11/17/use-blockdiag-with-idea/" rel="prev">[IDEA] blockdiagをIntelliJ IDEAで使う</a></span>
+    
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      <img src="/images/avatar.png" width="64" height="64"><br>
+      Written by Katsumi Kokuzawa
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36546771-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+

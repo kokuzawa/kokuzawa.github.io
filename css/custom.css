@@ -2,3 +2,29 @@ li > p {
   margin: 0;
 }
 
+dd > p {
+  margin-top: 0;
+}
+
+.title {
+  font-style: italic;
+  color: #7a2518;
+}
+
+.highlight {
+  margin-top: 0;
+}
+
+.ulist {
+  margin-bottom: 25px;
+}
+
+.dlist {
+  margin-top: 25px;
+}
+
+.dlist dt {
+  /*color: #a53221;*/
+  font-weight: bold;
+}
+
