@@ -1,0 +1,70 @@
+---
+title: "[IDEA] blockdiagをIntelliJ IDEAで使う"
+date: 2018-11-17T19:39:33+09:00
+tags: ["Asciidoctor", "blockdiag", "Intellij IDEA"]
+draft: false
+---
+
+== 環境
+
+* macOS Mojave
+* IntelliJ IDEA 2018.2.5
+
+== 概要
+
+IntelliJ IDEAにインストールしたAsciiDocプラグインで表示するAsciiDocファイルで、
+blockdiagのイメージを表示したい。
+
+== 書いてみる
+
+test.adocファイルを作成してblockdiagを書いてみる。
+
+.test.adoc
+[source]
+....
+[blockdiag]
+----
+blockdiag {
+  A -> B -> C -> D;
+  A -> E -> F -> G;
+}
+----
+....
+
+これでプレビューに表示されると思ったんだけど、エラーが表示された。
+
+....
+Failed to generate image: Could not find the 'blockdiag', 
+'blockdiag3' executable in PATH; add it to the PATH 
+or specify its location using the 'blockdiag' document attribute
+blockdiag {
+  A -> B -> C -> D;
+  A -> E -> F -> G;
+}
+....
+
+あーなるほど。Macのアプリは.bash_profileのPATHの設定は引き継がないのか。
+
+== 対応方法
+
+`launchctl` を使えば、.bash_profileに設定している$PATHをアプリ起動時に引き継ぐようにできるらしいんだけど、
+なんとなく環境を弄るのはやりたくないので、adoc内にattributeを指定する方法で解決する。
+
+.launchctlを使う場合
+[source,sh]
+----
+sudo launchctl config user path $PATH
+----
+
+.attributeで解決する場合
+[source]
+----
+:blockdiag: /usr/local/bin/blockdiag
+// ついでにフォントも指定してみる
+:blockdiag-fontpath: "/System/Library/Fonts/Hiragino Sans GB.ttc"
+----
+
+== 参考
+
+* http://depressiverobot.com/2016/02/05/intellij-path.html[]
+
