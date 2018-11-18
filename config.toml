@@ -12,6 +12,7 @@ github = "https://github.com/kokuzawa"
 showsRSS = true
 analytics = "UA-36546771-1"
 profile = "/images/avatar.png"
+favicon = "/images/favicon.ico"
 
 [taxonomies]
 tag = "tags"
