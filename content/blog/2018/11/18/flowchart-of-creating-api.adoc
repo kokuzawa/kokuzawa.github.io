@@ -1,0 +1,131 @@
+---
+title: "Flowchart of Creating RESTful API"
+date: 2018-11-18T01:20:50+09:00
+tags: [RESTful, JAXRS]
+draft: false
+---
+
+うちのチームでAPIを作成する際に使用しているフローチャートを公開します。
+HTTPステータスコードですが、APサーバやフレームワークで勝手に返却するもの、
+APIを作成する上であまり利用しないものはあえて無視しています。
+まあ、これが最終形という訳ではなく、日々足したり引いたりしているのですが、
+指針としてはシンプルにできたかな、と思っています。
+
+.Flowchart of Creating RESTful API
+image::/images/FlowchartOfCreatingAPI.svg[]
+
+Method::
+処理内容によってMethodを分けます。RESTful APIの基本です。
+
+入力値検証::
+入力値を検証します。Bean Validationでやる感じ。
+不正な入力を検知したら `400` を返却します。
+何のパラメータが不正なのか、といった情報も返却すべきかもしれません。
+Bean Validationだと `ConstraintViolationException` にそういった情報が入っています。
+
+認証::
+操作者のアカウントが登録されているか判定します。
+Basic認証とかです。
+認証できなければ `401` を返却します。
+
+認可::
+権限判定です。
+読み込み権限しかないのか、書き込み権限があるのか、はたまた管理権限があるのかなど。
+権限がなければ `403` を返却します。
+
+処理::
+ビジネスロジックです。
+ここでデータを色々弄ります。
+弄ろうとしたデータがなければ `404` 、データが登録されていたら `409` 、
+ヌルポとかランタイム系のエラーの場合は `500` を返却します。
+
+非同期::
+あまり使わないかも。
+例えば、メール送信実行をリクエストしたけど、実際に送信されるのは10分後ですよ、などという場合に `202` を返却します。
+返却データとして「10分後に実行します」というのがわかるようなデータを返すのが作法のようです。
+
+返却データ無::
+削除処理や、登録、更新処理で返却データが無い場合は `204` を返却します。
+
+新規登録データ::
+POST(登録)の場合にここまできたら `201` になります。
+それ以外は `200` ですね。
+
+== フローチャート図について
+
+ちなみに、上のフローチャート図は http://blockdiag.com/ja/[blockdiag, window="_blank"] を使って作りました。
+こんな感じです。
+
+[source]
+----
+blockdiag {
+    orientation = portrait;
+    edge_layout = flowchart;
+
+    Action [label="Start", shape=flowchart.terminator];
+    Method [label="Method", shape=flowchart.condition];
+    Validation [label="入力値検証", shape=flowchart.condition];
+    Authentication [label="認証", shape=flowchart.condition];
+    Authorization [label="認可", shape=flowchart.condition];
+    Process [label="処理", shape=flowchart.condition];
+    Async [label="非同期", shape=flowchart.condition];
+    Content [label="返却\nデータ無", shape=flowchart.condition];
+    New [label="新規登録\nデータ", shape=flowchart.condition];
+    400 [label="400", shape=flowchart.terminator, color=pink];
+    401 [label="401", shape=flowchart.terminator, color=pink];
+    403 [label="403", shape=flowchart.terminator, color=pink];
+    404 [label="404", shape=flowchart.terminator, color=pink];
+    409 [label="409", shape=flowchart.terminator, color=pink];
+    500 [label="500", shape=flowchart.terminator, color=pink];
+    202 [label="202", shape=flowchart.terminator, color=lightblue];
+    204 [label="204", shape=flowchart.terminator, color=lightblue];
+    200 [label="200", shape=flowchart.terminator, color=lightblue];
+    201 [label="201", shape=flowchart.terminator, color=lightblue];
+
+    // Action
+    Action -> Method;
+    Method -> GET[label="取得"];
+    Method -> POST[label="登録"];
+    Method -> PUT[label="更新"];
+    Method -> DELETE[label="削除"];
+
+    // Method
+    GET -> Validation;
+    POST -> Validation;
+    PUT -> Validation;
+    DELETE -> Validation;
+
+    // Validation
+    Validation -> Authentication[label=OK];
+    Validation -> 400[label=NG];
+
+    // Authentication
+    Authentication -> Authorization[label=OK];
+    Authentication -> 401[label=NG];
+
+    // Authorization
+    Authorization -> Process[label=OK];
+    Authorization -> 403[label=NG];
+
+    // Process
+    Process -> Async[label=OK];
+    Process -> 404[label=NG];
+    Process -> 409[label=NG];
+    Process -> 500[label=NG];
+
+    // Async
+    Async -> 202[label=YES];
+    Async -> Content[label=NO];
+
+    // Content
+    Content -> 204[label=YES];
+    Content -> New[label=NO];
+
+    // New
+    New -> 201[label=YES];
+    New -> 200[label=NO];
+}
+----
+
+blockdiagはasciidocに埋め込めるので、テキストベースでドキュメントを管理するのに便利なんですよ。
+
