@@ -5,6 +5,13 @@ tags: [RESTful, JAXRS]
 draft: false
 ---
 
+== 改版履歴
+
+2018/11/21::
+返却データ無判定と新規データ判定の順序を入れ替え
+
+== 概要
+
 うちのチームでAPIを作成する際に使用しているフローチャートを公開します。
 HTTPステータスコードですが、APサーバやフレームワークで勝手に返却するもの、
 APIを作成する上であまり利用しないものはあえて無視しています。
@@ -44,11 +51,11 @@ Basic認証とかです。
 例えば、メール送信実行をリクエストしたけど、実際に送信されるのは10分後ですよ、などという場合に `202` を返却します。
 返却データとして「10分後に実行します」というのがわかるようなデータを返すのが作法のようです。
 
-返却データ無::
-削除処理や、登録、更新処理で返却データが無い場合は `204` を返却します。
-
 新規登録データ::
 POST(登録)の場合にここまできたら `201` になります。
+
+返却データ無::
+削除処理や、登録、更新処理で返却データが無い場合は `204` を返却します。
 それ以外は `200` ですね。
 
 == フローチャート図について
@@ -78,9 +85,9 @@ blockdiag {
     409 [label="409", shape=flowchart.terminator, color=pink];
     500 [label="500", shape=flowchart.terminator, color=pink];
     202 [label="202", shape=flowchart.terminator, color=lightblue];
-    204 [label="204", shape=flowchart.terminator, color=lightblue];
     200 [label="200", shape=flowchart.terminator, color=lightblue];
     201 [label="201", shape=flowchart.terminator, color=lightblue];
+    204 [label="204", shape=flowchart.terminator, color=lightblue];
 
     // Action
     Action -> Method;
@@ -115,15 +122,15 @@ blockdiag {
 
     // Async
     Async -> 202[label=YES];
-    Async -> Content[label=NO];
-
-    // Content
-    Content -> 204[label=YES];
-    Content -> New[label=NO];
+    Async -> New[label=NO];
 
     // New
+    New -> Content[label=YES];
     New -> 201[label=YES];
-    New -> 200[label=NO];
+
+    // Content
+    Content -> 200[label=NO];
+    Content -> 204[label=YES];
 }
 ----
 
