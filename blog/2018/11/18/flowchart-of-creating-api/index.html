@@ -78,7 +78,23 @@
       </div>
     </div>
     <article>
-      <div class="paragraph">
+      <div class="sect1">
+<h2 id="_改版履歴">改版履歴</h2>
+<div class="sectionbody">
+<div class="dlist">
+<dl>
+<dt class="hdlist1">2018/11/21</dt>
+<dd>
+<p>返却データ無判定と新規データ判定の順序を入れ替え</p>
+</dd>
+</dl>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_概要">概要</h2>
+<div class="sectionbody">
+<div class="paragraph">
 <p>うちのチームでAPIを作成する際に使用しているフローチャートを公開します。
 HTTPステータスコードですが、APサーバやフレームワークで勝手に返却するもの、
 APIを作成する上であまり利用しないものはあえて無視しています。
@@ -129,16 +145,18 @@ Basic認証とかです。
 例えば、メール送信実行をリクエストしたけど、実際に送信されるのは10分後ですよ、などという場合に <code>202</code> を返却します。
 返却データとして「10分後に実行します」というのがわかるようなデータを返すのが作法のようです。</p>
 </dd>
-<dt class="hdlist1">返却データ無</dt>
-<dd>
-<p>削除処理や、登録、更新処理で返却データが無い場合は <code>204</code> を返却します。</p>
-</dd>
 <dt class="hdlist1">新規登録データ</dt>
 <dd>
-<p>POST(登録)の場合にここまできたら <code>201</code> になります。
+<p>POST(登録)の場合にここまできたら <code>201</code> になります。</p>
+</dd>
+<dt class="hdlist1">返却データ無</dt>
+<dd>
+<p>削除処理や、登録、更新処理で返却データが無い場合は <code>204</code> を返却します。
 それ以外は <code>200</code> ですね。</p>
 </dd>
 </dl>
+</div>
+</div>
 </div>
 <div class="sect1">
 <h2 id="_フローチャート図について">フローチャート図について</h2>
@@ -169,9 +187,9 @@ Basic認証とかです。
     409 [label="409", shape=flowchart.terminator, color=pink];
     500 [label="500", shape=flowchart.terminator, color=pink];
     202 [label="202", shape=flowchart.terminator, color=lightblue];
-    204 [label="204", shape=flowchart.terminator, color=lightblue];
     200 [label="200", shape=flowchart.terminator, color=lightblue];
     201 [label="201", shape=flowchart.terminator, color=lightblue];
+    204 [label="204", shape=flowchart.terminator, color=lightblue];
 
     // Action
     Action -&gt; Method;
@@ -206,15 +224,15 @@ Basic認証とかです。
 
     // Async
     Async -&gt; 202[label=YES];
-    Async -&gt; Content[label=NO];
-
-    // Content
-    Content -&gt; 204[label=YES];
-    Content -&gt; New[label=NO];
+    Async -&gt; New[label=NO];
 
     // New
+    New -&gt; Content[label=YES];
     New -&gt; 201[label=YES];
-    New -&gt; 200[label=NO];
+
+    // Content
+    Content -&gt; 200[label=NO];
+    Content -&gt; 204[label=YES];
 }</code></pre>
 </div>
 </div>

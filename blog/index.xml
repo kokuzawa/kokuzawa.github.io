@@ -17,7 +17,23 @@
       <pubDate>Sun, 18 Nov 2018 01:20:50 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2018/11/18/flowchart-of-creating-api/</guid>
-      <description>&lt;div class=&#34;paragraph&#34;&gt;
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_改版履歴&#34;&gt;改版履歴&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;dlist&#34;&gt;
+&lt;dl&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;2018/11/21&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;返却データ無判定と新規データ判定の順序を入れ替え&lt;/p&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_概要&#34;&gt;概要&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;うちのチームでAPIを作成する際に使用しているフローチャートを公開します。
 HTTPステータスコードですが、APサーバやフレームワークで勝手に返却するもの、
 APIを作成する上であまり利用しないものはあえて無視しています。
@@ -68,16 +84,18 @@ Basic認証とかです。
 例えば、メール送信実行をリクエストしたけど、実際に送信されるのは10分後ですよ、などという場合に &lt;code&gt;202&lt;/code&gt; を返却します。
 返却データとして「10分後に実行します」というのがわかるようなデータを返すのが作法のようです。&lt;/p&gt;
 &lt;/dd&gt;
-&lt;dt class=&#34;hdlist1&#34;&gt;返却データ無&lt;/dt&gt;
-&lt;dd&gt;
-&lt;p&gt;削除処理や、登録、更新処理で返却データが無い場合は &lt;code&gt;204&lt;/code&gt; を返却します。&lt;/p&gt;
-&lt;/dd&gt;
 &lt;dt class=&#34;hdlist1&#34;&gt;新規登録データ&lt;/dt&gt;
 &lt;dd&gt;
-&lt;p&gt;POST(登録)の場合にここまできたら &lt;code&gt;201&lt;/code&gt; になります。
+&lt;p&gt;POST(登録)の場合にここまできたら &lt;code&gt;201&lt;/code&gt; になります。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;返却データ無&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;削除処理や、登録、更新処理で返却データが無い場合は &lt;code&gt;204&lt;/code&gt; を返却します。
 それ以外は &lt;code&gt;200&lt;/code&gt; ですね。&lt;/p&gt;
 &lt;/dd&gt;
 &lt;/dl&gt;
+&lt;/div&gt;
+&lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&#34;sect1&#34;&gt;
 &lt;h2 id=&#34;_フローチャート図について&#34;&gt;フローチャート図について&lt;/h2&gt;
@@ -108,9 +126,9 @@ Basic認証とかです。
     409 [label=&#34;409&#34;, shape=flowchart.terminator, color=pink];
     500 [label=&#34;500&#34;, shape=flowchart.terminator, color=pink];
     202 [label=&#34;202&#34;, shape=flowchart.terminator, color=lightblue];
-    204 [label=&#34;204&#34;, shape=flowchart.terminator, color=lightblue];
     200 [label=&#34;200&#34;, shape=flowchart.terminator, color=lightblue];
     201 [label=&#34;201&#34;, shape=flowchart.terminator, color=lightblue];
+    204 [label=&#34;204&#34;, shape=flowchart.terminator, color=lightblue];
 
     // Action
     Action -&amp;gt; Method;
@@ -145,15 +163,15 @@ Basic認証とかです。
 
     // Async
     Async -&amp;gt; 202[label=YES];
-    Async -&amp;gt; Content[label=NO];
-
-    // Content
-    Content -&amp;gt; 204[label=YES];
-    Content -&amp;gt; New[label=NO];
+    Async -&amp;gt; New[label=NO];
 
     // New
+    New -&amp;gt; Content[label=YES];
     New -&amp;gt; 201[label=YES];
-    New -&amp;gt; 200[label=NO];
+
+    // Content
+    Content -&amp;gt; 200[label=NO];
+    Content -&amp;gt; 204[label=YES];
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
