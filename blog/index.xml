@@ -6,10 +6,337 @@
     <description>Recent content in Blogs on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 21 Nov 2018 23:00:42 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 22 Nov 2018 22:07:16 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[JAX-RS] Validation Json to Enum Convert</title>
+      <link>https://kokuzawa.github.io/blog/2018/11/22/validation-json-to-enum-convert/</link>
+      <pubDate>Thu, 22 Nov 2018 22:07:16 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/11/22/validation-json-to-enum-convert/</guid>
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_概要&#34;&gt;概要&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;JAX-RSでJSONプロパティをEnumプロパティに変換する際にBean Validationで値の検証をします。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_環境&#34;&gt;環境&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;WildFly 14.0.0.Final&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_ひとまず普通に実装してみる&#34;&gt;ひとまず普通に実装してみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;作るのは最低限の３点セット＋テストクラス。
+テストクラスで設定しているパラメータの &lt;code&gt;MONDAY&lt;/code&gt; はわざと間違えて &lt;code&gt;MONDAYY&lt;/code&gt; にしています。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;MyApplication.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;package org.katsumi.rest;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+@ApplicationPath(&#34;api&#34;)
+public class MyApplication extends Application
+{
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;TestParam.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;package org.katsumi.rest.request;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.time.DayOfWeek;
+
+public class TestParam
+{
+    @NotNull
+    @Pattern(regexp = &#34;(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)&#34;)
+    private DayOfWeek dayOfWeek;
+
+    public DayOfWeek getDayOfWeek()
+    {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(DayOfWeek dayOfWeek)
+    {
+        this.dayOfWeek = dayOfWeek;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;TestResource.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;package org.katsumi.rest;
+
+import org.katsumi.rest.request.TestParam;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.time.DayOfWeek;
+import java.util.HashMap;
+
+@Path(&#34;/test&#34;)
+public class TestResource
+{
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postTest(@NotNull @Valid TestParam param)
+    {
+        final HashMap&amp;lt;DayOfWeek, String&amp;gt; map = new HashMap&amp;lt;&amp;gt;();
+        map.put(DayOfWeek.MONDAY, &#34;月&#34;);
+        map.put(DayOfWeek.TUESDAY, &#34;火&#34;);
+        map.put(DayOfWeek.WEDNESDAY, &#34;水&#34;);
+        map.put(DayOfWeek.THURSDAY, &#34;木&#34;);
+        map.put(DayOfWeek.FRIDAY, &#34;金&#34;);
+        map.put(DayOfWeek.SATURDAY, &#34;土&#34;);
+        map.put(DayOfWeek.SUNDAY, &#34;日&#34;);
+
+        final HashMap&amp;lt;String, String&amp;gt; response = new HashMap&amp;lt;&amp;gt;();
+        response.put(&#34;dayOfWeek&#34;, map.get(param.getDayOfWeek()));
+        return Response.ok(response).build();
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;TestResourceTest.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;package org.katsumi.rest;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.Matchers.equalTo;
+
+class TestResourceTest
+{
+    @Test
+    void testJsonToEnum()
+    {
+        RestAssured.baseURI = &#34;http://localhost:8080/json-to-enum/api&#34;;
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(&#34;{\&#34;dayOfWeek\&#34;:\&#34;MONDAYY\&#34;}&#34;)
+                .when()
+                .post(&#34;/test&#34;)
+                .then()
+                .body(&#34;dayOfWeek&#34;, equalTo(&#34;月&#34;));
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_実行してみる&#34;&gt;実行してみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;実行すると下記のエラーが発生します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre&gt;javax.ws.rs.ProcessingException: RESTEASY008200: JSON Binding deserialization error&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;いや、エラーになることは望んでいたんですけど、
+こういうのじゃなくてBean Validationのエラーになって欲しい。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_修正してみる&#34;&gt;修正してみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;という訳で、Bean Validationのエラーになるようにパラメータクラスを修正します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;TestParam.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-diff&#34; data-lang=&#34;diff&#34;&gt;package org.katsumi.rest.request;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.time.DayOfWeek;
+
+public class TestParam
+{
+    @NotNull
+    @Pattern(regexp = &#34;(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)&#34;)
+-    private DayOfWeek dayOfWeek;
++    private String dayOfWeek;
+
+    public DayOfWeek getDayOfWeek()
+    {
+-        return dayOfWeek;
++        return DayOfWeek.valueOf(dayOfWeek);
+    }
+
+-    public void setDayOfWeek(DayOfWeek dayOfWeek)
++    public void setDayOfWeek(String dayOfWeek)
+    {
+        this.dayOfWeek = dayOfWeek;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;直接 &lt;code&gt;DayOfWeek&lt;/code&gt; にするのではなく、 &lt;code&gt;String&lt;/code&gt; で受け取って、使う際にgetterで &lt;code&gt;DayOfWeek&lt;/code&gt; で所得するように修正しました。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_拡張&#34;&gt;拡張&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;ここまでの対応でBean Validationによるチェックが行われるようになるのですが、
+それを確認する方法がHTTPステータスコードぐらいしかありません。
+そこで、Bean ValidationのエラーをJSONで返却するように下記のファイルを追加します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;ValidationError.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;package org.katsumi.rest.mapper;
+
+public class ValidationError
+{
+    private String path;
+    private String message;
+
+    public String getPath()
+    {
+        return path;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public ValidationError(String path, String message)
+    {
+        this.path = path;
+        this.message = message;
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;ConstraintViolationExceptionMapper.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;package org.katsumi.rest.mapper;
+
+import javax.validation.ConstraintViolationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Provider
+public class ConstraintViolationExceptionMapper
+        implements ExceptionMapper&amp;lt;ConstraintViolationException&amp;gt;
+{
+    @Override
+    public Response toResponse(ConstraintViolationException e)
+    {
+        final List&amp;lt;ValidationError&amp;gt; errors = e.getConstraintViolations().stream()
+                .map(cv -&amp;gt; new ValidationError(
+                        cv.getPropertyPath().toString(), cv.getMessage()))
+                .collect(Collectors.toList());
+        return Response.status(Response.Status.BAD_REQUEST)
+                .type(MediaType.APPLICATION_JSON)
+                .entity(errors)
+                .build();
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;レスポンスの形式が変わるので、テストクラスも修正します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;TestResourceTest.java&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-diff&#34; data-lang=&#34;diff&#34;&gt;package org.katsumi.rest;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.Matchers.equalTo;
+
+class TestResourceTest
+{
+    @Test
+    void testJsonToEnum()
+    {
+        RestAssured.baseURI = &#34;http://localhost:8080/json-to-enum/api&#34;;
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body(&#34;{\&#34;dayOfWeek\&#34;:\&#34;MONDAYY\&#34;}&#34;)
+                .when()
+                .post(&#34;/test&#34;)
+                .then()
+-                .body(&#34;dayOfWeek&#34;, equalTo(&#34;月&#34;))
++                .body(&#34;message[0]&#34;, equalTo(&#34;must match \&#34;(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\&#34;&#34;))
++                .body(&#34;path[0]&#34;, equalTo(&#34;test.arg0.dayOfWeek&#34;));
+    }
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;これで実行するとテストケースが正常終了します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_参考&#34;&gt;参考&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a href=&#34;http://rest-assured.io/&#34; class=&#34;bare&#34;&gt;http://rest-assured.io/&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>[買い物] Thule Crossover 25L BackPack TCBP-317 Black</title>
