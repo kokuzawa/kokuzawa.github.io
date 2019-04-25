@@ -1,0 +1,62 @@
+---
+title: "Basic認証で自動認証を実現する方法"
+date: 2019-04-25T11:20:50+09:00
+tags: [javascript]
+draft: false
+---
+
+== 概要
+
+Basic認証でプロテクトされているコンテンツにアクセスする際に、認証ダイアログを表示せずに自動認証させる試みです。
+匿名アクセス機能が無く、ゲストアカウントのあるシステムで、ゲストユーザが認証操作をせずにコンテンツを表示させることを目的とします。
+
+== 実現方法
+
+基本方針として下記を想定しました。
+
+* JavaScriptによる認証
+* Proxyサーバ的なものを自作
+
+Proxyサーバ的なものを自作するのは、開発コストや運用コストがかかりそうなため却下、
+今回はJavaScriptによる認証で実現します。
+
+JavaScriptによる認証は比較的容易であり、下記コードで実現できます。
+これはIE11でも動作することを確認しているので、ほとんどのブラウザで動作すると考えます。
+
+[source,html]
+----
+<body onload="login()">
+<script>
+  function login() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "http://localhost/content.thml", 
+               false, "userid", "password"); <1>
+      xhr.send(null);
+      location.href = "http://localhost/content.html"; <2>
+  }
+</script>
+</body>
+----
+<1> 事前にBasic認証を実施。第3引数はリダイレクト前に認証が完了するように同期指定。
+<2> 表示したいコンテンツへリダイレクト。
+
+ユーザは `content.html` に直接アクセスするのではなく、
+この自動認証用のHTMLにアクセスします。
+
+== TIPS
+
+ちなみに、 `XMLHttpRequest.open` ではなく、 `fetch` 関数で認証をした場合、
+リダイレクト時に認証ダイアログが表示されてしまいます。
+`fetch` 関数だと、ブラウザに認証結果が記録されないようです。
+
+また、下記のようにURLにuseridとpasswordを含める方法もあるようです。
+
+----
+http://userid:password@localhost/content.html
+----
+
+ただし、この形式はIE11では動作せず、Chromeは直接アクセスしたコンテンツにはAuthorizationヘッダが付与されますが、
+コンテンツ内で参照するURL(JavascriptやCSSなど)にはAuthorizationヘッダが付与されないようで、
+Ajaxを利用したインタラクティブなページ等はうまく表示されません。
+Firefoxはアクセスしたコンテンツ、コンテンツ内URLともにAuthorizationヘッダが付与されました。
+
