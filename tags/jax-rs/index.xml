@@ -339,6 +339,178 @@ class TestResourceTest
     </item>
     
     <item>
+      <title>Flowchart of Creating RESTful API</title>
+      <link>https://kokuzawa.github.io/blog/2018/11/18/flowchart-of-creating-api/</link>
+      <pubDate>Sun, 18 Nov 2018 01:20:50 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2018/11/18/flowchart-of-creating-api/</guid>
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_改版履歴&#34;&gt;改版履歴&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;dlist&#34;&gt;
+&lt;dl&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;2018/11/21&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;返却データ無判定と新規データ判定の順序を入れ替え&lt;/p&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_概要&#34;&gt;概要&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;うちのチームでAPIを作成する際に使用しているフローチャートを公開します。
+HTTPステータスコードですが、APサーバやフレームワークで勝手に返却するもの、
+APIを作成する上であまり利用しないものはあえて無視しています。
+まあ、これが最終形という訳ではなく、日々足したり引いたりしているのですが、
+指針としてはシンプルにできたかな、と思っています。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;imageblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;img src=&#34;https://kokuzawa.github.io/images/FlowchartOfCreatingAPI.svg&#34; alt=&#34;FlowchartOfCreatingAPI&#34;&gt;
+&lt;/div&gt;
+&lt;div class=&#34;title&#34;&gt;Figure 1. Flowchart of Creating RESTful API&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;dlist&#34;&gt;
+&lt;dl&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;Method&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;処理内容によってMethodを分けます。RESTful APIの基本です。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;入力値検証&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;入力値を検証します。Bean Validationでやる感じ。
+不正な入力を検知したら &lt;code&gt;400&lt;/code&gt; を返却します。
+何のパラメータが不正なのか、といった情報も返却すべきかもしれません。
+Bean Validationだと &lt;code&gt;ConstraintViolationException&lt;/code&gt; にそういった情報が入っています。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;認証&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;操作者のアカウントが登録されているか判定します。
+Basic認証とかです。
+認証できなければ &lt;code&gt;401&lt;/code&gt; を返却します。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;認可&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;権限判定です。
+読み込み権限しかないのか、書き込み権限があるのか、はたまた管理権限があるのかなど。
+権限がなければ &lt;code&gt;403&lt;/code&gt; を返却します。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;処理&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;ビジネスロジックです。
+ここでデータを色々弄ります。
+弄ろうとしたデータがなければ &lt;code&gt;404&lt;/code&gt; 、データが登録されていたら &lt;code&gt;409&lt;/code&gt; 、
+ヌルポとかランタイム系のエラーの場合は &lt;code&gt;500&lt;/code&gt; を返却します。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;非同期&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;あまり使わないかも。
+例えば、メール送信実行をリクエストしたけど、実際に送信されるのは10分後ですよ、などという場合に &lt;code&gt;202&lt;/code&gt; を返却します。
+返却データとして「10分後に実行します」というのがわかるようなデータを返すのが作法のようです。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;新規登録データ&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;POST(登録)の場合にここまできたら &lt;code&gt;201&lt;/code&gt; になります。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;dt class=&#34;hdlist1&#34;&gt;返却データ無&lt;/dt&gt;
+&lt;dd&gt;
+&lt;p&gt;削除処理や、登録、更新処理で返却データが無い場合は &lt;code&gt;204&lt;/code&gt; を返却します。
+それ以外は &lt;code&gt;200&lt;/code&gt; ですね。&lt;/p&gt;
+&lt;/dd&gt;
+&lt;/dl&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_フローチャート図について&#34;&gt;フローチャート図について&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;ちなみに、上のフローチャート図は &lt;a href=&#34;http://blockdiag.com/ja/&#34; target=&#34;_blank&#34; rel=&#34;noopener&#34;&gt;blockdiag&lt;/a&gt; を使って作りました。
+こんな感じです。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;blockdiag {
+    orientation = portrait;
+    edge_layout = flowchart;
+
+    Action [label=&#34;Start&#34;, shape=flowchart.terminator];
+    Method [label=&#34;Method&#34;, shape=flowchart.condition];
+    Validation [label=&#34;入力値検証&#34;, shape=flowchart.condition];
+    Authentication [label=&#34;認証&#34;, shape=flowchart.condition];
+    Authorization [label=&#34;認可&#34;, shape=flowchart.condition];
+    Process [label=&#34;処理&#34;, shape=flowchart.condition];
+    Async [label=&#34;非同期&#34;, shape=flowchart.condition];
+    Content [label=&#34;返却\nデータ無&#34;, shape=flowchart.condition];
+    New [label=&#34;新規登録\nデータ&#34;, shape=flowchart.condition];
+    400 [label=&#34;400&#34;, shape=flowchart.terminator, color=pink];
+    401 [label=&#34;401&#34;, shape=flowchart.terminator, color=pink];
+    403 [label=&#34;403&#34;, shape=flowchart.terminator, color=pink];
+    404 [label=&#34;404&#34;, shape=flowchart.terminator, color=pink];
+    409 [label=&#34;409&#34;, shape=flowchart.terminator, color=pink];
+    500 [label=&#34;500&#34;, shape=flowchart.terminator, color=pink];
+    202 [label=&#34;202&#34;, shape=flowchart.terminator, color=lightblue];
+    200 [label=&#34;200&#34;, shape=flowchart.terminator, color=lightblue];
+    201 [label=&#34;201&#34;, shape=flowchart.terminator, color=lightblue];
+    204 [label=&#34;204&#34;, shape=flowchart.terminator, color=lightblue];
+
+    // Action
+    Action -&amp;gt; Method;
+    Method -&amp;gt; GET[label=&#34;取得&#34;];
+    Method -&amp;gt; POST[label=&#34;登録&#34;];
+    Method -&amp;gt; PUT[label=&#34;更新&#34;];
+    Method -&amp;gt; DELETE[label=&#34;削除&#34;];
+
+    // Method
+    GET -&amp;gt; Validation;
+    POST -&amp;gt; Validation;
+    PUT -&amp;gt; Validation;
+    DELETE -&amp;gt; Validation;
+
+    // Validation
+    Validation -&amp;gt; Authentication[label=OK];
+    Validation -&amp;gt; 400[label=NG];
+
+    // Authentication
+    Authentication -&amp;gt; Authorization[label=OK];
+    Authentication -&amp;gt; 401[label=NG];
+
+    // Authorization
+    Authorization -&amp;gt; Process[label=OK];
+    Authorization -&amp;gt; 403[label=NG];
+
+    // Process
+    Process -&amp;gt; Async[label=OK];
+    Process -&amp;gt; 404[label=NG];
+    Process -&amp;gt; 409[label=NG];
+    Process -&amp;gt; 500[label=NG];
+
+    // Async
+    Async -&amp;gt; 202[label=YES];
+    Async -&amp;gt; New[label=NO];
+
+    // New
+    New -&amp;gt; Content[label=YES];
+    New -&amp;gt; 201[label=YES];
+
+    // Content
+    Content -&amp;gt; 200[label=NO];
+    Content -&amp;gt; 204[label=YES];
+}&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;blockdiagはasciidocに埋め込めるので、テキストベースでドキュメントを管理するのに便利なんですよ。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
       <title>Server Sent Events</title>
       <link>https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/</link>
       <pubDate>Sun, 20 Dec 2015 10:32:29 +0900</pubDate>
@@ -537,6 +709,172 @@ HTTPプロトコルで動作するSSEを利用した方が良いケースがあ�
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://jersey.java.net/documentation/latest/sse.html&#34;&gt;Chapter 15. Server-Sent Events (SSE) Support&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>WildFly SwarmでJAXRSを試す</title>
+      <link>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</link>
+      <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
+      <description>
+
+&lt;p&gt;WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。
+この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、
+将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。
+WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、
+自分の必要なモジュールを取り込んで利用する形になるようです。&lt;/p&gt;
+
+&lt;!-- MORE --&gt;
+
+&lt;h2 id=&#34;jaxrsを組み込む&#34;&gt;JAXRSを組み込む&lt;/h2&gt;
+
+&lt;p&gt;今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。
+2015年11月時点での最新バージョンは1.0.0.Alpha5です。
+pom.xmlに下記のdependencyを追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
+    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
+&amp;lt;dependency&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_39.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、
+下記のpluginもpom.xmlに追加します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugin&amp;gt;
+    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
+    &amp;lt;executions&amp;gt;
+        &amp;lt;execution&amp;gt;
+            &amp;lt;goals&amp;gt;
+                &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt;
+            &amp;lt;/goals&amp;gt;
+        &amp;lt;/execution&amp;gt;
+    &amp;lt;/executions&amp;gt;
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;jaxrsアプリケーションを作る&#34;&gt;JAXRSアプリケーションを作る&lt;/h2&gt;
+
+&lt;p&gt;WildFly Swarmの設定が一通り終わったので、次はJAXRSアプリケーションを作ります。
+特別なことはなく、普通のJAXRSアプリケーションです。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+@ApplicationPath(&amp;quot;/rest&amp;quot;)
+public class MyApplication extends Application
+{
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+
+@Path(&amp;quot;/hello&amp;quot;)
+public class HelloResource
+{
+    @GET
+    public String hello()
+    {
+        return &amp;quot;Hello World!&amp;quot;;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;どうやってうごかすの&#34;&gt;どうやってうごかすの？&lt;/h2&gt;
+
+&lt;p&gt;JAXRSアプリケーションも作ったけれどどうやって動かすのか？&lt;br /&gt;
+WildFly Swarmでは通常のJavaアプリケーションのようにmainメソッドから動かします。
+そのため、mainメソッドを持つクラスを新たに作成します。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.wildfly.swarm.container.Container;
+import org.wildfly.swarm.jaxrs.JAXRSArchive;
+
+public class Main
+{
+    public static void main(String... args) throws Exception
+    {
+        // コンテナの生成
+        // Archiveを生成する前にインスタンス化しておかないと実行時にエラーが発生
+        final Container container = new Container();
+
+        // ShrinkWrapで仮想アーカイブを作成
+        final JAXRSArchive archive = ShrinkWrap.create(JAXRSArchive.class);
+        archive.addClass(MyApplication.class);
+        archive.addClass(HelloResource.class);
+        archive.addAllDependencies();
+
+        container.start().deploy(archive);
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;mainメソッド内では、ShrinkWrapを利用して生成した仮想アーカイブを起動したコンテナにデプロイします。
+コード中のコメントにも書きましたが、アーカイブを作る前にコンテナをインスタンス化しておかないと、
+実行時にエラーになります。これで半日悩んだ..orz&lt;/p&gt;
+
+&lt;p&gt;で、ここで作ったMainクラスをswarm-pluginに教える必要があります。
+設定を追加したwildfly-swarm-pluginが下記になります。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugin&amp;gt;
+    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
+    &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
+    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
+    &amp;lt;configuration&amp;gt;
+        &amp;lt;mainClass&amp;gt;org.katsumi.Main&amp;lt;/mainClass&amp;gt;
+    &amp;lt;/configuration&amp;gt;
+    &amp;lt;executions&amp;gt;
+        &amp;lt;execution&amp;gt;
+            &amp;lt;goals&amp;gt;
+                &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt;
+            &amp;lt;/goals&amp;gt;
+        &amp;lt;/execution&amp;gt;
+    &amp;lt;/executions&amp;gt;
+&amp;lt;/plugin&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Mavenでビルド後に下記の方法で実行することができます。&lt;/p&gt;
+
+&lt;h3 id=&#34;ideの場合&#34;&gt;IDEの場合&lt;/h3&gt;
+
+&lt;p&gt;Mainクラスを実行&lt;/p&gt;
+
+&lt;h3 id=&#34;mavenを利用する場合&#34;&gt;Mavenを利用する場合&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;mvn wildfly-swarm:run
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h3 id=&#34;jarファイルを実行する場合&#34;&gt;Jarファイルを実行する場合&lt;/h3&gt;
+
+&lt;pre&gt;&lt;code&gt;jar -jar target/projectname-swarm.jar
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;余談&#34;&gt;余談&lt;/h2&gt;
+
+&lt;p&gt;今回のアプリですが、IntelliJ IDEA 15で作っています。
+インストールしたままの環境でMavenビルドをしたのですが、下記エラーが発生してビルドができない状態でした。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;java.lang.NoClassDefFoundError: org/eclipse/aether/RepositorySystemSession
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;原因はMavenのバージョンが古いためで、IntellijにデフォルトでバンドルされているMavenのバージョンは3.0.5であり、
+このバージョンではエラーが発生するので、別途バージョン3.2.5をインストールしてそれを参照するようにしました。&lt;/p&gt;
 </description>
     </item>
     
