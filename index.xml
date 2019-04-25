@@ -6,10 +6,107 @@
     <description>Recent content on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Thu, 22 Nov 2018 22:07:16 +0900</lastBuildDate>
+    <lastBuildDate>Thu, 25 Apr 2019 11:20:50 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Basic認証で自動認証を実現する方法</title>
+      <link>https://kokuzawa.github.io/blog/2019/04/25/auto_login/</link>
+      <pubDate>Thu, 25 Apr 2019 11:20:50 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2019/04/25/auto_login/</guid>
+      <description>&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_概要&#34;&gt;概要&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Basic認証でプロテクトされているコンテンツにアクセスする際に、認証ダイアログを表示せずに自動認証させる試みです。
+匿名アクセス機能が無く、ゲストアカウントのあるシステムで、ゲストユーザが認証操作をせずにコンテンツを表示させることを目的とします。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_実現方法&#34;&gt;実現方法&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;基本方針として下記を想定しました。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;JavaScriptによる認証&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Proxyサーバ的なものを自作&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Proxyサーバ的なものを自作するのは、開発コストや運用コストがかかりそうなため却下、
+今回はJavaScriptによる認証で実現します。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;JavaScriptによる認証は比較的容易であり、下記コードで実現できます。
+これはIE11でも動作することを確認しているので、ほとんどのブラウザで動作すると考えます。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;body onload=&#34;login()&#34;&amp;gt;
+&amp;lt;script&amp;gt;
+  function login() {
+      var xhr = new XMLHttpRequest();
+      xhr.open(&#34;GET&#34;, &#34;http://localhost/content.thml&#34;,
+               false, &#34;userid&#34;, &#34;password&#34;); &lt;b class=&#34;conum&#34;&gt;(1)&lt;/b&gt;
+      xhr.send(null);
+      location.href = &#34;http://localhost/content.html&#34;; &lt;b class=&#34;conum&#34;&gt;(2)&lt;/b&gt;
+  }
+&amp;lt;/script&amp;gt;
+&amp;lt;/body&amp;gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;colist arabic&#34;&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;事前にBasic認証を実施。第3引数はリダイレクト前に認証が完了するように同期指定。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;表示したいコンテンツへリダイレクト。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;ユーザは &lt;code&gt;content.html&lt;/code&gt; に直接アクセスするのではなく、
+この自動認証用のHTMLにアクセスします。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_tips&#34;&gt;TIPS&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;ちなみに、 &lt;code&gt;XMLHttpRequest.open&lt;/code&gt; ではなく、 &lt;code&gt;fetch&lt;/code&gt; 関数で認証をした場合、
+リダイレクト時に認証ダイアログが表示されてしまいます。
+&lt;code&gt;fetch&lt;/code&gt; 関数だと、ブラウザに認証結果が記録されないようです。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;また、下記のようにURLにuseridとpasswordを含める方法もあるようです。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre&gt;http://userid:password@localhost/content.html&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;ただし、この形式はIE11では動作せず、Chromeは直接アクセスしたコンテンツにはAuthorizationヘッダが付与されますが、
+コンテンツ内で参照するURL(JavascriptやCSSなど)にはAuthorizationヘッダが付与されないようで、
+Ajaxを利用したインタラクティブなページ等はうまく表示されません。
+Firefoxはアクセスしたコンテンツ、コンテンツ内URLともにAuthorizationヘッダが付与されました。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>[JAX-RS] Validation Json to Enum Convert</title>

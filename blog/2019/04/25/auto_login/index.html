@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="ja-jp">
+<head>
+
+  
+  <meta charset="UTF-8">
+  <title>
+    Basic認証で自動認証を実現する方法 | KATSUMI KOKUZAWA&#39;S BLOG
+  </title>
+
+
+  
+  <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
+
+  
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2019/04/25/auto_login/"/>
+
+  
+  <link rel="stylesheet" href="/css/sanitize.css">
+  <link rel="stylesheet" href="/css/responsive.css">
+  <link rel="stylesheet" href="/css/highlight_monokai.css">
+  <link rel="stylesheet" href="/css/theme.css">
+  <link rel="stylesheet" href="/css/custom.css">
+  
+  
+  <link href="https://kokuzawa.github.io/index.xml" rel="alternate" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+  <link href="https://kokuzawa.github.io/index.xml" rel="feed" type="application/rss+xml" title="KATSUMI KOKUZAWA&#39;S BLOG" />
+
+  
+  
+
+  
+  
+    <link rel="icon" href="/images/favicon.ico" sizes="32x32">
+  
+
+  <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
+
+</head>
+
+
+
+<body>
+<div class="container">
+
+  
+  <header role="banner">
+    <div class="row gutters">
+      <div id="site-title" class="col span_6">
+        <h1><a href="https://kokuzawa.github.io/">KATSUMI KOKUZAWA&#39;S BLOG</a></h1>
+        
+      </div>
+      <div id="social" class="col span_6">
+        <ul>
+          <li><a href="/tags/"><i class="fas fa-tag fa-2x"></i></a></li>
+          <li><a href="https://twitter.com/kokuzawa" target="_blank"><i class="fab fa-twitter fa-2x"></i></a></li>
+          
+          <li><a href="https://github.com/kokuzawa" target="_blank"><i class="fab fa-github-alt fa-2x"></i></a></li>
+          <li><a href="https://kokuzawa.github.io/index.xml" type="application/rss+xml" target="_blank"><i class="fas fa-rss-square fa-2x"></i></a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+
+  
+  <main id="single" role="main">
+    <div class="article-header">
+      <h1>Basic認証で自動認証を実現する方法</h1>
+      <div class="meta">
+        Apr 25, 2019 &nbsp;
+        
+          #<a href="/tags/javascript">javascript</a>&nbsp;
+        
+      </div>
+    </div>
+    <article>
+      <div class="sect1">
+<h2 id="_概要">概要</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Basic認証でプロテクトされているコンテンツにアクセスする際に、認証ダイアログを表示せずに自動認証させる試みです。
+匿名アクセス機能が無く、ゲストアカウントのあるシステムで、ゲストユーザが認証操作をせずにコンテンツを表示させることを目的とします。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_実現方法">実現方法</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>基本方針として下記を想定しました。</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>JavaScriptによる認証</p>
+</li>
+<li>
+<p>Proxyサーバ的なものを自作</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Proxyサーバ的なものを自作するのは、開発コストや運用コストがかかりそうなため却下、
+今回はJavaScriptによる認証で実現します。</p>
+</div>
+<div class="paragraph">
+<p>JavaScriptによる認証は比較的容易であり、下記コードで実現できます。
+これはIE11でも動作することを確認しているので、ほとんどのブラウザで動作すると考えます。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;body onload="login()"&gt;
+&lt;script&gt;
+  function login() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "http://localhost/content.thml",
+               false, "userid", "password"); <b class="conum">(1)</b>
+      xhr.send(null);
+      location.href = "http://localhost/content.html"; <b class="conum">(2)</b>
+  }
+&lt;/script&gt;
+&lt;/body&gt;</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<ol>
+<li>
+<p>事前にBasic認証を実施。第3引数はリダイレクト前に認証が完了するように同期指定。</p>
+</li>
+<li>
+<p>表示したいコンテンツへリダイレクト。</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>ユーザは <code>content.html</code> に直接アクセスするのではなく、
+この自動認証用のHTMLにアクセスします。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_tips">TIPS</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>ちなみに、 <code>XMLHttpRequest.open</code> ではなく、 <code>fetch</code> 関数で認証をした場合、
+リダイレクト時に認証ダイアログが表示されてしまいます。
+<code>fetch</code> 関数だと、ブラウザに認証結果が記録されないようです。</p>
+</div>
+<div class="paragraph">
+<p>また、下記のようにURLにuseridとpasswordを含める方法もあるようです。</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>http://userid:password@localhost/content.html</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>ただし、この形式はIE11では動作せず、Chromeは直接アクセスしたコンテンツにはAuthorizationヘッダが付与されますが、
+コンテンツ内で参照するURL(JavascriptやCSSなど)にはAuthorizationヘッダが付与されないようで、
+Ajaxを利用したインタラクティブなページ等はうまく表示されません。
+Firefoxはアクセスしたコンテンツ、コンテンツ内URLともにAuthorizationヘッダが付与されました。</p>
+</div>
+</div>
+</div>
+
+      
+      
+      
+    </article>
+    
+ <aside><div id="disqus_thread"></div></aside>
+
+<script type="text/javascript">
+     
+    var disqus_shortname = 'katsumikokuzawasblog';
+
+     
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+
+
+  </main>
+  
+  <nav class="pagination-single">
+    
+      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/11/22/validation-json-to-enum-convert/" rel="prev">[JAX-RS] Validation Json to Enum Convert</a></span>
+    
+    
+  </nav>
+
+
+  
+  <footer role="contentinfo">
+    <div style="text-align:center;">
+      <img src="/images/avatar.png" width="64" height="64"><br>
+      Written by Katsumi Kokuzawa
+    </div>
+  </footer>
+
+
+</div>
+
+<script src="/js/highlight.pack.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-36546771-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+</body>
+</html>
+
