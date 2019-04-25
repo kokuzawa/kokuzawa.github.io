@@ -1,0 +1,284 @@
+---
+title: "[JAX-RS] Validation Json to Enum Convert"
+date: 2018-11-22T22:07:16+09:00
+tags: [Java, JAX-RS]
+draft: false
+---
+
+== 概要
+
+JAX-RSでJSONプロパティをEnumプロパティに変換する際にBean Validationで値の検証をします。
+
+== 環境
+
+* WildFly 14.0.0.Final
+
+== ひとまず普通に実装してみる
+
+作るのは最低限の３点セット＋テストクラス。
+テストクラスで設定しているパラメータの `MONDAY` はわざと間違えて `MONDAYY` にしています。
+
+.MyApplication.java
+[source,java]
+----
+package org.katsumi.rest;
+
+import javax.ws.rs.ApplicationPath;
+import javax.ws.rs.core.Application;
+
+@ApplicationPath("api")
+public class MyApplication extends Application
+{
+}
+----
+
+.TestParam.java
+[source,java]
+----
+package org.katsumi.rest.request;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.time.DayOfWeek;
+
+public class TestParam
+{
+    @NotNull
+    @Pattern(regexp = "(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)")
+    private DayOfWeek dayOfWeek;
+
+    public DayOfWeek getDayOfWeek()
+    {
+        return dayOfWeek;
+    }
+
+    public void setDayOfWeek(DayOfWeek dayOfWeek)
+    {
+        this.dayOfWeek = dayOfWeek;
+    }
+}
+----
+
+.TestResource.java
+[source,java]
+----
+package org.katsumi.rest;
+
+import org.katsumi.rest.request.TestParam;
+
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.time.DayOfWeek;
+import java.util.HashMap;
+
+@Path("/test")
+public class TestResource
+{
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postTest(@NotNull @Valid TestParam param)
+    {
+        final HashMap<DayOfWeek, String> map = new HashMap<>();
+        map.put(DayOfWeek.MONDAY, "月");
+        map.put(DayOfWeek.TUESDAY, "火");
+        map.put(DayOfWeek.WEDNESDAY, "水");
+        map.put(DayOfWeek.THURSDAY, "木");
+        map.put(DayOfWeek.FRIDAY, "金");
+        map.put(DayOfWeek.SATURDAY, "土");
+        map.put(DayOfWeek.SUNDAY, "日");
+
+        final HashMap<String, String> response = new HashMap<>();
+        response.put("dayOfWeek", map.get(param.getDayOfWeek()));
+        return Response.ok(response).build();
+    }
+}
+----
+
+.TestResourceTest.java
+[source,java]
+----
+package org.katsumi.rest;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.Matchers.equalTo;
+
+class TestResourceTest
+{
+    @Test
+    void testJsonToEnum()
+    {
+        RestAssured.baseURI = "http://localhost:8080/json-to-enum/api";
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body("{\"dayOfWeek\":\"MONDAYY\"}")
+                .when()
+                .post("/test")
+                .then()
+                .body("dayOfWeek", equalTo("月"));
+    }
+}
+----
+
+== 実行してみる
+
+実行すると下記のエラーが発生します。
+
+----
+javax.ws.rs.ProcessingException: RESTEASY008200: JSON Binding deserialization error
+----
+
+いや、エラーになることは望んでいたんですけど、
+こういうのじゃなくてBean Validationのエラーになって欲しい。
+
+== 修正してみる
+
+という訳で、Bean Validationのエラーになるようにパラメータクラスを修正します。
+
+.TestParam.java
+[source,diff]
+----
+package org.katsumi.rest.request;
+
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import java.time.DayOfWeek;
+
+public class TestParam
+{
+    @NotNull
+    @Pattern(regexp = "(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)")
+-    private DayOfWeek dayOfWeek;
++    private String dayOfWeek;
+
+    public DayOfWeek getDayOfWeek()
+    {
+-        return dayOfWeek;
++        return DayOfWeek.valueOf(dayOfWeek);
+    }
+
+-    public void setDayOfWeek(DayOfWeek dayOfWeek)
++    public void setDayOfWeek(String dayOfWeek)
+    {
+        this.dayOfWeek = dayOfWeek;
+    }
+}
+----
+
+直接 `DayOfWeek` にするのではなく、 `String` で受け取って、使う際にgetterで `DayOfWeek` で所得するように修正しました。
+
+== 拡張
+
+ここまでの対応でBean Validationによるチェックが行われるようになるのですが、
+それを確認する方法がHTTPステータスコードぐらいしかありません。
+そこで、Bean ValidationのエラーをJSONで返却するように下記のファイルを追加します。
+
+.ValidationError.java
+[source,java]
+----
+package org.katsumi.rest.mapper;
+
+public class ValidationError
+{
+    private String path;
+    private String message;
+
+    public String getPath()
+    {
+        return path;
+    }
+
+    public String getMessage()
+    {
+        return message;
+    }
+
+    public ValidationError(String path, String message)
+    {
+        this.path = path;
+        this.message = message;
+    }
+}
+----
+
+.ConstraintViolationExceptionMapper.java
+[source,java]
+----
+package org.katsumi.rest.mapper;
+
+import javax.validation.ConstraintViolationException;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.ext.ExceptionMapper;
+import javax.ws.rs.ext.Provider;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Provider
+public class ConstraintViolationExceptionMapper 
+        implements ExceptionMapper<ConstraintViolationException>
+{
+    @Override
+    public Response toResponse(ConstraintViolationException e)
+    {
+        final List<ValidationError> errors = e.getConstraintViolations().stream()
+                .map(cv -> new ValidationError(
+                        cv.getPropertyPath().toString(), cv.getMessage()))
+                .collect(Collectors.toList());
+        return Response.status(Response.Status.BAD_REQUEST)
+                .type(MediaType.APPLICATION_JSON)
+                .entity(errors)
+                .build();
+    }
+}
+----
+
+レスポンスの形式が変わるので、テストクラスも修正します。
+
+.TestResourceTest.java
+[source,diff]
+----
+package org.katsumi.rest;
+
+import io.restassured.RestAssured;
+import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Test;
+
+import static org.hamcrest.Matchers.equalTo;
+
+class TestResourceTest
+{
+    @Test
+    void testJsonToEnum()
+    {
+        RestAssured.baseURI = "http://localhost:8080/json-to-enum/api";
+        RestAssured
+                .given()
+                .contentType(ContentType.JSON)
+                .body("{\"dayOfWeek\":\"MONDAYY\"}")
+                .when()
+                .post("/test")
+                .then()
+-                .body("dayOfWeek", equalTo("月"))
++                .body("message[0]", equalTo("must match \"(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\""))
++                .body("path[0]", equalTo("test.arg0.dayOfWeek"));
+    }
+}
+----
+
+これで実行するとテストケースが正常終了します。
+
+== 参考
+
+* http://rest-assured.io/[]
+
