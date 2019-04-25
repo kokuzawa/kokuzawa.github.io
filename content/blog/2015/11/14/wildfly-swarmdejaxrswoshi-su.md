@@ -1,7 +1,7 @@
 ---
 title: "WildFly SwarmでJAXRSを試す"
 date: 2015-11-14T16:08:44+09:00
-tags: [Java, WildFly, JAXRS] 
+tags: [Java, WildFly, JAX-RS] 
 ---
 WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。
 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、
