@@ -1,0 +1,46 @@
+---
+title: "ThorntailをRemote Debugする"
+date: 2019-05-22T00:49:56+09:00
+tags: [Java, Thorntail, IntelliJ IDEA]
+draft: false
+---
+
+== 概要
+
+https://thorntail.io[Thorntail]で動かしたWebサービスをIntelliJ IDEAでデバッグします。
+IntelliJ IDEA上でthorntail-maven-pluginの `thorntail:run` をデバッグ実行してもブレークポイントで停止しないため、
+Remote Debugの機能を使ってIntelliJ IDEA上で設定したブレークポイントで停止させます。
+
+== 環境
+
+* macOS 10.14.4
+* openjdk version "11.0.1" 2018-10-16
+* IntelliJ IDEA 2019.1
+
+== Create Run/Debug Configuration
+
+Mavenビューの `thorntail:run` をCtrl+クリックして実行設定を作成します。
+
+image::/images/post_image_44.png[,,300]
+
+表示されたダイアログのCommand Lineフィールドに `-Dthorntail.debug.port=8000` を追加します。
+
+image::/images/post_image_45.png[]
+
+== Run
+
+作成した設定で `thorntail:run` を実行します。
+実行後にメニューから Run -> Attach to Process... を選択します。
+thorntailの起動に問題がなければ下記のようなダイアログが表示されるはずです。
+
+image::/images/post_image_46.png[]
+
+このプロセスを選択し、任意の場所にブレークポイントを設定、
+Webサービスを呼び出すと、設定したブレークポイントで停止します。
+
+image::/images/post_image_47.png[]
+
+== まとめ
+
+デバッグ実行から普通にデバッグできればいいのに...
+
