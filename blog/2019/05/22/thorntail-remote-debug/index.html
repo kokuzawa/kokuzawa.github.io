@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    Basic認証で自動認証を実現する方法 | KATSUMI KOKUZAWA&#39;S BLOG
+    ThorntailをRemote Debugする | KATSUMI KOKUZAWA&#39;S BLOG
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="https://kokuzawa.github.io/blog/2019/04/25/auto_login/"/>
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2019/05/22/thorntail-remote-debug/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -67,11 +67,15 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>Basic認証で自動認証を実現する方法</h1>
+      <h1>ThorntailをRemote Debugする</h1>
       <div class="meta">
-        Apr 25, 2019 &nbsp;
+        May 22, 2019 &nbsp;
         
-          #<a href="/tags/javascript">javascript</a>&nbsp;
+          #<a href="/tags/java">Java</a>&nbsp;
+        
+          #<a href="/tags/thorntail">Thorntail</a>&nbsp;
+        
+          #<a href="/tags/intellij-idea">IntelliJ IDEA</a>&nbsp;
         
       </div>
     </div>
@@ -80,87 +84,80 @@
 <h2 id="_概要">概要</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Basic認証でプロテクトされているコンテンツにアクセスする際に、認証ダイアログを表示せずに自動認証させる試みです。
-匿名アクセス機能が無く、ゲストアカウントのあるシステムで、ゲストユーザが認証操作をせずにコンテンツを表示させることを目的とします。</p>
+<p><a href="https://thorntail.io">Thorntail</a>で動かしたWebサービスをIntelliJ IDEAでデバッグします。
+IntelliJ IDEA上でthorntail-maven-pluginの <code>thorntail:run</code> をデバッグ実行してもブレークポイントで停止しないため、
+Remote Debugの機能を使ってIntelliJ IDEA上で設定したブレークポイントで停止させます。</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_実現方法">実現方法</h2>
+<h2 id="_環境">環境</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>基本方針として下記を想定しました。</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p>JavaScriptによる認証</p>
+<p>macOS 10.14.4</p>
 </li>
 <li>
-<p>Proxyサーバ的なものを自作</p>
+<p>openjdk version "11.0.1" 2018-10-16</p>
+</li>
+<li>
+<p>IntelliJ IDEA 2019.1</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>Proxyサーバ的なものを自作するのは、開発コストや運用コストがかかりそうなため却下、
-今回はJavaScriptによる認証で実現します。</p>
-</div>
-<div class="paragraph">
-<p>JavaScriptによる認証は比較的容易であり、下記コードで実現できます。
-これはIE11でも動作することを確認しているので、ほとんどのブラウザで動作すると考えます。</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="highlight"><code class="language-html" data-lang="html">&lt;body onload="login()"&gt;
-&lt;script&gt;
-  function login() {
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", "http://localhost/content.thml",
-               false, "userid", "password"); <b class="conum">(1)</b>
-      xhr.send(null);
-      location.href = "http://localhost/content.html"; <b class="conum">(2)</b>
-  }
-&lt;/script&gt;
-&lt;/body&gt;</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<ol>
-<li>
-<p>事前にBasic認証を実施。第3引数はリダイレクト前に認証が完了するように同期指定。</p>
-</li>
-<li>
-<p>表示したいコンテンツへリダイレクト。</p>
-</li>
-</ol>
-</div>
-<div class="paragraph">
-<p>ユーザは <code>content.html</code> に直接アクセスするのではなく、
-この自動認証用のHTMLにアクセスします。</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_tips">TIPS</h2>
+<h2 id="_create_rundebug_configuration">Create Run/Debug Configuration</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>ちなみに、 <code>XMLHttpRequest.open</code> ではなく、 <code>fetch</code> 関数で認証をした場合、
-リダイレクト時に認証ダイアログが表示されてしまいます。
-<code>fetch</code> 関数だと、ブラウザに認証結果が記録されないようです。</p>
+<p>Mavenビューの <code>thorntail:run</code> をCtrl+クリックして実行設定を作成します。</p>
 </div>
-<div class="paragraph">
-<p>また、下記のようにURLにuseridとpasswordを含める方法もあるようです。</p>
-</div>
-<div class="listingblock">
+<div class="imageblock">
 <div class="content">
-<pre>http://userid:password@localhost/content.html</pre>
+<img src="/images/post_image_44.png" alt="post image 44" width="300">
 </div>
 </div>
 <div class="paragraph">
-<p>ただし、この形式はIE11では動作せず、Chromeは直接アクセスしたコンテンツにはAuthorizationヘッダが付与されますが、
-コンテンツ内で参照するURL(JavascriptやCSSなど)にはAuthorizationヘッダが付与されないようで、
-Ajaxを利用したインタラクティブなページ等はうまく表示されません。
-Firefoxはアクセスしたコンテンツ、コンテンツ内URLともにAuthorizationヘッダが付与されました。</p>
+<p>表示されたダイアログのCommand Lineフィールドに <code>-Dthorntail.debug.port=8000</code> を追加します。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/post_image_45.png" alt="post image 45">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_run">Run</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>作成した設定で <code>thorntail:run</code> を実行します。
+実行後にメニューから Run &#8594; Attach to Process&#8230;&#8203; を選択します。
+thorntailの起動に問題がなければ下記のようなダイアログが表示されるはずです。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/post_image_46.png" alt="post image 46">
+</div>
+</div>
+<div class="paragraph">
+<p>このプロセスを選択し、任意の場所にブレークポイントを設定、
+Webサービスを呼び出すと、設定したブレークポイントで停止します。</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="/images/post_image_47.png" alt="post image 47">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_まとめ">まとめ</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>デバッグ実行から普通にデバッグできればいいのに&#8230;&#8203;</p>
 </div>
 </div>
 </div>
@@ -191,10 +188,8 @@ Firefoxはアクセスしたコンテンツ、コンテンツ内URLともにAuth
   
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2019/05/22/thorntail-remote-debug/" rel="prev">ThorntailをRemote Debugする</a></span>
     
-    
-      <span class="next"><a href="https://kokuzawa.github.io/blog/2018/11/22/validation-json-to-enum-convert/" rel="next">[JAX-RS] Validation Json to Enum Convert</a> &rarr;</span>
+      <span class="next"><a href="https://kokuzawa.github.io/blog/2019/04/25/auto_login/" rel="next">Basic認証で自動認証を実現する方法</a> &rarr;</span>
     
   </nav>
 
