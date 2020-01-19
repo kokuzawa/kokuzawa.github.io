@@ -1,0 +1,112 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Bottle on KATSUMI KOKUZAWA&#39;S BLOG</title>
+    <link>https://kokuzawa.github.io/tags/bottle/</link>
+    <description>Recent content in Bottle on KATSUMI KOKUZAWA&#39;S BLOG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Sun, 19 Jan 2020 12:05:25 +0900</lastBuildDate>
+    
+        <atom:link href="https://kokuzawa.github.io/tags/bottle/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Python] Bottleを試したメモ</title>
+      <link>https://kokuzawa.github.io/blog/2020/01/19/python-start-bottle/</link>
+      <pubDate>Sun, 19 Jan 2020 12:05:25 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2020/01/19/python-start-bottle/</guid>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://bottlepy.org/docs/dev/index.html&#34;&gt;Bottle&lt;/a&gt;を試したメモ。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_環境&#34;&gt;環境&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;macOS Catalina&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Python 3.7.3&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_仮想環境作成&#34;&gt;仮想環境作成&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;python3 -m venv $HOME/work/bottle
+source $HOME/work/bottle/bin/activate&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_bottleインストール&#34;&gt;Bottleインストール&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;pip install -U bottle&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_api_コード&#34;&gt;API コード&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;bottle_sample.py&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-py&#34; data-lang=&#34;py&#34;&gt;from bottle import run, get, request, response
+import json
+
+notes = [
+        {&#39;id&#39;:1, &#39;note&#39;:&#39;メモ1&#39;},
+        {&#39;id&#39;:2, &#39;note&#39;:&#39;メモ2&#39;},
+        {&#39;id&#39;:3, &#39;note&#39;:&#39;メモ3&#39;},
+]
+
+@get(&#39;/notes&#39;)
+def get_notes():
+        response.headers[&#39;Content-Type&#39;] = &#39;application/json;charset=UTF-8&#39;
+        response.headers[&#39;Cache-Control&#39;] = &#39;no-cache&#39;
+        return json.dumps(notes, ensure_ascii=False)
+
+run(host=&#39;localhost&#39;, port=8081, debug=True, reloader=True)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;json.dumps()で &lt;code&gt;ensure_ascii=False&lt;/code&gt; を指定しないと日本語がUnicodeとして出力されてしまう。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_実行&#34;&gt;実行&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;python3 bottle_sample.py&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_確認&#34;&gt;確認&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;curl http://localhost:8081/notes&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
+

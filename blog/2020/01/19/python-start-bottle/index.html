@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    ThorntailをRemote Debugする | KATSUMI KOKUZAWA&#39;S BLOG
+    [Python] Bottleを試したメモ | KATSUMI KOKUZAWA&#39;S BLOG
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="https://kokuzawa.github.io/blog/2019/05/22/thorntail-remote-debug/"/>
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2020/01/19/python-start-bottle/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -67,28 +67,19 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>ThorntailをRemote Debugする</h1>
+      <h1>[Python] Bottleを試したメモ</h1>
       <div class="meta">
-        May 22, 2019 &nbsp;
+        Jan 19, 2020 &nbsp;
         
-          #<a href="/tags/java">Java</a>&nbsp;
+          #<a href="/tags/python">Python</a>&nbsp;
         
-          #<a href="/tags/thorntail">Thorntail</a>&nbsp;
-        
-          #<a href="/tags/intellij-idea">IntelliJ IDEA</a>&nbsp;
+          #<a href="/tags/bottle">Bottle</a>&nbsp;
         
       </div>
     </div>
     <article>
-      <div class="sect1">
-<h2 id="_概要">概要</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><a href="https://thorntail.io">Thorntail</a>で動かしたWebサービスをIntelliJ IDEAでデバッグします。
-IntelliJ IDEA上でthorntail-maven-pluginの <code>thorntail:run</code> をデバッグ実行してもブレークポイントで停止しないため、
-Remote Debugの機能を使ってIntelliJ IDEA上で設定したブレークポイントで停止させます。</p>
-</div>
-</div>
+      <div class="paragraph">
+<p><a href="https://bottlepy.org/docs/dev/index.html">Bottle</a>を試したメモ。</p>
 </div>
 <div class="sect1">
 <h2 id="_環境">環境</h2>
@@ -96,68 +87,82 @@ Remote Debugの機能を使ってIntelliJ IDEA上で設定したブレークポ�
 <div class="ulist">
 <ul>
 <li>
-<p>macOS 10.14.4</p>
+<p>macOS Catalina</p>
 </li>
 <li>
-<p>openjdk version "11.0.1" 2018-10-16</p>
-</li>
-<li>
-<p>IntelliJ IDEA 2019.1</p>
+<p>Python 3.7.3</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_create_rundebug_configuration">Create Run/Debug Configuration</h2>
+<h2 id="_仮想環境作成">仮想環境作成</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>Mavenビューの <code>thorntail:run</code> をCtrl+クリックして実行設定を作成します。</p>
-</div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="/images/post_image_44.png" alt="post image 44" width="300">
-</div>
-</div>
-<div class="paragraph">
-<p>表示されたダイアログのCommand Lineフィールドに <code>-Dthorntail.debug.port=8000</code> を追加します。</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/images/post_image_45.png" alt="post image 45">
+<pre class="highlight"><code class="language-sh" data-lang="sh">python3 -m venv $HOME/work/bottle
+source $HOME/work/bottle/bin/activate</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_run">Run</h2>
+<h2 id="_bottleインストール">Bottleインストール</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>作成した設定で <code>thorntail:run</code> を実行します。
-実行後にメニューから Run &#8594; Attach to Process&#8230;&#8203; を選択します。
-thorntailの起動に問題がなければ下記のようなダイアログが表示されるはずです。</p>
-</div>
-<div class="imageblock">
+<div class="listingblock">
 <div class="content">
-<img src="/images/post_image_46.png" alt="post image 46">
-</div>
-</div>
-<div class="paragraph">
-<p>このプロセスを選択し、任意の場所にブレークポイントを設定、
-Webサービスを呼び出すと、設定したブレークポイントで停止します。</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="/images/post_image_47.png" alt="post image 47">
+<pre class="highlight"><code class="language-sh" data-lang="sh">pip install -U bottle</code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_まとめ">まとめ</h2>
+<h2 id="_api_コード">API コード</h2>
 <div class="sectionbody">
+<div class="listingblock">
+<div class="title">bottle_sample.py</div>
+<div class="content">
+<pre class="highlight"><code class="language-py" data-lang="py">from bottle import run, get, request, response
+import json
+
+notes = [
+        {'id':1, 'note':'メモ1'},
+        {'id':2, 'note':'メモ2'},
+        {'id':3, 'note':'メモ3'},
+]
+
+@get('/notes')
+def get_notes():
+        response.headers['Content-Type'] = 'application/json;charset=UTF-8'
+        response.headers['Cache-Control'] = 'no-cache'
+        return json.dumps(notes, ensure_ascii=False)
+
+run(host='localhost', port=8081, debug=True, reloader=True)</code></pre>
+</div>
+</div>
 <div class="paragraph">
-<p>デバッグ実行から普通にデバッグできればいいのに&#8230;&#8203;</p>
+<p>json.dumps()で <code>ensure_ascii=False</code> を指定しないと日本語がUnicodeとして出力されてしまう。</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_実行">実行</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">python3 bottle_sample.py</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_確認">確認</h2>
+<div class="sectionbody">
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-sh" data-lang="sh">curl http://localhost:8081/notes</code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -188,10 +193,8 @@ Webサービスを呼び出すと、設定したブレークポイントで停�
   
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2020/01/19/python-start-bottle/" rel="prev">[Python] Bottleを試したメモ</a></span>
     
-    
-      <span class="next"><a href="https://kokuzawa.github.io/blog/2019/04/25/auto_login/" rel="next">Basic認証で自動認証を実現する方法</a> &rarr;</span>
+      <span class="next"><a href="https://kokuzawa.github.io/blog/2019/05/22/thorntail-remote-debug/" rel="next">ThorntailをRemote Debugする</a> &rarr;</span>
     
   </nav>
 
