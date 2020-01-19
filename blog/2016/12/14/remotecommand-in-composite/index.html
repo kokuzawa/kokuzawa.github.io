@@ -81,43 +81,29 @@
       <p>JSFにはcompositeというカスタムコンポーネントを作るための仕組みがあります。
 PrimeFaces-6.0にはManagedBeanのメソッドを呼び出すためのremoteCommandというコンポーネントがあります。
 この二つを使ってカスタムコンポーネントを作ったところ、ManagedBeanのメソッドが呼ばれないという問題が発生しました。</p>
-
-<!-- more -->
-
+<!-- raw HTML omitted -->
 <p>まず、JSFのcomposite機能を使って下記のような二つのコンポーネントを作りました。</p>
-
 <p>sample1.xhtml:</p>
-
-<pre><code class="language-xml">&lt;composite:implementation&gt;
-  &lt;p:tree&gt;
-    &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt;
-  &lt;/p:tree&gt;
-  &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method1}&quot;/&gt;
-&lt;/composite:implementation&gt;
-</code></pre>
-
-<p>sample2.xhtml:</p>
-
-<pre><code class="language-xml">&lt;composite:implementation&gt;
-  &lt;p:tree&gt;
-    &lt;p:ajax event=&quot;select&quot; oncomplate=&quot;afterSelected()&quot;/&gt;
-  &lt;/p:tree&gt;
-  &lt;p:remoteCommand name=&quot;afterSelected&quot; actionListener=&quot;#{bean.method2}&quot;/&gt;
-&lt;/composite:implementation&gt;
-</code></pre>
-
-<p>そしてこれらを一つのXHTMLに組み込みます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;composite:implementation</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;p:tree</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;p:ajax</span> <span style="color:#a6e22e">event=</span><span style="color:#e6db74">&#34;select&#34;</span> <span style="color:#a6e22e">oncomplate=</span><span style="color:#e6db74">&#34;afterSelected()&#34;</span><span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;/p:tree&gt;</span>
+  <span style="color:#f92672">&lt;p:remoteCommand</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;afterSelected&#34;</span> <span style="color:#a6e22e">actionListener=</span><span style="color:#e6db74">&#34;#{bean.method1}&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/composite:implementation&gt;</span>
+</code></pre></div><p>sample2.xhtml:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;composite:implementation</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;p:tree</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;p:ajax</span> <span style="color:#a6e22e">event=</span><span style="color:#e6db74">&#34;select&#34;</span> <span style="color:#a6e22e">oncomplate=</span><span style="color:#e6db74">&#34;afterSelected()&#34;</span><span style="color:#f92672">/&gt;</span>
+  <span style="color:#f92672">&lt;/p:tree&gt;</span>
+  <span style="color:#f92672">&lt;p:remoteCommand</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;afterSelected&#34;</span> <span style="color:#a6e22e">actionListener=</span><span style="color:#e6db74">&#34;#{bean.method2}&#34;</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/composite:implementation&gt;</span>
+</code></pre></div><p>そしてこれらを一つのXHTMLに組み込みます。</p>
 <p>main.xhtml:</p>
-
-<pre><code class="language-xml">&lt;my:sample1/&gt;
-&lt;my:sample2/&gt;
-</code></pre>
-
-<p>sample1側のツリーノードを選択した際に<code>bean.method1</code>が呼ばれることを想定していたのですが、
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;my:sample1</span><span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;my:sample2</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>sample1側のツリーノードを選択した際に<code>bean.method1</code>が呼ばれることを想定していたのですが、
 呼ばれることなく画面がリフレッシュされました。それぞれのカスタムコンポーネント内の
 remoteCommandのnameの値が重複していると、エラーが発生することなくメソッドが呼ばれないという現象が発生します。</p>
-
 <p>当たり前と言えば当たり前なのですが、
 似たようなコンポーネントを作るとやらかしてしまいそうなので注意しないと。</p>
 

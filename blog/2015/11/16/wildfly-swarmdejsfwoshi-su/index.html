@@ -80,129 +80,101 @@
       </div>
     </div>
     <article>
-      
-
-<p>昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。</p>
-
-<!-- MORE -->
-
+      <p>昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。</p>
+<!-- raw HTML omitted -->
 <h2 id="jsfを組み込む">JSFを組み込む</h2>
-
 <p>仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。
 あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。</p>
-
-<pre><code class="language-xml">&lt;dependency&gt;
-    &lt;groupId&gt;org.wildfly.swarm&lt;/groupId&gt;
-    &lt;artifactId&gt;wildfly-swarm-jsf&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0.Alpha5&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-
-<h2 id="jsfアプリケーションを作る">JSFアプリケーションを作る</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-jsf<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><h2 id="jsfアプリケーションを作る">JSFアプリケーションを作る</h2>
 <p>JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、
 動くことが分かれば良いのでXHTMLファイルだけを作るだけにします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE html PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34; 
+</span><span style="color:#75715e">        &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">xmlns</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.w3.org/1999/xhtml&#34;</span>
+      <span style="color:#a6e22e">xmlns:h</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://xmlns.jcp.org/jsf/html&#34;</span>&gt;
 
-<pre><code class="language-html">&lt;?xml version='1.0' encoding='UTF-8' ?&gt;
-&lt;!DOCTYPE html PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot; 
-        &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
-      xmlns:h=&quot;http://xmlns.jcp.org/jsf/html&quot;&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+    &lt;<span style="color:#f92672">h:outputText</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Hello JSF!&#34;</span>/&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
 
-&lt;body&gt;
-    &lt;h:outputText value=&quot;Hello JSF!&quot;/&gt;
-&lt;/body&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>あと、JAXRSの時と違い、web.xmlを作る必要があります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;web-app</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://xmlns.jcp.org/xml/ns/javaee&#34;</span>
+         <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
+         <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://xmlns.jcp.org/xml/ns/javaee
+</span><span style="color:#e6db74">         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&#34;</span>
+         <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;3.1&#34;</span><span style="color:#f92672">&gt;</span>
 
-&lt;/html&gt;
-</code></pre>
-
-<p>あと、JAXRSの時と違い、web.xmlを作る必要があります。</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;web-app xmlns=&quot;http://xmlns.jcp.org/xml/ns/javaee&quot;
-         xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;
-         xsi:schemaLocation=&quot;http://xmlns.jcp.org/xml/ns/javaee
-         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&quot;
-         version=&quot;3.1&quot;&gt;
-
-    &lt;context-param&gt;
-        &lt;param-name&gt;javax.faces.PROJECT_STAGE&lt;/param-name&gt;
-        &lt;param-value&gt;Development&lt;/param-value&gt;
-    &lt;/context-param&gt;
+    <span style="color:#f92672">&lt;context-param</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;param-name</span><span style="color:#f92672">&gt;</span>javax.faces.PROJECT_STAGE<span style="color:#f92672">&lt;/param-name&gt;</span>
+        <span style="color:#f92672">&lt;param-value</span><span style="color:#f92672">&gt;</span>Development<span style="color:#f92672">&lt;/param-value&gt;</span>
+    <span style="color:#f92672">&lt;/context-param&gt;</span>
     
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;javax.faces.webapp.FacesServlet&lt;/servlet-class&gt;
-        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
-    &lt;/servlet&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;Faces Servlet&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;*.xhtml&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-&lt;/web-app&gt;
-</code></pre>
-
-<h2 id="動かす">動かす</h2>
-
+    <span style="color:#f92672">&lt;servlet</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>Faces Servlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+        <span style="color:#f92672">&lt;servlet-class</span><span style="color:#f92672">&gt;</span>javax.faces.webapp.FacesServlet<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+        <span style="color:#f92672">&lt;load-on-startup</span><span style="color:#f92672">&gt;</span>1<span style="color:#f92672">&lt;/load-on-startup&gt;</span>
+    <span style="color:#f92672">&lt;/servlet&gt;</span>
+    <span style="color:#f92672">&lt;servlet-mapping</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>Faces Servlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+        <span style="color:#f92672">&lt;url-pattern</span><span style="color:#f92672">&gt;</span>*.xhtml<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+    <span style="color:#f92672">&lt;/servlet-mapping&gt;</span>
+<span style="color:#f92672">&lt;/web-app&gt;</span>
+</code></pre></div><h2 id="動かす">動かす</h2>
 <p>JAXRSの時と同じく、mainメソッドから実行するため、mainメソッドを持つクラスを作ります。
 今回はJAXRSArchiveではなく、WARArchieをデプロイします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi.jsf<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package org.katsumi.jsf;
+<span style="color:#f92672">import</span> org.jboss.shrinkwrap.api.ShrinkWrap<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.jboss.shrinkwrap.api.asset.ClassLoaderAsset<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.wildfly.swarm.container.Container<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.wildfly.swarm.undertow.WARArchive<span style="color:#f92672">;</span>
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
-import org.wildfly.swarm.container.Container;
-import org.wildfly.swarm.undertow.WARArchive;
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Main</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">final</span> Container container <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Container<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-public class Main
-{
-    public static void main(String... args) throws Exception
-    {
-        final Container container = new Container();
+        <span style="color:#66d9ef">final</span> WARArchive warArchive <span style="color:#f92672">=</span> ShrinkWrap<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>WARArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        warArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAsWebResource</span><span style="color:#f92672">(</span>
+                <span style="color:#66d9ef">new</span> ClassLoaderAsset<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;index.xhtml&#34;</span><span style="color:#f92672">,</span> Main<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;index.xhtml&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        warArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAsWebInfResource</span><span style="color:#f92672">(</span>
+                <span style="color:#66d9ef">new</span> ClassLoaderAsset<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;WEB-INF/web.xml&#34;</span><span style="color:#f92672">,</span> Main<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;web.xml&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        warArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAllDependencies</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        final WARArchive warArchive = ShrinkWrap.create(WARArchive.class);
-        warArchive.addAsWebResource(
-                new ClassLoaderAsset(&quot;index.xhtml&quot;, Main.class.getClassLoader()), &quot;index.xhtml&quot;);
-        warArchive.addAsWebInfResource(
-                new ClassLoaderAsset(&quot;WEB-INF/web.xml&quot;, Main.class.getClassLoader()), &quot;web.xml&quot;);
-        warArchive.addAllDependencies();
-
-        container.start().deploy(warArchive);
-    }
-}
-</code></pre>
-
-<p>実行方法は下記の３通りです。</p>
-
+        container<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">deploy</span><span style="color:#f92672">(</span>warArchive<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>実行方法は下記の３通りです。</p>
 <ul>
 <li>IDEでmainメソッドを実行</li>
 <li>mvn wildfly-swarm:run</li>
 <li>jar -jar target/projectname-swarm.jar</li>
 </ul>
-
 <p>これで実際に実行しようとすると下記のエラーが発生します。</p>
-
-<pre><code class="language-java">at org.wildfly.extension.undertow.deployment.UndertowDeploymentService$1.run(UndertowDeploymentService.java:85)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-	at org.jboss.threads.JBossThread.run(JBossThread.java:320)
-</code></pre>
-
-<p>これは<code>wildfly-swarm-weld</code>を取り込んでいないためなので、
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">at org<span style="color:#f92672">.</span><span style="color:#a6e22e">wildfly</span><span style="color:#f92672">.</span><span style="color:#a6e22e">extension</span><span style="color:#f92672">.</span><span style="color:#a6e22e">undertow</span><span style="color:#f92672">.</span><span style="color:#a6e22e">deployment</span><span style="color:#f92672">.</span><span style="color:#a6e22e">UndertowDeploymentService$1</span><span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>UndertowDeploymentService<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>85<span style="color:#f92672">)</span>
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">util</span><span style="color:#f92672">.</span><span style="color:#a6e22e">concurrent</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Executors$RunnableAdapter</span><span style="color:#f92672">.</span><span style="color:#a6e22e">call</span><span style="color:#f92672">(</span>Executors<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>511<span style="color:#f92672">)</span>
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">util</span><span style="color:#f92672">.</span><span style="color:#a6e22e">concurrent</span><span style="color:#f92672">.</span><span style="color:#a6e22e">FutureTask</span><span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>FutureTask<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>266<span style="color:#f92672">)</span>
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">util</span><span style="color:#f92672">.</span><span style="color:#a6e22e">concurrent</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ThreadPoolExecutor</span><span style="color:#f92672">.</span><span style="color:#a6e22e">runWorker</span><span style="color:#f92672">(</span>ThreadPoolExecutor<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>1142<span style="color:#f92672">)</span>
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">util</span><span style="color:#f92672">.</span><span style="color:#a6e22e">concurrent</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ThreadPoolExecutor$Worker</span><span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>ThreadPoolExecutor<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>617<span style="color:#f92672">)</span>
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Thread</span><span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>Thread<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>745<span style="color:#f92672">)</span>
+	at org<span style="color:#f92672">.</span><span style="color:#a6e22e">jboss</span><span style="color:#f92672">.</span><span style="color:#a6e22e">threads</span><span style="color:#f92672">.</span><span style="color:#a6e22e">JBossThread</span><span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>JBossThread<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>320<span style="color:#f92672">)</span>
+</code></pre></div><p>これは<code>wildfly-swarm-weld</code>を取り込んでいないためなので、
 下記の記述をpom.xmlに追加します。</p>
-
-<pre><code class="language-xml">&lt;dependency&gt;
-    &lt;groupId&gt;org.wildfly.swarm&lt;/groupId&gt;
-    &lt;artifactId&gt;wildfly-swarm-weld&lt;/artifactId&gt;
-    &lt;version&gt;&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-
-<h2 id="まとめ">まとめ</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-weld<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><h2 id="まとめ">まとめ</h2>
 <p>ドキュメントを読んだだけではWeldが必要には見えなくて、
 結局サンプルコードと何遍も見比べる必要がありましたが、
 動いてしまえば、後は非常に快適です。

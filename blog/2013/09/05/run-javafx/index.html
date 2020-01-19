@@ -76,18 +76,12 @@
       </div>
     </div>
     <article>
-      
-
-<p>『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。
+      <p>『アルゴリズムとデータ構造』という本の一番最初に出てくるバブルソートを可視化したいと思い、JavaFXでアプリケーションを作った。
 作るのはそれほど難しい話ではないので、ちょっとした解説を加えつつ紹介しようと思う。</p>
-
 <p>実行モジュールもあとで提示するので確認して頂ければ幸い。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <p>IDEはIntelliJ IDEAを使った。IntelliJ IDEAにはJavaFXモジュール用のプロジェクトを作ることができるのでそれを利用する。
 ビルドすると親切なことにjarファイルだけでなく、JNLPやHTMLファイルを生成してくれるので非常に便利。</p>
-
 <p>ビルドされた実行モジュールを見てもらった方が分かり易いと思い、
 Appletとしてブラウザ上で動かそうと思ったのだが、
 IDEAが生成してくれたHTMLをSafariで開いても、いつまでたっても起動しない。
@@ -95,119 +89,98 @@ HTMLのソースを見てみると、dtjava.jsというJavaScriptを使って起
 少なくともSafariではうんともすんとも言わない。
 他のブラウザなら動作するのだろうかと思い、Chromeで実行すると、今度は「このブラウザではサポートされていない」という趣旨の
 メッセージが表示される。多分Macだとダメなのだろう。もし起動する方法を知っていたら教えて頂きたい。</p>
-
 <p>ということで、Appletとして動かすことは諦めたので、JNLPファイルへのリンクを提示する。</p>
-
 <p><a href="https://dl.dropboxusercontent.com/u/46295066/javafx/BubbleSort/JavaFXApp.jnlp">JavaFXApp.jnlp</a></p>
-
 <p>このJNLPをダウンロードして起動すると、バブルソートが実行される。
 OSXの場合だと、セキュリティによって起動できないかもしれない。
 その場合、ダウンロードしたJNLPファイルをCtrl＋クリックして「このアプリケーションで開く」-&gt; 「Java Web Start」とメニューを
 選択して行けば、起動しても良いか尋ねてくれるので、ここから起動が出来ると思う。</p>
-
 <h2 id="アプリについて">アプリについて</h2>
-
-<p><img src="/images/post_image_15.png" alt="" /></p>
-
+<p><img src="/images/post_image_15.png" alt=""></p>
 <p>ソート対象となる100本の黒ラインはランダムに並んでいて、現在処理中のラインを赤で表している。
 実際に動作を見ると、短い黒ラインがだんだんと左側に寄って行くのが分かる。</p>
-
 <h2 id="コード">コード</h2>
-
 <p>初期データは<code>Collections.shuffle(Collection)</code>でシャッフルする。</p>
-
-<pre><code class="language-java">for (int i = 1; i &lt;= N; i++) {
-    data.add(i);
-}
-Collections.shuffle(data);
-</code></pre>
-
-<p>ステージの初期化。黒ラインと赤ラインを表すPathを2つ。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">int</span> i <span style="color:#f92672">=</span> 1<span style="color:#f92672">;</span> i <span style="color:#f92672">&lt;</span><span style="color:#f92672">=</span> N<span style="color:#f92672">;</span> i<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    data<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>i<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">shuffle</span><span style="color:#f92672">(</span>data<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>ステージの初期化。黒ラインと赤ラインを表すPathを2つ。
 repaint()メソッドで描画した結果から必要になった幅をステージの幅として設定する。+10はパディング分になる。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">path<span style="color:#f92672">.</span><span style="color:#a6e22e">setStrokeWidth</span><span style="color:#f92672">(</span>3<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+path<span style="color:#f92672">.</span><span style="color:#a6e22e">setStroke</span><span style="color:#f92672">(</span>Color<span style="color:#f92672">.</span><span style="color:#a6e22e">GRAY</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+currentPath<span style="color:#f92672">.</span><span style="color:#a6e22e">setStrokeWidth</span><span style="color:#f92672">(</span>4<span style="color:#f92672">.</span><span style="color:#a6e22e">0</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+currentPath<span style="color:#f92672">.</span><span style="color:#a6e22e">setStroke</span><span style="color:#f92672">(</span>Color<span style="color:#f92672">.</span><span style="color:#a6e22e">RED</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+root<span style="color:#f92672">.</span><span style="color:#a6e22e">getChildren</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>path<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+root<span style="color:#f92672">.</span><span style="color:#a6e22e">getChildren</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>currentPath<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<pre><code class="language-java">path.setStrokeWidth(3.0);
-path.setStroke(Color.GRAY);
-currentPath.setStrokeWidth(4.0);
-currentPath.setStroke(Color.RED);
-root.getChildren().add(path);
-root.getChildren().add(currentPath);
+<span style="color:#66d9ef">final</span> <span style="color:#66d9ef">int</span> width <span style="color:#f92672">=</span> repaint<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-final int width = repaint();
-
-primaryStage.setTitle(&quot;Bubble Sort&quot;);
-primaryStage.setResizable(false);
-primaryStage.setScene(new Scene(root, width + 10, VIEW_HEIGHT));
-primaryStage.show();
-</code></pre>
-
-<p>実際のライン描画処理。
+primaryStage<span style="color:#f92672">.</span><span style="color:#a6e22e">setTitle</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Bubble Sort&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+primaryStage<span style="color:#f92672">.</span><span style="color:#a6e22e">setResizable</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+primaryStage<span style="color:#f92672">.</span><span style="color:#a6e22e">setScene</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Scene<span style="color:#f92672">(</span>root<span style="color:#f92672">,</span> width <span style="color:#f92672">+</span> 10<span style="color:#f92672">,</span> VIEW_HEIGHT<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+primaryStage<span style="color:#f92672">.</span><span style="color:#a6e22e">show</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>実際のライン描画処理。
 JavaFXではTimelineクラスを使うと秒毎の処理が書けるので簡単にアニメーションを作ることができる。
 待機時間無しだとソートが一瞬で終わってしまい、過程を見ることができないので、
 ここでは待機時間に10ミリ秒を指定している。<code>new Duration(10)</code>の部分。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">timeline<span style="color:#f92672">.</span><span style="color:#a6e22e">getKeyFrames</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addAll</span><span style="color:#f92672">(</span>
+        <span style="color:#66d9ef">new</span> KeyFrame<span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Duration<span style="color:#f92672">(</span>10<span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> EventHandler<span style="color:#f92672">&lt;</span>ActionEvent<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+        <span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">handle</span><span style="color:#f92672">(</span>ActionEvent actionEvent<span style="color:#f92672">)</span>
+            <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>data<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>counter<span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> data<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>counter <span style="color:#f92672">+</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    flag <span style="color:#f92672">=</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">;</span>
+                    Collections<span style="color:#f92672">.</span><span style="color:#a6e22e">swap</span><span style="color:#f92672">(</span>data<span style="color:#f92672">,</span> counter<span style="color:#f92672">,</span> counter <span style="color:#f92672">+</span> 1<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
 
-<pre><code class="language-java">timeline.getKeyFrames().addAll(
-        new KeyFrame(new Duration(10), new EventHandler&lt;ActionEvent&gt;()
-        {
-            @Override
-            public void handle(ActionEvent actionEvent)
-            {
-                if (data.get(counter) &gt; data.get(counter + 1)) {
-                    flag = true;
-                    Collections.swap(data, counter, counter + 1);
-                }
+                counter<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
 
-                counter++;
+                repaint<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-                repaint();
-
-                if (counter &gt;= N - 1 - k) {
-                    if (!flag) {
-                        repaint();
-                        timeline.stop();
-                    }
-                    flag = false;
-                    counter = 0;
-                    k++;
-                }
-            }
-         })
-);
-timeline.setCycleCount(Timeline.INDEFINITE);
-timeline.play();
-</code></pre>
-
-<p>バブルソートなので入れ替えが発生しなくなるまでソートを繰り返す。
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>counter <span style="color:#f92672">&gt;</span><span style="color:#f92672">=</span> N <span style="color:#f92672">-</span> 1 <span style="color:#f92672">-</span> k<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#f92672">!</span>flag<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                        repaint<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                        timeline<span style="color:#f92672">.</span><span style="color:#a6e22e">stop</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                    flag <span style="color:#f92672">=</span> <span style="color:#66d9ef">false</span><span style="color:#f92672">;</span>
+                    counter <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+                    k<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+         <span style="color:#f92672">}</span><span style="color:#f92672">)</span>
+<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+timeline<span style="color:#f92672">.</span><span style="color:#a6e22e">setCycleCount</span><span style="color:#f92672">(</span>Timeline<span style="color:#f92672">.</span><span style="color:#a6e22e">INDEFINITE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+timeline<span style="color:#f92672">.</span><span style="color:#a6e22e">play</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>バブルソートなので入れ替えが発生しなくなるまでソートを繰り返す。
 入れ替えの発生有無は<code>flag</code>によって制御している。この<code>flag</code>がfalseのまま最終ラインまで処理されると、
 <code>timeline.stop()</code>を呼び出し、タイムラインを停止する。</p>
-
 <p>入れ替えが発生した場合は、下記のrepaint()メソッドを呼び出し、
 画面の再描画を行っている。
 JavaFXでラインを引く場合、<code>MoveTo</code>クラスで座標を移動し、<code>LineTo</code>クラスで指定座標までのラインを引く。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">repaint</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<span style="color:#f92672">{</span>
+    path<span style="color:#f92672">.</span><span style="color:#a6e22e">getElements</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    currentPath<span style="color:#f92672">.</span><span style="color:#a6e22e">getElements</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">clear</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> position <span style="color:#f92672">=</span> 10<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">int</span> localCounter <span style="color:#f92672">=</span> 0<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>Integer i <span style="color:#f92672">:</span> data<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>counter <span style="color:#f92672">=</span><span style="color:#f92672">=</span> localCounter<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            currentPath<span style="color:#f92672">.</span><span style="color:#a6e22e">getElements</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MoveTo<span style="color:#f92672">(</span>position<span style="color:#f92672">,</span> <span style="color:#f92672">(</span>VIEW_HEIGHT <span style="color:#f92672">-</span> 10<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            currentPath<span style="color:#f92672">.</span><span style="color:#a6e22e">getElements</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> LineTo<span style="color:#f92672">(</span>position<span style="color:#f92672">,</span> <span style="color:#f92672">(</span><span style="color:#f92672">(</span>VIEW_HEIGHT <span style="color:#f92672">-</span> 10<span style="color:#f92672">)</span> <span style="color:#f92672">-</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">*</span> 2<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+            path<span style="color:#f92672">.</span><span style="color:#a6e22e">getElements</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MoveTo<span style="color:#f92672">(</span>position<span style="color:#f92672">,</span> <span style="color:#f92672">(</span>VIEW_HEIGHT <span style="color:#f92672">-</span> 10<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            path<span style="color:#f92672">.</span><span style="color:#a6e22e">getElements</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> LineTo<span style="color:#f92672">(</span>position<span style="color:#f92672">,</span> <span style="color:#f92672">(</span><span style="color:#f92672">(</span>VIEW_HEIGHT <span style="color:#f92672">-</span> 10<span style="color:#f92672">)</span> <span style="color:#f92672">-</span> <span style="color:#f92672">(</span>i <span style="color:#f92672">*</span> 2<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        position <span style="color:#f92672">+</span><span style="color:#f92672">=</span> 5<span style="color:#f92672">;</span>
+        localCounter<span style="color:#f92672">+</span><span style="color:#f92672">+</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-<pre><code class="language-java">int repaint()
-{
-    path.getElements().clear();
-    currentPath.getElements().clear();
-    int position = 10;
-    int localCounter = 0;
-    for (Integer i : data) {
-        if (counter == localCounter) {
-            currentPath.getElements().add(new MoveTo(position, (VIEW_HEIGHT - 10)));
-            currentPath.getElements().add(new LineTo(position, ((VIEW_HEIGHT - 10) - (i * 2))));
-        }
-        else {
-            path.getElements().add(new MoveTo(position, (VIEW_HEIGHT - 10)));
-            path.getElements().add(new LineTo(position, ((VIEW_HEIGHT - 10) - (i * 2))));
-        }
-        position += 5;
-        localCounter++;
-    }
-
-    return position;
-}
-</code></pre>
-
-<p>ソースコードはbitbucketにあるので完全版はそちらを参照してください。
+    <span style="color:#66d9ef">return</span> position<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>ソースコードはbitbucketにあるので完全版はそちらを参照してください。
 <a href="https://bitbucket.org/kokuzawa/bubblesort">https://bitbucket.org/kokuzawa/bubblesort</a></p>
 
       

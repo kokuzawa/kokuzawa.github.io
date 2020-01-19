@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Flex on KATSUMI KOKUZAWA&#39;S BLOG</title>
@@ -20,7 +19,6 @@
       <description>&lt;p&gt;ちょっと前の話だけれども、
 Apache Flex でHTTPリクエストを投げる際にカスタムヘッダを設定するとセキュリティエラーが発生するようになった。
 詳細は下記。&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&#34;https://bugbase.adobe.com/index.cfm?event=bug&amp;amp;id=3759971&#34;&gt;https://bugbase.adobe.com/index.cfm?event=bug&amp;amp;id=3759971&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
@@ -31,106 +29,92 @@ Apache Flex でHTTPリクエストを投げる際にカスタムヘッダを設�
       <pubDate>Mon, 27 May 2013 01:12:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/05/27/how-to-cancel-drag-and-drop-on-esc-key/</guid>
-      <description>
-
-&lt;p&gt;Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。&lt;br /&gt;
+      <description>&lt;p&gt;Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。&lt;br&gt;
 標準機能としてはありませんが、これ以降のバージョンで対応されている可能性もあるという前提になります。&lt;/p&gt;
-
 &lt;p&gt;実はDrag and DropをEscキーを使ってキャンセルできることは知りませんでした。
 Windowsでもできるようですが、普段使っているMacでもできることにさっき気がついたぐらいなので、
 そんな操作を利用している人は少ないのではないかと思ってました。
 ですが、検索してみると意外と多くの人が利用しているようです。&lt;/p&gt;
-
 &lt;h2 id=&#34;実装する&#34;&gt;実装する&lt;/h2&gt;
-
 &lt;p&gt;機能が無いので実装することにします。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:Application&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:fx=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://ns.adobe.com/mxml/2009&amp;#34;&lt;/span&gt;
+               &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:s=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;library://ns.adobe.com/flex/spark&amp;#34;&lt;/span&gt;
+               &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:mx=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;library://ns.adobe.com/flex/mx&amp;#34;&lt;/span&gt;
+               &lt;span style=&#34;color:#a6e22e&#34;&gt;creationComplete=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;creationComplete(event)&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
-&amp;lt;s:Application xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot;
-               xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot;
-               xmlns:mx=&amp;quot;library://ns.adobe.com/flex/mx&amp;quot;
-               creationComplete=&amp;quot;creationComplete(event)&amp;quot;&amp;gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;fx:Script&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;![CDATA[
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        import mx.events.FlexEvent;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        import mx.managers.DragManager;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        import mx.managers.dragClasses.DragProxy;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        protected function creationComplete(event:FlexEvent):void
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        {
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;            addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;            {
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;                if (event.keyCode == Keyboard.ESCAPE) {
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;                    DragManager.acceptDragDrop(null);
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;                    myTree.hideDropFeedback(null);
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;                    myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;                    var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;                    if (dragProxy) {
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;                        dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;                    }
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;                }
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;            });
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        }
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        ]]&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/fx:Script&amp;gt;&lt;/span&gt;
 
-    &amp;lt;fx:Script&amp;gt;&amp;lt;![CDATA[
-        import mx.events.FlexEvent;
-        import mx.managers.DragManager;
-        import mx.managers.dragClasses.DragProxy;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:layout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:HorizontalLayout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/s:layout&amp;gt;&lt;/span&gt;
 
-        protected function creationComplete(event:FlexEvent):void
-        {
-            addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
-            {
-                if (event.keyCode == Keyboard.ESCAPE) {
-                    DragManager.acceptDragDrop(null);
-                    myTree.hideDropFeedback(null);
-                    myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
-                    var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
-                    if (dragProxy) {
-                        dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
-                    }
-                }
-            });
-        }
-        ]]&amp;gt;&amp;lt;/fx:Script&amp;gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;mx:Tree&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;myTree&amp;#34;&lt;/span&gt;
+             &lt;span style=&#34;color:#a6e22e&#34;&gt;width=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;200&amp;#34;&lt;/span&gt;
+             &lt;span style=&#34;color:#a6e22e&#34;&gt;height=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;300&amp;#34;&lt;/span&gt;
+             &lt;span style=&#34;color:#a6e22e&#34;&gt;dragMoveEnabled=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;
+             &lt;span style=&#34;color:#a6e22e&#34;&gt;dragEnabled=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;
+             &lt;span style=&#34;color:#a6e22e&#34;&gt;dropEnabled=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;
+             &lt;span style=&#34;color:#a6e22e&#34;&gt;labelField=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;@label&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;mx:XMLListCollection&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;treeData&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;fx:XMLList&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Mail Box&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Inbox&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;AAAAA&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+                        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;BBBBB&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+                        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;CCCCC&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/node&amp;gt;&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Outbox&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;DDDDD&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+                        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;EEEEE&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/node&amp;gt;&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/node&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/fx:XMLList&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/mx:XMLListCollection&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/mx:Tree&amp;gt;&lt;/span&gt;
 
-    &amp;lt;s:layout&amp;gt;
-        &amp;lt;s:HorizontalLayout/&amp;gt;
-    &amp;lt;/s:layout&amp;gt;
-
-    &amp;lt;mx:Tree id=&amp;quot;myTree&amp;quot;
-             width=&amp;quot;200&amp;quot;
-             height=&amp;quot;300&amp;quot;
-             dragMoveEnabled=&amp;quot;true&amp;quot;
-             dragEnabled=&amp;quot;true&amp;quot;
-             dropEnabled=&amp;quot;true&amp;quot;
-             labelField=&amp;quot;@label&amp;quot;&amp;gt;
-        &amp;lt;mx:XMLListCollection id=&amp;quot;treeData&amp;quot;&amp;gt;
-            &amp;lt;fx:XMLList&amp;gt;
-                &amp;lt;node label=&amp;quot;Mail Box&amp;quot;&amp;gt;
-                    &amp;lt;node label=&amp;quot;Inbox&amp;quot;&amp;gt;
-                        &amp;lt;node label=&amp;quot;AAAAA&amp;quot;/&amp;gt;
-                        &amp;lt;node label=&amp;quot;BBBBB&amp;quot;/&amp;gt;
-                        &amp;lt;node label=&amp;quot;CCCCC&amp;quot;/&amp;gt;
-                    &amp;lt;/node&amp;gt;
-                    &amp;lt;node label=&amp;quot;Outbox&amp;quot;&amp;gt;
-                        &amp;lt;node label=&amp;quot;DDDDD&amp;quot;/&amp;gt;
-                        &amp;lt;node label=&amp;quot;EEEEE&amp;quot;/&amp;gt;
-                    &amp;lt;/node&amp;gt;
-                &amp;lt;/node&amp;gt;
-            &amp;lt;/fx:XMLList&amp;gt;
-        &amp;lt;/mx:XMLListCollection&amp;gt;
-    &amp;lt;/mx:Tree&amp;gt;
-
-&amp;lt;/s:Application&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;大したことはしてなくて、重要なのは下記の部分。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/s:Application&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;大したことはしてなくて、重要なのは下記の部分。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addEventListener&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;KeyboardEvent&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;KEY_DOWN&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;event&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;KeyboardEvent&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt;
 {
-    if (event.keyCode == Keyboard.ESCAPE) {
-        DragManager.acceptDragDrop(null);
-        myTree.hideDropFeedback(null);
-        myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
-        var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
-        if (dragProxy) {
-            dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;event&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;keyCode&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;==&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Keyboard&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ESCAPE&lt;/span&gt;) {
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;DragManager&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;acceptDragDrop&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;);
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;myTree&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hideDropFeedback&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;);
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;myTree&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;dispatchEvent&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MouseEvent&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;MouseEvent&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MOUSE_UP&lt;/span&gt;));
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;DragProxy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;DragManager&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;mx_internal&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;) {
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;mouseUpHandler&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MouseEvent&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;MouseEvent&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MOUSE_UP&lt;/span&gt;));
         }
     }
 });
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;簡単に説明すると、まず、ツリーコンポーネントの上以外でもEscキーをハンドリングする必要があるので、キーイベントのリスナーはApplicationに付けます。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;簡単に説明すると、まず、ツリーコンポーネントの上以外でもEscキーをハンドリングする必要があるので、キーイベントのリスナーはApplicationに付けます。
 で、Escが叩かれたらdrag-and-dropをキャンセルさせるためにコンポーネントに通知します。&lt;/p&gt;
-
 &lt;p&gt;&lt;code&gt;DragManager.acceptDragDrop(null);&lt;/code&gt;でドロップを無効に、ドラッグすると移動先にラインが表示されるので、
 &lt;code&gt;myTree.hideDropFeedback(null);&lt;/code&gt;でラインを消します。
 ドラッグ中はマウスをダウンしたままなので、キャンセルに合わせてツリーコンポーネントに対して
 &lt;code&gt;myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));&lt;/code&gt;を通知します。&lt;/p&gt;
-
 &lt;p&gt;そのあとがちょっと特殊で、mx_internalでDragManagerの内部変数を参照し、マウスアップイベントを通知します。
 この通知が無いと、ドラッグ操作をキャンセルしたと認識されません。&lt;/p&gt;
-
 &lt;p&gt;もっと良いやり方や、最新バージョンだと出来るよとか教えて頂けると嬉しいです :D&lt;/p&gt;
 </description>
     </item>

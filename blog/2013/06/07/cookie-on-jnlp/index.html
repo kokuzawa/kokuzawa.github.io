@@ -76,72 +76,49 @@
       </div>
     </div>
     <article>
-      
-
-<p>今更感がありますが、JWSでのcookieの扱い、というかjsessionidの扱いについて。</p>
-
+      <p>今更感がありますが、JWSでのcookieの扱い、というかjsessionidの扱いについて。</p>
 <p>JWSからサーバへの最初のアクセスでjsessionidの指定が無いと、サーバでjsessionidが発行されます。
 すると、JWSからのそれ以降のアクセスには、その生成されたjsessionidがcookieとしてサーバに送信されます。
 これは良く出来た仕組みで、プログラマが意識しなくてもセッションを継続することが可能になります。
 ただ、自動でjsessionidを送信してしまうため、意図したセッションを継続させることが出来ないことがあります。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <h2 id="任意のjsessionidを送信したい">任意のjsessionidを送信したい</h2>
-
 <p>前提として以下のことが成り立っているとします。</p>
-
 <ul>
 <li>認証はプラウザで行う</li>
 <li>認証状態をセッションで維持している</li>
 </ul>
-
 <p>JWSでもその認証状態を維持したい、つまり認証されていなければJWSを操作させたくない場合、
 簡単な方法としてJWS起動時にsessionidを渡せば、JWSからのリクエストにjsessionidを付与することが可能になり、
 認証状態のあるセッションを継続することが出来るようになります。</p>
-
 <p>例えば、以下のようにJWSからHttpURLConnectionを利用してリクエストを送信するケースですが、
 <code>HttpURLConection#setRequestProperty(String, String)</code>を使うことによってcookieにjsessionidを含めることが可能です。
 もちろん、URLの最後に<code>;jsessionid=XXXXX</code>という形でjsessionidを付けても問題ありません。
 ちなみに、URLの最後に付けるのと、<code>setRequestProperty</code>での設定と両方の指定がある場合は、
 <code>setRequestProperty</code>の方が優先されます。</p>
-
-<pre><code class="language-java">final HttpURLConnection connection = 
-    (HttpURLConnection) new URL(&quot;http://localhost/mycontext&quot;).openConnection();
-connection.setRequestProperty(&quot;Cookie&quot;, &quot;JSESSIONID=&quot; + sessionid);
-</code></pre>
-
-<p>このリクエストがJWSからの最初のリクエストでは無く、かつ最初のリクエストでjsessionidを明示的に送っていない場合、
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> HttpURLConnection connection <span style="color:#f92672">=</span> 
+    <span style="color:#f92672">(</span>HttpURLConnection<span style="color:#f92672">)</span> <span style="color:#66d9ef">new</span> URL<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost/mycontext&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">openConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+connection<span style="color:#f92672">.</span><span style="color:#a6e22e">setRequestProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Cookie&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;JSESSIONID=&#34;</span> <span style="color:#f92672">+</span> sessionid<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>このリクエストがJWSからの最初のリクエストでは無く、かつ最初のリクエストでjsessionidを明示的に送っていない場合、
 Cookieには2つのjsessionidが設定された状態でリクエストされます。
 サーバではこの2つのjsessionidのうち、最初に設定されている方を有効と見なして処理が行われます。
 よって、上記コードで明示的に設定したjsessionidが無視されることになります。</p>
-
 <p>では、このケースで明示的に設定したjsessionidを有効にするにはどうしたら良いのか。</p>
-
 <h2 id="自動で設定されるcookieを無効にする">自動で設定されるcookieを無効にする</h2>
-
 <p>自動で設定されるcookieは<code>CookieHandler</code>で設定されるようです。
 なので、この<code>CookieHandler</code>を機能させなくすれば、cookieが自動で設定されなくなるはず。
 というわけで、下記のコードを追加します。</p>
-
-<pre><code class="language-java">CookieHandler.setDefault(null);
-</code></pre>
-
-<p>これでcookieの自動設定が行われないはずなのですが、実はこのメソッド、セキュリティが
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">CookieHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">setDefault</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>これでcookieの自動設定が行われないはずなのですが、実はこのメソッド、セキュリティが
 all-permissionsでないと、<code>AccessControlException</code>がスローされてしまいます。
 JWSでall-permissionsにするには、jarファイルに署名しなければなりません。</p>
-
 <h2 id="最後に">最後に</h2>
-
 <p>jarファイルに署名できないような政治的な事情がある場合はこの方法が取れないので、
 JWSからの最初のリクエストにちゃんとjsessionidが付与されるようにしましょう。</p>
-
 <p>まあ、署名するための証明書もオレオレ証明書じゃない場合は、
 それなりに費用もかかるので、署名できないことも多い訳ですが&hellip; :P</p>
-
 <p>それにしても、JNLPのこととか、JWSなどの記事が軒並み古いので、
 もうほとんど使われてないのかなぁと思ったりした快晴の木曜日でした。</p>
-
 <p>enjoy!</p>
 
       

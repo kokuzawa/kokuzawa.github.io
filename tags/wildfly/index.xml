@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Wildfly on KATSUMI KOKUZAWA&#39;S BLOG</title>
+    <title>WildFly on KATSUMI KOKUZAWA&#39;S BLOG</title>
     <link>https://kokuzawa.github.io/tags/wildfly/</link>
-    <description>Recent content in Wildfly on KATSUMI KOKUZAWA&#39;S BLOG</description>
+    <description>Recent content in WildFly on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Fri, 20 Jul 2018 14:42:51 +0900</lastBuildDate>
@@ -97,28 +96,20 @@ VM Optionsに &lt;code&gt;jboss.server.default.config&lt;/code&gt; を設定し�
       <pubDate>Sun, 28 Feb 2016 01:56:31 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/02/28/intellij-ideakaradockershang-falsewildflydedebatugusuru/</guid>
-      <description>
-
-&lt;p&gt;IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、
+      <description>&lt;p&gt;IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、
 デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。
 Docker上にコンテナを起動できる環境はできている前提になります。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
 &lt;ul&gt;
 &lt;li&gt;OS: Mac OSX 10.11.3&lt;/li&gt;
-&lt;li&gt;Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27)&lt;/li&gt;
+&lt;li&gt;Java: Java(TM) SE Runtime Environment (build 1.8.0_60-b27)&lt;/li&gt;
 &lt;li&gt;メモリ: 16GB&lt;/li&gt;
 &lt;li&gt;Docker version 1.9.1&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;h2 id=&#34;アプリの準備&#34;&gt;アプリの準備&lt;/h2&gt;
-
 &lt;p&gt;どんなアプリでも良いのですが最終的な生成物はwarファイルにします。
 今回はMavenプロジェクトで下記のようなフォルダ構成にします。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;docker-wildfly-example/
 ├── Dockerfile
 ├── container_settings.json
@@ -134,10 +125,7 @@ Docker上にコンテナを起動できる環境はできている前提にな�
             ├── WEB-INF
             │   └── web.xml
             └── index.xhtml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;肝心なDockerfileの内容は下記のようになります。&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;肝心なDockerfileの内容は下記のようになります。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;# WildFlyのイメージを取得
 FROM jboss/wildfly:latest
 
@@ -152,39 +140,28 @@ EXPOSE 9999
 
 # WildFlyの実行
 CMD [&amp;quot;/opt/jboss/wildfly/bin/standalone.sh&amp;quot;, &amp;quot;-b&amp;quot;, &amp;quot;0.0.0.0&amp;quot;, &amp;quot;--debug&amp;quot;, &amp;quot;9999&amp;quot;]
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;mvn package&lt;/code&gt;することで生成される&lt;code&gt;target/docker-wildfly-example.war&lt;/code&gt;ファイルを
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;code&gt;mvn package&lt;/code&gt;することで生成される&lt;code&gt;target/docker-wildfly-example.war&lt;/code&gt;ファイルを
 コンテナ上の&lt;code&gt;/opt/jboss/wildfly/standalone/deployments/&lt;/code&gt;に配置することで
 WildFly起動時に自動的にデプロイさせます。
 また、デバッグ用のポートとして&lt;code&gt;9999&lt;/code&gt;を使用するため&lt;code&gt;EXPOSE&lt;/code&gt;に指定します。&lt;/p&gt;
-
 &lt;p&gt;デバッグはリモートデバッグをすることになるので、
 WildFly起動オプションに&lt;code&gt;--debug&lt;/code&gt;を付与して&lt;code&gt;9999&lt;/code&gt;ポートを指定します。&lt;/p&gt;
-
 &lt;h2 id=&#34;実行環境の構築&#34;&gt;実行環境の構築&lt;/h2&gt;
-
 &lt;p&gt;IntelliJ IDEAにDocker PluginがインストールされているとRun/Debug ConfigurationsにDocker Deploymentを追加することができます。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_41.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_41.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Debugポートに9999を指定すると画面下部にワーニングが表示されます。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;Warning: Debug port forwarding not found
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;このワーニングの右側にFixボタンを表示されるのでこれをクリックすると
 port設定をしたjsonファイルの保存先を聞かれるので任意の場所に保存します。
 アプリケーションツリーにあるcontainer_settings.jsonがそれになります。
 このファイルはContainerタブのJSON fileの項目に設定されます。&lt;/p&gt;
-
 &lt;p&gt;やっていることはContainerタブのport bindingsで9999ポートを追加したのと同じことなのですが、
 port bindingsに設定してもワーニングが消えません。
 ワーニングは消えなくてもport bindingsの設定は有効になるので
 ワーニングが気にならないようであればport bindingsに設定しても良いです。
 ただし注意点としてjsonファイルとport bindingsの両方を指定するとport bindingsの方の設定が無視されるようです。
 9999以外のポートをバインドする場合は注意する必要があります。&lt;/p&gt;
-
 &lt;p&gt;これでデバッグ起動すればステップ実行ができるようになります。&lt;/p&gt;
 </description>
     </item>
@@ -195,63 +172,47 @@ port bindingsに設定してもワーニングが消えません。
       <pubDate>Fri, 25 Dec 2015 20:50:08 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/12/25/jdbcrealm-with-wildfly-9-dot-0-1-dot-final/</guid>
-      <description>
-
-&lt;p&gt;以前、「&lt;a href=&#34;http://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/&#34;&gt;WildFlyでJdbcRealm&lt;/a&gt;」 という記事を書きました。
+      <description>&lt;p&gt;以前、「&lt;a href=&#34;http://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/&#34;&gt;WildFlyでJdbcRealm&lt;/a&gt;」 という記事を書きました。
 これを現在インストールしている9.0.1.Final上で設定したところ、認証がうまく行われないことがわかりました。
 大枠の変更はないのですが、DBに登録するパスワードのハッシュ文字列が当時とは異なる値である必要があったので、
 忘れないようにメモしておきます。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;差分&#34;&gt;差分&lt;/h2&gt;
-
 &lt;p&gt;WildFly 8.0.0.Finalの時の設定:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt;
-    &amp;lt;authentication&amp;gt;
-        &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt;
-            &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt;
-            &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt;
-            &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt;
-            &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt;
-            &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;HEX&amp;quot;/&amp;gt;
-        &amp;lt;/login-module&amp;gt;
-    &amp;lt;/authentication&amp;gt;
-&amp;lt;/security-domain&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;WildFly 9.0.1.Finalの設定:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;security-domain name=&amp;quot;app&amp;quot; cache-type=&amp;quot;default&amp;quot;&amp;gt;
-    &amp;lt;authentication&amp;gt;
-        &amp;lt;login-module name=&amp;quot;app_auth&amp;quot; code=&amp;quot;Database&amp;quot; flag=&amp;quot;required&amp;quot;&amp;gt;
-            &amp;lt;module-option name=&amp;quot;dsJndiName&amp;quot; value=&amp;quot;java:jboss/datasources/ExampleDS&amp;quot;/&amp;gt;
-            &amp;lt;module-option name=&amp;quot;principalsQuery&amp;quot; value=&amp;quot;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;quot;/&amp;gt;
-            &amp;lt;module-option name=&amp;quot;rolesQuery&amp;quot; value=&amp;quot;SELECT r.ROLENAME, &#39;Roles&#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;quot;/&amp;gt;
-            &amp;lt;module-option name=&amp;quot;hashAlgorithm&amp;quot; value=&amp;quot;SHA-256&amp;quot;/&amp;gt;
-            &amp;lt;module-option name=&amp;quot;hashEncoding&amp;quot; value=&amp;quot;base64&amp;quot;/&amp;gt;
-        &amp;lt;/login-module&amp;gt;
-    &amp;lt;/authentication&amp;gt;
-&amp;lt;/security-domain&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;違いは module-option の hashEncoding の値。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;security-domain&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cache-type=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;authentication&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;login-module&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app_auth&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;code=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Database&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;flag=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;required&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dsJndiName&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;java:jboss/datasources/ExampleDS&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;principalsQuery&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;rolesQuery&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SELECT r.ROLENAME, &amp;#39;Roles&amp;#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hashAlgorithm&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SHA-256&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hashEncoding&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;HEX&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/login-module&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/authentication&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/security-domain&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;WildFly 9.0.1.Finalの設定:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;security-domain&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;cache-type=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;default&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;authentication&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;login-module&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;app_auth&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;code=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Database&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;flag=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;required&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dsJndiName&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;java:jboss/datasources/ExampleDS&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;principalsQuery&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;rolesQuery&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SELECT r.ROLENAME, &amp;#39;Roles&amp;#39; FROM ROLES r, ACCOUNTS a WHERE r.ACCOUNTID = a.ACCOUNTID AND a.EMAIL = ?&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hashAlgorithm&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SHA-256&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;module-option&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hashEncoding&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;base64&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/login-module&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/authentication&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/security-domain&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;違いは module-option の hashEncoding の値。
 8.0.0.Finalの時は&lt;code&gt;HEX&lt;/code&gt;であり、9.0.1.Finalでは&lt;code&gt;base64&lt;/code&gt;にしています。
 これはパスワードのハッシュエンコーディングの形式を指定している部分なのですが、
 9.0.1.FinalではHEXを認識していない模様。
 なので、DBに登録するパスワードのハッシュ文字列も設定に合わせて&lt;code&gt;HEX&lt;/code&gt;から&lt;code&gt;base64&lt;/code&gt;に変更します。&lt;/p&gt;
-
 &lt;h2 id=&#34;パスワードのハッシュ文字列生成方法&#34;&gt;パスワードのハッシュ文字列生成方法&lt;/h2&gt;
-
 &lt;p&gt;WildFlyには&lt;code&gt;base64&lt;/code&gt;のハッシュ文字列を生成するモジュールが入っているようです。
 以下のコマンドで指定文字列のBase64ハッシュ値を取得することができます。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;java -cp $JBOSS_HOME/modules/system/layers/base/org/picketbox/main/picketbox-4.9.2.Final.jar org.jboss.security.Base64Encoder [任意文字列] SHA-256
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h2 id=&#34;参考サイト&#34;&gt;参考サイト&lt;/h2&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://blog.eisele.net/2015/01/jdbc-realm-wildfly820-primefaces51.html&#34;&gt;JDBC Realm and Form Based Authentication with WildFly 8.2.0.Final, Primefaces 5.1 and MySQL 5&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -264,126 +225,99 @@ port bindingsに設定してもワーニングが消えません。
       <pubDate>Sun, 22 Nov 2015 22:33:53 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/11/22/wildfly-swarmdeejbwoshi-su/</guid>
-      <description>
-
-&lt;p&gt;WildFly Swarmを試すのも今日で３回目です。
+      <description>&lt;p&gt;WildFly Swarmを試すのも今日で３回目です。
 だんだんと実装方法に慣れてきました。
 この辺で当初の目的であったWildFly SwarmでEJBを使ってみたいと思います。
 EJBが使えないのならSpring Bootで全然構わないわけで、
 EJBが使えるかどうかはとても大事なところです。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;ejbを組み込む&#34;&gt;EJBを組み込む&lt;/h2&gt;
-
 &lt;p&gt;EJBのモジュールを組み込みます。
 よくよく考えてみると、EJBだけでは動きを確認するのが大変なので、
 リクエストの受け口だけはJAXRSで作ります。
 なので、JAXRSのモジュールも合わせて組み込みます。&lt;/p&gt;
-
 &lt;p&gt;また、JAXRSのリソースから&lt;code&gt;@Inject&lt;/code&gt;でEJBをDIするにはWeldも必要です。
 そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependencies&amp;gt;
-    &amp;lt;dependency&amp;gt;
-        &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-        &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs-weld&amp;lt;/artifactId&amp;gt;
-        &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
-    &amp;lt;/dependency&amp;gt;
-    &amp;lt;dependency&amp;gt;
-        &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-        &amp;lt;artifactId&amp;gt;wildfly-swarm-ejb&amp;lt;/artifactId&amp;gt;
-        &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
-    &amp;lt;/dependency&amp;gt;
-&amp;lt;/dependencies&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;ejbを使ったアプリケーションを作る&#34;&gt;EJBを使ったアプリケーションを作る&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependencies&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-jaxrs-weld&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1.0.0.Alpha5&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-ejb&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1.0.0.Alpha5&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;ejbを使ったアプリケーションを作る&#34;&gt;EJBを使ったアプリケーションを作る&lt;/h2&gt;
 &lt;p&gt;まずはEJBです。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi.ejb&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.ejb;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ejb.Stateless&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import javax.ejb.Stateless;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Stateless&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HelloEjb&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color:#a6e22e&#34;&gt;say&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello!&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;EJBを呼び出すRESTリソースです。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi.ejb&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-@Stateless
-public class HelloEjb
-{
-    public String say()
-    {
-        return &amp;quot;Hello!&amp;quot;;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.inject.Inject&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.GET&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.Path&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;p&gt;EJBを呼び出すRESTリソースです。&lt;/p&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/hello&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HelloResource&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Inject&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; HelloEjb helloEjb&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.ejb;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@GET&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color:#a6e22e&#34;&gt;hello&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; helloEjb&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;say&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi.ejb&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.ApplicationPath&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.core.Application&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-@Path(&amp;quot;/hello&amp;quot;)
-public class HelloResource
-{
-    @Inject
-    private HelloEjb helloEjb;
-
-    @GET
-    public String hello()
-    {
-        return helloEjb.say();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.ejb;
-
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
-
-@ApplicationPath(&amp;quot;/rest&amp;quot;)
-public class MyApplication extends Application
-{
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;実行する&#34;&gt;実行する&lt;/h2&gt;
-
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@ApplicationPath&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/rest&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyApplication&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; Application
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;実行する&#34;&gt;実行する&lt;/h2&gt;
 &lt;p&gt;今回はMainクラスを作るのではなく、Warファイルを生成し、
 それを実行する形にします。
 まずpom.xmlのpackagingをwarにします。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;&amp;lt;packaging&amp;gt;war&amp;lt;/packaging&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;さらにwarファイルを生成するので下記のプラグインをpom.xmlに追加します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugins&amp;gt;
-    &amp;lt;plugin&amp;gt;
-        &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
-        &amp;lt;artifactId&amp;gt;maven-war-plugin&amp;lt;/artifactId&amp;gt;
-        &amp;lt;version&amp;gt;2.6&amp;lt;/version&amp;gt;
-        &amp;lt;configuration&amp;gt;
-            &amp;lt;failOnMissingWebXml&amp;gt;false&amp;lt;/failOnMissingWebXml&amp;gt;
-        &amp;lt;/configuration&amp;gt;
-    &amp;lt;/plugin&amp;gt;
-    &amp;lt;plugin&amp;gt;
-        &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-        &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
-        &amp;lt;version&amp;gt;${version.wildfly-swarm}&amp;lt;/version&amp;gt;
-    &amp;lt;/plugin&amp;gt;
-&amp;lt;/plugins&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;準備ができたので下記のコマンドで実行します。&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugins&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;maven-war-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.6&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;configuration&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;failOnMissingWebXml&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;false&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/failOnMissingWebXml&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;${version.wildfly-swarm}&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;準備ができたので下記のコマンドで実行します。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;mvn wildfly-swarm:run
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
 &lt;p&gt;WildFLy SwarmでEJBも問題なく呼び出せることがわかりました。
 あとはJPAを使うことができれば、システム開発で使う一通りの機能が使えること確認できそうです。&lt;/p&gt;
 </description>
@@ -395,129 +329,101 @@ public class MyApplication extends Application
       <pubDate>Mon, 16 Nov 2015 22:58:09 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/11/16/wildfly-swarmdejsfwoshi-su/</guid>
-      <description>
-
-&lt;p&gt;昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+      <description>&lt;p&gt;昨日はWildFly SwarmでJAXRSを触ったので、今日はJSFを試してみることにします。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;jsfを組み込む&#34;&gt;JSFを組み込む&lt;/h2&gt;
-
 &lt;p&gt;仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。
 あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;wildfly-swarm-jsf&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;jsfアプリケーションを作る&#34;&gt;JSFアプリケーションを作る&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-jsf&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1.0.0.Alpha5&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;jsfアプリケーションを作る&#34;&gt;JSFアプリケーションを作る&lt;/h2&gt;
 &lt;p&gt;JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、
 動くことが分かれば良いのでXHTMLファイルだけを作るだけにします。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#39;1.0&amp;#39; encoding=&amp;#39;UTF-8&amp;#39; ?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!DOCTYPE html PUBLIC &amp;#34;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;#34; 
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        &amp;#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;#34;&amp;gt;&lt;/span&gt;
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://www.w3.org/1999/xhtml&amp;#34;&lt;/span&gt;
+      &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:h&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://xmlns.jcp.org/jsf/html&amp;#34;&lt;/span&gt;&amp;gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;?xml version=&#39;1.0&#39; encoding=&#39;UTF-8&#39; ?&amp;gt;
-&amp;lt;!DOCTYPE html PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot; 
-        &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;
-&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;
-      xmlns:h=&amp;quot;http://xmlns.jcp.org/jsf/html&amp;quot;&amp;gt;
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;h:outputText&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello JSF!&amp;#34;&lt;/span&gt;/&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;&amp;gt;
 
-&amp;lt;body&amp;gt;
-    &amp;lt;h:outputText value=&amp;quot;Hello JSF!&amp;quot;/&amp;gt;
-&amp;lt;/body&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;あと、JAXRSの時と違い、web.xmlを作る必要があります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;web-app&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://xmlns.jcp.org/xml/ns/javaee&amp;#34;&lt;/span&gt;
+         &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:xsi=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://www.w3.org/2001/XMLSchema-instance&amp;#34;&lt;/span&gt;
+         &lt;span style=&#34;color:#a6e22e&#34;&gt;xsi:schemaLocation=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://xmlns.jcp.org/xml/ns/javaee
+&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&amp;#34;&lt;/span&gt;
+         &lt;span style=&#34;color:#a6e22e&#34;&gt;version=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;3.1&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
 
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;あと、JAXRSの時と違い、web.xmlを作る必要があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
-&amp;lt;web-app xmlns=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee&amp;quot;
-         xmlns:xsi=&amp;quot;http://www.w3.org/2001/XMLSchema-instance&amp;quot;
-         xsi:schemaLocation=&amp;quot;http://xmlns.jcp.org/xml/ns/javaee
-         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&amp;quot;
-         version=&amp;quot;3.1&amp;quot;&amp;gt;
-
-    &amp;lt;context-param&amp;gt;
-        &amp;lt;param-name&amp;gt;javax.faces.PROJECT_STAGE&amp;lt;/param-name&amp;gt;
-        &amp;lt;param-value&amp;gt;Development&amp;lt;/param-value&amp;gt;
-    &amp;lt;/context-param&amp;gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;context-param&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;param-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;javax.faces.PROJECT_STAGE&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;param-value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Development&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
     
-    &amp;lt;servlet&amp;gt;
-        &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt;
-        &amp;lt;servlet-class&amp;gt;javax.faces.webapp.FacesServlet&amp;lt;/servlet-class&amp;gt;
-        &amp;lt;load-on-startup&amp;gt;1&amp;lt;/load-on-startup&amp;gt;
-    &amp;lt;/servlet&amp;gt;
-    &amp;lt;servlet-mapping&amp;gt;
-        &amp;lt;servlet-name&amp;gt;Faces Servlet&amp;lt;/servlet-name&amp;gt;
-        &amp;lt;url-pattern&amp;gt;*.xhtml&amp;lt;/url-pattern&amp;gt;
-    &amp;lt;/servlet-mapping&amp;gt;
-&amp;lt;/web-app&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;動かす&#34;&gt;動かす&lt;/h2&gt;
-
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Faces Servlet&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet-class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;javax.faces.webapp.FacesServlet&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet-class&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;load-on-startup&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/load-on-startup&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet-mapping&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Faces Servlet&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;url-pattern&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;*.xhtml&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet-mapping&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/web-app&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;動かす&#34;&gt;動かす&lt;/h2&gt;
 &lt;p&gt;JAXRSの時と同じく、mainメソッドから実行するため、mainメソッドを持つクラスを作ります。
 今回はJAXRSArchiveではなく、WARArchieをデプロイします。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi.jsf&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi.jsf;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.jboss.shrinkwrap.api.ShrinkWrap&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.jboss.shrinkwrap.api.asset.ClassLoaderAsset&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.wildfly.swarm.container.Container&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.wildfly.swarm.undertow.WARArchive&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
-import org.wildfly.swarm.container.Container;
-import org.wildfly.swarm.undertow.WARArchive;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Main&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; args&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; Exception
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Container container &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Container&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-public class Main
-{
-    public static void main(String... args) throws Exception
-    {
-        final Container container = new Container();
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; WARArchive warArchive &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ShrinkWrap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;WARArchive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        warArchive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addAsWebResource&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ClassLoaderAsset&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;index.xhtml&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Main&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getClassLoader&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;index.xhtml&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        warArchive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addAsWebInfResource&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ClassLoaderAsset&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;WEB-INF/web.xml&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Main&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getClassLoader&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;web.xml&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        warArchive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addAllDependencies&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-        final WARArchive warArchive = ShrinkWrap.create(WARArchive.class);
-        warArchive.addAsWebResource(
-                new ClassLoaderAsset(&amp;quot;index.xhtml&amp;quot;, Main.class.getClassLoader()), &amp;quot;index.xhtml&amp;quot;);
-        warArchive.addAsWebInfResource(
-                new ClassLoaderAsset(&amp;quot;WEB-INF/web.xml&amp;quot;, Main.class.getClassLoader()), &amp;quot;web.xml&amp;quot;);
-        warArchive.addAllDependencies();
-
-        container.start().deploy(warArchive);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;実行方法は下記の３通りです。&lt;/p&gt;
-
+        container&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;deploy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;warArchive&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;実行方法は下記の３通りです。&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;IDEでmainメソッドを実行&lt;/li&gt;
 &lt;li&gt;mvn wildfly-swarm:run&lt;/li&gt;
 &lt;li&gt;jar -jar target/projectname-swarm.jar&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;これで実際に実行しようとすると下記のエラーが発生します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;at org.wildfly.extension.undertow.deployment.UndertowDeploymentService$1.run(UndertowDeploymentService.java:85)
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1142)
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:617)
-	at java.lang.Thread.run(Thread.java:745)
-	at org.jboss.threads.JBossThread.run(JBossThread.java:320)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これは&lt;code&gt;wildfly-swarm-weld&lt;/code&gt;を取り込んでいないためなので、
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;at org&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;wildfly&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;extension&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;undertow&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;deployment&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;UndertowDeploymentService$1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;UndertowDeploymentService&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;85&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+	at java&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;util&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;concurrent&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Executors$RunnableAdapter&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;call&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Executors&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;511&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+	at java&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;util&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;concurrent&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;FutureTask&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;FutureTask&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;266&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+	at java&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;util&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;concurrent&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ThreadPoolExecutor&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;runWorker&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;ThreadPoolExecutor&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;1142&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+	at java&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;util&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;concurrent&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ThreadPoolExecutor$Worker&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;ThreadPoolExecutor&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;617&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+	at java&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lang&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Thread&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Thread&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;745&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+	at org&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;jboss&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;threads&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;JBossThread&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;JBossThread&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;320&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これは&lt;code&gt;wildfly-swarm-weld&lt;/code&gt;を取り込んでいないためなので、
 下記の記述をpom.xmlに追加します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;wildfly-swarm-weld&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-weld&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 &lt;p&gt;ドキュメントを読んだだけではWeldが必要には見えなくて、
 結局サンプルコードと何遍も見比べる必要がありましたが、
 動いてしまえば、後は非常に快適です。
@@ -531,161 +437,124 @@ public class Main
       <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
-      <description>
-
-&lt;p&gt;WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。
+      <description>&lt;p&gt;WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。
 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、
 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。
 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、
 自分の必要なモジュールを取り込んで利用する形になるようです。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;jaxrsを組み込む&#34;&gt;JAXRSを組み込む&lt;/h2&gt;
-
 &lt;p&gt;今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。
 2015年11月時点での最新バージョンは1.0.0.Alpha5です。
 pom.xmlに下記のdependencyを追加します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
-&amp;lt;dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_39.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-jaxrs&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1.0.0.Alpha5&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_39.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、
 下記のpluginもpom.xmlに追加します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugin&amp;gt;
-    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
-    &amp;lt;executions&amp;gt;
-        &amp;lt;execution&amp;gt;
-            &amp;lt;goals&amp;gt;
-                &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt;
-            &amp;lt;/goals&amp;gt;
-        &amp;lt;/execution&amp;gt;
-    &amp;lt;/executions&amp;gt;
-&amp;lt;/plugin&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;jaxrsアプリケーションを作る&#34;&gt;JAXRSアプリケーションを作る&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1.0.0.Alpha5&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;executions&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;execution&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;goals&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;goal&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;package&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;jaxrsアプリケーションを作る&#34;&gt;JAXRSアプリケーションを作る&lt;/h2&gt;
 &lt;p&gt;WildFly Swarmの設定が一通り終わったので、次はJAXRSアプリケーションを作ります。
 特別なことはなく、普通のJAXRSアプリケーションです。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.ApplicationPath&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.core.Application&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@ApplicationPath&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/rest&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyApplication&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; Application
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-@ApplicationPath(&amp;quot;/rest&amp;quot;)
-public class MyApplication extends Application
-{
-}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.GET&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.Path&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-
-@Path(&amp;quot;/hello&amp;quot;)
-public class HelloResource
-{
-    @GET
-    public String hello()
-    {
-        return &amp;quot;Hello World!&amp;quot;;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;どうやってうごかすの&#34;&gt;どうやってうごかすの？&lt;/h2&gt;
-
-&lt;p&gt;JAXRSアプリケーションも作ったけれどどうやって動かすのか？&lt;br /&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/hello&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HelloResource&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@GET&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color:#a6e22e&#34;&gt;hello&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello World!&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;どうやってうごかすの&#34;&gt;どうやってうごかすの？&lt;/h2&gt;
+&lt;p&gt;JAXRSアプリケーションも作ったけれどどうやって動かすのか？&lt;br&gt;
 WildFly Swarmでは通常のJavaアプリケーションのようにmainメソッドから動かします。
 そのため、mainメソッドを持つクラスを新たに作成します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.jboss.shrinkwrap.api.ShrinkWrap&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.wildfly.swarm.container.Container&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.wildfly.swarm.jaxrs.JAXRSArchive&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.wildfly.swarm.container.Container;
-import org.wildfly.swarm.jaxrs.JAXRSArchive;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Main&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; args&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; Exception
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;// コンテナの生成
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// Archiveを生成する前にインスタンス化しておかないと実行時にエラーが発生
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Container container &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Container&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-public class Main
-{
-    public static void main(String... args) throws Exception
-    {
-        // コンテナの生成
-        // Archiveを生成する前にインスタンス化しておかないと実行時にエラーが発生
-        final Container container = new Container();
+        &lt;span style=&#34;color:#75715e&#34;&gt;// ShrinkWrapで仮想アーカイブを作成
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; JAXRSArchive archive &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ShrinkWrap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;JAXRSArchive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        archive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addClass&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;MyApplication&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        archive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addClass&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;HelloResource&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        archive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addAllDependencies&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-        // ShrinkWrapで仮想アーカイブを作成
-        final JAXRSArchive archive = ShrinkWrap.create(JAXRSArchive.class);
-        archive.addClass(MyApplication.class);
-        archive.addClass(HelloResource.class);
-        archive.addAllDependencies();
-
-        container.start().deploy(archive);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;mainメソッド内では、ShrinkWrapを利用して生成した仮想アーカイブを起動したコンテナにデプロイします。
+        container&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;deploy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;archive&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;mainメソッド内では、ShrinkWrapを利用して生成した仮想アーカイブを起動したコンテナにデプロイします。
 コード中のコメントにも書きましたが、アーカイブを作る前にコンテナをインスタンス化しておかないと、
 実行時にエラーになります。これで半日悩んだ..orz&lt;/p&gt;
-
 &lt;p&gt;で、ここで作ったMainクラスをswarm-pluginに教える必要があります。
 設定を追加したwildfly-swarm-pluginが下記になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugin&amp;gt;
-    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
-    &amp;lt;configuration&amp;gt;
-        &amp;lt;mainClass&amp;gt;org.katsumi.Main&amp;lt;/mainClass&amp;gt;
-    &amp;lt;/configuration&amp;gt;
-    &amp;lt;executions&amp;gt;
-        &amp;lt;execution&amp;gt;
-            &amp;lt;goals&amp;gt;
-                &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt;
-            &amp;lt;/goals&amp;gt;
-        &amp;lt;/execution&amp;gt;
-    &amp;lt;/executions&amp;gt;
-&amp;lt;/plugin&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Mavenでビルド後に下記の方法で実行することができます。&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1.0.0.Alpha5&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;configuration&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;mainClass&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.katsumi.Main&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/mainClass&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;executions&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;execution&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;goals&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;goal&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;package&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Mavenでビルド後に下記の方法で実行することができます。&lt;/p&gt;
 &lt;h3 id=&#34;ideの場合&#34;&gt;IDEの場合&lt;/h3&gt;
-
 &lt;p&gt;Mainクラスを実行&lt;/p&gt;
-
 &lt;h3 id=&#34;mavenを利用する場合&#34;&gt;Mavenを利用する場合&lt;/h3&gt;
-
 &lt;pre&gt;&lt;code&gt;mvn wildfly-swarm:run
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h3 id=&#34;jarファイルを実行する場合&#34;&gt;Jarファイルを実行する場合&lt;/h3&gt;
-
 &lt;pre&gt;&lt;code&gt;jar -jar target/projectname-swarm.jar
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h2 id=&#34;余談&#34;&gt;余談&lt;/h2&gt;
-
 &lt;p&gt;今回のアプリですが、IntelliJ IDEA 15で作っています。
 インストールしたままの環境でMavenビルドをしたのですが、下記エラーが発生してビルドができない状態でした。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;java.lang.NoClassDefFoundError: org/eclipse/aether/RepositorySystemSession
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;原因はMavenのバージョンが古いためで、IntellijにデフォルトでバンドルされているMavenのバージョンは3.0.5であり、
 このバージョンではエラーが発生するので、別途バージョン3.2.5をインストールしてそれを参照するようにしました。&lt;/p&gt;
 </description>
@@ -700,89 +569,75 @@ public class Main
       <description>&lt;p&gt;JSF-2.3の新しい機能として、UIViewRoot, ViewMap, ApplicationMap, ExternalContext, FacesContextがInjectできるようになります。
 この記事ではFacesContextの古い取得方法である&lt;code&gt;FacesContext.getCurrentInstance()&lt;/code&gt;と、
 Injectを利用した取得方法のサンプルを記載します。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;サンプルでは画面のボタンをクリックすると、&lt;code&gt;&amp;lt;h:messages/&amp;gt;&lt;/code&gt;タグと&lt;code&gt;FacesContext.addMessage(String, FacesMessage)&lt;/code&gt;を利用して
 同じ画面上にインフォメーションメッセージを表示します。&lt;/p&gt;
-
 &lt;p&gt;最初にFacesContextの古い取得方法を利用したManaged Beanです。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.enterprise.context.RequestScoped&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.faces.application.FacesMessage&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.faces.context.FacesContext&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.inject.Inject&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.inject.Named&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Named&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@RequestScoped&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;IndexBean&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;doClick&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; FacesContext context &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; FacesContext&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getCurrentInstance&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        context&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addMessage&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; FacesMessage&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;FacesMessage&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;SEVERITY_INFO&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;summary&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;detail&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次にInjectを利用してFacesContextを取得するManaged Beanです。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.enterprise.context.RequestScoped&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.faces.application.FacesMessage&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.faces.context.FacesContext&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.inject.Inject&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.inject.Named&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-@Named
-@RequestScoped
-public class IndexBean
-{
-    public void doClick()
-    {
-        final FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, &amp;quot;summary&amp;quot;, &amp;quot;detail&amp;quot;));
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Named&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@RequestScoped&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;IndexBean&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Inject&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; FacesContext context&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;p&gt;次にInjectを利用してFacesContextを取得するManaged Beanです。&lt;/p&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;doClick&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        context&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addMessage&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; FacesMessage&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;FacesMessage&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;SEVERITY_INFO&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;summary&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;detail&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;画面に表示するXHTMLは下記のようにしています。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!DOCTYPE html
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        PUBLIC &amp;#34;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;#34;
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        &amp;#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;#34;&amp;gt;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;html&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://www.w3.org/1999/xhtml&amp;#34;&lt;/span&gt;
+      &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:h=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://java.sun.com/jsf/html&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
 
-@Named
-@RequestScoped
-public class IndexBean
-{
-    @Inject
-    private FacesContext context;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;h:head&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;title&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Simple JSF Facelets page&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/title&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/h:head&amp;gt;&lt;/span&gt;
 
-    public void doClick()
-    {
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, &amp;quot;summary&amp;quot;, &amp;quot;detail&amp;quot;));
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;h:body&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;h:form&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;h:messages&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;showDetail=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;h:commandButton&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;actionListener=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#{indexBean.doClick}&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;OK&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/h:form&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/h:body&amp;gt;&lt;/span&gt;
 
-&lt;p&gt;画面に表示するXHTMLは下記のようにしています。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
-&amp;lt;!DOCTYPE html
-        PUBLIC &amp;quot;-//W3C//DTD XHTML 1.0 Transitional//EN&amp;quot;
-        &amp;quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&amp;quot;&amp;gt;
-
-&amp;lt;html xmlns=&amp;quot;http://www.w3.org/1999/xhtml&amp;quot;
-      xmlns:h=&amp;quot;http://java.sun.com/jsf/html&amp;quot;&amp;gt;
-
-&amp;lt;h:head&amp;gt;
-    &amp;lt;title&amp;gt;Simple JSF Facelets page&amp;lt;/title&amp;gt;
-&amp;lt;/h:head&amp;gt;
-
-&amp;lt;h:body&amp;gt;
-    &amp;lt;h:form&amp;gt;
-        &amp;lt;h:messages showDetail=&amp;quot;true&amp;quot;/&amp;gt;
-        &amp;lt;h:commandButton actionListener=&amp;quot;#{indexBean.doClick}&amp;quot; value=&amp;quot;OK&amp;quot;/&amp;gt;
-    &amp;lt;/h:form&amp;gt;
-&amp;lt;/h:body&amp;gt;
-
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このアプリをWildFly-8.0.0.Finalにデプロイします。
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/html&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;このアプリをWildFly-8.0.0.Finalにデプロイします。
 WildFlyにはJSFの実装が含まれているので、JSF-2.3が含まれるアプリをデプロイすると起動時にエラーになってしまいます。
 そこで、アプリに含まれるJSF実装を利用させるために、下記の設定をweb.xmlに追加します。
 パラメータを追加するだけで利用する実装を切り替えてくれるので便利ですね。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;context-param&amp;gt;
-    &amp;lt;param-name&amp;gt;org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL&amp;lt;/param-name&amp;gt;
-    &amp;lt;param-value&amp;gt;true&amp;lt;/param-value&amp;gt;
-&amp;lt;/context-param&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;context-param&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;param-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;param-value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;true&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -791,37 +646,23 @@ WildFlyにはJSFの実装が含まれているので、JSF-2.3が含まれるア
       <pubDate>Sat, 23 Aug 2014 15:50:18 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/08/23/wildflydejdbcrealmwoshe-ding-suru/</guid>
-      <description>
-
-&lt;p&gt;今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+      <description>&lt;p&gt;今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;wildfly-の設定&#34;&gt;WildFly の設定&lt;/h2&gt;
-
-&lt;p&gt;WildFly 8.0.0.Final に JDBCRealm を構築します。&lt;br /&gt;
+&lt;p&gt;WildFly 8.0.0.Final に JDBCRealm を構築します。&lt;br&gt;
 まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_28.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_28.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;Security Domain を追加します。
 追加は WildFly の GUI コンソールから行います。
 追加する Security Domain は Name: app, Cache Type: default です。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_29.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_29.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;追加した Security Domain を開き、Login Module を追加します。
 追加する Login Modile は Code: Database, Flg: required です。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_30.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_30.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;追加した Login Module に Module Option を追加します。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_31.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_31.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;追加する Module Option は下記表になります。
 dsJndiName で指定するのは事前に登録した Datasource です。&lt;/p&gt;
-
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -829,82 +670,62 @@ dsJndiName で指定するのは事前に登録した Datasource です。&lt;/p
 &lt;th align=&#34;left&#34;&gt;Value&lt;/th&gt;
 &lt;/tr&gt;
 &lt;/thead&gt;
-
 &lt;tbody&gt;
 &lt;tr&gt;
 &lt;td align=&#34;left&#34;&gt;dsJndiName&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;java:/jdbc/realmSample&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
 &lt;td align=&#34;left&#34;&gt;hashAlgorithm&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;SHA-256&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
 &lt;td align=&#34;left&#34;&gt;hashEncoding&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;HEX&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
 &lt;td align=&#34;left&#34;&gt;principalsQuery&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;SELECT password FROM accounts WHERE email = ?&lt;/td&gt;
 &lt;/tr&gt;
-
 &lt;tr&gt;
 &lt;td align=&#34;left&#34;&gt;rolesQuery&lt;/td&gt;
 &lt;td align=&#34;left&#34;&gt;SELECT r.rolename, &amp;lsquo;Roles&amp;rsquo; FROM roles r, accounts a WHERE r.accountid = a.accountid AND a.email = ?&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-
 &lt;h2 id=&#34;データの投入&#34;&gt;データの投入&lt;/h2&gt;
-
 &lt;p&gt;最初に作ったテーブルにデータを投入します。
 パスワードに設定するのは、SHA256で暗号化、HEXエンコードした文字列です。
 ここでは &amp;lsquo;test&amp;rsquo; という文字列をパスワードにしています。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-sql&#34;&gt;INSERT INTO accounts (email, password) VALUES (&#39;hoge&#39;, &#39;9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08&#39;);
-INSERT INTO roles (rolename, accountid) VALUES (&#39;MEMBER&#39;, 1);
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;jboss-web-xml-の設定&#34;&gt;jboss-web.xml の設定&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-sql&#34; data-lang=&#34;sql&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;INSERT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;INTO&lt;/span&gt; accounts (email, password) &lt;span style=&#34;color:#66d9ef&#34;&gt;VALUES&lt;/span&gt; (&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;hoge&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;INSERT&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;INTO&lt;/span&gt; roles (rolename, accountid) &lt;span style=&#34;color:#66d9ef&#34;&gt;VALUES&lt;/span&gt; (&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;MEMBER&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;);
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;jboss-webxml-の設定&#34;&gt;jboss-web.xml の設定&lt;/h2&gt;
 &lt;p&gt;追加した Security Domain を利用するために、jboss-web.xml へ Security Domain を指定します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;security-domain&amp;gt;app&amp;lt;/security-domain&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;web-xml-の設定&#34;&gt;web.xml の設定&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;security-domain&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;app&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/security-domain&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;webxml-の設定&#34;&gt;web.xml の設定&lt;/h2&gt;
 &lt;p&gt;BASIC認証が行われるように web.xml を設定します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;security-role&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;role-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;MEMBER&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/role-name&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/security-role&amp;gt;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;security-role&amp;gt;
-    &amp;lt;role-name&amp;gt;MEMBER&amp;lt;/role-name&amp;gt;
-&amp;lt;/security-role&amp;gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;security-constraint&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;web-resource-collection&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;web-resource-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Member Resource&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/web-resource-name&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;url-pattern&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;/*&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/web-resource-collection&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;auth-constraint&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;role-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;MEMBER&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/role-name&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/auth-constraint&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/security-constraint&amp;gt;&lt;/span&gt;
 
-&amp;lt;security-constraint&amp;gt;
-    &amp;lt;web-resource-collection&amp;gt;
-        &amp;lt;web-resource-name&amp;gt;Member Resource&amp;lt;/web-resource-name&amp;gt;
-        &amp;lt;url-pattern&amp;gt;/*&amp;lt;/url-pattern&amp;gt;
-    &amp;lt;/web-resource-collection&amp;gt;
-    &amp;lt;auth-constraint&amp;gt;
-        &amp;lt;role-name&amp;gt;MEMBER&amp;lt;/role-name&amp;gt;
-    &amp;lt;/auth-constraint&amp;gt;
-&amp;lt;/security-constraint&amp;gt;
-
-&amp;lt;login-config&amp;gt;
-    &amp;lt;auth-method&amp;gt;BASIC&amp;lt;/auth-method&amp;gt;
-    &amp;lt;realm-name&amp;gt;Authentication&amp;lt;/realm-name&amp;gt;
-&amp;lt;/login-config&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これですべての設定が完了です。
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;login-config&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;auth-method&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;BASIC&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/auth-method&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;realm-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Authentication&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/realm-name&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/login-config&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これですべての設定が完了です。
 WildFly にアプリをデプロイしてアクセスするとBASIC認証のダイアログが表示されると思います。
 そこで事前に登録したアカウント情報を入力すると認証に成功するはずです。&lt;/p&gt;
-
-&lt;hr /&gt;
-
+&lt;hr&gt;
 &lt;ul&gt;
 &lt;li&gt;Oct 28, 2014 脱字修正&lt;/li&gt;
 &lt;/ul&gt;

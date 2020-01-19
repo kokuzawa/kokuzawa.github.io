@@ -76,50 +76,35 @@
       </div>
     </div>
     <article>
-      
-
-<p>bootstrap-3.0.2のRemote Modalの書き方がやっと分かった。<br />
+      <p>bootstrap-3.0.2のRemote Modalの書き方がやっと分かった。<br>
 今までは.modal-bodyだけが書き変わっていたのに、バージョン3以降は中身が全部書き変わるみたい。</p>
-
 <p>つまり呼び出し元はこれだけでいい。</p>
-
-<pre><code class="language-html">&lt;a href=&quot;inner.html&quot; data-toggle=&quot;modal&quot; data-target=&quot;myModal&quot;&gt;Click&lt;/a&gt;
-&lt;div class=&quot;modal fade&quot; id=&quot;myModal&quot;&gt;&lt;/div&gt;
-</code></pre>
-
-<p>呼び出し先に実際の内容を書く。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;inner.html&#34;</span> <span style="color:#a6e22e">data-toggle</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal&#34;</span> <span style="color:#a6e22e">data-target</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myModal&#34;</span>&gt;Click&lt;/<span style="color:#f92672">a</span>&gt;
+&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal fade&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myModal&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+</code></pre></div><p>呼び出し先に実際の内容を書く。</p>
 <p><strong>inner.html:</strong></p>
-
-<pre><code class="language-html">&lt;div class=&quot;modal-dialog&quot;&gt;
-  &lt;div class=&quot;modal-content&quot;&gt;
-    &lt;div class=&quot;modal-header&quot;&gt;
-      &lt;button type=&quot;button&quot; class=&quot;close&quot; data-dismiss=&quot;modal&quot; aria-hidden=&quot;true&quot;&gt;&amp;#215;&lt;/button&gt;
-      &lt;h4 class=&quot;modal-title&quot; id=&quot;editModalLabel&quot;&gt;${msg['mypage.edit_time']}&lt;/h4&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;modal-body&quot;&gt;
-      &lt;p&gt;Loading...&lt;/p&gt;
-    &lt;/div&gt;
-    &lt;div class=&quot;modal-footer&quot;&gt;
-      &lt;button type=&quot;button&quot; class=&quot;btn btn-default&quot; data-dismiss=&quot;modal&quot;&gt;Close&lt;/button&gt;
-    &lt;/div&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-</code></pre>
-
-<p>分かってみれば簡単だったけど、ドキュメントからは読み取れなかったなぁ。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal-dialog&#34;</span>&gt;
+  &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal-content&#34;</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal-header&#34;</span>&gt;
+      &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;button&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;close&#34;</span> <span style="color:#a6e22e">data-dismiss</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal&#34;</span> <span style="color:#a6e22e">aria-hidden</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>&gt;&amp;#215;&lt;/<span style="color:#f92672">button</span>&gt;
+      &lt;<span style="color:#f92672">h4</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal-title&#34;</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;editModalLabel&#34;</span>&gt;${msg[&#39;mypage.edit_time&#39;]}&lt;/<span style="color:#f92672">h4</span>&gt;
+    &lt;/<span style="color:#f92672">div</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal-body&#34;</span>&gt;
+      &lt;<span style="color:#f92672">p</span>&gt;Loading...&lt;/<span style="color:#f92672">p</span>&gt;
+    &lt;/<span style="color:#f92672">div</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal-footer&#34;</span>&gt;
+      &lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;button&#34;</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;btn btn-default&#34;</span> <span style="color:#a6e22e">data-dismiss</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;modal&#34;</span>&gt;Close&lt;/<span style="color:#f92672">button</span>&gt;
+    &lt;/<span style="color:#f92672">div</span>&gt;
+  &lt;/<span style="color:#f92672">div</span>&gt;
+&lt;/<span style="color:#f92672">div</span>&gt;
+</code></pre></div><p>分かってみれば簡単だったけど、ドキュメントからは読み取れなかったなぁ。</p>
 <h3 id="add-nov-27-2013">Add Nov 27, 2013</h3>
-
 <p>このままだとinner.htmlの内容が動的に変わる場合、最初にモーダルを表示した内容から書き変わらないので、
 以下のスクリプトを追加する必要があります。</p>
-
-<pre><code class="language-javascript">$('#myModal').on('hidden.bs.modal', function() {
-    $(this).removeData('bs.modal');
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">$</span>(<span style="color:#e6db74">&#39;#myModal&#39;</span>).<span style="color:#a6e22e">on</span>(<span style="color:#e6db74">&#39;hidden.bs.modal&#39;</span>, <span style="color:#66d9ef">function</span>() {
+    <span style="color:#a6e22e">$</span>(<span style="color:#66d9ef">this</span>).<span style="color:#a6e22e">removeData</span>(<span style="color:#e6db74">&#39;bs.modal&#39;</span>);
 });
-</code></pre>
-
-<p>Best Regards.</p>
+</code></pre></div><p>Best Regards.</p>
 
       
       

@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Web Start on KATSUMI KOKUZAWA&#39;S BLOG</title>
@@ -17,91 +16,65 @@
       <pubDate>Thu, 16 Jan 2014 07:08:26 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/01/16/java7u51-web-start-security-update-workaround/</guid>
-      <description>
-
-&lt;p&gt;1月14日にJava7u51がリリースされました。
+      <description>&lt;p&gt;1月14日にJava7u51がリリースされました。
 このアップデートによってセキュリティが強化されて、署名のないアプレットが起動できなくなりました。
 また署名があっても、ユーザ独自の署名の場合ではその証明書をクライアントにインポートしておかないと、
 同じく起動することができないようです。&lt;/p&gt;
-
 &lt;p&gt;あまり頻繁に行う作業ではないので、手順をまとめておきたいと思います。&lt;/p&gt;
-
-&lt;h2 id=&#34;1-manifest-mfの編集&#34;&gt;1. MANIFEST.MFの編集&lt;/h2&gt;
-
+&lt;h2 id=&#34;1-manifestmfの編集&#34;&gt;1. MANIFEST.MFの編集&lt;/h2&gt;
 &lt;p&gt;jarファイル内のMANIFEST.MFに下記を追記します。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;Permissions: all-permissions
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;Mavenを利用している場合は、下記をpom.xmlに追加することで、
 ビルド時にMANIFEST.MFに追加することができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;build&amp;gt;
-    &amp;lt;plugins&amp;gt;
-        &amp;lt;plugin&amp;gt;
-            &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
-            &amp;lt;artifactId&amp;gt;maven-jar-plugin&amp;lt;/artifactId&amp;gt;
-            &amp;lt;version&amp;gt;2.4&amp;lt;/version&amp;gt;
-            &amp;lt;configuration&amp;gt;
-                &amp;lt;archive&amp;gt;
-                    &amp;lt;manifestEntries&amp;gt;
-                        &amp;lt;Permissions&amp;gt;all-permissions&amp;lt;/Permissions&amp;gt;
-                        &amp;lt;Codebase&amp;gt;*&amp;lt;/Codebase&amp;gt;
-                    &amp;lt;/manifestEntries&amp;gt;
-                &amp;lt;/archive&amp;gt;
-            &amp;lt;/configuration&amp;gt;
-        &amp;lt;/plugin&amp;gt;
-    &amp;lt;/plugins&amp;gt;
-&amp;lt;/build&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Antであれば下記で同様のことができます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;target name=&amp;quot;dist&amp;quot;&amp;gt;
-    &amp;lt;jar destfile=&amp;quot;${basedir}/out/sample.jar&amp;quot; basedir=&amp;quot;${basedir}/out/classes/&amp;quot;&amp;gt;
-        &amp;lt;manifest&amp;gt;
-            &amp;lt;attribute name=&amp;quot;Permissions&amp;quot; value=&amp;quot;all-permissions&amp;quot;/&amp;gt;
-            &amp;lt;attribute name=&amp;quot;Codebase&amp;quot; value=&amp;quot;*&amp;quot;/&amp;gt;
-        &amp;lt;/manifest&amp;gt;
-    &amp;lt;/jar&amp;gt;
-&amp;lt;/target&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;2-jnlpファイルの編集&#34;&gt;2. jnlpファイルの編集&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugins&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;maven-jar-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.4&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;configuration&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;archive&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;manifestEntries&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;Permissions&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;all-permissions&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/Permissions&amp;gt;&lt;/span&gt;
+                        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;Codebase&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;*&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/Codebase&amp;gt;&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/manifestEntries&amp;gt;&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/archive&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Antであれば下記で同様のことができます。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;target&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dist&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;jar&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;destfile=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;${basedir}/out/sample.jar&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;basedir=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;${basedir}/out/classes/&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;manifest&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;attribute&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Permissions&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;all-permissions&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;attribute&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;name=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Codebase&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;*&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/manifest&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/jar&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/target&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;2-jnlpファイルの編集&#34;&gt;2. jnlpファイルの編集&lt;/h2&gt;
 &lt;p&gt;jnlpファイルに下記を追記します。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;&amp;lt;security&amp;gt;
     &amp;lt;all-permissions/&amp;gt;
 &amp;lt;/security&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h2 id=&#34;3-keystoreの生成&#34;&gt;3. keystoreの生成&lt;/h2&gt;
-
 &lt;p&gt;keystoreを生成します。[]内は任意の文字列を指定します。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;keytool -selfcert -alias [sample] -genkey -keystore [sample.keystore] -validity [3650]
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h2 id=&#34;4-証明書の生成&#34;&gt;4. 証明書の生成&lt;/h2&gt;
-
 &lt;pre&gt;&lt;code&gt;keytool -export -keystore [sample.keystore] -alias [sample] -file [sample.csr]
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h2 id=&#34;5-jarファイルの署名&#34;&gt;5. jarファイルの署名&lt;/h2&gt;
-
 &lt;pre&gt;&lt;code&gt;jarsigner -keystore [sample.keystore] [sample.jar] [sample]
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h2 id=&#34;6-証明書のインポート&#34;&gt;6. 証明書のインポート&lt;/h2&gt;
-
-&lt;p&gt;証明書をインポートすることでAppletを起動できるようになります。&lt;br /&gt;
+&lt;p&gt;証明書をインポートすることでAppletを起動できるようになります。&lt;br&gt;
 Windowsの場合は、「コントロールパネル」 -&amp;gt; 「Java」 -&amp;gt; 「セキュリティタブ」 -&amp;gt; 「証明書の管理」と選択、
 ユーザタブで証明書タイプを「署名者のCA」を選び、sample.csrをインポートします。&lt;/p&gt;
-
 &lt;p&gt;これでWeb StartでAppletを起動すると、
 警告ダイアログが表示されるようになります。&lt;/p&gt;
-
 &lt;p&gt;Enjoy !&lt;/p&gt;
 </description>
     </item>

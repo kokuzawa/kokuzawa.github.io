@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Jenkins on KATSUMI KOKUZAWA&#39;S BLOG</title>
@@ -17,181 +16,147 @@
       <pubDate>Sat, 24 May 2014 16:30:10 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/05/24/jenkinsnishi-waserupom-dot-xmlfalseji-ben-she-ding/</guid>
-      <description>
-
-&lt;p&gt;だんだんと暑くなってきた先週、Java7 を導入できることになって大喜びして
+      <description>&lt;p&gt;だんだんと暑くなってきた先週、Java7 を導入できることになって大喜びして
 IntelliJ IDEA の Inspect Code を使って Java7 に対応するコードに一括変換をした月曜日、
 今年は良い夏を迎えられそうだと思っていたら、OS が Java7 をサポートしてなくてコードを
 Java6 にダウングレードするという、モチベーションがだだ下がりな作業したところです。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;ただ Java6 にダウングレードするというものやってられないので、
 Eclipse の Web アプリ構成のプロジェクトを Maven 構成のプロジェクトに置き換えようと考えました。
 Maven 構成に変えるのはフォルダの位置を変更するだけなのでとても簡単で、
 かつ、ライブラリはビルド時に取得してくれるから、今までのように VCS に jar ファイルも一緒にコミットする必要がなくなり、
 アプリのリソース自体も小さくなってチェックアウト（クローン）が速くできるようになったりなどメリットが一杯です。&lt;/p&gt;
-
 &lt;p&gt;ビルドに ant を使っているので、Jenkins 上でも ant で動作させています。
 今度は Maven を使うようにするので、Maven 用に設定を書き換える必要があります。
 やりたいことは、ユニットテスト、カバレッジ、PMD、CPD、Findbugs を実行することです。
 ant での設定は下記の本を参考にすると簡単なのですが、この本は Maven の設定に詳しくありません。&lt;/p&gt;
-
-&lt;iframe src=&#34;http://rcm-fe.amazon-adsystem.com/e/cm?t=moonwhaleblog-22&amp;o=9&amp;p=8&amp;l=as1&amp;asins=4774148911&amp;ref=qf_sp_asin_til&amp;fc1=000000&amp;IS2=1&amp;lt1=_blank&amp;m=amazon&amp;lc1=0000FF&amp;bc1=FFFFFF&amp;bg1=FFFFFF&amp;f=ifr&#34; style=&#34;width:120px;height:240px;&#34; scrolling=&#34;no&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;そこで色々なサイトを参考に自分で pom.xml を構築しようとしたのですが、
 記述が古かったり、書き方もまちまち、さらには Maven Plugin のバージョンで動作が変わってしまったりなど、
 どれを参考にしたら良いのか判断が難しい。
 あーでもない、こーでもないとやっているうちに、ユニットテスト、カバレッジ、PMD、CPD、Findbugs を
 実行できるようになったので公開したいと思います。&lt;/p&gt;
-
 &lt;p&gt;pom.xml の完全なファイルは&lt;a href=&#34;https://bitbucket.org/kokuzawa/pomtemplate&#34;&gt;こちら&lt;/a&gt;。&lt;/p&gt;
-
 &lt;h2 id=&#34;指定したテストケースだけ実行&#34;&gt;指定したテストケースだけ実行&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;build&amp;gt;
-    &amp;lt;plugins&amp;gt;
-	&amp;lt;plugin&amp;gt;
-	    &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
-	    &amp;lt;artifactId&amp;gt;maven-surefire-plugin&amp;lt;/artifactId&amp;gt;
-	    &amp;lt;version&amp;gt;2.7.2&amp;lt;/version&amp;gt;
-	    &amp;lt;configuration&amp;gt;
-		&amp;lt;systemPropertyVariables&amp;gt;
-		    &amp;lt;jdbc.driverClassName&amp;gt;${jdbc.driverClassName}&amp;lt;/jdbc.driverClassName&amp;gt;
-		    &amp;lt;jdbc.url&amp;gt;${jdbc.url}&amp;lt;/jdbc.url&amp;gt;
-		    &amp;lt;jdbc.username&amp;gt;${jdbc.username}&amp;lt;/jdbc.username&amp;gt;
-		    &amp;lt;jdbc.password&amp;gt;${jdbc.password}&amp;lt;/jdbc.password&amp;gt;
-		&amp;lt;/systemPropertyVariables&amp;gt;
-		&amp;lt;includes&amp;gt;
-		    &amp;lt;include&amp;gt;**/*Test.java&amp;lt;/include&amp;gt;
-		&amp;lt;/includes&amp;gt;
-	    &amp;lt;/configuration&amp;gt;
-	&amp;lt;/plugin&amp;gt;
-    &amp;lt;/plugins&amp;gt;
-&amp;lt;/build&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;指定したテストクラスだけを実行するために &lt;code&gt;maven-surefire-plugin&lt;/code&gt; を利用します。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugins&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;maven-surefire-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.7.2&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;configuration&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;systemPropertyVariables&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+		    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;jdbc.driverClassName&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;${jdbc.driverClassName}&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/jdbc.driverClassName&amp;gt;&lt;/span&gt;
+		    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;jdbc.url&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;${jdbc.url}&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/jdbc.url&amp;gt;&lt;/span&gt;
+		    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;jdbc.username&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;${jdbc.username}&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/jdbc.username&amp;gt;&lt;/span&gt;
+		    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;jdbc.password&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;${jdbc.password}&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/jdbc.password&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/systemPropertyVariables&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;includes&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+		    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;include&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;**/*Test.java&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/include&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/includes&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;指定したテストクラスだけを実行するために &lt;code&gt;maven-surefire-plugin&lt;/code&gt; を利用します。
 &lt;code&gt;systemPropertyVariables&lt;/code&gt; の部分はおまけで、profiles からテスト用の DB 設定を取得しています。
 本質は &lt;code&gt;includes&lt;/code&gt; の部分で、ここに実行したいテストクラスを記述します。&lt;/p&gt;
-
 &lt;h2 id=&#34;カバレッジの取得&#34;&gt;カバレッジの取得&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;build&amp;gt;
-    &amp;lt;plugins&amp;gt;
-	&amp;lt;plugin&amp;gt;
-	    &amp;lt;groupId&amp;gt;org.codehaus.mojo&amp;lt;/groupId&amp;gt;
-	    &amp;lt;artifactId&amp;gt;cobertura-maven-plugin&amp;lt;/artifactId&amp;gt;
-	    &amp;lt;version&amp;gt;2.5.2&amp;lt;/version&amp;gt;
-	    &amp;lt;configuration&amp;gt;
-		&amp;lt;check/&amp;gt;
-		&amp;lt;formats&amp;gt;
-		    &amp;lt;format&amp;gt;xml&amp;lt;/format&amp;gt;
-		&amp;lt;/formats&amp;gt;
-	    &amp;lt;/configuration&amp;gt;
-	&amp;lt;/plugin&amp;gt;
-    &amp;lt;/plugins&amp;gt;
-&amp;lt;/build&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;カバレッジ取得に &lt;code&gt;cobertura-maven-plugin&lt;/code&gt; を利用します。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugins&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.codehaus.mojo&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;cobertura-maven-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.5.2&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;configuration&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;check&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;formats&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+		    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;format&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;xml&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/format&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/formats&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;カバレッジ取得に &lt;code&gt;cobertura-maven-plugin&lt;/code&gt; を利用します。
 &lt;code&gt;check&lt;/code&gt; タグは必須なのですが、デフォルトの設定値を変える必要はないため空で宣言しています。
 また、&lt;code&gt;formats&lt;/code&gt; に xml を指定していますが、何も指定していないと site に表示する html が生成されます。
 Jenkins で解析するので xml を出力するように指定します。&lt;/p&gt;
-
 &lt;h2 id=&#34;pmd-の取得&#34;&gt;PMD の取得&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugins&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;maven-jxr-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.3&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;maven-pmd-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;3.1&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;build&amp;gt;
-    &amp;lt;plugins&amp;gt;
-	&amp;lt;plugin&amp;gt;
-	    &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
-	    &amp;lt;artifactId&amp;gt;maven-jxr-plugin&amp;lt;/artifactId&amp;gt;
-	    &amp;lt;version&amp;gt;2.3&amp;lt;/version&amp;gt;
-	&amp;lt;/plugin&amp;gt;
-	&amp;lt;plugin&amp;gt;
-	    &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
-	    &amp;lt;artifactId&amp;gt;maven-pmd-plugin&amp;lt;/artifactId&amp;gt;
-	    &amp;lt;version&amp;gt;3.1&amp;lt;/version&amp;gt;
-	&amp;lt;/plugin&amp;gt;
-    &amp;lt;/plugins&amp;gt;
-&amp;lt;/build&amp;gt;
-
-&amp;lt;reporting&amp;gt;
-    &amp;lt;plugins&amp;gt;
-        &amp;lt;plugin&amp;gt;
-	    &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
-	    &amp;lt;artifactId&amp;gt;maven-jxr-plugin&amp;lt;/artifactId&amp;gt;
-	    &amp;lt;version&amp;gt;2.3&amp;lt;/version&amp;gt;
-	&amp;lt;/plugin&amp;gt;
-	&amp;lt;plugin&amp;gt;
-	    &amp;lt;groupId&amp;gt;org.apache.maven.plugins&amp;lt;/groupId&amp;gt;
-	    &amp;lt;artifactId&amp;gt;maven-pmd-plugin&amp;lt;/artifactId&amp;gt;
-	    &amp;lt;version&amp;gt;3.1&amp;lt;/version&amp;gt;
-	&amp;lt;/plugin&amp;gt;
-    &amp;lt;/plugins&amp;gt;
-&amp;lt;/repoting&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;PMD を取得するためのプラグインを指定します。
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;reporting&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugins&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;maven-jxr-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.3&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.apache.maven.plugins&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;maven-pmd-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;3.1&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/repoting&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;PMD を取得するためのプラグインを指定します。
 &lt;code&gt;maven-jxr-plugin&lt;/code&gt; は PMD 取得に直接関係ないのですが、下記のサイトでの WORNING を回避するために指定しています。&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://maven.40175.n5.nabble.com/PMD-plugin-source-xref-not-generated-unless-JXR-runs-first-td2622198.html&#34;&gt;PMD plugin: source xref not generated unless JXR runs first&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;CPD は PMD と同じ設定で生成することができるので、個別の設定は必要ありません。&lt;/p&gt;
-
 &lt;h2 id=&#34;findbugs-の実行&#34;&gt;Findbugs の実行&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugins&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.codehaus.mojo&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;findbugs-maven-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.5.4&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;configuration&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;effort&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Max&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/effort&amp;gt;&lt;/span&gt;
+		&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;xmlOutput&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;true&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/xmlOutput&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/build&amp;gt;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;build&amp;gt;
-    &amp;lt;plugins&amp;gt;
-	&amp;lt;plugin&amp;gt;
-	    &amp;lt;groupId&amp;gt;org.codehaus.mojo&amp;lt;/groupId&amp;gt;
-	    &amp;lt;artifactId&amp;gt;findbugs-maven-plugin&amp;lt;/artifactId&amp;gt;
-	    &amp;lt;version&amp;gt;2.5.4&amp;lt;/version&amp;gt;
-	    &amp;lt;configuration&amp;gt;
-		&amp;lt;effort&amp;gt;Max&amp;lt;/effort&amp;gt;
-		&amp;lt;xmlOutput&amp;gt;true&amp;lt;/xmlOutput&amp;gt;
-	    &amp;lt;/configuration&amp;gt;
-	&amp;lt;/plugin&amp;gt;
-    &amp;lt;/plugins&amp;gt;
-&amp;lt;/build&amp;gt;
-
-&amp;lt;reporting&amp;gt;
-    &amp;lt;plugins&amp;gt;
-	&amp;lt;plugin&amp;gt;
-	    &amp;lt;groupId&amp;gt;org.codehaus.mojo&amp;lt;/groupId&amp;gt;
-	    &amp;lt;artifactId&amp;gt;findbugs-maven-plugin&amp;lt;/artifactId&amp;gt;
-	    &amp;lt;version&amp;gt;2.5.4&amp;lt;/version&amp;gt;
-	&amp;lt;/plugin&amp;gt;
-    &amp;lt;/plugins&amp;gt;
-&amp;lt;/reporting&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Findbugs を実行するために &lt;code&gt;findbugs-maven-plugin&lt;/code&gt; を利用します。
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;reporting&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugins&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.codehaus.mojo&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;findbugs-maven-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+	    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.5.4&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+	&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugins&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/reporting&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Findbugs を実行するために &lt;code&gt;findbugs-maven-plugin&lt;/code&gt; を利用します。
 &lt;code&gt;effort&lt;/code&gt; は分析レベルです。ここでは Max を指定していますが、何も指定しない（Default）でも良いかもしれません。
 あとは Jenkins で解析するので xml での出力が必要です。&lt;/p&gt;
-
 &lt;h2 id=&#34;その他&#34;&gt;その他&lt;/h2&gt;
-
 &lt;p&gt;Maven-3.2.1 で実行しようとすると下記サイトでのエラーが出ることがあります。&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://issues.jenkins-ci.org/browse/JENKINS-22252&#34;&gt;Maven 3.2.1: IllegalAccessError on AbstractMapBasedMultimap&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;理由はコメントに書いてある通りなのですが、Jenkins で利用している Guava のバージョンと Maven の Guava のバージョンが
 一致していないために発生する問題のようです。なので、最新の Maven ではなく一つ古い 3.2.1 を使う必要があるかもしれません。&lt;/p&gt;
-
 &lt;p&gt;ちなみに、Jenkins での Maven の goal は下記を指定しています。
 （cobertura でテストクラスのコンパイルも行われるのですが、Java6 だと JDK のバグでコンパイラが止まってしまうので、
 あえて &lt;code&gt;compile&lt;/code&gt; を呼び出しています）&lt;/p&gt;
-
 &lt;p&gt;&lt;code&gt;clean compile cobertura:cobertura pmd:pmd pmd:cpd findbugs:findbugs javadoc:javadoc&lt;/code&gt;&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;&lt;strong&gt;Change at May 29, 2014&lt;/strong&gt;&lt;br /&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;Change at May 29, 2014&lt;/strong&gt;&lt;br&gt;
 resource ゴールが呼ばれないため、Jenkinsで指定している goal のうち、compiler:compile compiler:testCompile を compile に変更。&lt;/p&gt;
 </description>
     </item>

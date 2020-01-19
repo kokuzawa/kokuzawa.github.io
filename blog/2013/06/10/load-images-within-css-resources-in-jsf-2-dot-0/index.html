@@ -78,15 +78,10 @@
       </div>
     </div>
     <article>
-      
-
-<p>JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。<br />
+      <p>JSF 2.0 でCSSリソース内の画像を読み込むにはコツが必要です。<br>
 Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだのでそのメモなど。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <p>フォルダ構成は次のようになっています。（Mavenです）</p>
-
 <pre><code>root
  +-- src
      +-- webapp
@@ -95,29 +90,17 @@ Bootstrapのglyphicons-halflings.pngを読み込むのに暫く悩んだので�
              |   +-- bootstrap.min.css
              +-- img
                  +-- glyphicons-halflings.png
-</code></pre>
-
-<p>JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。</p>
-
-<pre><code class="language-xml">&lt;h:outputStylesheet library=&quot;css&quot; name=&quot;bootstrap.min.css&quot;/&gt;
-</code></pre>
-
-<p>このとき、bootstrap.min.css内のイメージのパスは<code>../img/glyphicons-halflings.png</code>となっていますが、
+</code></pre><p>JSFなのでXHTMLを使い、CSSの読み込みは以下のようにします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;h:outputStylesheet</span> <span style="color:#a6e22e">library=</span><span style="color:#e6db74">&#34;css&#34;</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;bootstrap.min.css&#34;</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>このとき、bootstrap.min.css内のイメージのパスは<code>../img/glyphicons-halflings.png</code>となっていますが、
 このままでは画像が読み込まれません。まあ、パスからも明らかですね。</p>
-
 <p>問題を解決するには次のように、イメージのパスを変更する必要があります。</p>
-
-<pre><code class="language-css">background-image:url(&quot;#{resource['img/glyphicons-halflings.png']}&quot;)
-</code></pre>
-
-<h2 id="jun-20-2013-追記">Jun 20, 2013 追記</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-css" data-lang="css"><span style="color:#f92672">background-image</span>:<span style="color:#a6e22e">url</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#{resource[&#39;img/glyphicons-halflings.png&#39;]}&#34;</span><span style="color:#f92672">)</span>
+</code></pre></div><h2 id="jun-20-2013-追記">Jun 20, 2013 追記</h2>
 <p>twitterで<a href="https://twitter.com/den2sn">@den2sn</a>さんに教えてもらったのですが、outputStylesheetを下記のようにlibraryを削除して宣言することにより、
 bootstrap.min.cssを書き換えなくても良くなります。</p>
-
-<pre><code class="language-xml">&lt;h:outputStylesheet name=&quot;css/bootstrap.min.css&quot;/&gt;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;h:outputStylesheet</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;css/bootstrap.min.css&#34;</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div>
       
       
       

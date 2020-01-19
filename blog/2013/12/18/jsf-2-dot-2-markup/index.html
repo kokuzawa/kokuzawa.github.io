@@ -78,155 +78,111 @@
       </div>
     </div>
     <article>
-      
-
-<p>この記事は、<a href="http://www.adventar.org/calendars/152">Java EE Advent Calendar 2013</a>の18日目の記事です。<br />
-昨日は <a href="https://twitter.com/yumix_h">@yumix_h</a> さんの<a href="http://yumix.hatenablog.jp/entry/2013/12/17/235838">私がJava EE開発の現場から学んだこと</a>でした。<br />
+      <p>この記事は、<a href="http://www.adventar.org/calendars/152">Java EE Advent Calendar 2013</a>の18日目の記事です。<br>
+昨日は <a href="https://twitter.com/yumix_h">@yumix_h</a> さんの<a href="http://yumix.hatenablog.jp/entry/2013/12/17/235838">私がJava EE開発の現場から学んだこと</a>でした。<br>
 明日は誕生日の <a href="https://twitter.com/aoetk">@aoetk</a> さんです。</p>
-
-<p>みなさんJSF使ってますか？<br />
+<p>みなさんJSF使ってますか？<br>
 JSFってちょっと取っ付きにくいところがありますよね。でもそんなJSFもバージョンが2.2になって、
 ちょっと良い感じになってきたので使ってみませんか、
 ということでJSFのマークアップについて書いてみたいと思います。</p>
-
 <h2 id="デザイナーとプログラマの作業の分担">デザイナーとプログラマの作業の分担</h2>
-
 <p>JSFはデザイナーとプログラマで作業が分担できるということを良く聞きます。
 デザイナーを雇うほど大きなプロジェクトでJSFを使ったことがないし、
 分担しているということもあまり見聞きしませんが、実際この分担というのはどういうことなんでしょう？</p>
-
-<p>デザイナーはHTMLは分かりますがJSFはわかりません。<br />
+<p>デザイナーはHTMLは分かりますがJSFはわかりません。<br>
 プログラマはHTMLもJSFも分かりますが、デザインセンスはそれを専属でやっているデザイナーのほうに
 一日の長があると思うので、素直にデザインは任せた方が良いでしょう。</p>
-
 <p>このようにHTMLしか分からない人が、HTMLに注力できるようにするには、
 そのファイルがHTMLとして認識、つまりAPサーバーを経由しなくても、ブラウザでレイアウトが表示できる必要があります。
 昔のJSPのように、JSPのタグやスクリプトレットで動的にレイアウトをするようにしていると、
 ブラウザでレイアウトが表示できないのでダメということですね。</p>
-
 <p>JSFはFaceletsというテンプレートエンジンを取り込んでいるので、
 特別なファイルではなく、XHTMLとして画面を作ることができます。
 そのため、JSFのコンポーネントを埋め込まなければ、このままブラウザで表示することができます。</p>
-
 <p>ですが、何も埋め込まないのでは静的なHPと何も変わらないので、
 JSFのコンポーネントを埋め込んでいく必要があり、下記のようなコンポーネントを埋め込んでしまうと、
 デザイナーが理解できない状態、ブラウザでレイアウトを確認できない状態になってしまいます。</p>
-
-<pre><code class="language-html">&lt;h:commandButton value=&quot;OK&quot; action=&quot; #{managedBean.doAction}&quot;/&gt;
-</code></pre>
-
-<p>ではどうしたら良いのでしょう？</p>
-
-<h2 id="jsf-2-1">JSF 2.1</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">h:commandButton</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;OK&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34; #{managedBean.doAction}&#34;</span>/&gt;
+</code></pre></div><p>ではどうしたら良いのでしょう？</p>
+<h2 id="jsf-21">JSF 2.1</h2>
 <p>JSF 2.1では、例えば下記のようにHTMLのタグにJSFのコンポーネント名を設定することによって、
 JSFのコンポーネントとして認識させることができます。もちろんJSF 2.2でもできます。</p>
-
-<pre><code class="language-html">&lt;input type=&quot;submit&quot; value=&quot;OK&quot; jsfc=&quot;h:commandButton&quot; action=&quot;#{managedBean.doAction}&quot;/&gt;
-</code></pre>
-
-<p>これをブラウザで表示してみます。</p>
-
-<p><img src="/images/post_image_25.png" alt="" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;OK&#34;</span> <span style="color:#a6e22e">jsfc</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;h:commandButton&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{managedBean.doAction}&#34;</span>/&gt;
+</code></pre></div><p>これをブラウザで表示してみます。</p>
+<p><img src="/images/post_image_25.png" alt=""></p>
 <p>h:commandButtonの方は見事に表示されませんが、jsfc属性で書いた方は普通のボタンとして表示されています。</p>
-
-<h2 id="jsf-2-2">JSF 2.2</h2>
-
+<h2 id="jsf-22">JSF 2.2</h2>
 <p>jsfc属性でJSFコンポーネントをHTMLとして認識させるのには十分でしたが、
 それぞれのJSFコンポーネント名をいちいち記載するのは面倒でした。コンポーネント名を正確に覚えていなければならないし&hellip;。
 JSF 2.2ではそこがさらに改善され、下記のようにコンポーネント名を書かなくても、JSFコンポーネントとして認識してくれるようになりました。
 namespaceは<code>xmlns:jsf=&quot;http://xmlns.jcp.org/jsf&quot;</code>です。</p>
-
-<pre><code class="language-html">&lt;input type=&quot;submit&quot; value=&quot;OK&quot; jsf:action=&quot;#{managedBean.doAction}&quot;/&gt;
-</code></pre>
-
-<p>詳しくは<a href="http://docs.oracle.com/javaee/7/tutorial/doc/">Java EE 7 Tutorial</a>を参考にしてください。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;OK&#34;</span> <span style="color:#a6e22e">jsf:action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{managedBean.doAction}&#34;</span>/&gt;
+</code></pre></div><p>詳しくは<a href="http://docs.oracle.com/javaee/7/tutorial/doc/">Java EE 7 Tutorial</a>を参考にしてください。</p>
 <h2 id="ちょっと発展">ちょっと発展</h2>
-
 <p>ここまでで、JSFコンポーネントのマークアップが簡単だということが分かりました。
 ただ、ビジネスアプリでは必ず登場するテーブルのJSFコンポーネントはちょっと考え方を変えないと、
 HTMLとして認識させるのは難しそうです。</p>
-
 <p>通常、JSFのテーブルコンポーネントは下記の形になります。</p>
-
-<pre><code class="language-html">&lt;h:dataTable var=&quot;item&quot; value=&quot;#{managedBean.items}&quot;&gt;
-    &lt;h:column&gt;
-        &lt;f:facet name=&quot;header&quot;&gt;ヘッダ１&lt;/f:facet&gt;
-        &lt;h:outputText value=&quot;#{item.value1}&quot;/&gt;
-    &lt;/h:column&gt;
-    &lt;h:column&gt;
-        &lt;f:facet name=&quot;header&quot;&gt;ヘッダ２&lt;/f:facet&gt;
-        &lt;h:outputText value=&quot;#{item.value2}&quot;/&gt;
-    &lt;/h:column&gt;
-&lt;/h:dataTable&gt;
-</code></pre>
-
-<p>これ、前から思ってたんですけど、HTMLのテーブルタグに慣れていると、
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">h:dataTable</span> <span style="color:#a6e22e">var</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;item&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{managedBean.items}&#34;</span>&gt;
+    &lt;<span style="color:#f92672">h:column</span>&gt;
+        &lt;<span style="color:#f92672">f:facet</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;header&#34;</span>&gt;ヘッダ１&lt;/<span style="color:#f92672">f:facet</span>&gt;
+        &lt;<span style="color:#f92672">h:outputText</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{item.value1}&#34;</span>/&gt;
+    &lt;/<span style="color:#f92672">h:column</span>&gt;
+    &lt;<span style="color:#f92672">h:column</span>&gt;
+        &lt;<span style="color:#f92672">f:facet</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;header&#34;</span>&gt;ヘッダ２&lt;/<span style="color:#f92672">f:facet</span>&gt;
+        &lt;<span style="color:#f92672">h:outputText</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{item.value2}&#34;</span>/&gt;
+    &lt;/<span style="color:#f92672">h:column</span>&gt;
+&lt;/<span style="color:#f92672">h:dataTable</span>&gt;
+</code></pre></div><p>これ、前から思ってたんですけど、HTMLのテーブルタグに慣れていると、
 ちょっと直感的ではないのですぐに組み方を忘れてしまいませんか？
 僕はいつも忘れてしまいます。
 それにHTMLとして表示もできません。
 これをHTMLとして表示できるように、なるべくテーブルタグに近づけていきたいと思います。</p>
-
 <p>まずは通常のテーブルタグを書きます。ここまではデザイナーの分担ですね。</p>
-
-<pre><code class="language-html">&lt;table&gt;
-    &lt;thead&gt;
-        &lt;tr&gt;
-            &lt;th&gt;ヘッダ１&lt;/th&gt;
-            &lt;th&gt;ヘッダ２&lt;/th&gt;
-        &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-        &lt;tr&gt;
-            &lt;td&gt;値１&lt;/td&gt;
-            &lt;td&gt;値２&lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-</code></pre>
-
-<p>ここにJSFのコンポーネントを組み込んでいきます。</p>
-
-<pre><code class="language-html">&lt;table&gt;
-    &lt;thead&gt;
-        &lt;tr&gt;
-            &lt;th&gt;ヘッダ１&lt;/th&gt;
-            &lt;th&gt;ヘッダ２&lt;/th&gt;
-        &lt;/tr&gt;
-    &lt;/thead&gt;
-    &lt;tbody&gt;
-        &lt;tr jsfc=&quot;ui:repeat&quot; var=&quot;item&quot; value=&quot;#{managedBean.items}&quot;&gt;
-            &lt;td&gt;#{item.value1}&lt;/td&gt;
-            &lt;td&gt;#{item.value2}&lt;/td&gt;
-        &lt;/tr&gt;
-    &lt;/tbody&gt;
-&lt;/table&gt;
-</code></pre>
-
-<p>tbodyのtrタグの部分にjsfc属性で<code>ui:repeat</code>を組み込みます。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">table</span>&gt;
+    &lt;<span style="color:#f92672">thead</span>&gt;
+        &lt;<span style="color:#f92672">tr</span>&gt;
+            &lt;<span style="color:#f92672">th</span>&gt;ヘッダ１&lt;/<span style="color:#f92672">th</span>&gt;
+            &lt;<span style="color:#f92672">th</span>&gt;ヘッダ２&lt;/<span style="color:#f92672">th</span>&gt;
+        &lt;/<span style="color:#f92672">tr</span>&gt;
+    &lt;/<span style="color:#f92672">thead</span>&gt;
+    &lt;<span style="color:#f92672">tbody</span>&gt;
+        &lt;<span style="color:#f92672">tr</span>&gt;
+            &lt;<span style="color:#f92672">td</span>&gt;値１&lt;/<span style="color:#f92672">td</span>&gt;
+            &lt;<span style="color:#f92672">td</span>&gt;値２&lt;/<span style="color:#f92672">td</span>&gt;
+        &lt;/<span style="color:#f92672">tr</span>&gt;
+    &lt;/<span style="color:#f92672">tbody</span>&gt;
+&lt;/<span style="color:#f92672">table</span>&gt;
+</code></pre></div><p>ここにJSFのコンポーネントを組み込んでいきます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">table</span>&gt;
+    &lt;<span style="color:#f92672">thead</span>&gt;
+        &lt;<span style="color:#f92672">tr</span>&gt;
+            &lt;<span style="color:#f92672">th</span>&gt;ヘッダ１&lt;/<span style="color:#f92672">th</span>&gt;
+            &lt;<span style="color:#f92672">th</span>&gt;ヘッダ２&lt;/<span style="color:#f92672">th</span>&gt;
+        &lt;/<span style="color:#f92672">tr</span>&gt;
+    &lt;/<span style="color:#f92672">thead</span>&gt;
+    &lt;<span style="color:#f92672">tbody</span>&gt;
+        &lt;<span style="color:#f92672">tr</span> <span style="color:#a6e22e">jsfc</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;ui:repeat&#34;</span> <span style="color:#a6e22e">var</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;item&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{managedBean.items}&#34;</span>&gt;
+            &lt;<span style="color:#f92672">td</span>&gt;#{item.value1}&lt;/<span style="color:#f92672">td</span>&gt;
+            &lt;<span style="color:#f92672">td</span>&gt;#{item.value2}&lt;/<span style="color:#f92672">td</span>&gt;
+        &lt;/<span style="color:#f92672">tr</span>&gt;
+    &lt;/<span style="color:#f92672">tbody</span>&gt;
+&lt;/<span style="color:#f92672">table</span>&gt;
+</code></pre></div><p>tbodyのtrタグの部分にjsfc属性で<code>ui:repeat</code>を組み込みます。
 JSF 2.2のjsfプレフックスは使えません。
 こうすることでサーバー経由で表示した<code>h:dataTable</code>と同じになるはずです。
 そうそう、ちゃんとHTMLとして表示されなければ意味がないので確認してみます。</p>
-
-<p><img src="/images/post_image_26.png" alt="" /></p>
-
+<p><img src="/images/post_image_26.png" alt=""></p>
 <p>分かりにくいのでボーダーを表示していますが、ちゃんとレイアウト通り表示されました。</p>
-
 <h2 id="まとめ">まとめ</h2>
-
 <p>こんな具合にJSFコンポーネントの情報を、HTMLのタグの属性として組み込めるようになっているので、
 今までよりもずっとデザイナーとプログラマの作業の分担がやり易くなっていると思います。
 まあ、デザイナーがいなくてもHTMLとして認識できるようにしておけば、
 いちいちサーバーを起動しなくてもレイアウトが確認できるので、
 JSFを使う場合は固有のタグではなく、HTMLの属性としてJSFを利用するようにした方が良いと思います。</p>
-
 <h2 id="補足">補足</h2>
-
 <p>IntelliJ IDEA 13 でもjsfプレフィックスでの補完は完全には効かなかったので、
 知らないとちょっと面倒かも :P</p>
-
 <p>Enjoy!</p>
 
       

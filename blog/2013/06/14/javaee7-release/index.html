@@ -78,91 +78,66 @@
       </div>
     </div>
     <article>
-      
-
-<p>JavaEE 7 がというかGlassFish 4 がリリースされた。<br />
+      <p>JavaEE 7 がというかGlassFish 4 がリリースされた。<br>
 会社でテストサーバとして使っているのは、GlassFish 3.1.2.2 なので早速入れ替えてみた。
 余談だが運用サーバはTomcatなので、どちらかというとテストサーバの方が性能が良い。</p>
-
-<p>で、意気揚々と起動してみた訳なのだが、起動できない。<br />
+<p>で、意気揚々と起動してみた訳なのだが、起動できない。<br>
 理由は単純で、GlassFish 4 はJDK7が必須にもかかわらず、プロジェクトのJDKのバージョンがJDK6なのである。
 まあコンパイル時にサーバのクラスのバージョンよりも古いバージョンでコンパイルしているよ、という警告が出ていたので
 何となくは思っていたのだが、改めて起動できないとちょっとショックではある。</p>
-
 <p>ひとまず、DataSourceの設定が今までと同じように出来ることは確認したので、
 それについて書こうと思う。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <h2 id="ドライバの配置">ドライバの配置</h2>
-
 <p>GlassFishで利用できるJDBCドライバには下記のものがある。</p>
-
 <p><strong><a href="https://glassfish.java.net/docs/4.0/administration-guide.pdf">Administration Guide</a>:</strong></p>
-
 <blockquote>
-<p>■ IBM DB2 Database Type 2 Driver<br />
-■ IBM DB2 Database Type 4 Driver<br />
-■ Java DB/Derby Type 4 Driver<br />
-■ MySQL Server Database Type 4 Driver<br />
-■ Oracle 10 Database Driver<br />
-■ Oracle 11 Database Driver<br />
-■ PostgreSQL Type 4 Driver<br />
-■ DataDirect Type 4 Driver for IBM DB2 Database<br />
-■ DataDirect Type 4 Driver for IBM Informix<br />
-■ DataDirect Type 4 Driver for Microsoft SQL Server Database<br />
-■ DataDirect Type 4 Driver for MySQL Server Database<br />
-■ DataDirect Type 4 Driver for Oracle 11 Database<br />
-■ DataDirect Type 4 Driver for Sybase Database<br />
-■ Inet Oraxo Driver for Oracle Database<br />
-■ Inet Merlia Driver for Microsoft SQL Server Database<br />
-■ Inet Sybelux Driver for Sybase Database<br />
+<p>■ IBM DB2 Database Type 2 Driver<br>
+■ IBM DB2 Database Type 4 Driver<br>
+■ Java DB/Derby Type 4 Driver<br>
+■ MySQL Server Database Type 4 Driver<br>
+■ Oracle 10 Database Driver<br>
+■ Oracle 11 Database Driver<br>
+■ PostgreSQL Type 4 Driver<br>
+■ DataDirect Type 4 Driver for IBM DB2 Database<br>
+■ DataDirect Type 4 Driver for IBM Informix<br>
+■ DataDirect Type 4 Driver for Microsoft SQL Server Database<br>
+■ DataDirect Type 4 Driver for MySQL Server Database<br>
+■ DataDirect Type 4 Driver for Oracle 11 Database<br>
+■ DataDirect Type 4 Driver for Sybase Database<br>
+■ Inet Oraxo Driver for Oracle Database<br>
+■ Inet Merlia Driver for Microsoft SQL Server Database<br>
+■ Inet Sybelux Driver for Sybase Database<br>
 ■ JConnect Type 4 Driver for Sybase ASE 12.5 Database</p>
 </blockquote>
-
 <p>沢山あるので困らないと思う。主に使っているのはPostgreSQLなので、今回はそのドライバを使うことにした。
 ドライバといってもjarファイルなので、ダウンロードしてきたjarファイルをGlassFishが認識できるクラスパスに配置する必要がある。
 これもAdministration Guideに記載があり、下記にあるように<code>domain-dir/lib</code>に配置すれば良いようだ。以前との変更点は無い。</p>
-
 <p><strong><a href="https://glassfish.java.net/docs/4.0/administration-guide.pdf">Administration Guide</a>:</strong></p>
-
 <blockquote>
 <p>Making the JDBC Driver JAR Files Accessible
 To integrate the JDBC driver into a GlassFish Server domain, copy the JAR files into the domain-dir/lib directory, then restart the server.</p>
 </blockquote>
-
 <p>サーバを起動したら<code>localhost:4848</code>にアクセスし、Resources -&gt; JDBC -&gt; JDBC Connection Pools と選択する。</p>
-
-<p><img src="/images/post_image_11.png" alt="" /></p>
-
+<p><img src="/images/post_image_11.png" alt=""></p>
 <p>Newボタンをクリックすると、コネクションプールの作成画面に変わる。
 今回はPostgreSQLのDataSourceを作るので、Resource Typeは<code>javax.sql.DataSource</code>、Database Driver Vendorは<code>Postgresql</code>を選択する。</p>
-
-<p><img src="/images/post_image_12.png" alt="" /></p>
-
+<p><img src="/images/post_image_12.png" alt=""></p>
 <p>必要事項の入力が終わったらNextボタンをクリックしよう。
 すると、コネクションプールの詳細な設定画面が表示されるが、上の方の設定はひとまず変更せず、
 一番下にあるAdditional Propertiesを設定する。</p>
-
-<p><img src="/images/post_image_13.png" alt="" /></p>
-
+<p><img src="/images/post_image_13.png" alt=""></p>
 <p>設定が終わったらFinishボタンをクリックしよう。っとその前に上の方の設定にPingというのがあるので、
 これをONにしておく。ここをONにしておけば、コネクションプールがちゃんとDBと接続できるか確認してくれるのだ。
 うまく接続できれば画面上部に成功を表すメッセージが表示されるはず。</p>
-
 <p>次にResources -&gt; JDBC -&gt; JDBC Resources と選択する。</p>
-
-<p><img src="/images/post_image_14.png" alt="" /></p>
-
+<p><img src="/images/post_image_14.png" alt=""></p>
 <p>Newボタンをクリックしてリソース設定画面を表示する。
 Pool Nameにはさっき作成したコネクションプールを指定する。あとはJNDI Nameに任意の名前を設定してOKボタンをクリックすればJNDIリソースの完成だ。
 このリソースは、こんな風に取得することができる。</p>
-
-<pre><code class="language-java">final Context ctx = new InitialContext();
-final DataSource dataSource = (DataSource) ctx.lookup(&quot;jdbc/demo&quot;);
-</code></pre>
-
-<p>ここまで設定できれば、あとは色々なWebアプリから利用するだけ。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Context ctx <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> InitialContext<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">final</span> DataSource dataSource <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>DataSource<span style="color:#f92672">)</span> ctx<span style="color:#f92672">.</span><span style="color:#a6e22e">lookup</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;jdbc/demo&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>ここまで設定できれば、あとは色々なWebアプリから利用するだけ。
 なんだかJavaEE 7 にはあまり関係がないが、今までと同じように設定が出来るということを報告しておく。</p>
 
       

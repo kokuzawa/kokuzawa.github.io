@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Html on KATSUMI KOKUZAWA&#39;S BLOG</title>
+    <title>HTML on KATSUMI KOKUZAWA&#39;S BLOG</title>
     <link>https://kokuzawa.github.io/tags/html/</link>
-    <description>Recent content in Html on KATSUMI KOKUZAWA&#39;S BLOG</description>
+    <description>Recent content in HTML on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 03 May 2015 22:12:37 +0900</lastBuildDate>
@@ -20,45 +19,34 @@
       <description>&lt;p&gt;子供用の英単語帳Webアプリを作っています。
 単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、
 Googleが提供しているテキスト読み上げAPIというのを見つけました。&lt;/p&gt;
-
 &lt;p&gt;使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。
 この例ではoneという単語を読み上げてくれます。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one
 &lt;/code&gt;&lt;/pre&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;これをHTMLに組み込みます。
 HTMLで音声を再生するためにはaudioタグを利用します。
 下記のように組み込むことで音声を再生するためのコントロールを表示することができます。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;&amp;lt;video src=&amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot; controls /&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;こんな感じになります。&lt;/p&gt;
-
-&lt;p&gt;&lt;video src=&#34;http://translate.google.com/translate_tts?tl=en&amp;q=one&#34; controls /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;!-- raw HTML omitted --&gt;&lt;/p&gt;
 &lt;p&gt;実際のアプリはJSF-2.2でFaceletを利用しています。
 このタグを組み込んだ場合、最初の一回目は正しく再生されますが
 2回目以降が再生されません。
 なぜダメなのか結局分からなかったのですが、
 UI的にはaudioコントロールを表示したくなかったので、
 タグを埋め込むのではなくJavaScriptで再生するようにしました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script&amp;gt;
-function play() {
-  var audio = document.createElement(&amp;quot;audio&amp;quot;);
-  audio.src = &amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;quot;;
-  audio.play();
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;play&lt;/span&gt;() {
+  &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;audio&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; document.&lt;span style=&#34;color:#a6e22e&#34;&gt;createElement&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;audio&amp;#34;&lt;/span&gt;);
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;audio&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://translate.google.com/translate_tts?tl=en&amp;amp;q=one&amp;#34;&lt;/span&gt;;
+  &lt;span style=&#34;color:#a6e22e&#34;&gt;audio&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;play&lt;/span&gt;();
 }
-&amp;lt;/script&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
 
-&amp;lt;a href=&amp;quot;#&amp;quot; onClick=&amp;quot;play()&amp;quot;&amp;gt;再生&amp;lt;/a&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;この場合audioコントロールは表示されないのですが、
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;href&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onClick&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;play()&amp;#34;&lt;/span&gt;&amp;gt;再生&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;a&lt;/span&gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;この場合audioコントロールは表示されないのですが、
 再生リンクをクリックするたびに正しく再生されます。&lt;/p&gt;
 </description>
     </item>

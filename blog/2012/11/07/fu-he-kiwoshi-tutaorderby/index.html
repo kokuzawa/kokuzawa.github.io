@@ -78,50 +78,37 @@
       </div>
     </div>
     <article>
-      
-
-<p>JPAで複合キークラスを使ってOrderByをやろうとしたら、メタデータの設定方法が分からなかったんだけど、分かってみれば簡単な話だった。</p>
-
+      <p>JPAで複合キークラスを使ってOrderByをやろうとしたら、メタデータの設定方法が分からなかったんだけど、分かってみれば簡単な話だった。</p>
 <h3 id="複合キーって何">複合キーって何？</h3>
-
 <p>JPAのエンティティには複数の@Idアノテーションが付与できないので、DBのテーブルに主キーが複数ある場合はその主キーをひとまとめにしたクラスを作成する。エンティティ上では、@EmbeddedIdアノテーションを付与すれば、その作成クラスを主キーとして指定できる。これを複合キーといって、実際には下記のようなクラス構成となる。（EntityPK.javaが複合キー）</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Entity</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Entity</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@EmbeddedId</span>
+    <span style="color:#66d9ef">private</span> EntityPK entityPK<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">@Entity
-public class Entity
-{
-    @EmbeddedId
-    private EntityPK entityPK;
+    <span style="color:#66d9ef">public</span> EntityPK <span style="color:#a6e22e">getEntityPK</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> entityPK<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Embeddable</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">EntityPK</span> <span style="color:#66d9ef">implements</span> Serializable
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Column</span>
+    <span style="color:#66d9ef">private</span> Integer key1<span style="color:#f92672">;</span>
 
-    public EntityPK getEntityPK()
-    {
-        return entityPK;
-    }
-}
-</code></pre>
-
-<pre><code class="language-java">@Embeddable
-public class EntityPK implements Serializable
-{
-    @Column
-    private Integer key1;
-
-    @Column
-    private Integer key2;
-}
-</code></pre>
-
-<h3 id="criteriaqueryでsqlを構築">CriteriaQueryでSQLを構築</h3>
-
+    <span style="color:#a6e22e">@Column</span>
+    <span style="color:#66d9ef">private</span> Integer key2<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h3 id="criteriaqueryでsqlを構築">CriteriaQueryでSQLを構築</h3>
 <p>この複合キーがあるエンティティに対してCriteriaQueryを使ってSQLを構築する。</p>
-
-<pre><code class="language-java">final CriteriaBuilder cb = entityManager.getCriteriaBuilder();
-final CriteriaQuery&lt;Entity&gt; query = cb.createQuery(Entity.class);
-final Root&lt;Entity&gt; root = query.from(Entity.class);
-query.select(root).orderBy(cb.asc(root.get(Entity_.entityPK)
-    .get(EntityPK_.key1)));
-</code></pre>
-
-<p>ここでポイントとなるのが、key1でソートしようとした場合、いきなり
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> CriteriaBuilder cb <span style="color:#f92672">=</span> entityManager<span style="color:#f92672">.</span><span style="color:#a6e22e">getCriteriaBuilder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">final</span> CriteriaQuery<span style="color:#f92672">&lt;</span>Entity<span style="color:#f92672">&gt;</span> query <span style="color:#f92672">=</span> cb<span style="color:#f92672">.</span><span style="color:#a6e22e">createQuery</span><span style="color:#f92672">(</span>Entity<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">final</span> Root<span style="color:#f92672">&lt;</span>Entity<span style="color:#f92672">&gt;</span> root <span style="color:#f92672">=</span> query<span style="color:#f92672">.</span><span style="color:#a6e22e">from</span><span style="color:#f92672">(</span>Entity<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+query<span style="color:#f92672">.</span><span style="color:#a6e22e">select</span><span style="color:#f92672">(</span>root<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">orderBy</span><span style="color:#f92672">(</span>cb<span style="color:#f92672">.</span><span style="color:#a6e22e">asc</span><span style="color:#f92672">(</span>root<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>Entity_<span style="color:#f92672">.</span><span style="color:#a6e22e">entityPK</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>EntityPK_<span style="color:#f92672">.</span><span style="color:#a6e22e">key1</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>ここでポイントとなるのが、key1でソートしようとした場合、いきなり
 <code>cb.asc(root.get(EntityPK_.key1))</code> と指定はできないので、
 <code>cb.asc(root.get(Entity_.entityPK).get(EntityPK_.key1))</code>
 のように連鎖した呼び出しにする必要がある、ということ。</p>

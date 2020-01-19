@@ -83,120 +83,90 @@ EclipseLinkの一意制約例外について書かれた
 「<a href="http://kikutaro777.hatenablog.com/entry/2013/04/24/225439">EclipseLinkで一意制約の例外を拾ってみたけど…</a>」
 の記事が Twitterで言及されていたので、ちょっと読んでたら<code>javax.persistence.EntityExistsException</code>がスローされないってあって、
 あれ、そうだったけ？とちょっと疑問に思ったので調べてみた。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <p>で、まあググると確かにスローされないって言っている人が沢山いたけど、
-やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。<br />
+やっぱり自分で試してみないと気が済まないので、下記のようなコードを書いて試してみる。<br>
 （コードにはlombokを適用してます）</p>
-
 <p><strong>persistence.xml:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;persistence</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/persistence&#34;</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;persistence-unit</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;testPU&#34;</span> <span style="color:#a6e22e">transaction-type=</span><span style="color:#e6db74">&#34;RESOURCE_LOCAL&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;provider</span><span style="color:#f92672">&gt;</span>org.eclipse.persistence.jpa.PersistenceProvider<span style="color:#f92672">&lt;/provider&gt;</span>
+        <span style="color:#f92672">&lt;class</span><span style="color:#f92672">&gt;</span>entity.Account<span style="color:#f92672">&lt;/class&gt;</span>
+        <span style="color:#f92672">&lt;properties</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.driver&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;org.apache.derby.jdbc.ClientDriver&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.url&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;jdbc:derby://localhost/test;create=true&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.user&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;APP&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.password&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;APP&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;eclipselink.ddl-generation&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;drop-and-create-tables&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/properties&gt;</span>
+    <span style="color:#f92672">&lt;/persistence-unit&gt;</span>
+<span style="color:#f92672">&lt;/persistence&gt;</span>
+</code></pre></div><p><strong>Account.java:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Entity</span>
+<span style="color:#a6e22e">@NoArgsConstructor</span>
+<span style="color:#a6e22e">@RequiredArgsConstructor</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Account</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Getter</span>
+    <span style="color:#a6e22e">@NonNull</span>
+    <span style="color:#a6e22e">@Id</span>
+    <span style="color:#66d9ef">private</span> Long id<span style="color:#f92672">;</span>
 
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot; version=&quot;2.0&quot;&gt;
-    &lt;persistence-unit name=&quot;testPU&quot; transaction-type=&quot;RESOURCE_LOCAL&quot;&gt;
-        &lt;provider&gt;org.eclipse.persistence.jpa.PersistenceProvider&lt;/provider&gt;
-        &lt;class&gt;entity.Account&lt;/class&gt;
-        &lt;properties&gt;
-            &lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.apache.derby.jdbc.ClientDriver&quot;/&gt;
-            &lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:derby://localhost/test;create=true&quot;/&gt;
-            &lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;APP&quot;/&gt;
-            &lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;APP&quot;/&gt;
-            &lt;property name=&quot;eclipselink.ddl-generation&quot; value=&quot;drop-and-create-tables&quot;/&gt;
-        &lt;/properties&gt;
-    &lt;/persistence-unit&gt;
-&lt;/persistence&gt;
-</code></pre>
-
-<p><strong>Account.java:</strong></p>
-
-<pre><code class="language-java">@Entity
-@NoArgsConstructor
-@RequiredArgsConstructor
-public class Account
-{
-    @Getter
-    @NonNull
-    @Id
-    private Long id;
-
-    @Getter @Setter
-    @NonNull
-    private String name;
-}
-</code></pre>
-
-<p><strong>AccountTest.java:</strong></p>
-
-<pre><code class="language-java">@Test(expected = EntityExistsException.class)
-public void testPersist() throws Exception
-{
-    Account account = new Account(1L, &quot;名前&quot;);
-    em.persist(account);
-}
-</code></pre>
-
-<p>accountテーブルには事前にid=1のデータを投入。<br />
+    <span style="color:#a6e22e">@Getter</span> <span style="color:#a6e22e">@Setter</span>
+    <span style="color:#a6e22e">@NonNull</span>
+    <span style="color:#66d9ef">private</span> String name<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><strong>AccountTest.java:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Test</span><span style="color:#f92672">(</span>expected <span style="color:#f92672">=</span> EntityExistsException<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testPersist</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+<span style="color:#f92672">{</span>
+    Account account <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Account<span style="color:#f92672">(</span>1L<span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;名前&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    em<span style="color:#f92672">.</span><span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>account<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>accountテーブルには事前にid=1のデータを投入。<br>
 この状態で実行すると下記のようなエラーがでる。確かに<code>EntityExistsException</code>はスローされない。</p>
-
 <pre><code>javax.persistence.PersistenceException: Exception [EclipseLink-4002] (Eclipse Persistence Services - 2.5.1.v20130918-f2b9fc5): org.eclipse.persistence.exceptions.DatabaseException
 Internal Exception: java.sql.SQLIntegrityConstraintViolationException: このステートメントは、ユニークまたは主キー制約、または 'ACCOUNT' 上で定義された 'SQL140131234011701' によって識別されるユニーク索引において重複キー値の原因となる可能性があったため、打ち切られました。
 Error Code: -1
 Call: INSERT INTO account (ID, NAME) VALUES (?, ?)
 </code></pre>
-
-<p>うーん、仕様としては存在しているのだから、何かが間違っているのか&hellip;<br />
+<p>うーん、仕様としては存在しているのだから、何かが間違っているのか&hellip;<br>
 わからないので、EclipseLinkのコードを追ってみることに。</p>
-
 <p><strong>org.eclipse.persistence.internal.jpa.EntityManagerImpl.java:</strong></p>
-
-<pre><code class="language-java">try {
-    getActivePersistenceContext(checkForTransaction(false)).registerNewObjectForPersist(entity, new IdentityHashMap());
-} catch (RuntimeException exception) {
-    if (exception instanceof ValidationException) {
-        throw new EntityExistsException(exception.getLocalizedMessage(), exception);
-    }
-    throw exception;
-}
-</code></pre>
-
-<p>コードを見る限り、<code>EntityManager#persist()</code>で<code>EntityExistsException</code>をスローしているように見える。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+    getActivePersistenceContext<span style="color:#f92672">(</span>checkForTransaction<span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">registerNewObjectForPersist</span><span style="color:#f92672">(</span>entity<span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> IdentityHashMap<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span> <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>RuntimeException exception<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>exception <span style="color:#66d9ef">instanceof</span> ValidationException<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> EntityExistsException<span style="color:#f92672">(</span>exception<span style="color:#f92672">.</span><span style="color:#a6e22e">getLocalizedMessage</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> exception<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">throw</span> exception<span style="color:#f92672">;</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>コードを見る限り、<code>EntityManager#persist()</code>で<code>EntityExistsException</code>をスローしているように見える。
 この<code>ValidationException</code>とは何なのか？どこから来たんだろう&hellip;。
 というわけでここからどんどん辿って行くと、最終的にフラグが立っている場合にチェックしていることが分かる。
 で、そのフラグがどこで立つのかをさらに辿って行くと、<code>eclipselink.validate-existence</code>というプロパティを参照している様子。</p>
-
 <p>ああ、これはpersistence.xmlで設定できるやつだ、ということで下記をpersistence.xmlに設定する。</p>
-
-<pre><code class="language-xml">&lt;property name=&quot;eclipselink.validate-existence&quot; value=&quot;true&quot;/&gt;
-</code></pre>
-
-<p>もう一回実行してみた。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;eclipselink.validate-existence&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+</code></pre></div><p>もう一回実行してみた。</p>
 <pre><code>javax.persistence.EntityExistsException: 
 Exception Description: Cannot persist detached object [Account(id=1, name=名前)]. 
 Class&gt; entity.Account Primary Key&gt; 1
 </code></pre>
-
 <p>でた！確証を得るためにEclipseLinkのドキュメントを見てみる。</p>
-
 <p><strong><a href="http://www.eclipse.org/eclipselink/documentation/2.5/jpa/extensions/p_validate_existence.htm">EclipseLink</a></strong>:</p>
-
 <blockquote>
-<p>Use the eclipselink.validate-existence persistence property configures to specify if EclipseLink should verify an object&rsquo;s existence on persist().</p>
+<p>Use the eclipselink.validate-existence persistence property configures to specify if EclipseLink should verify an object's existence on persist().</p>
 </blockquote>
-
 <p>「eclipselink.validate-existenceプロパティを使用して、EclipseLinkがpersist()でオブジェクトの存在を検証するかどうかを指定します。」
 ということなのでこれで合っているようだけど、デフォルトがfalseなので検証しないようだ。
 ただ、ちょっと気になるのは使用方法の部分、</p>
-
 <blockquote>
 <p>EclipseLink will throw an error if a validated object is not in the persistence context.</p>
 </blockquote>
-
-<p>not in the persistence context ってことは存在しない場合にエラーがスローされるの？<br />
+<p>not in the persistence context ってことは存在しない場合にエラーがスローされるの？<br>
 この記述あってるのかなぁ？英語は得意じゃないので解釈が間違っているのかもしれない。
 あ、persistence context に存在しないってことは、DBに存在していてfindしていなければエラーになるってことかな。</p>
-
 <p>Enjoy !</p>
 
       

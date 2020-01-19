@@ -83,45 +83,34 @@
       <p>子供用の英単語帳Webアプリを作っています。
 単語の読み上げ機能があると便利だなと思い、そんなAPIはないかと調べてみると、
 Googleが提供しているテキスト読み上げAPIというのを見つけました。</p>
-
 <p>使い方はとても簡単で、下記のようなURLを呼び出せば良いようです。
 この例ではoneという単語を読み上げてくれます。</p>
-
 <pre><code>http://translate.google.com/translate_tts?tl=en&amp;q=one
 </code></pre>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <p>これをHTMLに組み込みます。
 HTMLで音声を再生するためにはaudioタグを利用します。
 下記のように組み込むことで音声を再生するためのコントロールを表示することができます。</p>
-
 <pre><code>&lt;video src=&quot;http://translate.google.com/translate_tts?tl=en&amp;q=one&quot; controls /&gt;
 </code></pre>
-
 <p>こんな感じになります。</p>
-
-<p><video src="http://translate.google.com/translate_tts?tl=en&q=one" controls /></p>
-
+<p><!-- raw HTML omitted --></p>
 <p>実際のアプリはJSF-2.2でFaceletを利用しています。
 このタグを組み込んだ場合、最初の一回目は正しく再生されますが
 2回目以降が再生されません。
 なぜダメなのか結局分からなかったのですが、
 UI的にはaudioコントロールを表示したくなかったので、
 タグを埋め込むのではなくJavaScriptで再生するようにしました。</p>
-
-<pre><code class="language-html">&lt;script&gt;
-function play() {
-  var audio = document.createElement(&quot;audio&quot;);
-  audio.src = &quot;http://translate.google.com/translate_tts?tl=en&amp;q=one&quot;;
-  audio.play();
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span>&gt;
+<span style="color:#66d9ef">function</span> <span style="color:#a6e22e">play</span>() {
+  <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">audio</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">createElement</span>(<span style="color:#e6db74">&#34;audio&#34;</span>);
+  <span style="color:#a6e22e">audio</span>.<span style="color:#a6e22e">src</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;http://translate.google.com/translate_tts?tl=en&amp;q=one&#34;</span>;
+  <span style="color:#a6e22e">audio</span>.<span style="color:#a6e22e">play</span>();
 }
-&lt;/script&gt;
+&lt;/<span style="color:#f92672">script</span>&gt;
 
-&lt;a href=&quot;#&quot; onClick=&quot;play()&quot;&gt;再生&lt;/a&gt;
-</code></pre>
-
-<p>この場合audioコントロールは表示されないのですが、
+&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#&#34;</span> <span style="color:#a6e22e">onClick</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;play()&#34;</span>&gt;再生&lt;/<span style="color:#f92672">a</span>&gt;
+</code></pre></div><p>この場合audioコントロールは表示されないのですが、
 再生リンクをクリックするたびに正しく再生されます。</p>
 
       

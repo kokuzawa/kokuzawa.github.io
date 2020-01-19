@@ -78,28 +78,18 @@
       </div>
     </div>
     <article>
-      
-
-<blockquote>
+      <blockquote>
 <p>java.util.concurrent.ExecutionException: com.sun.faces.config.ConfigurationException: Unable to parse document &lsquo;bundle://213.0:1/com/sun/faces/jsf-ri-runtime.xml&rsquo;: DTD factory class org.apache.xerces.impl.dv.dtd.DTDDVFactoryImpl does not extend from DTDDVFactory.</p>
 </blockquote>
-
 <p>JSFを利用していると発生しているようなので、warファイル内のjavax.faces-2.1.4.jarを取り除いて再度デプロイ。でも変化なし。
 （JSFのライブラリはGlassFishに含まれている。バージョンはわからないけど）</p>
-
 <p>何度か再デプロイをしていると起動できるので、それほど真剣に調べていなかったけど、本腰をいれて調べてみることにした。</p>
-
 <h3 id="結果">結果</h3>
-
 <p>ログを見ると<code>org.apache.xerces.impl.dv.dtd.DTDDVFactoryImpl</code>関係でエラーが発生して<code>bundle://213.0:1/com/sun/faces/jsf-ri-runtime.xml</code>がパースできないことがわかる。</p>
-
 <p>っていうか<code>bundle://213.0:1/com/sun/faces/jsf-ri-runtime.xml</code>って何だろう？ひとまずこれについてはあとで調査。</p>
-
 <p>おそらくGlassFishで利用しているXMLパーサとぶつかっているせいだと思う。warファイル内からxercesImpl-2.8.1.jarを取り除いてデプロイしたところ正常に起動ができた。
 取り除いても正常に起動できたのでXMLパーサがGlassFishに含まれてるのは間違いないと推測できるが、GlassFishのどこにXMLパーサが含まれているのかがわからない。</p>
-
 <h4 id="追記-nov-11-2012">追記: Nov 11, 2012</h4>
-
 <p>運用環境はTomcatだからxercesImpl-2.8.1.jarを取り除いちゃダメなんじゃないかと思う。</p>
 
       

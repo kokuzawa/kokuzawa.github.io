@@ -82,28 +82,20 @@
       </div>
     </div>
     <article>
-      
-
-<p>IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、
+      <p>IntelliJ IDEAからDocker上のWildFlyコンテナにアプリケーションをデプロイし、
 デバッグモードで起動することでステップ実行ができる環境を作ることが今回の目的です。
 Docker上にコンテナを起動できる環境はできている前提になります。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <h2 id="環境">環境</h2>
-
 <ul>
 <li>OS: Mac OSX 10.11.3</li>
-<li>Java: Java&trade; SE Runtime Environment (build 1.8.0_60-b27)</li>
+<li>Java: Java(TM) SE Runtime Environment (build 1.8.0_60-b27)</li>
 <li>メモリ: 16GB</li>
 <li>Docker version 1.9.1</li>
 </ul>
-
 <h2 id="アプリの準備">アプリの準備</h2>
-
 <p>どんなアプリでも良いのですが最終的な生成物はwarファイルにします。
 今回はMavenプロジェクトで下記のようなフォルダ構成にします。</p>
-
 <pre><code>docker-wildfly-example/
 ├── Dockerfile
 ├── container_settings.json
@@ -119,10 +111,7 @@ Docker上にコンテナを起動できる環境はできている前提にな�
             ├── WEB-INF
             │   └── web.xml
             └── index.xhtml
-</code></pre>
-
-<p>肝心なDockerfileの内容は下記のようになります。</p>
-
+</code></pre><p>肝心なDockerfileの内容は下記のようになります。</p>
 <pre><code># WildFlyのイメージを取得
 FROM jboss/wildfly:latest
 
@@ -137,39 +126,28 @@ EXPOSE 9999
 
 # WildFlyの実行
 CMD [&quot;/opt/jboss/wildfly/bin/standalone.sh&quot;, &quot;-b&quot;, &quot;0.0.0.0&quot;, &quot;--debug&quot;, &quot;9999&quot;]
-</code></pre>
-
-<p><code>mvn package</code>することで生成される<code>target/docker-wildfly-example.war</code>ファイルを
+</code></pre><p><code>mvn package</code>することで生成される<code>target/docker-wildfly-example.war</code>ファイルを
 コンテナ上の<code>/opt/jboss/wildfly/standalone/deployments/</code>に配置することで
 WildFly起動時に自動的にデプロイさせます。
 また、デバッグ用のポートとして<code>9999</code>を使用するため<code>EXPOSE</code>に指定します。</p>
-
 <p>デバッグはリモートデバッグをすることになるので、
 WildFly起動オプションに<code>--debug</code>を付与して<code>9999</code>ポートを指定します。</p>
-
 <h2 id="実行環境の構築">実行環境の構築</h2>
-
 <p>IntelliJ IDEAにDocker PluginがインストールされているとRun/Debug ConfigurationsにDocker Deploymentを追加することができます。</p>
-
-<p><img src="/images/post_image_41.png" alt="" /></p>
-
+<p><img src="/images/post_image_41.png" alt=""></p>
 <p>Debugポートに9999を指定すると画面下部にワーニングが表示されます。</p>
-
 <pre><code>Warning: Debug port forwarding not found
 </code></pre>
-
 <p>このワーニングの右側にFixボタンを表示されるのでこれをクリックすると
 port設定をしたjsonファイルの保存先を聞かれるので任意の場所に保存します。
 アプリケーションツリーにあるcontainer_settings.jsonがそれになります。
 このファイルはContainerタブのJSON fileの項目に設定されます。</p>
-
 <p>やっていることはContainerタブのport bindingsで9999ポートを追加したのと同じことなのですが、
 port bindingsに設定してもワーニングが消えません。
 ワーニングは消えなくてもport bindingsの設定は有効になるので
 ワーニングが気にならないようであればport bindingsに設定しても良いです。
 ただし注意点としてjsonファイルとport bindingsの両方を指定するとport bindingsの方の設定が無視されるようです。
 9999以外のポートをバインドする場合は注意する必要があります。</p>
-
 <p>これでデバッグ起動すればステップ実行ができるようになります。</p>
 
       

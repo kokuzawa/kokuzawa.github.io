@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Derby on KATSUMI KOKUZAWA&#39;S BLOG</title>
@@ -17,15 +16,10 @@
       <pubDate>Sun, 09 Mar 2014 14:43:26 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/03/09/derby-does-not-start/</guid>
-      <description>
-
-&lt;p&gt;Java8を入れたらGlassFishに付属しているDerbyが起動できなくなっていたので、下記を&lt;code&gt;$JAVA_HONE/jre/lib/security/java.policy&lt;/code&gt;に追記しました。&lt;/p&gt;
-
+      <description>&lt;p&gt;Java8を入れたらGlassFishに付属しているDerbyが起動できなくなっていたので、下記を&lt;code&gt;$JAVA_HONE/jre/lib/security/java.policy&lt;/code&gt;に追記しました。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;permission java.net.SocketPermission &amp;quot;localhost:1527&amp;quot;, &amp;quot;listen,resolve&amp;quot;;
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://d.hatena.ne.jp/seraphy/20140214&#34;&gt;Java7u51以降でApache Derbyのネットワークサーバを使う場合の設定&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;

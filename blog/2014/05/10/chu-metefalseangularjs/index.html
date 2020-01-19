@@ -76,96 +76,72 @@
       </div>
     </div>
     <article>
-      
-
-<p>AngularJS + JAX-RS + JPA でアプリを作ってます。
+      <p>AngularJS + JAX-RS + JPA でアプリを作ってます。
 今回 AngularJS を初めて使っているんですがとても便利ですね。
 どの辺りがと言われると、具体的に答えられるほど使い込んでいないので答えに窮するのですが、
 今分かっている範囲では、テストが簡単にできるのが良い感じです。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <h2 id="基本">基本</h2>
-
 <p>AngularJS を利用するためには当たり前ですが、jsファイルを呼び出す必要があります。
 これは AngularJS の<a href="https://angularjs.org">公式サイト</a>からダウンロードできるので、そこから取得しました。
 ダウンロードしたファイルを任意の場所に配置し、下記を <code>head</code> タグの間に追加します。</p>
-
-<pre><code class="language-html">&lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
-</code></pre>
-
-<p>あと、下記の <code>ng-app</code> を忘れずに <code>html</code> タグに追加します。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;angular.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+</code></pre></div><p>あと、下記の <code>ng-app</code> を忘れずに <code>html</code> タグに追加します。
 これは、このページが AngularJS のページだよと宣言するためのディレクティブだそうです。</p>
-
-<pre><code class="language-html">&lt;html ng-app&gt;
-</code></pre>
-
-<h2 id="初期値の設定">初期値の設定</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">ng-app</span>&gt;
+</code></pre></div><h2 id="初期値の設定">初期値の設定</h2>
 <p>AngularJS は <code>ng-repeat</code> というディレクティブを利用することで繰り返し処理をすることができます。
 繰り返し処理で出力するデータは下記のように <code>ng-init</code> を利用して初期値を設定することができます。
 まあ、下記のコードだと繰り返し処理をさせる意味はあまりないのですが&hellip;。</p>
-
-<pre><code class="language-html">&lt;html ng-app&gt;
-  &lt;head&gt;
-    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div ng-init=&quot;names = ['Taro', 'Jiro', 'Hanako']&quot;&gt;
-      &lt;div ng-repeat=&quot;name in names&quot;&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">ng-app</span>&gt;
+  &lt;<span style="color:#f92672">head</span>&gt;
+    &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;angular.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+  &lt;/<span style="color:#f92672">head</span>&gt;
+  &lt;<span style="color:#f92672">body</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">ng-init</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;names = [&#39;Taro&#39;, &#39;Jiro&#39;, &#39;Hanako&#39;]&#34;</span>&gt;
+      &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">ng-repeat</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;name in names&#34;</span>&gt;
         {{name}}
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>これを実行すると以下のような画面が表示されます。</p>
-
+      &lt;/<span style="color:#f92672">div</span>&gt;
+    &lt;/<span style="color:#f92672">div</span>&gt;
+  &lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>これを実行すると以下のような画面が表示されます。</p>
 <pre><code>Taro
 Jiro
 Hanako
 </code></pre>
-
 <p>とても簡単です。
 ここで表示している Taro, Jiro, Hanako の値を API から取得して表示しようとした場合は下記のようなコードになります。</p>
-
 <p>{% raw %}</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">ng-app</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myApp&#34;</span>&gt;
+  &lt;<span style="color:#f92672">head</span>&gt;
+    &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;angular.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+    &lt;<span style="color:#f92672">script</span> <span style="color:#a6e22e">src</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;angular-resource.js&#34;</span>&gt;&lt;/<span style="color:#f92672">script</span>&gt;
+    &lt;<span style="color:#f92672">script</span>&gt;
+      <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">myApp</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">angular</span>.<span style="color:#a6e22e">module</span>(<span style="color:#e6db74">&#39;myApp&#39;</span>, [<span style="color:#e6db74">&#39;ngResource&#39;</span>]);
 
-<pre><code class="language-html">&lt;html ng-app=&quot;myApp&quot;&gt;
-  &lt;head&gt;
-    &lt;script src=&quot;angular.js&quot;&gt;&lt;/script&gt;
-    &lt;script src=&quot;angular-resource.js&quot;&gt;&lt;/script&gt;
-    &lt;script&gt;
-      var myApp = angular.module('myApp', ['ngResource']);
-
-      myApp.factory('testService', ['$resource', function($resource)
+      <span style="color:#a6e22e">myApp</span>.<span style="color:#a6e22e">factory</span>(<span style="color:#e6db74">&#39;testService&#39;</span>, [<span style="color:#e6db74">&#39;$resource&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">$resource</span>)
       {
-        return $resource('/test/rest/names', {query: {method: 'GET', isArray: true}});
+        <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">$resource</span>(<span style="color:#e6db74">&#39;/test/rest/names&#39;</span>, {<span style="color:#a6e22e">query</span><span style="color:#f92672">:</span> {<span style="color:#a6e22e">method</span><span style="color:#f92672">:</span> <span style="color:#e6db74">&#39;GET&#39;</span>, <span style="color:#a6e22e">isArray</span><span style="color:#f92672">:</span> <span style="color:#66d9ef">true</span>}});
       }]);
 
-      myApp.controller('myCtrl', ['testService', '$scope', function(testService, $scope)
+      <span style="color:#a6e22e">myApp</span>.<span style="color:#a6e22e">controller</span>(<span style="color:#e6db74">&#39;myCtrl&#39;</span>, [<span style="color:#e6db74">&#39;testService&#39;</span>, <span style="color:#e6db74">&#39;$scope&#39;</span>, <span style="color:#66d9ef">function</span>(<span style="color:#a6e22e">testService</span>, <span style="color:#a6e22e">$scope</span>)
       {
-        $scope.names = testService.query();
+        <span style="color:#a6e22e">$scope</span>.<span style="color:#a6e22e">names</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">testService</span>.<span style="color:#a6e22e">query</span>();
       }]);
-    &lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-    &lt;div ng-controller=&quot;myCtrl&quot;&gt;
-      &lt;div ng-repeat=&quot;name in names&quot;&gt;
+    &lt;/<span style="color:#f92672">script</span>&gt;
+  &lt;/<span style="color:#f92672">head</span>&gt;
+  &lt;<span style="color:#f92672">body</span>&gt;
+    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">ng-controller</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;myCtrl&#34;</span>&gt;
+      &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">ng-repeat</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;name in names&#34;</span>&gt;
         {{name}}
-      &lt;/div&gt;
-    &lt;/div&gt;
-  &lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>{% endraw %}</p>
-
+      &lt;/<span style="color:#f92672">div</span>&gt;
+    &lt;/<span style="color:#f92672">div</span>&gt;
+  &lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>{% endraw %}</p>
 <h3 id="参考">参考</h3>
-
 <p>以下のサイトを参考にしました。</p>
-
 <ul>
 <li><a href="https://angularjs.org">AngularJS 公式サイト</a></li>
 <li><a href="http://dotinstall.com/lessons/basic_angularjs">ドットインストール - AngularJS入門</a></li>

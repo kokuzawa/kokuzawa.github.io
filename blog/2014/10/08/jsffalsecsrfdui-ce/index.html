@@ -78,29 +78,21 @@
       </div>
     </div>
     <article>
-      
-
-<p>だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。
+      <p>だいぶ前にリリースされたJSF 2.2ではCSRF対策の機能が追加されました。
 そこで、JSFをどのように利用している場合にCSRFの脆弱性が発生するのかと、
 JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのように防げるのかを確認してみます。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <h2 id="環境">環境</h2>
-
 <ul>
 <li>OS: Mac OSX 10.9.4</li>
-<li>Java: Java&trade; SE Runtime Environment (build 1.8.0-b132)</li>
+<li>Java: Java(TM) SE Runtime Environment (build 1.8.0-b132)</li>
 <li>メモリ: 4GB</li>
 <li>WildFly 8.0.0.Final</li>
 </ul>
-
 <h2 id="アプリを作る">アプリを作る</h2>
-
 <p>CSRFの脆弱性がある、といわれても具体例がないとなかなかイメージするのが難しいかもしれません。
 そこで、ここでは実際に攻撃を受けるアプリを作り、脆弱性を露呈されてみたいと思います。
 コードの構成は下記のようになります。</p>
-
 <pre><code>JSFCSRFSample
     +- src
     |  +- main
@@ -117,140 +109,101 @@ JSF 2.2で追加されたCSRF対策を実施すると、この問題をどのよ
     |          +- web.xml
     +- pom.xml
 </code></pre>
-
 <p>index.xhtmlページでボタンをクリックすることで、result.xhtmlページに遷移します。
 ユースケースとして、result.xhtmlでindex.xhtmlから受け取ったパラメータを登録して、その値を表示することを想定します。
 サンプルコードでは、index.xhmlから送信したパラメータをFormBean.javaで受け取り、
 その値を加工して結果を表示しています。
 index.xhtml、result.xhtml、FormBean.javaは下記のように非常にシンプルな構成です。</p>
-
 <p><strong>index.xhtml:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">xmlns</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.w3.org/1999/xhtml&#34;</span>
+      <span style="color:#a6e22e">xmlns:h</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://xmlns.jcp.org/jsf/html&#34;</span>
+      <span style="color:#a6e22e">xmlns:f</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://xmlns.jcp.org/jsf/core&#34;</span>&gt;
+&lt;<span style="color:#f92672">f:view</span> <span style="color:#a6e22e">transient</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;true&#34;</span>&gt;
+    &lt;<span style="color:#f92672">h:button</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Jump!&#34;</span> <span style="color:#a6e22e">outcome</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;/result?text=ああああ&#34;</span>/&gt;
+&lt;/<span style="color:#f92672">f:view</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p><strong>result.xhtml:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">xmlns</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.w3.org/1999/xhtml&#34;</span>
+      <span style="color:#a6e22e">xmlns:h</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://xmlns.jcp.org/jsf/html&#34;</span>
+      <span style="color:#a6e22e">xmlns:f</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://xmlns.jcp.org/jsf/core&#34;</span>&gt;
+&lt;<span style="color:#f92672">f:view</span>&gt;
+    &lt;<span style="color:#f92672">f:metadata</span>&gt;
+        &lt;<span style="color:#f92672">f:viewParam</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{formBean.text}&#34;</span>/&gt;
+    &lt;/<span style="color:#f92672">f:metadata</span>&gt;
+    &lt;<span style="color:#f92672">p</span>&gt;結果を表示:&lt;/<span style="color:#f92672">p</span>&gt;
+    &lt;<span style="color:#f92672">h:outputText</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;#{formBean.text}&#34;</span>/&gt;
+&lt;/<span style="color:#f92672">f:view</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p><strong>FormBean.java:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi.bean<span style="color:#f92672">;</span>
 
-<pre><code class="language-html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
-      xmlns:h=&quot;http://xmlns.jcp.org/jsf/html&quot;
-      xmlns:f=&quot;http://xmlns.jcp.org/jsf/core&quot;&gt;
-&lt;f:view transient=&quot;true&quot;&gt;
-    &lt;h:button value=&quot;Jump!&quot; outcome=&quot;/result?text=ああああ&quot;/&gt;
-&lt;/f:view&gt;
-&lt;/html&gt;
-</code></pre>
+<span style="color:#f92672">import</span> lombok.Setter<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.enterprise.context.RequestScoped<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.inject.Named<span style="color:#f92672">;</span>
 
-<p><strong>result.xhtml:</strong></p>
+<span style="color:#a6e22e">@Named</span>
+<span style="color:#a6e22e">@RequestScoped</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">FormBean</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Setter</span>
+    <span style="color:#66d9ef">private</span> String text<span style="color:#f92672">;</span>
 
-<pre><code class="language-html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
-      xmlns:h=&quot;http://xmlns.jcp.org/jsf/html&quot;
-      xmlns:f=&quot;http://xmlns.jcp.org/jsf/core&quot;&gt;
-&lt;f:view&gt;
-    &lt;f:metadata&gt;
-        &lt;f:viewParam name=&quot;text&quot; value=&quot;#{formBean.text}&quot;/&gt;
-    &lt;/f:metadata&gt;
-    &lt;p&gt;結果を表示:&lt;/p&gt;
-    &lt;h:outputText value=&quot;#{formBean.text}&quot;/&gt;
-&lt;/f:view&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p><strong>FormBean.java:</strong></p>
-
-<pre><code class="language-java">package org.katsumi.bean;
-
-import lombok.Setter;
-import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
-
-@Named
-@RequestScoped
-public class FormBean
-{
-    @Setter
-    private String text;
-
-    public String getText()
-    {
-        return String.format(&quot;登録しました「%s」&quot;, text);
-    }
-}
-</code></pre>
-
-<h2 id="攻撃する">攻撃する</h2>
-
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;登録しました「%s」&#34;</span><span style="color:#f92672">,</span> text<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="攻撃する">攻撃する</h2>
 <p>準備はできたので、実際に動作させて攻撃してみます。
 起動後にindex.xhtmlにアクセスすると下記の画面が表示されます。</p>
-
-<p><img src="/images/post_image_32.png" alt="" /></p>
-
+<p><img src="/images/post_image_32.png" alt=""></p>
 <p>「Jump!」ボタンをクリックすると、パラメータが送信されてresult.xhtmlが表示されます。</p>
-
-<p><img src="/images/post_image_33.png" alt="" /></p>
-
+<p><img src="/images/post_image_33.png" alt=""></p>
 <p>ここで、攻撃者が用意した下記のリンクを踏んだと仮定します。</p>
-
 <pre><code>http://localhost/jsf-csrf/result.xhtml?text=攻撃
 </code></pre>
-
 <p>同一ブラウザであれば、同じセッションIDがサーバーに送信されるはずなので、
 認証をセッションIDベースで行っている場合は問題なくスルーされるはずです。
 というわけで、下記の結果になります。</p>
-
-<p><img src="/images/post_image_34.png" alt="" /></p>
-
+<p><img src="/images/post_image_34.png" alt=""></p>
 <p>意図していない文字列が登録されてしまいました。</p>
-
 <h2 id="対策をする">対策をする</h2>
-
 <p>このように悪意を持ったリンクを踏んでしまうと、
 ユーザの意図しない文字列を簡単に登録できてしまうという脆弱性がこのアプリには存在します。
 CSRFの対策は、元の画面にトークンを埋め込み、受け取り先でそのトークンの一致を検証することで
 正しいルートからのリクエストであることを判定する方法が一般的です。
 JSF 2.2からこの仕組みを利用できるようになっているので対策をします。</p>
-
 <p>faces-config.xmlに下記を追記してresult.xhtmlページを保護します。</p>
-
 <p><strong>faces-config.xml:</strong></p>
-
-<pre><code class="language-xml">&lt;protected-views&gt;
-    &lt;url-pattern&gt;/result.xhtml&lt;/url-pattern&gt;
-&lt;/protected-views&gt;
-</code></pre>
-
-<p>JSFでは保護されたページに不正にアクセスすると<code>javax.faces.application.ProtectedViewException</code>がスローされます。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;protected-views</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;url-pattern</span><span style="color:#f92672">&gt;</span>/result.xhtml<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+<span style="color:#f92672">&lt;/protected-views&gt;</span>
+</code></pre></div><p>JSFでは保護されたページに不正にアクセスすると<code>javax.faces.application.ProtectedViewException</code>がスローされます。
 そこで、保護されたページにアクセスした場合に表示されるエラーページの設定をweb.xmlに追記します。</p>
-
 <p><strong>warning.xhtml:</strong></p>
-
-<pre><code class="language-html">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
-      xmlns:f=&quot;http://xmlns.jcp.org/jsf/core&quot;&gt;
-&lt;f:view&gt;
-    &lt;h1&gt;不正なリクエストです。&lt;/h1&gt;
-&lt;/f:view&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p><strong>web.xml:</strong></p>
-
-<pre><code class="language-xml">&lt;error-page&gt;
-    &lt;exception-type&gt;javax.faces.application.ProtectedViewException&lt;/exception-type&gt;
-    &lt;location&gt;/warning.xhtml&lt;/location&gt;
-&lt;/error-page&gt;
-</code></pre>
-
-<p>攻撃者が用意した先ほどのリンクを送信すると下記の結果になりました。</p>
-
-<p><img src="/images/post_image_35.png" alt="" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span> <span style="color:#a6e22e">xmlns</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://www.w3.org/1999/xhtml&#34;</span>
+      <span style="color:#a6e22e">xmlns:f</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;http://xmlns.jcp.org/jsf/core&#34;</span>&gt;
+&lt;<span style="color:#f92672">f:view</span>&gt;
+    &lt;<span style="color:#f92672">h1</span>&gt;不正なリクエストです。&lt;/<span style="color:#f92672">h1</span>&gt;
+&lt;/<span style="color:#f92672">f:view</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p><strong>web.xml:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;error-page</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;exception-type</span><span style="color:#f92672">&gt;</span>javax.faces.application.ProtectedViewException<span style="color:#f92672">&lt;/exception-type&gt;</span>
+    <span style="color:#f92672">&lt;location</span><span style="color:#f92672">&gt;</span>/warning.xhtml<span style="color:#f92672">&lt;/location&gt;</span>
+<span style="color:#f92672">&lt;/error-page&gt;</span>
+</code></pre></div><p>攻撃者が用意した先ほどのリンクを送信すると下記の結果になりました。</p>
+<p><img src="/images/post_image_35.png" alt=""></p>
 <p>うまく機能しているようです。
 正しいルートでリクエストを送信すると、下記のようにトークンが付与されていることがわかります。</p>
-
-<p><img src="/images/post_image_36.png" alt="" /></p>
-
+<p><img src="/images/post_image_36.png" alt=""></p>
 <h2 id="まとめ">まとめ</h2>
-
 <p>このようにJSFでもCSRF対策が簡単にできるようになりました。
 とはいってもそもそもGETでデータを登録しようとしているのが問題のような気もします。
 というのは、JSFのManagedBeanのプロパティへバインディングする形でPOSTリクエストを送信している場合、
@@ -259,11 +212,9 @@ JSF 2.2からこの仕組みを利用できるようになっているので対�
 そのため、今回のようにリクエストパラメータを直接プロパティへバインディングしようとしなければ、
 簡単に攻撃できないように感じます（色々試してみたのですが攻撃できませんでした。
 攻撃方法があるようでしたらこっそり教えて頂けると嬉しいです）</p>
-
 <h2 id="参考文献">参考文献</h2>
-
 <ul>
-<li><a href="http://ja.wikipedia.org/wiki/クロスサイトリクエストフォージェリ">クロスサイトリクエストフォージェリ - Wikipedia</a></li>
+<li><a href="http://ja.wikipedia.org/wiki/%E3%82%AF%E3%83%AD%E3%82%B9%E3%82%B5%E3%82%A4%E3%83%88%E3%83%AA%E3%82%AF%E3%82%A8%E3%82%B9%E3%83%88%E3%83%95%E3%82%A9%E3%83%BC%E3%82%B8%E3%82%A7%E3%83%AA">クロスサイトリクエストフォージェリ - Wikipedia</a></li>
 <li><a href="http://www.oracle.com/webfolder/technetwork/tutorials/obe/java/JSF-CSRF-Demo/JSF2.2CsrfDemo.html">Java Platform, Enterprise Edition 7: JSON Processing</a></li>
 </ul>
 

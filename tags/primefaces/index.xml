@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Primefaces on KATSUMI KOKUZAWA&#39;S BLOG</title>
+    <title>PrimeFaces on KATSUMI KOKUZAWA&#39;S BLOG</title>
     <link>https://kokuzawa.github.io/tags/primefaces/</link>
-    <description>Recent content in Primefaces on KATSUMI KOKUZAWA&#39;S BLOG</description>
+    <description>Recent content in PrimeFaces on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Thu, 28 Jun 2018 01:16:27 +0900</lastBuildDate>
@@ -106,13 +105,9 @@ at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202
       <pubDate>Sun, 25 Dec 2016 15:10:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2016/12/25/opendialog-of-primefaces/</guid>
-      <description>
-
-&lt;p&gt;この記事は&lt;a href=&#34;http://qiita.com/advent-calendar/2016/javaee&#34;&gt;Java EE Advent Calendar 2016&lt;/a&gt;の25日目です。&lt;br /&gt;
+      <description>&lt;p&gt;この記事は&lt;a href=&#34;http://qiita.com/advent-calendar/2016/javaee&#34;&gt;Java EE Advent Calendar 2016&lt;/a&gt;の25日目です。&lt;br&gt;
 昨日は&lt;a href=&#34;http://qiita.com/kikutaro&#34;&gt;@kikutaro&lt;/a&gt;さんの「&lt;a href=&#34;http://qiita.com/kikutaro/items/a524038ca7306a8bfee3&#34;&gt;実はJava EEに含まれるJavaMailについて&lt;/a&gt;」でした。&lt;/p&gt;
-
-&lt;!-- more --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;現在業務でJSFを使っています。
 導入当初はRIであるMojarraのみを利用しようと考えていたのですが、
 業務アプリで多い、ツリーやグリッドで数多くのアクションを実装しなければならず、
@@ -121,38 +116,25 @@ at org.primefaces.model.TreeNodeChildren.updateRowKeys(TreeNodeChildren.java:202
 採用を決定した段階での最新バージョンはPrimeFaces-6.0です。
 PrimeFacesは充実したコンポーネント群を持っているので、
 必要なコンポーネントはほぼ見つけることができるかと思います。&lt;/p&gt;
-
 &lt;p&gt;さて、今回はその中でダイアログコンポーネントについて説明します。
 PrimeFacesのDemoを見るとわかるのですが、
 このダイアログコンポーネントを表示するための方法が二通り用意されています。&lt;/p&gt;
-
 &lt;p&gt;一つ目は静的にダイアログを表示する方法です。&lt;/p&gt;
-
 &lt;p&gt;&lt;strong&gt;XHTML:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:dialog widgetVar=&amp;quot;sampleDialog&amp;quot;&amp;gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;p:dialog&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;widgetVar=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sampleDialog&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
   ...
-&amp;lt;/p:dialog&amp;gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/p:dialog&amp;gt;&lt;/span&gt;
 
-&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplete=&amp;quot;PF(&#39;sampleDialog&#39;).show()&amp;quot;/&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;二つ目の方法は動的にダイアログを表示する方法です。&lt;/p&gt;
-
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;p:commandButton&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Show&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;oncomplete=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;PF(&amp;#39;sampleDialog&amp;#39;).show()&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;二つ目の方法は動的にダイアログを表示する方法です。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;ManagedBean:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onShowDialog()
-{
-    RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;strong&gt;XHTML:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;二つ目の方法は指定したXHTMLをiframe内に表示して、それをダイアログとして表示してくれます。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onShowDialog&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    RequestContext&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getCurrentInstance&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;openDialog&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dialog.xhtml&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;XHTML:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;p:commandButton&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Show&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;actionListener=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#{bean.onShowDialog}&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;二つ目の方法は指定したXHTMLをiframe内に表示して、それをダイアログとして表示してくれます。
 一つ目の方法と異なり、
 ダイアログ内のコンテンツを別XHTMLに分けることができるのでコードの見通しが良くなるかと思います。
 また、表示時にダイアログのオプションを指定することができますが、
@@ -160,62 +142,44 @@ PrimeFacesのDemoを見るとわかるのですが、
 ダイアログをリサイズしてもコンテンツが640pxで固定されているので、追従して広がることがありません。
 もし、リサイズに合わせてコンテンツも追従するようにしたければ、
 表示時に下記のようなオプションを付与します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onShowDialog()
-{
-    final Map&amp;lt;String, Object&amp;gt; options = new HashMap&amp;lt;&amp;gt;();
-    options.put(&amp;quot;width&amp;quot;, 640);
-    options.put(&amp;quot;contentWidth&amp;quot;, &amp;quot;100%&amp;quot;);
-    RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, options, null);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;このようにすることで、ダイアログの初期表示の幅は640px、コンテンツの幅は100%となり、
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onShowDialog&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Object&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; options &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    options&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;width&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; 640&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    options&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;contentWidth&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;100%&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    RequestContext&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getCurrentInstance&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;openDialog&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dialog.xhtml&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; options&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;このようにすることで、ダイアログの初期表示の幅は640px、コンテンツの幅は100%となり、
 コンテンツがリサイズに追従するようになります。&lt;/p&gt;
-
 &lt;p&gt;さらにパラメータを渡すことも可能です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;public void onShowDialog()
-{
-    final Map&amp;lt;String, List&amp;lt;String&amp;gt;&amp;gt; params = new HashMap&amp;lt;&amp;gt;();
-    params.put(&amp;quot;id&amp;quot;, Collections.singletonList(&amp;quot;123&amp;quot;));
-    RequestContext.getCurrentInstance().openDialog(&amp;quot;dialog.xhtml&amp;quot;, null, params);
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;パラメータはiframeのsrc属性に付与され、&lt;code&gt;/contextPath/dialog.xhtml?id=123&lt;/code&gt;という値になります。&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onShowDialog&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Map&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; params &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HashMap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    params&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;put&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;id&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; Collections&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;singletonList&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;123&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    RequestContext&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getCurrentInstance&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;openDialog&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;dialog.xhtml&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; params&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;パラメータはiframeのsrc属性に付与され、&lt;code&gt;/contextPath/dialog.xhtml?id=123&lt;/code&gt;という値になります。&lt;/p&gt;
 &lt;h2 id=&#34;ちょっとしたコツ&#34;&gt;ちょっとしたコツ&lt;/h2&gt;
-
 &lt;p&gt;ここまではドキュメントを読めば大体の内容は記載されているのですが、
 以下は実体験に伴う内容です。&lt;/p&gt;
-
 &lt;p&gt;ダイアログは簡単に表示できますが、
 コンポーネントの構成次第で最初の一回は表示され、2回目以降は表示されないという問題が発生します。
 具体的には下記のような構成とした場合です。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:panel rendered=”#{bean.showPanel}”&amp;gt;
-    &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; actionListener=&amp;quot;#{bean.onShowDialog}&amp;quot;/&amp;gt;
-&amp;lt;/p:panel&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;親コンポーネントにrendered属性が付与されている場合、
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;p:panel&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rendered=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;”#{bean.showPanel}”&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;p:commandButton&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Show&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;actionListener=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#{bean.onShowDialog}&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/p:panel&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;親コンポーネントにrendered属性が付与されている場合、
 2回目以降のダイアログの表示が行われません。
 バグの可能性もありますが、現状での回避策は下記のように、
 rendered属性が付与された親コンポーネントの外に隠しボタンを用意し、
 実際のボタンがクリックされた際に隠しボタンをクリックするようにします。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;p:commandButton id=&amp;quot;hiddenButton&amp;quot; actionListener=”#{bean.onShowDialog}” 
-                 style=&amp;quot;visibility: hidden;&amp;quot;/&amp;gt;
-&amp;lt;p:panel rendered=&amp;quot;#{bean.showPanel}&amp;quot;&amp;gt;
-    &amp;lt;p:commandButton value=&amp;quot;Show&amp;quot; oncomplate=&amp;quot;$(&#39;#hiddenButton&#39;).click()&amp;quot;/&amp;gt;
-&amp;lt;/p:panel&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;コンポーネントの組み合わせによっては落とし穴もあるよ、ということでした。&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;p:commandButton&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hiddenButton&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;actionListener=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;”#{bean.onShowDialog}”&lt;/span&gt; 
+                 &lt;span style=&#34;color:#a6e22e&#34;&gt;style=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;visibility: hidden;&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;p:panel&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;rendered=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#{bean.showPanel}&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;p:commandButton&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;value=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Show&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;oncomplate=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;$(&amp;#39;#hiddenButton&amp;#39;).click()&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/p:panel&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;コンポーネントの組み合わせによっては落とし穴もあるよ、ということでした。&lt;/p&gt;
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://www.primefaces.org/showcase/ui/df/data.xhtml&#34;&gt;PrimeFaces ShowCace&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;

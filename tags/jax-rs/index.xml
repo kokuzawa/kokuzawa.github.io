@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Jax Rs on KATSUMI KOKUZAWA&#39;S BLOG</title>
+    <title>JAX-RS on KATSUMI KOKUZAWA&#39;S BLOG</title>
     <link>https://kokuzawa.github.io/tags/jax-rs/</link>
-    <description>Recent content in Jax Rs on KATSUMI KOKUZAWA&#39;S BLOG</description>
+    <description>Recent content in JAX-RS on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Thu, 22 Nov 2018 22:07:16 +0900</lastBuildDate>
@@ -516,16 +515,11 @@ Basic認証とかです。
       <pubDate>Sun, 20 Dec 2015 10:32:29 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/12/20/server-sent-events/</guid>
-      <description>
-
-&lt;p&gt;これは &lt;a href=&#34;http://qiita.com/advent-calendar/2015/javaee&#34;&gt;JavaEE Advent Calendar 2015&lt;/a&gt; の20日目の記事です。&lt;br /&gt;
-昨日は&lt;a href=&#34;https://twitter.com/yumix_h&#34;&gt;@yumix_h&lt;/a&gt;さんの「&lt;a href=&#34;http://yumix.hatenablog.jp/entry/2015/12/19/205954&#34;&gt;「帰ってきたGlassFish Users Group Japan勉強会」の未発表資料&lt;/a&gt;」でした。&lt;br /&gt;
+      <description>&lt;p&gt;これは &lt;a href=&#34;http://qiita.com/advent-calendar/2015/javaee&#34;&gt;JavaEE Advent Calendar 2015&lt;/a&gt; の20日目の記事です。&lt;br&gt;
+昨日は&lt;a href=&#34;https://twitter.com/yumix_h&#34;&gt;@yumix_h&lt;/a&gt;さんの「&lt;a href=&#34;http://yumix.hatenablog.jp/entry/2015/12/19/205954&#34;&gt;「帰ってきたGlassFish Users Group Japan勉強会」の未発表資料&lt;/a&gt;」でした。&lt;br&gt;
 明日は&lt;a href=&#34;https://twitter.com/emaggame&#34;&gt;@emaggame&lt;/a&gt;さんです。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;server-sent-eventsとは&#34;&gt;Server Sent Eventsとは&lt;/h2&gt;
-
 &lt;p&gt;Server Sent Events (SSE) はサーバから送られたイベントという意味の通り、push型のデータ通信を行うことができます。
 これはHTML5で追加された新機能です。
 同じくpush型のデータ通信を行う方法としてWebsocketがありますが、WebsocketがHTTPとは別のプロトコルで通信をするのに対し、
@@ -535,177 +529,137 @@ HTTPプロトコルでpush通信を実現するため、SSEではサーバから
 こうすることで、サーバ側からのデータを継続して受信することを実現します。
 このようにSSEはHTTPプロトコルで接続を行うのですが、クライアントがSSEだと認識できるデータを送ってもらう必要があります。
 そこで、サーバはMIMEタイプに&lt;code&gt;text/event-stream&lt;/code&gt;を設定する必要があります。&lt;/p&gt;
-
 &lt;p&gt;JavaEE8にSSEのサポートが入るようですが、一足先にJAX-RSのRIであるJerseyでこの機能を試すことができます。&lt;/p&gt;
-
 &lt;h2 id=&#34;server-sent-eventsを試す&#34;&gt;Server Sent Eventsを試す&lt;/h2&gt;
-
 &lt;p&gt;今回実行した環境は下記の通りです。&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;OS: Mac OSX 10.11.1&lt;/li&gt;
-&lt;li&gt;Java: Java&amp;trade; SE Runtime Environment (build 1.8.0_60-b27)&lt;/li&gt;
+&lt;li&gt;Java: Java(TM) SE Runtime Environment (build 1.8.0_60-b27)&lt;/li&gt;
 &lt;li&gt;APサーバ: GlasshFish-4.1.1&lt;/li&gt;
 &lt;li&gt;ブラウザ: Safari-9.0.1&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;p&gt;実際のコードはGithubにあるので、
 コードを見れば分かる方は以降の実装の説明を読むより、
 そちらを見ていただいた方が早いかと思います。&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&#34;https://github.com/kokuzawa/sandbox/tree/master/sse-example&#34;&gt;sandbox/sse-example&lt;/a&gt;&lt;/p&gt;
-
 &lt;h2 id=&#34;実装の説明&#34;&gt;実装の説明&lt;/h2&gt;
-
 &lt;p&gt;Mavenを利用しているので、最初に下記のDependencyを追加します。
 2015/12/10時点のMaven Centralの最新版は2.22.1のようです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
-  &amp;lt;groupId&amp;gt;org.glassfish.jersey.media&amp;lt;/groupId&amp;gt;
-  &amp;lt;artifactId&amp;gt;jersey-media-sse&amp;lt;/artifactId&amp;gt;
-  &amp;lt;version&amp;gt;2.22.1&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;サーバ側のリソースはMIMEタイプに&lt;code&gt;text/event-stream&lt;/code&gt;を設定する他に、
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.glassfish.jersey.media&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;jersey-media-sse&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.22.1&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;サーバ側のリソースはMIMEタイプに&lt;code&gt;text/event-stream&lt;/code&gt;を設定する他に、
 &lt;code&gt;org.glassfish.jersey.media.sse.EventOutput&lt;/code&gt;を返却する必要があります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@GET
-@Produces(SseFeature.SERVER_SENT_EVENTS)
-public EventOutput getServerSentEvents()
-{
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;EventOutput&lt;/code&gt;を返却するだけだと、クライアントとの接続が確立しているだけの状態なので、
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@GET&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Produces&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;SseFeature&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;SERVER_SENT_EVENTS&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; EventOutput &lt;span style=&#34;color:#a6e22e&#34;&gt;getServerSentEvents&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;EventOutput&lt;/code&gt;を返却するだけだと、クライアントとの接続が確立しているだけの状態なので、
 実際にクライアントに送信するデータを書き込む必要があります。
 書き込みは&lt;code&gt;EventOutput#write(OutboundEvent)&lt;/code&gt;で行います。
 単純には下記のような実装になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final EventOutput eventOutput = new EventOutput();
-final OutboundEvent.Builder builder = new OutboundEvent.Builder();
-builder.name(&amp;quot;message-to-client&amp;quot;);
-builder.data(String.class, &amp;quot;Hello world !&amp;quot;);
-eventOutput.write(builder.build());
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;builder.name(...)&lt;/code&gt;で指定している文字列はクライアント側でイベントのマッピングをするために利用します。&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; EventOutput eventOutput &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; EventOutput&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; OutboundEvent&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Builder&lt;/span&gt; builder &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; OutboundEvent&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Builder&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+builder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message-to-client&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+builder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello world !&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+eventOutput&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;write&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;builder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;builder.name(...)&lt;/code&gt;で指定している文字列はクライアント側でイベントのマッピングをするために利用します。&lt;/p&gt;
 &lt;p&gt;今回クライアントはJavascriptにします。
 JavascriptでSSEを利用するには&lt;code&gt;EventSource&lt;/code&gt;クラスを利用します。
 &lt;code&gt;EventSource&lt;/code&gt;を利用した実装は下記のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-javascript&#34;&gt;var eventList = document.getElementById(&amp;quot;eventList&amp;quot;);
-var eventSource = new EventSource(&amp;quot;http://localhost:8080/sse-example/api/sse/events&amp;quot;);
-eventSource.addEventListener(&amp;quot;message-to-client&amp;quot;, function (e) {
-    var newElement = document.createElement(&amp;quot;li&amp;quot;);
-    newElement.innerHTML = &amp;quot;message: &amp;quot; + e.data;
-    eventList.appendChild(newElement);
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-javascript&#34; data-lang=&#34;javascript&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;eventList&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; document.&lt;span style=&#34;color:#a6e22e&#34;&gt;getElementById&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;eventList&amp;#34;&lt;/span&gt;);
+&lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;eventSource&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;EventSource&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://localhost:8080/sse-example/api/sse/events&amp;#34;&lt;/span&gt;);
+&lt;span style=&#34;color:#a6e22e&#34;&gt;eventSource&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;addEventListener&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message-to-client&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;e&lt;/span&gt;) {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;newElement&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; document.&lt;span style=&#34;color:#a6e22e&#34;&gt;createElement&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;li&amp;#34;&lt;/span&gt;);
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;newElement&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;innerHTML&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;e&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;eventList&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;appendChild&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;newElement&lt;/span&gt;);
 });
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;EventSourceコンストラクタの引数でAPIエンドポイントを指定します。
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;EventSourceコンストラクタの引数でAPIエンドポイントを指定します。
 addEventListenerでサーバからのイベントをハンドリングします。
 この時、リスナーに設定するイベント名として、サーバ側コードで指定したイベント名を指定します。
-この例では&amp;rdquo;message-to-client&amp;rdquo;です。&lt;/p&gt;
-
-&lt;p&gt;さて、実際のコードの説明です。&lt;br /&gt;
+この例では&amp;quot;message-to-client&amp;quot;です。&lt;/p&gt;
+&lt;p&gt;さて、実際のコードの説明です。&lt;br&gt;
 ユースケースとして複数のユーザがそれぞれブラウザの画面を表示している状態で、
 データが登録されると、開いている画面に登録された旨を伝えるメッセージを表示することを考えます。
 まず必要なのは接続を確立するために&lt;code&gt;EventOutput&lt;/code&gt;を返却するサービスです。
 &lt;code&gt;EventOutput&lt;/code&gt;はクライアントごとにインスタンスが必要なので、
 接続が確立した&lt;code&gt;EventOutput&lt;/code&gt;を格納するためのリストも合わせて定義します。
 これらを踏まえて下記のコードを作ります。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; List&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;EventOutput&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; eventOutputs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; ArrayList&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;private List&amp;lt;EventOutput&amp;gt; eventOutputs = new ArrayList&amp;lt;&amp;gt;();
-
-@GET
-@Path(&amp;quot;events&amp;quot;)
-@Produces(SseFeature.SERVER_SENT_EVENTS)
-public EventOutput getServerSentEvents()
-{
-    final EventOutput eventOutput = new EventOutput();
-    eventOutputs.add(eventOutput);
-    return eventOutput;
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;次に登録をするためのサービスを作ります。が、実際に何かを登録するのは実装が面倒なので、
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@GET&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;events&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Produces&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;SseFeature&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;SERVER_SENT_EVENTS&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; EventOutput &lt;span style=&#34;color:#a6e22e&#34;&gt;getServerSentEvents&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; EventOutput eventOutput &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; EventOutput&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    eventOutputs&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;add&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;eventOutput&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; eventOutput&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;次に登録をするためのサービスを作ります。が、実際に何かを登録するのは実装が面倒なので、
 サービスが呼ばれたら各クライアントにメッセージをpushするだけにします。
 こんな感じです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@PUT
-@Path(&amp;quot;put&amp;quot;)
-public void putData() throws IOException
-{
-    for (EventOutput eventOutput : eventOutputs) {
-        final OutboundEvent.Builder builder = new OutboundEvent.Builder();
-        builder.name(&amp;quot;message-to-client&amp;quot;);
-        builder.data(String.class, &amp;quot;登録された！&amp;quot;);
-        eventOutput.write(builder.build());
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これでサービス側は実装完了です。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@PUT&lt;/span&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;put&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;putData&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; IOException
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;EventOutput eventOutput &lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; eventOutputs&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; OutboundEvent&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Builder&lt;/span&gt; builder &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; OutboundEvent&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Builder&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        builder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message-to-client&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        builder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;登録された！&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        eventOutput&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;write&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;builder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これでサービス側は実装完了です。
 Javascriptクライアントを実装する前に正しく動くかcurlコマンドで確認してみます。
 接続確立のサービスを下記のように呼び出します。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;curl http://localhost:8080/sse-example/api/sse/events
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;プロンプトが待ち状態になりました。接続されたままになったのでうまくいったようです！
 別のプロンプトから次のコマンドを実行して最初のプロンプトに通知されるか確認します。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;curl -X PUT http://localhost:8080/sse-example/api/sse/put
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;最初のプロンプトの方に以下のメッセージが表示されました。こちらもうまくいったようです。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;event: message-to-client
 data: 登録された！
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;サービス側が正常に動作することが確認できたので、
 次にJavascriptクライアントを作ります。
 HTMLを含めた全コードは下記のようになりました。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;
-&amp;lt;html lang=&amp;quot;en&amp;quot;&amp;gt;
-&amp;lt;head&amp;gt;
-    &amp;lt;meta charset=&amp;quot;UTF-8&amp;quot;&amp;gt;
-    &amp;lt;title&amp;gt;SSE Example&amp;lt;/title&amp;gt;
-    &amp;lt;script&amp;gt;
-        function startup() {
-            var eventList = document.getElementById(&amp;quot;eventList&amp;quot;);
-            var eventSource = new EventSource(&amp;quot;http://localhost:8080/sse-example/api/sse/events&amp;quot;);
-            eventSource.addEventListener(&amp;quot;message-to-client&amp;quot;, function (e) {
-                var newElement = document.createElement(&amp;quot;li&amp;quot;);
-                newElement.innerHTML = &amp;quot;message: &amp;quot; + e.data;
-                eventList.appendChild(newElement);
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;lang&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;en&amp;#34;&lt;/span&gt;&amp;gt;
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;head&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;meta&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;charset&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;UTF-8&amp;#34;&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;title&lt;/span&gt;&amp;gt;SSE Example&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;title&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;startup&lt;/span&gt;() {
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;eventList&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; document.&lt;span style=&#34;color:#a6e22e&#34;&gt;getElementById&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;eventList&amp;#34;&lt;/span&gt;);
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;eventSource&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;EventSource&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://localhost:8080/sse-example/api/sse/events&amp;#34;&lt;/span&gt;);
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;eventSource&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;addEventListener&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message-to-client&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;e&lt;/span&gt;) {
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;newElement&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; document.&lt;span style=&#34;color:#a6e22e&#34;&gt;createElement&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;li&amp;#34;&lt;/span&gt;);
+                &lt;span style=&#34;color:#a6e22e&#34;&gt;newElement&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;innerHTML&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message: &amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;e&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;data&lt;/span&gt;;
+                &lt;span style=&#34;color:#a6e22e&#34;&gt;eventList&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;appendChild&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;newElement&lt;/span&gt;);
             });
         }
-    &amp;lt;/script&amp;gt;
-&amp;lt;/head&amp;gt;
-&amp;lt;body onload=&amp;quot;startup()&amp;quot;&amp;gt;
-    &amp;lt;h1&amp;gt;イベント表示:&amp;lt;/h1&amp;gt;
-    &amp;lt;ul id=&amp;quot;eventList&amp;quot;&amp;gt;&amp;lt;/ul&amp;gt;
-&amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
+    &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;head&lt;/span&gt;&amp;gt;
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onload&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;startup()&amp;#34;&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;h1&lt;/span&gt;&amp;gt;イベント表示:&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;h1&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;ul&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;eventList&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;ul&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 &lt;p&gt;このようにSSEの実装は比較的簡単に行うことがでます。
 ただ最初にも書いたようにSSEは一方向通信なので、push通信だけでなく双方向通信を行いたい場合は
 Websocketを利用することになります。
 利用シーンとしてはWebsocketの方が多くなりそうですが、
 既存のアプリにpush通知機能を実装するという観点からであれば、
 HTTPプロトコルで動作するSSEを利用した方が良いケースがあるかもしれないですね。&lt;/p&gt;
-
 &lt;h2 id=&#34;参考にしたサイト&#34;&gt;参考にしたサイト&lt;/h2&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://jersey.java.net/documentation/latest/sse.html&#34;&gt;Chapter 15. Server-Sent Events (SSE) Support&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
@@ -718,161 +672,124 @@ HTTPプロトコルで動作するSSEを利用した方が良いケースがあ�
       <pubDate>Sat, 14 Nov 2015 16:08:44 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/11/14/wildfly-swarmdejaxrswoshi-su/</guid>
-      <description>
-
-&lt;p&gt;WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。
+      <description>&lt;p&gt;WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。
 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、
 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。
 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、
 自分の必要なモジュールを取り込んで利用する形になるようです。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;jaxrsを組み込む&#34;&gt;JAXRSを組み込む&lt;/h2&gt;
-
 &lt;p&gt;今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。
 2015年11月時点での最新バージョンは1.0.0.Alpha5です。
 pom.xmlに下記のdependencyを追加します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;wildfly-swarm-jaxrs&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
-&amp;lt;dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_39.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-jaxrs&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1.0.0.Alpha5&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これを依存グラフで見てみると&amp;hellip;依存がすごいです（笑）&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_39.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、
 下記のpluginもpom.xmlに追加します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugin&amp;gt;
-    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
-    &amp;lt;executions&amp;gt;
-        &amp;lt;execution&amp;gt;
-            &amp;lt;goals&amp;gt;
-                &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt;
-            &amp;lt;/goals&amp;gt;
-        &amp;lt;/execution&amp;gt;
-    &amp;lt;/executions&amp;gt;
-&amp;lt;/plugin&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;jaxrsアプリケーションを作る&#34;&gt;JAXRSアプリケーションを作る&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1.0.0.Alpha5&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;executions&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;execution&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;goals&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;goal&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;package&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;jaxrsアプリケーションを作る&#34;&gt;JAXRSアプリケーションを作る&lt;/h2&gt;
 &lt;p&gt;WildFly Swarmの設定が一通り終わったので、次はJAXRSアプリケーションを作ります。
 特別なことはなく、普通のJAXRSアプリケーションです。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.ApplicationPath&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.core.Application&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@ApplicationPath&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/rest&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MyApplication&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; Application
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-@ApplicationPath(&amp;quot;/rest&amp;quot;)
-public class MyApplication extends Application
-{
-}
-&lt;/code&gt;&lt;/pre&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.GET&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.Path&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-
-@Path(&amp;quot;/hello&amp;quot;)
-public class HelloResource
-{
-    @GET
-    public String hello()
-    {
-        return &amp;quot;Hello World!&amp;quot;;
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;どうやってうごかすの&#34;&gt;どうやってうごかすの？&lt;/h2&gt;
-
-&lt;p&gt;JAXRSアプリケーションも作ったけれどどうやって動かすのか？&lt;br /&gt;
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/hello&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HelloResource&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@GET&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color:#a6e22e&#34;&gt;hello&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello World!&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;どうやってうごかすの&#34;&gt;どうやってうごかすの？&lt;/h2&gt;
+&lt;p&gt;JAXRSアプリケーションも作ったけれどどうやって動かすのか？&lt;br&gt;
 WildFly Swarmでは通常のJavaアプリケーションのようにmainメソッドから動かします。
 そのため、mainメソッドを持つクラスを新たに作成します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;package&lt;/span&gt; org.katsumi&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;package org.katsumi;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.jboss.shrinkwrap.api.ShrinkWrap&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.wildfly.swarm.container.Container&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; org.wildfly.swarm.jaxrs.JAXRSArchive&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.wildfly.swarm.container.Container;
-import org.wildfly.swarm.jaxrs.JAXRSArchive;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Main&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;static&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt; args&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; Exception
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#75715e&#34;&gt;// コンテナの生成
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#75715e&#34;&gt;// Archiveを生成する前にインスタンス化しておかないと実行時にエラーが発生
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Container container &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Container&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-public class Main
-{
-    public static void main(String... args) throws Exception
-    {
-        // コンテナの生成
-        // Archiveを生成する前にインスタンス化しておかないと実行時にエラーが発生
-        final Container container = new Container();
+        &lt;span style=&#34;color:#75715e&#34;&gt;// ShrinkWrapで仮想アーカイブを作成
+&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; JAXRSArchive archive &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ShrinkWrap&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;create&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;JAXRSArchive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        archive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addClass&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;MyApplication&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        archive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addClass&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;HelloResource&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        archive&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;addAllDependencies&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-        // ShrinkWrapで仮想アーカイブを作成
-        final JAXRSArchive archive = ShrinkWrap.create(JAXRSArchive.class);
-        archive.addClass(MyApplication.class);
-        archive.addClass(HelloResource.class);
-        archive.addAllDependencies();
-
-        container.start().deploy(archive);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;mainメソッド内では、ShrinkWrapを利用して生成した仮想アーカイブを起動したコンテナにデプロイします。
+        container&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;deploy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;archive&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;mainメソッド内では、ShrinkWrapを利用して生成した仮想アーカイブを起動したコンテナにデプロイします。
 コード中のコメントにも書きましたが、アーカイブを作る前にコンテナをインスタンス化しておかないと、
 実行時にエラーになります。これで半日悩んだ..orz&lt;/p&gt;
-
 &lt;p&gt;で、ここで作ったMainクラスをswarm-pluginに教える必要があります。
 設定を追加したwildfly-swarm-pluginが下記になります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;plugin&amp;gt;
-    &amp;lt;groupId&amp;gt;org.wildfly.swarm&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;wildfly-swarm-plugin&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;1.0.0.Alpha5&amp;lt;/version&amp;gt;
-    &amp;lt;configuration&amp;gt;
-        &amp;lt;mainClass&amp;gt;org.katsumi.Main&amp;lt;/mainClass&amp;gt;
-    &amp;lt;/configuration&amp;gt;
-    &amp;lt;executions&amp;gt;
-        &amp;lt;execution&amp;gt;
-            &amp;lt;goals&amp;gt;
-                &amp;lt;goal&amp;gt;package&amp;lt;/goal&amp;gt;
-            &amp;lt;/goals&amp;gt;
-        &amp;lt;/execution&amp;gt;
-    &amp;lt;/executions&amp;gt;
-&amp;lt;/plugin&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Mavenでビルド後に下記の方法で実行することができます。&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;plugin&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.wildfly.swarm&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;wildfly-swarm-plugin&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;1.0.0.Alpha5&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;configuration&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;mainClass&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.katsumi.Main&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/mainClass&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/configuration&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;executions&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;execution&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;goals&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;goal&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;package&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/goal&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/goals&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/execution&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/executions&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/plugin&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Mavenでビルド後に下記の方法で実行することができます。&lt;/p&gt;
 &lt;h3 id=&#34;ideの場合&#34;&gt;IDEの場合&lt;/h3&gt;
-
 &lt;p&gt;Mainクラスを実行&lt;/p&gt;
-
 &lt;h3 id=&#34;mavenを利用する場合&#34;&gt;Mavenを利用する場合&lt;/h3&gt;
-
 &lt;pre&gt;&lt;code&gt;mvn wildfly-swarm:run
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h3 id=&#34;jarファイルを実行する場合&#34;&gt;Jarファイルを実行する場合&lt;/h3&gt;
-
 &lt;pre&gt;&lt;code&gt;jar -jar target/projectname-swarm.jar
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;h2 id=&#34;余談&#34;&gt;余談&lt;/h2&gt;
-
 &lt;p&gt;今回のアプリですが、IntelliJ IDEA 15で作っています。
 インストールしたままの環境でMavenビルドをしたのですが、下記エラーが発生してビルドができない状態でした。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;java.lang.NoClassDefFoundError: org/eclipse/aether/RepositorySystemSession
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;原因はMavenのバージョンが古いためで、IntellijにデフォルトでバンドルされているMavenのバージョンは3.0.5であり、
 このバージョンではエラーが発生するので、別途バージョン3.2.5をインストールしてそれを参照するようにしました。&lt;/p&gt;
 </description>
@@ -887,44 +804,31 @@ public class Main
       <description>&lt;p&gt;JAX-RSでExcelファイルをダウンロードする際にストリームを直接触る必要があって、
 どうすればストリームにアクセスできるかちょっと調べてみました。
 Excelファイルの生成にはApache POIを使っています。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;Apache POIでExcelファイルを生成する場合、下記のようなコードを書きます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final Workbook wb = new HSSFWorkbook();
-final FileOutputStream fileOut = new FileOutputStream(&amp;quot;workbook.xls&amp;quot;);
-wb.write(fileOut);
-fileOut.close();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;生成したファイルをファイルとして保存せずにServletでダウンロードしようとした場合、
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Workbook wb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HSSFWorkbook&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; FileOutputStream fileOut &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; FileOutputStream&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;workbook.xls&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+wb&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;write&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;fileOut&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+fileOut&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;close&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;生成したファイルをファイルとして保存せずにServletでダウンロードしようとした場合、
 そのコードは下記のように&lt;code&gt;HttpServletResponse#getOutputStream()&lt;/code&gt;でアウトプットストリームを取得し、
 レスポンスボディに対してストリーミング処理をすることになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final Workbook wb = new HSSFWorkbook();
-final FileOutputStream fileOut = new FileOutputStream(response.getOutputStream());
-wb.write(fileOut);
-fileOut.close();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ここからが本題です。&lt;br /&gt;
-JAX-RSでファイルをダウンロードするにはどうしたら良いのか。&lt;br /&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Workbook wb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HSSFWorkbook&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; FileOutputStream fileOut &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; FileOutputStream&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getOutputStream&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+wb&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;write&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;fileOut&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+fileOut&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;close&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;ここからが本題です。&lt;br&gt;
+JAX-RSでファイルをダウンロードするにはどうしたら良いのか。&lt;br&gt;
 通常のファイルの場合は下記のようなコードを書くことで実現できます。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final File file = new File(&amp;quot;workbook.xls&amp;quot;);
-return Response.ok(file).build();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;Servletでのダウンロードのように、
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; File file &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; File&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;workbook.xls&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ok&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;file&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Servletでのダウンロードのように、
 レスポンスボディに対してストリーミング処理をする場合は&lt;code&gt;javax.ws.rs.core.StreamingOutput&lt;/code&gt;クラスを利用します。
 そのコードは下記のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final Workbook wb = new HSSFWorkbook();
-final StreamingOutput so = out -&amp;gt; wb.write(out);
-return Response.ok(stream).build();
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Workbook wb &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HSSFWorkbook&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; StreamingOutput so &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; out &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; wb&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;write&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;out&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ok&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;stream&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -934,50 +838,40 @@ return Response.ok(stream).build();
       
       <guid>https://kokuzawa.github.io/blog/2015/05/07/continue-translate-google/</guid>
       <description>&lt;p&gt;先日書いたコードがiOSのSafariで上手く動きませんでした。&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&#34;http://kokuzawa.github.io/blog/2015/05/03/translate-google/&#34;&gt;Googleのテキスト読み上げAPIを組み込む&lt;/a&gt;&lt;/p&gt;
-
 &lt;p&gt;子供向けなのでiPhoneまたはiPadで音声が再生されないと困ります。
 いろいろ調べたけれど、JavaScriptから呼び出す方法がわからないので
 勝手知ったるJavaの世界に取り込んでiOSのSafariでも音声が再生されるようにしました。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;p&gt;下記がそのコードです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;@Path(&amp;quot;/tts&amp;quot;)
-public class TTSResource
-{
-    @GET
-    @Produces(&amp;quot;audio/mpeg&amp;quot;)
-    public Response textToSpeech(@QueryParam(&amp;quot;text&amp;quot;) String text) throws IOException
-    {
-        final URL url = new URL(&amp;quot;http://translate.google.com/translate_tts?tl=en&amp;amp;q=&amp;quot; + text);
-        final URLConnection connection = url.openConnection();
-        connection.setRequestProperty(&amp;quot;User-Agent&amp;quot;, &amp;quot;Mozilla&amp;quot;);
-        return Response.ok(connection.getInputStream()).build();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;JAX-RSでGoogle Translateの結果をそのままレスポンスとして返すようにしています。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@Path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/tts&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;TTSResource&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@GET&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Produces&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;audio/mpeg&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; Response &lt;span style=&#34;color:#a6e22e&#34;&gt;textToSpeech&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@QueryParam&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;text&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; String text&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; IOException
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; URL url &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; URL&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://translate.google.com/translate_tts?tl=en&amp;amp;q=&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; text&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; URLConnection connection &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; url&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;openConnection&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        connection&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setRequestProperty&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;User-Agent&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Mozilla&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; Response&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ok&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;connection&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getInputStream&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;build&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;JAX-RSでGoogle Translateの結果をそのままレスポンスとして返すようにしています。
 User-Agentを指定していないと上手く動きません。
 ここで気がついたのですがUser-Agentで振る舞いが変わるようなので、
 もしかしたらiOSからのアクセスの場合にもUser-Agentを偽装できれば音声が再生されるのかもしれないです。&lt;/p&gt;
-
 &lt;p&gt;先日の記事にも書きましたがクライアント側（javaScript）は下記のようになります。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;h:outputScript&amp;gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;h:outputScript&lt;/span&gt;&amp;gt;
 function play() {
     var voice = new Audio();
-    voice.src = &amp;quot;${request.contextPath}/rest/tts?text=one&amp;quot;;
+    voice.src = &amp;#34;${request.contextPath}/rest/tts?text=one&amp;#34;;
     voice.play();
 }
-&amp;lt;/h:outputScript&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;h:outputScript&lt;/span&gt;&amp;gt;
 
-&amp;lt;a href=&amp;quot;javascript:play()&amp;quot;&amp;gt;音声&amp;lt;/a&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-</description>
+&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;a&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;href&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;javascript:play()&amp;#34;&lt;/span&gt;&amp;gt;音声&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;a&lt;/span&gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</description>
     </item>
     
     <item>
@@ -986,108 +880,88 @@ function play() {
       <pubDate>Sat, 20 Dec 2014 10:22:07 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/12/20/resteasytospringfalselian-xi/</guid>
-      <description>
-
-&lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2014/javaee&#34;&gt;Java EE Advent Calendar 2014&lt;/a&gt;の20日の記事です。&lt;br /&gt;
-昨日は&lt;a href=&#34;https://twitter.com/yoshioterada&#34;&gt;@yoshioterada&lt;/a&gt;さんの「&lt;a href=&#34;http://yoshio3.com/2014/12/19/java-ee-8-new-features/&#34;&gt;Java EE 8 の新機能概要のご紹介&lt;/a&gt;」でした。&lt;br /&gt;
+      <description>&lt;p&gt;&lt;a href=&#34;http://qiita.com/advent-calendar/2014/javaee&#34;&gt;Java EE Advent Calendar 2014&lt;/a&gt;の20日の記事です。&lt;br&gt;
+昨日は&lt;a href=&#34;https://twitter.com/yoshioterada&#34;&gt;@yoshioterada&lt;/a&gt;さんの「&lt;a href=&#34;http://yoshio3.com/2014/12/19/java-ee-8-new-features/&#34;&gt;Java EE 8 の新機能概要のご紹介&lt;/a&gt;」でした。&lt;br&gt;
 明日は&lt;a href=&#34;https://twitter.com/suke_masa&#34;&gt;@suke_masa&lt;/a&gt;さんです。&lt;/p&gt;
-
 &lt;p&gt;Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思ったところが始まりです。
 サーバーがWildFlyだからRESTEasyが含まれているので、JerseyではなくRESTEasyを使えば良いのだけれども、
 アプリ内でJersey MultiPartを使っているのでひとまずバージョンアップを試みたのですが、
 いろいろ問題があって結局RESTEasyに置き換えました。&lt;/p&gt;
-
 &lt;p&gt;実際の運用はTomcatを使っているので、Tomcatでも動作する設定を考慮しています。
 なので、WildFlyオンリーで考えた場合は不要な設定があるかもしれません。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
 &lt;ul&gt;
 &lt;li&gt;OS: Mac OSX Yosemite 10.10&lt;/li&gt;
 &lt;li&gt;Java: Java™ SE Runtime Environment (build 1.8.0-b132)&lt;/li&gt;
 &lt;li&gt;メモリ: 4GB&lt;/li&gt;
 &lt;li&gt;WildFly 8.0.0.Final&lt;/li&gt;
 &lt;/ul&gt;
-
-&lt;h2 id=&#34;pom-xml&#34;&gt;pom.xml&lt;/h2&gt;
-
+&lt;h2 id=&#34;pomxml&#34;&gt;pom.xml&lt;/h2&gt;
 &lt;p&gt;下記のdiendencyが必要です。JettisonじゃなくてJacksonを使いたいのでそのdependencyも追加しています。
 あとファイルアップロードも使いたいので、&lt;code&gt;resteasy-multipart-provider&lt;/code&gt;も入れています。
 &lt;code&gt;resteasy-spring&lt;/code&gt;に依存してRESTEasyのコアライブラリは入るので定義の必要ありません。
 Tomcatの場合、サーバにはJAX-RSの実装は入っていないのでscopeはcompileを指定します。
 WildFlyの場合はscopeをcompileにすると起動時にエラーが発生するのでprovidedを指定します。
 これは既にRESTEasyがサーバに含まれているから。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;resteasy-servlet-initializer&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt;
-    &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;resteasy-multipart-provider&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt;
-    &amp;lt;scope&amp;gt;provided&amp;lt;/scope&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;resteasy-jackson-provider&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&amp;lt;dependency&amp;gt;
-    &amp;lt;groupId&amp;gt;org.jboss.resteasy&amp;lt;/groupId&amp;gt;
-    &amp;lt;artifactId&amp;gt;resteasy-spring&amp;lt;/artifactId&amp;gt;
-    &amp;lt;version&amp;gt;3.0.10.Final&amp;lt;/version&amp;gt;
-&amp;lt;/dependency&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;web-xml&#34;&gt;web.xml&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.jboss.resteasy&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;resteasy-servlet-initializer&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;3.0.10.Final&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;scope&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;provided&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.jboss.resteasy&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;resteasy-multipart-provider&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;3.0.10.Final&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;scope&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;provided&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/scope&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.jboss.resteasy&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;resteasy-jackson-provider&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;3.0.10.Final&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.jboss.resteasy&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;resteasy-spring&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;3.0.10.Final&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;webxml&#34;&gt;web.xml&lt;/h2&gt;
 &lt;p&gt;web.xml には下記を追加します。
 url-pattarnが&lt;code&gt;/*&lt;/code&gt;以外の場合は&lt;code&gt;resteasy.servlet.mapping.prefix&lt;/code&gt;の設定が必要です。
 &lt;code&gt;resteasy.scan&lt;/code&gt;で自動的にJAX-RSのコンポーネントをスキャンする設定ができるのですが、
 springと連携する場合は自動スキャンはしちゃダメ。
 自動スキャンしようとすると&lt;code&gt;org.jboss.resteasy.plugins.spring.SpringContextLoaderListener&lt;/code&gt;でエラーになります。&lt;/p&gt;
-
 &lt;p&gt;ということは、@Providerとか@PathがついたクラスはすべてSpringのコンポーネントにしておく必要があります。
 あとApplicationのサブクラスはなくても大丈夫です。&lt;/p&gt;
-
 &lt;p&gt;&lt;code&gt;org.jboss.resteasy.plugins.spring.SpringContextLoaderListener&lt;/code&gt;を追加しているので、
 &lt;code&gt;org.springframework.web.context.ContextLoaderListener&lt;/code&gt;は指定しちゃダメ。
 指定すると起動に失敗します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;  &amp;lt;context-param&amp;gt;
-    &amp;lt;param-name&amp;gt;resteasy.servlet.mapping.prefix&amp;lt;/param-name&amp;gt;
-    &amp;lt;param-value&amp;gt;/rest&amp;lt;/param-value&amp;gt;
-  &amp;lt;/context-param&amp;gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;context-param&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;param-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;resteasy.servlet.mapping.prefix&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/param-name&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;param-value&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;/rest&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/param-value&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/context-param&amp;gt;&lt;/span&gt;
   
-  &amp;lt;listener&amp;gt;
-    &amp;lt;listener-class&amp;gt;org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap&amp;lt;/listener-class&amp;gt;
-  &amp;lt;/listener&amp;gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;listener&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;listener-class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/listener-class&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/listener&amp;gt;&lt;/span&gt;
 
-  &amp;lt;listener&amp;gt;
-    &amp;lt;listener-class&amp;gt;org.jboss.resteasy.plugins.spring.SpringContextLoaderListener&amp;lt;/listener-class&amp;gt;
-  &amp;lt;/listener&amp;gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;listener&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;listener-class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.jboss.resteasy.plugins.spring.SpringContextLoaderListener&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/listener-class&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/listener&amp;gt;&lt;/span&gt;
   
-  &amp;lt;servlet&amp;gt;
-    &amp;lt;servlet-name&amp;gt;Resteasy&amp;lt;/servlet-name&amp;gt;
-    &amp;lt;servlet-class&amp;gt;org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher&amp;lt;/servlet-class&amp;gt;
-  &amp;lt;/servlet&amp;gt;
-  &amp;lt;servlet-mapping&amp;gt;
-    &amp;lt;servlet-name&amp;gt;Resteasy&amp;lt;/servlet-name&amp;gt;
-    &amp;lt;url-pattern&amp;gt;/rest/*&amp;lt;/url-pattern&amp;gt;
-  &amp;lt;/servlet-mapping&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Resteasy&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet-class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet-class&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet-mapping&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;servlet-name&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;Resteasy&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet-name&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;url-pattern&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;/rest/*&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/url-pattern&amp;gt;&lt;/span&gt;
+  &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/servlet-mapping&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
 &lt;p&gt;これでJAX-RSのリソースクラスにも@AutowiredでDIできるようになります。
 RESTEasyのドキュメントに詳細に書いてあるんだけど、web.xmlの設定方法がServletのバージョンを考慮したパターンとか
 いろいろありすぎて逆に困る。結局いろいろ試した末に上記の設定にたどり着きました。&lt;/p&gt;
-
 &lt;p&gt;同じようなことをしようとしている人の何かの参考になれば。&lt;/p&gt;
 </description>
     </item>
@@ -1098,374 +972,313 @@ RESTEasyのドキュメントに詳細に書いてあるんだけど、web.xml�
       <pubDate>Mon, 03 Nov 2014 17:12:02 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/11/03/javafxderest-apiwohu-bichu-su/</guid>
-      <description>
-
-&lt;p&gt;FlexとJavaFXからREST-APIを呼び出してみました。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+      <description>&lt;p&gt;FlexとJavaFXからREST-APIを呼び出してみました。&lt;/p&gt;
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
-
 &lt;ul&gt;
 &lt;li&gt;OS: Mac OSX Yosemite 10.10&lt;/li&gt;
-&lt;li&gt;Java: Java&amp;trade; SE Runtime Environment (build 1.8.0-b132)&lt;/li&gt;
+&lt;li&gt;Java: Java(TM) SE Runtime Environment (build 1.8.0-b132)&lt;/li&gt;
 &lt;li&gt;Flex SDK 4.6&lt;/li&gt;
 &lt;li&gt;メモリ: 4GB&lt;/li&gt;
 &lt;li&gt;WildFly 8.0.0.Final&lt;/li&gt;
 &lt;/ul&gt;
-
 &lt;h2 id=&#34;サーバの用意&#34;&gt;サーバの用意&lt;/h2&gt;
-
 &lt;p&gt;今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。
 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。
 RESTの実装にはJersey-2.8を利用します。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.GET&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.Path&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.Produces&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.QueryParam&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.core.MediaType&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
-@Path(&amp;quot;/hello&amp;quot;)
-public class HelloService
-{
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello(@QueryParam(&amp;quot;string&amp;quot;) String string)
-    {
-        return String.format(&amp;quot;Hello %s!&amp;quot;, string);
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;flexからのrest-api呼び出し&#34;&gt;FlexからのREST-API呼び出し&lt;/h2&gt;
-
+&lt;span style=&#34;color:#a6e22e&#34;&gt;@Path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/hello&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HelloService&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@GET&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Produces&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;MediaType&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;TEXT_PLAIN&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; String &lt;span style=&#34;color:#a6e22e&#34;&gt;hello&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;@QueryParam&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; String string&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; String&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;format&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello %s!&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; string&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;flexからのrest-api呼び出し&#34;&gt;FlexからのREST-API呼び出し&lt;/h2&gt;
 &lt;p&gt;JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。&lt;/p&gt;
-
 &lt;p&gt;画面構成を管理するMXMLです。&lt;/p&gt;
-
 &lt;p&gt;&lt;strong&gt;Main.mxml:&lt;/strong&gt;&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot;?&amp;gt;
-&amp;lt;s:WindowedApplication
-        xmlns:fx=&amp;quot;http://ns.adobe.com/mxml/2009&amp;quot;
-        xmlns:s=&amp;quot;library://ns.adobe.com/flex/spark&amp;quot;
-        xmlns:local=&amp;quot;*&amp;quot; 
-        title=&amp;quot;Hello World&amp;quot; 
-        width=&amp;quot;230&amp;quot; 
-        height=&amp;quot;80&amp;quot;&amp;gt;
-    &amp;lt;fx:Declarations&amp;gt;
-        &amp;lt;local:Controller id=&amp;quot;controller&amp;quot;/&amp;gt;
-    &amp;lt;/fx:Declarations&amp;gt;
-    &amp;lt;s:VGroup paddingBottom=&amp;quot;10&amp;quot; 
-              paddingLeft=&amp;quot;10&amp;quot; 
-              paddingRight=&amp;quot;10&amp;quot; 
-              paddingTop=&amp;quot;10&amp;quot; 
-              gap=&amp;quot;10&amp;quot; 
-              minHeight=&amp;quot;0&amp;quot;&amp;gt;
-        &amp;lt;s:HGroup&amp;gt;
-            &amp;lt;s:TextInput id=&amp;quot;stringField&amp;quot;/&amp;gt;
-            &amp;lt;s:Button label=&amp;quot;Button&amp;quot; click=&amp;quot;{controller.buttonAction(event)}&amp;quot;/&amp;gt;
-        &amp;lt;/s:HGroup&amp;gt;
-        &amp;lt;s:Label id=&amp;quot;stringLabel&amp;quot;/&amp;gt;
-    &amp;lt;/s:VGroup&amp;gt;
-&amp;lt;/s:WindowedApplication&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;画面をコントロールするコントローラクラスです。&lt;/p&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34;?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:WindowedApplication&lt;/span&gt;
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:fx=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://ns.adobe.com/mxml/2009&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:s=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;library://ns.adobe.com/flex/spark&amp;#34;&lt;/span&gt;
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:local=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;*&amp;#34;&lt;/span&gt; 
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;title=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Hello World&amp;#34;&lt;/span&gt; 
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;width=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;230&amp;#34;&lt;/span&gt; 
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;height=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;80&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;fx:Declarations&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;local:Controller&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;controller&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/fx:Declarations&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:VGroup&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;paddingBottom=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10&amp;#34;&lt;/span&gt; 
+              &lt;span style=&#34;color:#a6e22e&#34;&gt;paddingLeft=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10&amp;#34;&lt;/span&gt; 
+              &lt;span style=&#34;color:#a6e22e&#34;&gt;paddingRight=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10&amp;#34;&lt;/span&gt; 
+              &lt;span style=&#34;color:#a6e22e&#34;&gt;paddingTop=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10&amp;#34;&lt;/span&gt; 
+              &lt;span style=&#34;color:#a6e22e&#34;&gt;gap=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10&amp;#34;&lt;/span&gt; 
+              &lt;span style=&#34;color:#a6e22e&#34;&gt;minHeight=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;0&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:HGroup&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:TextInput&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;stringField&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:Button&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Button&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;click=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;{controller.buttonAction(event)}&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/s:HGroup&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:Label&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;stringLabel&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/s:VGroup&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/s:WindowedApplication&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;画面をコントロールするコントローラクラスです。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Controller.as:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-as&#34; data-lang=&#34;as&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;package&lt;/span&gt; {
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;flash&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;events&lt;/span&gt;.MouseEvent&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-as&#34;&gt;package {
-    import flash.events.MouseEvent;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mx&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;core&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;IMXMLObject&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mx&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;rpc&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;events&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;ResultEvent&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;import&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mx&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;rpc&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;http&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;mxml&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;HTTPService&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-    import mx.core.IMXMLObject;
-    import mx.rpc.events.ResultEvent;
-    import mx.rpc.http.mxml.HTTPService;
-
-    public class Controller implements IMXMLObject
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Controller&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;implements&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;IMXMLObject&lt;/span&gt;
     {
-        private var _document:Main;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;_document&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;Main&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-        public function initialized(document:Object, id:String):void
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;initialized&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;document&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;Object&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;String)&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;void&lt;/span&gt;
         {
-            _document = document as Main;
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;_document&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;document&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;as&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Main&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
         }
 
-        public function buttonAction(event:MouseEvent):void
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;buttonAction&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;event&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;MouseEvent)&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;void&lt;/span&gt;
         {
-            var service:HTTPService = new HTTPService(&amp;quot;http://localhost:8080&amp;quot;);
-            service.url = &amp;quot;/jaxrs/rest/hello&amp;quot;;
-            service.addEventListener(ResultEvent.RESULT, function (e:ResultEvent):void
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;service&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;HTTPService&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HTTPService&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://localhost:8080&amp;#34;&lt;/span&gt;);
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;service&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;url&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;/jaxrs/rest/hello&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;service&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;addEventListener&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;ResultEvent&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;RESULT&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;e&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ResultEvent&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;void&lt;/span&gt;
             {
-                _document.stringLabel.text = e.result as String;
+                &lt;span style=&#34;color:#a6e22e&#34;&gt;_document&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;stringLabel&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;text&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;e&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;result&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;as&lt;/span&gt; String&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
             });
-            service.send({string:_document.stringField.text});
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;service&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;send&lt;/span&gt;({&lt;span style=&#34;color:#a6e22e&#34;&gt;string&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;_document&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;stringField&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;text&lt;/span&gt;});
         }
     }
 }
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;起動すると下記の画面が表示されます。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_37.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;起動すると下記の画面が表示されます。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_37.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;javafxからrest-apiを呼び出す&#34;&gt;JavaFXからREST-APIを呼び出す&lt;/h2&gt;
-
 &lt;p&gt;JavaFXからの呼び出し例を提示します。&lt;/p&gt;
-
 &lt;p&gt;画面構成を管理するFXMLです。
 画面レイアウトにはSceneBuilder-2.0を利用しました。&lt;/p&gt;
-
 &lt;p&gt;&lt;strong&gt;sample.fxml:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?xml version=&amp;#34;1.0&amp;#34; encoding=&amp;#34;UTF-8&amp;#34;?&amp;gt;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;?xml version=&amp;quot;1.0&amp;quot; encoding=&amp;quot;UTF-8&amp;quot;?&amp;gt;
-
-&amp;lt;?import javafx.geometry.Insets?&amp;gt;
-&amp;lt;?import javafx.scene.control.Button?&amp;gt;
-&amp;lt;?import javafx.scene.control.Label?&amp;gt;
-&amp;lt;?import javafx.scene.control.TextField?&amp;gt;
-&amp;lt;?import javafx.scene.layout.*?&amp;gt;
-&amp;lt;GridPane alignment=&amp;quot;center&amp;quot; 
-          hgap=&amp;quot;10&amp;quot; 
-          prefHeight=&amp;quot;46.0&amp;quot; 
-          prefWidth=&amp;quot;324.0&amp;quot; 
-          vgap=&amp;quot;10&amp;quot; 
-          xmlns=&amp;quot;http://javafx.com/javafx/8&amp;quot; 
-          xmlns:fx=&amp;quot;http://javafx.com/fxml/1&amp;quot; 
-          fx:controller=&amp;quot;sample.Controller&amp;quot;&amp;gt;
-   &amp;lt;columnConstraints&amp;gt;
-      &amp;lt;ColumnConstraints /&amp;gt;
-      &amp;lt;ColumnConstraints minWidth=&amp;quot;10.0&amp;quot; prefWidth=&amp;quot;60.0&amp;quot; /&amp;gt;
-   &amp;lt;/columnConstraints&amp;gt;
-   &amp;lt;rowConstraints&amp;gt;
-      &amp;lt;RowConstraints /&amp;gt;
-      &amp;lt;RowConstraints minHeight=&amp;quot;10.0&amp;quot; prefHeight=&amp;quot;30.0&amp;quot; /&amp;gt;
-   &amp;lt;/rowConstraints&amp;gt;
-   &amp;lt;children&amp;gt;
-      &amp;lt;TextField fx:id=&amp;quot;stringField&amp;quot; prefHeight=&amp;quot;26.0&amp;quot; prefWidth=&amp;quot;205.0&amp;quot; /&amp;gt;
-      &amp;lt;Button mnemonicParsing=&amp;quot;false&amp;quot; text=&amp;quot;Button&amp;quot; GridPane.columnIndex=&amp;quot;1&amp;quot; onAction=&amp;quot;#buttonAction&amp;quot;/&amp;gt;
-      &amp;lt;Label fx:id=&amp;quot;stringLabel&amp;quot; GridPane.columnSpan=&amp;quot;2&amp;quot; GridPane.rowIndex=&amp;quot;1&amp;quot; /&amp;gt;
-   &amp;lt;/children&amp;gt;
-   &amp;lt;padding&amp;gt;
-      &amp;lt;Insets bottom=&amp;quot;10.0&amp;quot; left=&amp;quot;10.0&amp;quot; right=&amp;quot;10.0&amp;quot; top=&amp;quot;10.0&amp;quot; /&amp;gt;
-   &amp;lt;/padding&amp;gt;
-&amp;lt;/GridPane&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;JavaによるREST-API呼び出しは、JAX-RSクライアントを利用するため、
+&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?import javafx.geometry.Insets?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?import javafx.scene.control.Button?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?import javafx.scene.control.Label?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?import javafx.scene.control.TextField?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;?import javafx.scene.layout.*?&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;GridPane&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;alignment=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;center&amp;#34;&lt;/span&gt; 
+          &lt;span style=&#34;color:#a6e22e&#34;&gt;hgap=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10&amp;#34;&lt;/span&gt; 
+          &lt;span style=&#34;color:#a6e22e&#34;&gt;prefHeight=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;46.0&amp;#34;&lt;/span&gt; 
+          &lt;span style=&#34;color:#a6e22e&#34;&gt;prefWidth=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;324.0&amp;#34;&lt;/span&gt; 
+          &lt;span style=&#34;color:#a6e22e&#34;&gt;vgap=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10&amp;#34;&lt;/span&gt; 
+          &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://javafx.com/javafx/8&amp;#34;&lt;/span&gt; 
+          &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:fx=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://javafx.com/fxml/1&amp;#34;&lt;/span&gt; 
+          &lt;span style=&#34;color:#a6e22e&#34;&gt;fx:controller=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;sample.Controller&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;columnConstraints&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;ColumnConstraints&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;ColumnConstraints&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;minWidth=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;prefWidth=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;60.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/columnConstraints&amp;gt;&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;rowConstraints&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;RowConstraints&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;RowConstraints&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;minHeight=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;prefHeight=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;30.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/rowConstraints&amp;gt;&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;children&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;TextField&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fx:id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;stringField&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;prefHeight=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;26.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;prefWidth=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;205.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;Button&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;mnemonicParsing=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;false&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;text=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Button&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;GridPane.columnIndex=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;onAction=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#buttonAction&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;Label&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;fx:id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;stringLabel&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;GridPane.columnSpan=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;2&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;GridPane.rowIndex=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;1&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/children&amp;gt;&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;padding&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;Insets&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;bottom=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;left=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;right=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;top=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;10.0&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+   &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/padding&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/GridPane&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;JavaによるREST-API呼び出しは、JAX-RSクライアントを利用するため、
 下記ライブラリを追加します。（Mavenの設定）&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-xml&#34;&gt;&amp;lt;dependencies&amp;gt;
-    &amp;lt;dependency&amp;gt;
-        &amp;lt;groupId&amp;gt;org.glassfish.jersey.core&amp;lt;/groupId&amp;gt;
-        &amp;lt;artifactId&amp;gt;jersey-client&amp;lt;/artifactId&amp;gt;
-        &amp;lt;version&amp;gt;2.8&amp;lt;/version&amp;gt;
-    &amp;lt;/dependency&amp;gt;
-&amp;lt;/dependencies&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;画面をコントロールするコントローラクラスです。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-xml&#34; data-lang=&#34;xml&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependencies&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;dependency&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;groupId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;org.glassfish.jersey.core&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/groupId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;artifactId&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;jersey-client&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/artifactId&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;version&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;2.8&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/version&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependency&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/dependencies&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;画面をコントロールするコントローラクラスです。
 ボタンがクリックされた場合にREST-APIを呼び出して結果をラベルに設定します。&lt;/p&gt;
-
 &lt;p&gt;&lt;strong&gt;Controller.java:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.fxml.FXML&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.scene.control.Label&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.scene.control.TextField&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.client.Client&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.client.ClientBuilder&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.core.MediaType&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Controller&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@FXML&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; TextField stringField&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-public class Controller
-{
-    @FXML
-    private TextField stringField;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@FXML&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; Label stringLabel&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-    @FXML
-    private Label stringLabel;
-
-    public void buttonAction()
-    {
-        final Client client = ClientBuilder.newClient();
-        try {
-            final String result = client.target(&amp;quot;http://localhost:8080/jaxrs/rest&amp;quot;)
-                    .path(&amp;quot;hello&amp;quot;)
-                    .queryParam(&amp;quot;string&amp;quot;, stringField.getText())
-                    .request(MediaType.TEXT_PLAIN_TYPE)
-                    .get(String.class);
-            stringLabel.setText(result);
-        }
-        finally {
-            client.close();
-        }
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;起動すると下記の画面が表示されます。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_38.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;buttonAction&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Client client &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ClientBuilder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;newClient&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; String result &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; client&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://localhost:8080/jaxrs/rest&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hello&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;queryParam&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; stringField&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getText&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;request&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;MediaType&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;TEXT_PLAIN_TYPE&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+            stringLabel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setText&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;result&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;finally&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            client&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;close&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;起動すると下記の画面が表示されます。&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_38.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;javafxからの呼び出しを非同期にする&#34;&gt;JavaFXからの呼び出しを非同期にする&lt;/h2&gt;
-
 &lt;p&gt;FlexもJavaFXもほぼ同じようなコードでREST-APIを呼び出すことができるのですが、
 Flexの方は非同期呼び出しであり、JavaFXの方は同期呼び出しという違いがあります。
 そこでJavaFXの方でも非同期呼び出しをさせてみたいと思います。&lt;/p&gt;
-
 &lt;p&gt;JAX-RSクライアントには非同期呼び出しの仕組みがあるので、
 それを利用するようにREST-APIの呼び出し部分を下記のように書き換えました。&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Client client &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ClientBuilder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;newClient&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+client&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://localhost:8080/jaxrs/rest&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hello&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;queryParam&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; stringField&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getText&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;request&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;MediaType&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;TEXT_PLAIN_TYPE&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;async&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; InvocationCallback&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+          &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+          &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;completed&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String result&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+          &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+              stringLabel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setText&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;result&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+          &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;final Client client = ClientBuilder.newClient();
-client.target(&amp;quot;http://localhost:8080/jaxrs/rest&amp;quot;)
-      .path(&amp;quot;hello&amp;quot;)
-      .queryParam(&amp;quot;string&amp;quot;, stringField.getText())
-      .request(MediaType.TEXT_PLAIN_TYPE)
-      .async()
-      .get(new InvocationCallback&amp;lt;String&amp;gt;()
-      {
-          @Override
-          public void completed(String result)
-          {
-              stringLabel.setText(result);
-          }
-
-          @Override
-          public void failed(Throwable throwable)
-          {
-              throwable.printStackTrace();
-          }
-      });
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;呼び出しチェーンに&lt;code&gt;async()&lt;/code&gt;メソッドを追加します。
+          &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+          &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;failed&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;Throwable throwable&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+          &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+              throwable&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;printStackTrace&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+          &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+      &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;呼び出しチェーンに&lt;code&gt;async()&lt;/code&gt;メソッドを追加します。
 結果は戻り値ではなく、&lt;code&gt;InvocationCallback&amp;lt;T&amp;gt;&lt;/code&gt;インターフェースの&lt;code&gt;completed(T)&lt;/code&gt;メソッドで受け取るようになります。
 また、呼び出し後にclientをクローズしてしまうと非同期によるレスポンスを受け取る前に接続が切れてしまいます。
 そのため、ここではクローズは行いません。&lt;/p&gt;
-
 &lt;p&gt;これで非同期になると思いきや、実行すると下記エラーが発生します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;javax.ws.rs.ProcessingException: java.lang.IllegalStateException: Not on FX application thread; currentThread = jersey-client-async-executor-0
-	at org.glassfish.jersey.client.ClientRuntime.processFailure(ClientRuntime.java:173)
-	at org.glassfish.jersey.client.ClientRuntime.access$400(ClientRuntime.java:69)
-	at org.glassfish.jersey.client.ClientRuntime$1.run(ClientRuntime.java:155)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;JavaFXアプリのスレッド以外でアクセスしようとしたのでエラーが発生しています。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;javax&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ws&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;rs&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ProcessingException&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; java&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;lang&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;IllegalStateException&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; Not on FX application thread&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt; currentThread &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; jersey&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;client&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;async&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;executor&lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;0
+	at org&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;glassfish&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;jersey&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ClientRuntime&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;processFailure&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;ClientRuntime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;173&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+	at org&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;glassfish&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;jersey&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ClientRuntime&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;access$400&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;ClientRuntime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;69&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+	at org&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;glassfish&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;jersey&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;client&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;ClientRuntime$1&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;run&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;ClientRuntime&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;java&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;155&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;JavaFXアプリのスレッド以外でアクセスしようとしたのでエラーが発生しています。
 というわけで&lt;code&gt;async()&lt;/code&gt;メソッドは使えません。
 そこで、&lt;code&gt;javafx.concurrent.Service&lt;/code&gt;クラスを利用します。
 このクラスを利用すると、JavaFXアプリにおいて別スレッドを利用できるようになります。&lt;/p&gt;
-
 &lt;p&gt;&lt;code&gt;javafx.concurrent.Service&lt;/code&gt;クラスを利用したクラスが下記になります。&lt;/p&gt;
-
 &lt;p&gt;&lt;strong&gt;HelloService.java:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.beans.property.SimpleStringProperty&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.beans.property.StringProperty&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.concurrent.Service&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.concurrent.Task&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.client.Client&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.client.ClientBuilder&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javax.ws.rs.core.MediaType&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;HelloService&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;extends&lt;/span&gt; Service&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; StringProperty string &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; SimpleStringProperty&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-public class HelloService extends Service&amp;lt;String&amp;gt;
-{
-    private StringProperty string = new SimpleStringProperty();
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; StringProperty &lt;span style=&#34;color:#a6e22e&#34;&gt;stringProperty&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; string&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
-    public StringProperty stringProperty()
-    {
-        return string;
-    }
-
-    @Override
-    protected Task&amp;lt;String&amp;gt; createTask()
-    {
-        return new Task&amp;lt;String&amp;gt;()
-        {
-            @Override
-            protected String call() throws Exception
-            {
-                if (false == string.get().isEmpty()) {
-                    final Client client = ClientBuilder.newClient();
-                    try {
-                        return client.target(&amp;quot;http://localhost:8080/jaxrs/rest&amp;quot;)
-                                .path(&amp;quot;hello&amp;quot;)
-                                .queryParam(&amp;quot;string&amp;quot;, string.get())
-                                .request(MediaType.TEXT_PLAIN_TYPE)
-                                .get(String.class);
-                    }
-                    finally {
-                        client.close();
-                    }
-                }
-                return null;
-            }
-        };
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;作成したサービスクラスを利用するようにコントローラクラスを書き換えます。&lt;/p&gt;
-
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;protected&lt;/span&gt; Task&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;createTask&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; Task&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+            &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+            &lt;span style=&#34;color:#66d9ef&#34;&gt;protected&lt;/span&gt; String &lt;span style=&#34;color:#a6e22e&#34;&gt;call&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;throws&lt;/span&gt; Exception
+            &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;false&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; string&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;isEmpty&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+                    &lt;span style=&#34;color:#66d9ef&#34;&gt;final&lt;/span&gt; Client client &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; ClientBuilder&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;newClient&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+                    &lt;span style=&#34;color:#66d9ef&#34;&gt;try&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+                        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; client&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;target&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://localhost:8080/jaxrs/rest&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+                                &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;path&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;hello&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+                                &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;queryParam&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;string&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; string&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+                                &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;request&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;MediaType&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;TEXT_PLAIN_TYPE&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+                                &lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;get&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;class&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+                    &lt;span style=&#34;color:#66d9ef&#34;&gt;finally&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+                        client&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;close&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+                    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+                &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+                &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;作成したサービスクラスを利用するようにコントローラクラスを書き換えます。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;Controller.java:&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.fxml.FXML&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.fxml.Initializable&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.scene.control.Label&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; javafx.scene.control.TextField&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; java.net.URL&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;import&lt;/span&gt; java.util.ResourceBundle&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+&lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;Controller&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;implements&lt;/span&gt; Initializable
+&lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@FXML&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; TextField stringField&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-public class Controller implements Initializable
-{
-    @FXML
-    private TextField stringField;
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@FXML&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; Label stringLabel&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-    @FXML
-    private Label stringLabel;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;private&lt;/span&gt; HelloService service &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; HelloService&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
 
-    private HelloService service = new HelloService();
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;buttonAction&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        service&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;restart&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
 
-    public void buttonAction()
-    {
-        service.restart();
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
-        service.stringProperty().bind(stringField.textProperty());
-        service.setOnSucceeded(e -&amp;gt; stringLabel.setText((String)e.getSource().getValue()));
-        service.start();
-    }
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;Initializable&lt;/code&gt;インターフェースの&lt;code&gt;initialize(URL, ResourceBundle)&lt;/code&gt;メソッド内で
+    &lt;span style=&#34;color:#a6e22e&#34;&gt;@Override&lt;/span&gt;
+    &lt;span style=&#34;color:#66d9ef&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;initialize&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;URL url&lt;span style=&#34;color:#f92672&#34;&gt;,&lt;/span&gt; ResourceBundle resourceBundle&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;{&lt;/span&gt;
+        service&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;stringProperty&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;bind&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;stringField&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;textProperty&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        service&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setOnSucceeded&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;e &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; stringLabel&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;setText&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;e&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getSource&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;getValue&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+        service&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;start&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;span style=&#34;color:#f92672&#34;&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;Initializable&lt;/code&gt;インターフェースの&lt;code&gt;initialize(URL, ResourceBundle)&lt;/code&gt;メソッド内で
 入力フィールドをサービスクラスへバインドし、サービスの処理完了時に呼ばれる&lt;code&gt;setOnSucceeded&lt;/code&gt;メソッドで
 ラベルに対してレスポンスを書き出すようにします。&lt;code&gt;start()&lt;/code&gt;メソッドでサービスを開始します。&lt;/p&gt;
-
 &lt;p&gt;また、書き換え前のコードではボタンクリックのハンドラ内でREEST-APIを呼び出していましたが、
 新しいコードではサービスクラスの&lt;code&gt;restart()&lt;/code&gt;メソッドを呼び出し、
 サービスの起動状態をキャンセルして再起動させます。こうすることにより、サービス内のタスクが再度生成されるので、
 入力された値がサーバーに送信されるようになります。
 入力値はバインドを利用しているので、サービスへの再設定は必要ありません。&lt;/p&gt;
-
 &lt;h2 id=&#34;まとめ&#34;&gt;まとめ&lt;/h2&gt;
-
 &lt;p&gt;FlexとJavaFXでの簡単な呼び出しにおいてはほとんど違いがないことがわかるかと思います。
 JavaFXで非同期呼び出しをしようとした場合にちょっとだけ面倒になりますが、
 非同期にしたい部分だけ今回のようにサービスにするだけなので、
 JavaFXを利用する上ではそれほど問題にならないかな、と思っています。&lt;/p&gt;
-
 &lt;p&gt;Flexでは同期呼び出しにするという選択肢がないので、
 同期と非同期を切り替えられるJavaFXの方がメリットがありそうです。&lt;/p&gt;
-
 &lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;http://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm&#34;&gt;Concurrency in JavaFX&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;

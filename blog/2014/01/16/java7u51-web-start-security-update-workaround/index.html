@@ -78,91 +78,65 @@
       </div>
     </div>
     <article>
-      
-
-<p>1月14日にJava7u51がリリースされました。
+      <p>1月14日にJava7u51がリリースされました。
 このアップデートによってセキュリティが強化されて、署名のないアプレットが起動できなくなりました。
 また署名があっても、ユーザ独自の署名の場合ではその証明書をクライアントにインポートしておかないと、
 同じく起動することができないようです。</p>
-
 <p>あまり頻繁に行う作業ではないので、手順をまとめておきたいと思います。</p>
-
-<h2 id="1-manifest-mfの編集">1. MANIFEST.MFの編集</h2>
-
+<h2 id="1-manifestmfの編集">1. MANIFEST.MFの編集</h2>
 <p>jarファイル内のMANIFEST.MFに下記を追記します。</p>
-
 <pre><code>Permissions: all-permissions
 </code></pre>
-
 <p>Mavenを利用している場合は、下記をpom.xmlに追加することで、
 ビルド時にMANIFEST.MFに追加することができます。</p>
-
-<pre><code class="language-xml">&lt;build&gt;
-    &lt;plugins&gt;
-        &lt;plugin&gt;
-            &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-            &lt;artifactId&gt;maven-jar-plugin&lt;/artifactId&gt;
-            &lt;version&gt;2.4&lt;/version&gt;
-            &lt;configuration&gt;
-                &lt;archive&gt;
-                    &lt;manifestEntries&gt;
-                        &lt;Permissions&gt;all-permissions&lt;/Permissions&gt;
-                        &lt;Codebase&gt;*&lt;/Codebase&gt;
-                    &lt;/manifestEntries&gt;
-                &lt;/archive&gt;
-            &lt;/configuration&gt;
-        &lt;/plugin&gt;
-    &lt;/plugins&gt;
-&lt;/build&gt;
-</code></pre>
-
-<p>Antであれば下記で同様のことができます。</p>
-
-<pre><code class="language-xml">&lt;target name=&quot;dist&quot;&gt;
-    &lt;jar destfile=&quot;${basedir}/out/sample.jar&quot; basedir=&quot;${basedir}/out/classes/&quot;&gt;
-        &lt;manifest&gt;
-            &lt;attribute name=&quot;Permissions&quot; value=&quot;all-permissions&quot;/&gt;
-            &lt;attribute name=&quot;Codebase&quot; value=&quot;*&quot;/&gt;
-        &lt;/manifest&gt;
-    &lt;/jar&gt;
-&lt;/target&gt;
-</code></pre>
-
-<h2 id="2-jnlpファイルの編集">2. jnlpファイルの編集</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-jar-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.4<span style="color:#f92672">&lt;/version&gt;</span>
+            <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#f92672">&lt;archive</span><span style="color:#f92672">&gt;</span>
+                    <span style="color:#f92672">&lt;manifestEntries</span><span style="color:#f92672">&gt;</span>
+                        <span style="color:#f92672">&lt;Permissions</span><span style="color:#f92672">&gt;</span>all-permissions<span style="color:#f92672">&lt;/Permissions&gt;</span>
+                        <span style="color:#f92672">&lt;Codebase</span><span style="color:#f92672">&gt;</span>*<span style="color:#f92672">&lt;/Codebase&gt;</span>
+                    <span style="color:#f92672">&lt;/manifestEntries&gt;</span>
+                <span style="color:#f92672">&lt;/archive&gt;</span>
+            <span style="color:#f92672">&lt;/configuration&gt;</span>
+        <span style="color:#f92672">&lt;/plugin&gt;</span>
+    <span style="color:#f92672">&lt;/plugins&gt;</span>
+<span style="color:#f92672">&lt;/build&gt;</span>
+</code></pre></div><p>Antであれば下記で同様のことができます。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;dist&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;jar</span> <span style="color:#a6e22e">destfile=</span><span style="color:#e6db74">&#34;${basedir}/out/sample.jar&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;${basedir}/out/classes/&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;manifest</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;attribute</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Permissions&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;all-permissions&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;attribute</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Codebase&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/manifest&gt;</span>
+    <span style="color:#f92672">&lt;/jar&gt;</span>
+<span style="color:#f92672">&lt;/target&gt;</span>
+</code></pre></div><h2 id="2-jnlpファイルの編集">2. jnlpファイルの編集</h2>
 <p>jnlpファイルに下記を追記します。</p>
-
 <pre><code>&lt;security&gt;
     &lt;all-permissions/&gt;
 &lt;/security&gt;
 </code></pre>
-
 <h2 id="3-keystoreの生成">3. keystoreの生成</h2>
-
 <p>keystoreを生成します。[]内は任意の文字列を指定します。</p>
-
 <pre><code>keytool -selfcert -alias [sample] -genkey -keystore [sample.keystore] -validity [3650]
 </code></pre>
-
 <h2 id="4-証明書の生成">4. 証明書の生成</h2>
-
 <pre><code>keytool -export -keystore [sample.keystore] -alias [sample] -file [sample.csr]
 </code></pre>
-
 <h2 id="5-jarファイルの署名">5. jarファイルの署名</h2>
-
 <pre><code>jarsigner -keystore [sample.keystore] [sample.jar] [sample]
 </code></pre>
-
 <h2 id="6-証明書のインポート">6. 証明書のインポート</h2>
-
-<p>証明書をインポートすることでAppletを起動できるようになります。<br />
+<p>証明書をインポートすることでAppletを起動できるようになります。<br>
 Windowsの場合は、「コントロールパネル」 -&gt; 「Java」 -&gt; 「セキュリティタブ」 -&gt; 「証明書の管理」と選択、
 ユーザタブで証明書タイプを「署名者のCA」を選び、sample.csrをインポートします。</p>
-
 <p>これでWeb StartでAppletを起動すると、
 警告ダイアログが表示されるようになります。</p>
-
 <p>Enjoy !</p>
 
       

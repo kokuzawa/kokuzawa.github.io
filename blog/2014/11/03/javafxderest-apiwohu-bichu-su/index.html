@@ -80,374 +80,313 @@
       </div>
     </div>
     <article>
-      
-
-<p>FlexとJavaFXからREST-APIを呼び出してみました。</p>
-
-<!-- MORE -->
-
+      <p>FlexとJavaFXからREST-APIを呼び出してみました。</p>
+<!-- raw HTML omitted -->
 <h2 id="環境">環境</h2>
-
 <ul>
 <li>OS: Mac OSX Yosemite 10.10</li>
-<li>Java: Java&trade; SE Runtime Environment (build 1.8.0-b132)</li>
+<li>Java: Java(TM) SE Runtime Environment (build 1.8.0-b132)</li>
 <li>Flex SDK 4.6</li>
 <li>メモリ: 4GB</li>
 <li>WildFly 8.0.0.Final</li>
 </ul>
-
 <h2 id="サーバの用意">サーバの用意</h2>
-
 <p>今回の本題ではないので、ここでは簡単な文字列を返すだけのAPIを作成します。
 引数で受け取った文字を加工して「Hello XXX!」という文字を返します。
 RESTの実装にはJersey-2.8を利用します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> javax.ws.rs.GET<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.Path<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.Produces<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.QueryParam<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.core.MediaType<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-
-@Path(&quot;/hello&quot;)
-public class HelloService
-{
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String hello(@QueryParam(&quot;string&quot;) String string)
-    {
-        return String.format(&quot;Hello %s!&quot;, string);
-    }
-}
-</code></pre>
-
-<h2 id="flexからのrest-api呼び出し">FlexからのREST-API呼び出し</h2>
-
+<span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/hello&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloService</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@GET</span>
+    <span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@QueryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">)</span> String string<span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello %s!&#34;</span><span style="color:#f92672">,</span> string<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="flexからのrest-api呼び出し">FlexからのREST-API呼び出し</h2>
 <p>JavaFXとの比較のためにFlexからのREST-API呼び出しを提示します。</p>
-
 <p>画面構成を管理するMXMLです。</p>
-
 <p><strong>Main.mxml:</strong></p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;s:WindowedApplication
-        xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot;
-        xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot;
-        xmlns:local=&quot;*&quot; 
-        title=&quot;Hello World&quot; 
-        width=&quot;230&quot; 
-        height=&quot;80&quot;&gt;
-    &lt;fx:Declarations&gt;
-        &lt;local:Controller id=&quot;controller&quot;/&gt;
-    &lt;/fx:Declarations&gt;
-    &lt;s:VGroup paddingBottom=&quot;10&quot; 
-              paddingLeft=&quot;10&quot; 
-              paddingRight=&quot;10&quot; 
-              paddingTop=&quot;10&quot; 
-              gap=&quot;10&quot; 
-              minHeight=&quot;0&quot;&gt;
-        &lt;s:HGroup&gt;
-            &lt;s:TextInput id=&quot;stringField&quot;/&gt;
-            &lt;s:Button label=&quot;Button&quot; click=&quot;{controller.buttonAction(event)}&quot;/&gt;
-        &lt;/s:HGroup&gt;
-        &lt;s:Label id=&quot;stringLabel&quot;/&gt;
-    &lt;/s:VGroup&gt;
-&lt;/s:WindowedApplication&gt;
-</code></pre>
-
-<p>画面をコントロールするコントローラクラスです。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<span style="color:#f92672">&lt;s:WindowedApplication</span>
+        <span style="color:#a6e22e">xmlns:fx=</span><span style="color:#e6db74">&#34;http://ns.adobe.com/mxml/2009&#34;</span>
+        <span style="color:#a6e22e">xmlns:s=</span><span style="color:#e6db74">&#34;library://ns.adobe.com/flex/spark&#34;</span>
+        <span style="color:#a6e22e">xmlns:local=</span><span style="color:#e6db74">&#34;*&#34;</span> 
+        <span style="color:#a6e22e">title=</span><span style="color:#e6db74">&#34;Hello World&#34;</span> 
+        <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;230&#34;</span> 
+        <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;80&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;fx:Declarations</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;local:Controller</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;controller&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/fx:Declarations&gt;</span>
+    <span style="color:#f92672">&lt;s:VGroup</span> <span style="color:#a6e22e">paddingBottom=</span><span style="color:#e6db74">&#34;10&#34;</span> 
+              <span style="color:#a6e22e">paddingLeft=</span><span style="color:#e6db74">&#34;10&#34;</span> 
+              <span style="color:#a6e22e">paddingRight=</span><span style="color:#e6db74">&#34;10&#34;</span> 
+              <span style="color:#a6e22e">paddingTop=</span><span style="color:#e6db74">&#34;10&#34;</span> 
+              <span style="color:#a6e22e">gap=</span><span style="color:#e6db74">&#34;10&#34;</span> 
+              <span style="color:#a6e22e">minHeight=</span><span style="color:#e6db74">&#34;0&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;s:HGroup</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;s:TextInput</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;stringField&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;s:Button</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;Button&#34;</span> <span style="color:#a6e22e">click=</span><span style="color:#e6db74">&#34;{controller.buttonAction(event)}&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/s:HGroup&gt;</span>
+        <span style="color:#f92672">&lt;s:Label</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;stringLabel&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/s:VGroup&gt;</span>
+<span style="color:#f92672">&lt;/s:WindowedApplication&gt;</span>
+</code></pre></div><p>画面をコントロールするコントローラクラスです。</p>
 <p><strong>Controller.as:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-as" data-lang="as"><span style="color:#66d9ef">package</span> {
+    <span style="color:#66d9ef">import</span> <span style="color:#a6e22e">flash</span>.<span style="color:#a6e22e">events</span>.MouseEvent<span style="color:#f92672">;</span>
 
-<pre><code class="language-as">package {
-    import flash.events.MouseEvent;
+    <span style="color:#66d9ef">import</span> <span style="color:#a6e22e">mx</span>.<span style="color:#a6e22e">core</span>.<span style="color:#a6e22e">IMXMLObject</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">import</span> <span style="color:#a6e22e">mx</span>.<span style="color:#a6e22e">rpc</span>.<span style="color:#a6e22e">events</span>.<span style="color:#a6e22e">ResultEvent</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">import</span> <span style="color:#a6e22e">mx</span>.<span style="color:#a6e22e">rpc</span>.<span style="color:#a6e22e">http</span>.<span style="color:#a6e22e">mxml</span>.<span style="color:#a6e22e">HTTPService</span><span style="color:#f92672">;</span>
 
-    import mx.core.IMXMLObject;
-    import mx.rpc.events.ResultEvent;
-    import mx.rpc.http.mxml.HTTPService;
-
-    public class Controller implements IMXMLObject
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Controller</span> <span style="color:#66d9ef">implements</span> <span style="color:#a6e22e">IMXMLObject</span>
     {
-        private var _document:Main;
+        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">_document</span><span style="color:#f92672">:</span><span style="color:#a6e22e">Main</span><span style="color:#f92672">;</span>
 
-        public function initialized(document:Object, id:String):void
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">initialized</span>(<span style="color:#a6e22e">document</span><span style="color:#f92672">:</span>Object<span style="color:#f92672">,</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">:</span>String)<span style="color:#f92672">:</span><span style="color:#a6e22e">void</span>
         {
-            _document = document as Main;
+            <span style="color:#a6e22e">_document</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">document</span> <span style="color:#a6e22e">as</span> <span style="color:#a6e22e">Main</span><span style="color:#f92672">;</span>
         }
 
-        public function buttonAction(event:MouseEvent):void
+        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">function</span> <span style="color:#a6e22e">buttonAction</span>(<span style="color:#a6e22e">event</span><span style="color:#f92672">:</span>MouseEvent)<span style="color:#f92672">:</span><span style="color:#a6e22e">void</span>
         {
-            var service:HTTPService = new HTTPService(&quot;http://localhost:8080&quot;);
-            service.url = &quot;/jaxrs/rest/hello&quot;;
-            service.addEventListener(ResultEvent.RESULT, function (e:ResultEvent):void
+            <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">service</span><span style="color:#f92672">:</span><span style="color:#a6e22e">HTTPService</span> <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> <span style="color:#a6e22e">HTTPService</span>(<span style="color:#e6db74">&#34;http://localhost:8080&#34;</span>);
+            <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">url</span> <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;/jaxrs/rest/hello&#34;</span><span style="color:#f92672">;</span>
+            <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">addEventListener</span>(<span style="color:#a6e22e">ResultEvent</span>.<span style="color:#a6e22e">RESULT</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">e</span><span style="color:#f92672">:</span><span style="color:#a6e22e">ResultEvent</span>)<span style="color:#f92672">:</span><span style="color:#a6e22e">void</span>
             {
-                _document.stringLabel.text = e.result as String;
+                <span style="color:#a6e22e">_document</span>.<span style="color:#a6e22e">stringLabel</span>.<span style="color:#a6e22e">text</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">e</span>.<span style="color:#a6e22e">result</span> <span style="color:#a6e22e">as</span> String<span style="color:#f92672">;</span>
             });
-            service.send({string:_document.stringField.text});
+            <span style="color:#a6e22e">service</span>.<span style="color:#a6e22e">send</span>({<span style="color:#a6e22e">string</span><span style="color:#f92672">:</span><span style="color:#a6e22e">_document</span>.<span style="color:#a6e22e">stringField</span>.<span style="color:#a6e22e">text</span>});
         }
     }
 }
-</code></pre>
-
-<p>起動すると下記の画面が表示されます。</p>
-
-<p><img src="/images/post_image_37.png" alt="" /></p>
-
+</code></pre></div><p>起動すると下記の画面が表示されます。</p>
+<p><img src="/images/post_image_37.png" alt=""></p>
 <h2 id="javafxからrest-apiを呼び出す">JavaFXからREST-APIを呼び出す</h2>
-
 <p>JavaFXからの呼び出し例を提示します。</p>
-
 <p>画面構成を管理するFXMLです。
 画面レイアウトにはSceneBuilder-2.0を利用しました。</p>
-
 <p><strong>sample.fxml:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-
-&lt;?import javafx.geometry.Insets?&gt;
-&lt;?import javafx.scene.control.Button?&gt;
-&lt;?import javafx.scene.control.Label?&gt;
-&lt;?import javafx.scene.control.TextField?&gt;
-&lt;?import javafx.scene.layout.*?&gt;
-&lt;GridPane alignment=&quot;center&quot; 
-          hgap=&quot;10&quot; 
-          prefHeight=&quot;46.0&quot; 
-          prefWidth=&quot;324.0&quot; 
-          vgap=&quot;10&quot; 
-          xmlns=&quot;http://javafx.com/javafx/8&quot; 
-          xmlns:fx=&quot;http://javafx.com/fxml/1&quot; 
-          fx:controller=&quot;sample.Controller&quot;&gt;
-   &lt;columnConstraints&gt;
-      &lt;ColumnConstraints /&gt;
-      &lt;ColumnConstraints minWidth=&quot;10.0&quot; prefWidth=&quot;60.0&quot; /&gt;
-   &lt;/columnConstraints&gt;
-   &lt;rowConstraints&gt;
-      &lt;RowConstraints /&gt;
-      &lt;RowConstraints minHeight=&quot;10.0&quot; prefHeight=&quot;30.0&quot; /&gt;
-   &lt;/rowConstraints&gt;
-   &lt;children&gt;
-      &lt;TextField fx:id=&quot;stringField&quot; prefHeight=&quot;26.0&quot; prefWidth=&quot;205.0&quot; /&gt;
-      &lt;Button mnemonicParsing=&quot;false&quot; text=&quot;Button&quot; GridPane.columnIndex=&quot;1&quot; onAction=&quot;#buttonAction&quot;/&gt;
-      &lt;Label fx:id=&quot;stringLabel&quot; GridPane.columnSpan=&quot;2&quot; GridPane.rowIndex=&quot;1&quot; /&gt;
-   &lt;/children&gt;
-   &lt;padding&gt;
-      &lt;Insets bottom=&quot;10.0&quot; left=&quot;10.0&quot; right=&quot;10.0&quot; top=&quot;10.0&quot; /&gt;
-   &lt;/padding&gt;
-&lt;/GridPane&gt;
-</code></pre>
-
-<p>JavaによるREST-API呼び出しは、JAX-RSクライアントを利用するため、
+<span style="color:#75715e">&lt;?import javafx.geometry.Insets?&gt;</span>
+<span style="color:#75715e">&lt;?import javafx.scene.control.Button?&gt;</span>
+<span style="color:#75715e">&lt;?import javafx.scene.control.Label?&gt;</span>
+<span style="color:#75715e">&lt;?import javafx.scene.control.TextField?&gt;</span>
+<span style="color:#75715e">&lt;?import javafx.scene.layout.*?&gt;</span>
+<span style="color:#f92672">&lt;GridPane</span> <span style="color:#a6e22e">alignment=</span><span style="color:#e6db74">&#34;center&#34;</span> 
+          <span style="color:#a6e22e">hgap=</span><span style="color:#e6db74">&#34;10&#34;</span> 
+          <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;46.0&#34;</span> 
+          <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;324.0&#34;</span> 
+          <span style="color:#a6e22e">vgap=</span><span style="color:#e6db74">&#34;10&#34;</span> 
+          <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://javafx.com/javafx/8&#34;</span> 
+          <span style="color:#a6e22e">xmlns:fx=</span><span style="color:#e6db74">&#34;http://javafx.com/fxml/1&#34;</span> 
+          <span style="color:#a6e22e">fx:controller=</span><span style="color:#e6db74">&#34;sample.Controller&#34;</span><span style="color:#f92672">&gt;</span>
+   <span style="color:#f92672">&lt;columnConstraints</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;ColumnConstraints</span> <span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;ColumnConstraints</span> <span style="color:#a6e22e">minWidth=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;60.0&#34;</span> <span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;/columnConstraints&gt;</span>
+   <span style="color:#f92672">&lt;rowConstraints</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;RowConstraints</span> <span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;RowConstraints</span> <span style="color:#a6e22e">minHeight=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;30.0&#34;</span> <span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;/rowConstraints&gt;</span>
+   <span style="color:#f92672">&lt;children</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;TextField</span> <span style="color:#a6e22e">fx:id=</span><span style="color:#e6db74">&#34;stringField&#34;</span> <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;26.0&#34;</span> <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;205.0&#34;</span> <span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;Button</span> <span style="color:#a6e22e">mnemonicParsing=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">text=</span><span style="color:#e6db74">&#34;Button&#34;</span> <span style="color:#a6e22e">GridPane.columnIndex=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#a6e22e">onAction=</span><span style="color:#e6db74">&#34;#buttonAction&#34;</span><span style="color:#f92672">/&gt;</span>
+      <span style="color:#f92672">&lt;Label</span> <span style="color:#a6e22e">fx:id=</span><span style="color:#e6db74">&#34;stringLabel&#34;</span> <span style="color:#a6e22e">GridPane.columnSpan=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">GridPane.rowIndex=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;/children&gt;</span>
+   <span style="color:#f92672">&lt;padding</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;Insets</span> <span style="color:#a6e22e">bottom=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">left=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">right=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">top=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#f92672">/&gt;</span>
+   <span style="color:#f92672">&lt;/padding&gt;</span>
+<span style="color:#f92672">&lt;/GridPane&gt;</span>
+</code></pre></div><p>JavaによるREST-API呼び出しは、JAX-RSクライアントを利用するため、
 下記ライブラリを追加します。（Mavenの設定）</p>
-
-<pre><code class="language-xml">&lt;dependencies&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.glassfish.jersey.core&lt;/groupId&gt;
-        &lt;artifactId&gt;jersey-client&lt;/artifactId&gt;
-        &lt;version&gt;2.8&lt;/version&gt;
-    &lt;/dependency&gt;
-&lt;/dependencies&gt;
-</code></pre>
-
-<p>画面をコントロールするコントローラクラスです。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.glassfish.jersey.core<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>jersey-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.8<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;/dependencies&gt;</span>
+</code></pre></div><p>画面をコントロールするコントローラクラスです。
 ボタンがクリックされた場合にREST-APIを呼び出して結果をラベルに設定します。</p>
-
 <p><strong>Controller.java:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> javafx.fxml.FXML<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.scene.control.Label<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.scene.control.TextField<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+<span style="color:#f92672">import</span> javax.ws.rs.client.Client<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.client.ClientBuilder<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.core.MediaType<span style="color:#f92672">;</span>
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Controller</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@FXML</span>
+    <span style="color:#66d9ef">private</span> TextField stringField<span style="color:#f92672">;</span>
 
-public class Controller
-{
-    @FXML
-    private TextField stringField;
+    <span style="color:#a6e22e">@FXML</span>
+    <span style="color:#66d9ef">private</span> Label stringLabel<span style="color:#f92672">;</span>
 
-    @FXML
-    private Label stringLabel;
-
-    public void buttonAction()
-    {
-        final Client client = ClientBuilder.newClient();
-        try {
-            final String result = client.target(&quot;http://localhost:8080/jaxrs/rest&quot;)
-                    .path(&quot;hello&quot;)
-                    .queryParam(&quot;string&quot;, stringField.getText())
-                    .request(MediaType.TEXT_PLAIN_TYPE)
-                    .get(String.class);
-            stringLabel.setText(result);
-        }
-        finally {
-            client.close();
-        }
-    }
-}
-</code></pre>
-
-<p>起動すると下記の画面が表示されます。</p>
-
-<p><img src="/images/post_image_38.png" alt="" /></p>
-
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buttonAction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">final</span> Client client <span style="color:#f92672">=</span> ClientBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">newClient</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">final</span> String result <span style="color:#f92672">=</span> client<span style="color:#f92672">.</span><span style="color:#a6e22e">target</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8080/jaxrs/rest&#34;</span><span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">queryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">,</span> stringField<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN_TYPE</span><span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            stringLabel<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+            client<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>起動すると下記の画面が表示されます。</p>
+<p><img src="/images/post_image_38.png" alt=""></p>
 <h2 id="javafxからの呼び出しを非同期にする">JavaFXからの呼び出しを非同期にする</h2>
-
 <p>FlexもJavaFXもほぼ同じようなコードでREST-APIを呼び出すことができるのですが、
 Flexの方は非同期呼び出しであり、JavaFXの方は同期呼び出しという違いがあります。
 そこでJavaFXの方でも非同期呼び出しをさせてみたいと思います。</p>
-
 <p>JAX-RSクライアントには非同期呼び出しの仕組みがあるので、
 それを利用するようにREST-APIの呼び出し部分を下記のように書き換えました。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Client client <span style="color:#f92672">=</span> ClientBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">newClient</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+client<span style="color:#f92672">.</span><span style="color:#a6e22e">target</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8080/jaxrs/rest&#34;</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">queryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">,</span> stringField<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN_TYPE</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">async</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> InvocationCallback<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">{</span>
+          <span style="color:#a6e22e">@Override</span>
+          <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">completed</span><span style="color:#f92672">(</span>String result<span style="color:#f92672">)</span>
+          <span style="color:#f92672">{</span>
+              stringLabel<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#f92672">}</span>
 
-<pre><code class="language-java">final Client client = ClientBuilder.newClient();
-client.target(&quot;http://localhost:8080/jaxrs/rest&quot;)
-      .path(&quot;hello&quot;)
-      .queryParam(&quot;string&quot;, stringField.getText())
-      .request(MediaType.TEXT_PLAIN_TYPE)
-      .async()
-      .get(new InvocationCallback&lt;String&gt;()
-      {
-          @Override
-          public void completed(String result)
-          {
-              stringLabel.setText(result);
-          }
-
-          @Override
-          public void failed(Throwable throwable)
-          {
-              throwable.printStackTrace();
-          }
-      });
-</code></pre>
-
-<p>呼び出しチェーンに<code>async()</code>メソッドを追加します。
+          <span style="color:#a6e22e">@Override</span>
+          <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">failed</span><span style="color:#f92672">(</span>Throwable throwable<span style="color:#f92672">)</span>
+          <span style="color:#f92672">{</span>
+              throwable<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+          <span style="color:#f92672">}</span>
+      <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>呼び出しチェーンに<code>async()</code>メソッドを追加します。
 結果は戻り値ではなく、<code>InvocationCallback&lt;T&gt;</code>インターフェースの<code>completed(T)</code>メソッドで受け取るようになります。
 また、呼び出し後にclientをクローズしてしまうと非同期によるレスポンスを受け取る前に接続が切れてしまいます。
 そのため、ここではクローズは行いません。</p>
-
 <p>これで非同期になると思いきや、実行すると下記エラーが発生します。</p>
-
-<pre><code class="language-java">javax.ws.rs.ProcessingException: java.lang.IllegalStateException: Not on FX application thread; currentThread = jersey-client-async-executor-0
-	at org.glassfish.jersey.client.ClientRuntime.processFailure(ClientRuntime.java:173)
-	at org.glassfish.jersey.client.ClientRuntime.access$400(ClientRuntime.java:69)
-	at org.glassfish.jersey.client.ClientRuntime$1.run(ClientRuntime.java:155)
-</code></pre>
-
-<p>JavaFXアプリのスレッド以外でアクセスしようとしたのでエラーが発生しています。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">javax<span style="color:#f92672">.</span><span style="color:#a6e22e">ws</span><span style="color:#f92672">.</span><span style="color:#a6e22e">rs</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ProcessingException</span><span style="color:#f92672">:</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">IllegalStateException</span><span style="color:#f92672">:</span> Not on FX application thread<span style="color:#f92672">;</span> currentThread <span style="color:#f92672">=</span> jersey<span style="color:#f92672">-</span>client<span style="color:#f92672">-</span>async<span style="color:#f92672">-</span>executor<span style="color:#f92672">-</span>0
+	at org<span style="color:#f92672">.</span><span style="color:#a6e22e">glassfish</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jersey</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ClientRuntime</span><span style="color:#f92672">.</span><span style="color:#a6e22e">processFailure</span><span style="color:#f92672">(</span>ClientRuntime<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>173<span style="color:#f92672">)</span>
+	at org<span style="color:#f92672">.</span><span style="color:#a6e22e">glassfish</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jersey</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ClientRuntime</span><span style="color:#f92672">.</span><span style="color:#a6e22e">access$400</span><span style="color:#f92672">(</span>ClientRuntime<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>69<span style="color:#f92672">)</span>
+	at org<span style="color:#f92672">.</span><span style="color:#a6e22e">glassfish</span><span style="color:#f92672">.</span><span style="color:#a6e22e">jersey</span><span style="color:#f92672">.</span><span style="color:#a6e22e">client</span><span style="color:#f92672">.</span><span style="color:#a6e22e">ClientRuntime$1</span><span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>ClientRuntime<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>155<span style="color:#f92672">)</span>
+</code></pre></div><p>JavaFXアプリのスレッド以外でアクセスしようとしたのでエラーが発生しています。
 というわけで<code>async()</code>メソッドは使えません。
 そこで、<code>javafx.concurrent.Service</code>クラスを利用します。
 このクラスを利用すると、JavaFXアプリにおいて別スレッドを利用できるようになります。</p>
-
 <p><code>javafx.concurrent.Service</code>クラスを利用したクラスが下記になります。</p>
-
 <p><strong>HelloService.java:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> javafx.beans.property.SimpleStringProperty<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.beans.property.StringProperty<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.concurrent.Service<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.concurrent.Task<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
+<span style="color:#f92672">import</span> javax.ws.rs.client.Client<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.client.ClientBuilder<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.core.MediaType<span style="color:#f92672">;</span>
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.core.MediaType;
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloService</span> <span style="color:#66d9ef">extends</span> Service<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> StringProperty string <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleStringProperty<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-public class HelloService extends Service&lt;String&gt;
-{
-    private StringProperty string = new SimpleStringProperty();
+    <span style="color:#66d9ef">public</span> StringProperty <span style="color:#a6e22e">stringProperty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> string<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    public StringProperty stringProperty()
-    {
-        return string;
-    }
-
-    @Override
-    protected Task&lt;String&gt; createTask()
-    {
-        return new Task&lt;String&gt;()
-        {
-            @Override
-            protected String call() throws Exception
-            {
-                if (false == string.get().isEmpty()) {
-                    final Client client = ClientBuilder.newClient();
-                    try {
-                        return client.target(&quot;http://localhost:8080/jaxrs/rest&quot;)
-                                .path(&quot;hello&quot;)
-                                .queryParam(&quot;string&quot;, string.get())
-                                .request(MediaType.TEXT_PLAIN_TYPE)
-                                .get(String.class);
-                    }
-                    finally {
-                        client.close();
-                    }
-                }
-                return null;
-            }
-        };
-    }
-}
-</code></pre>
-
-<p>作成したサービスクラスを利用するようにコントローラクラスを書き換えます。</p>
-
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">protected</span> Task<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">createTask</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Task<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+        <span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">call</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+            <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">false</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> string<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">final</span> Client client <span style="color:#f92672">=</span> ClientBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">newClient</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                        <span style="color:#66d9ef">return</span> client<span style="color:#f92672">.</span><span style="color:#a6e22e">target</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8080/jaxrs/rest&#34;</span><span style="color:#f92672">)</span>
+                                <span style="color:#f92672">.</span><span style="color:#a6e22e">path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
+                                <span style="color:#f92672">.</span><span style="color:#a6e22e">queryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">,</span> string<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+                                <span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN_TYPE</span><span style="color:#f92672">)</span>
+                                <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                    <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
+                        client<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">}</span>
+                <span style="color:#f92672">}</span>
+                <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>作成したサービスクラスを利用するようにコントローラクラスを書き換えます。</p>
 <p><strong>Controller.java:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> javafx.fxml.FXML<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.fxml.Initializable<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.scene.control.Label<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.scene.control.TextField<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+<span style="color:#f92672">import</span> java.net.URL<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.ResourceBundle<span style="color:#f92672">;</span>
 
-import java.net.URL;
-import java.util.ResourceBundle;
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Controller</span> <span style="color:#66d9ef">implements</span> Initializable
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@FXML</span>
+    <span style="color:#66d9ef">private</span> TextField stringField<span style="color:#f92672">;</span>
 
-public class Controller implements Initializable
-{
-    @FXML
-    private TextField stringField;
+    <span style="color:#a6e22e">@FXML</span>
+    <span style="color:#66d9ef">private</span> Label stringLabel<span style="color:#f92672">;</span>
 
-    @FXML
-    private Label stringLabel;
+    <span style="color:#66d9ef">private</span> HelloService service <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HelloService<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-    private HelloService service = new HelloService();
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buttonAction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        service<span style="color:#f92672">.</span><span style="color:#a6e22e">restart</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    public void buttonAction()
-    {
-        service.restart();
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle)
-    {
-        service.stringProperty().bind(stringField.textProperty());
-        service.setOnSucceeded(e -&gt; stringLabel.setText((String)e.getSource().getValue()));
-        service.start();
-    }
-}
-</code></pre>
-
-<p><code>Initializable</code>インターフェースの<code>initialize(URL, ResourceBundle)</code>メソッド内で
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initialize</span><span style="color:#f92672">(</span>URL url<span style="color:#f92672">,</span> ResourceBundle resourceBundle<span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        service<span style="color:#f92672">.</span><span style="color:#a6e22e">stringProperty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span>stringField<span style="color:#f92672">.</span><span style="color:#a6e22e">textProperty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        service<span style="color:#f92672">.</span><span style="color:#a6e22e">setOnSucceeded</span><span style="color:#f92672">(</span>e <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> stringLabel<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span><span style="color:#f92672">(</span>String<span style="color:#f92672">)</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">getSource</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        service<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>Initializable</code>インターフェースの<code>initialize(URL, ResourceBundle)</code>メソッド内で
 入力フィールドをサービスクラスへバインドし、サービスの処理完了時に呼ばれる<code>setOnSucceeded</code>メソッドで
 ラベルに対してレスポンスを書き出すようにします。<code>start()</code>メソッドでサービスを開始します。</p>
-
 <p>また、書き換え前のコードではボタンクリックのハンドラ内でREEST-APIを呼び出していましたが、
 新しいコードではサービスクラスの<code>restart()</code>メソッドを呼び出し、
 サービスの起動状態をキャンセルして再起動させます。こうすることにより、サービス内のタスクが再度生成されるので、
 入力された値がサーバーに送信されるようになります。
 入力値はバインドを利用しているので、サービスへの再設定は必要ありません。</p>
-
 <h2 id="まとめ">まとめ</h2>
-
 <p>FlexとJavaFXでの簡単な呼び出しにおいてはほとんど違いがないことがわかるかと思います。
 JavaFXで非同期呼び出しをしようとした場合にちょっとだけ面倒になりますが、
 非同期にしたい部分だけ今回のようにサービスにするだけなので、
 JavaFXを利用する上ではそれほど問題にならないかな、と思っています。</p>
-
 <p>Flexでは同期呼び出しにするという選択肢がないので、
 同期と非同期を切り替えられるJavaFXの方がメリットがありそうです。</p>
-
 <h2 id="参考">参考</h2>
-
 <ul>
 <li><a href="http://docs.oracle.com/javafx/2/threads/jfxpub-threads.htm">Concurrency in JavaFX</a></li>
 </ul>

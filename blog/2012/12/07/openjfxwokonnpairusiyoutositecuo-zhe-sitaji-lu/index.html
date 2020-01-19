@@ -78,33 +78,23 @@
       </div>
     </div>
     <article>
-      
-
-<p><a href="http://atnd.org/events/33874">JavaFX Advent Calendar 2012</a>の7日目のエントリーです。<br />
-昨日は<a href="https://twitter.com/fukai_yas">@fukai_yas</a>さんの「<a href="http://blog.livedoor.jp/fukai_yas/archives/20772650.html">AppletでFXMLを使って罠にハマる</a>」です。<br />
+      <p><a href="http://atnd.org/events/33874">JavaFX Advent Calendar 2012</a>の7日目のエントリーです。<br>
+昨日は<a href="https://twitter.com/fukai_yas">@fukai_yas</a>さんの「<a href="http://blog.livedoor.jp/fukai_yas/archives/20772650.html">AppletでFXMLを使って罠にハマる</a>」です。<br>
 明日は<a href="https://twitter.com/btnrouge">@btnrouge</a>さんです。</p>
-
 <h2 id="joptionpaneが使いたい">JOptionPaneが使いたい</h2>
-
 <p>JavaFX 2.2.3で業務に利用する簡単なツールを作っていたのですが、入力エラーを通知する為に、
 SwingでいうところのJOptionPane相当のものを探したのですがみつかりませんでした。
 誰か知っている人はいないだろうかとTwitterでつぶやいてみたところ、@skrbさんよりこんなお返事を頂きました。</p>
-
-<p><blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr"><a href="https://twitter.com/kokuzawa">@kokuzawa</a> Project Sandboxというのがあって、そこでJOptionPaneのように使えるDialogクラスを提供してますよ。正式にはJavaFX 8で入る予定です。 <a href="http://t.co/w6AswYKA">http://t.co/w6AswYKA</a></p>&mdash; Yuichi Sakuraba (@skrb) <a href="https://twitter.com/skrb/status/274416797602705408">2012年11月30日</a></blockquote> <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></p>
-
+<!-- raw HTML omitted -->
 <p>Project SandboxでJOptionPane相当のDialogsクラスが提供されているということ。JavaFX 8 に入るらしい。
 すばらしい！すばらしいけど、今使いたい。そこでひとまずProject Sandboxを動かしてみる事にしました。</p>
-
 <h2 id="openjfxをビルドする">OpenJFXをビルドする</h2>
-
 <p>Project SandboxはOpenJFXのSandboxプロジェクトで、これを利用する為には、Mercurialに登録されているソースをコンパイルする必要があるようです。
 そこで<a href="http://openjdk.java.net/projects/openjfx/getting-started.html">OpenJFXのページ</a>に書かれているビルド手順を実行します。
 でもこれ、記述が古い。JDKのフォルダ構成とか、今のものとはかなり違う。さて困った。</p>
-
 <p>そこで新たな情報を求めていると、<a href="https://wikis.oracle.com/display/OpenJDK/Building+OpenJFX">Building OpenJFX</a>という、
 まさに望んだ通りのページがありました。手順は次のようになります。
 また、コンパイルにはJDK 8 が必要です。</p>
-
 <ul>
 <li><code>mkdir -p ~/open-jfx</code></li>
 <li><code>cd ~/open-jfx</code></li>
@@ -116,27 +106,19 @@ SwingでいうところのJOptionPane相当のものを探したのですがみ�
 <li><code>cd rt</code></li>
 <li><code>ant</code></li>
 </ul>
-
 <p>今度こそ、コンパイル出来そうな感じです。最後のantを実行すると、何個かのモジュールのjarが出来上がっていきます。
 が、javafx-ui-commonというモジュールのコンパイルが通りません。JDKのバージョンの問題かもしれないと思ったのですが、
 JDK 8 はJDK 8 b65というもので、この時点では最新のものです。
 ここで1日試行錯誤を繰り返したものの、解決の糸口はなく、ビルドはあきらめる事にしました。</p>
-
 <h2 id="やっぱりjoptionpaneが使いたい">やっぱりJOptionPaneが使いたい</h2>
-
 <p>OpenJFXのコンパイルにかなりの時間を取られたのですが、本来の目的はJOptionPane相当のものが使いたいだけです。
 最初に教えて頂いた<a href="http://fxexperience.com/2012/10/announcing-the-javafx-ui-controls-sandbox/">ページ</a>のコメント欄を読んでいると、
 Marco Jakobさんという方がJavaFX 2.2でも利用できるDialogsがあると書いています。やったね、これじゃん！</p>
-
 <p>ということで、早速<a href="http://edu.makery.ch/blog/2012/10/30/javafx-2-dialogs/">リンク先</a>に行ってみると、
 使い方が大変詳しく記述されています。詳しくはリンク先をご覧頂くとして、例えば下記のようなコードを書くだけで、
 ダイアログが表示されます。</p>
-
 <pre><code>Dialogs.showErrorDialog(stage, null, &quot;名前が入力されていません。&quot;, &quot;Error&quot;);
-</code></pre>
-
-<h2 id="まとめ">まとめ</h2>
-
+</code></pre><h2 id="まとめ">まとめ</h2>
 <p>JavaFX 8 になると、これ以外にも業務で利用できそうなTreeTableViewなど、様々なもの増えるようです。
 JDK 8 が待ち遠しいですが、現状ではコンパイルもままならないので、今回さわったDialogsクラスをしばらくメインで使わせてもらうつもりです。
 しかし、JavaFXはUIが綺麗で楽しくなりますね。</p>

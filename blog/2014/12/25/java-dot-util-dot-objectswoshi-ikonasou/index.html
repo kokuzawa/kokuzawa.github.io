@@ -76,58 +76,47 @@
       </div>
     </div>
     <article>
-      <p>この記事は<a href="http://qiita.com/advent-calendar/2014/java">Java Advent Calendar 2014</a>の25日目です。<br />
+      <p>この記事は<a href="http://qiita.com/advent-calendar/2014/java">Java Advent Calendar 2014</a>の25日目です。<br>
 昨日は<a href="https://twitter.com/smogami/">@smogami</a>さんの「<a href="http://blog.exoego.net/2014/12/lombok-and-lombok-pg-to-reduce-fat-java.html">LombokとLombok-pg： Javaコードを減量する魔法のスパイス</a>」でした。</p>
-
 <p>今年も様々な面白い記事がアップされました。
 そんな楽しかった25日間も今日で最終日です。
 最終日なのですが、ちょっと地味にJava7で追加されたjava.util.Objectsについて書きたいと思います。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <p>java.util.Objectsクラスでは今までありそうでなかった便利なユーティリティメソッドが用意されています。
 Java7の時点では下記のメソッドが定義されています。</p>
-
 <ul>
-<li>static <T> int compare(T a, T b, Comparator&lt;? super T&gt; c)</li>
+<li>static <!-- raw HTML omitted --> int compare(T a, T b, Comparator&lt;? super T&gt; c)</li>
 <li>static boolean deepEquals(Object a, Object b)</li>
 <li>static boolean equals(Object a, Object b)</li>
 <li>static int     hash(Object&hellip; values)</li>
 <li>static int     hashCode(Object o)</li>
-<li>static <T> T   requireNonNull(T obj)</li>
-<li>static <T> T   requireNonNull(T obj, String message)</li>
+<li>static <!-- raw HTML omitted --> T   requireNonNull(T obj)</li>
+<li>static <!-- raw HTML omitted --> T   requireNonNull(T obj, String message)</li>
 <li>static String  toString(Object o)</li>
 <li>static String  toString(Object o, String nullDefault)</li>
 </ul>
-
 <p>詳細は<a href="https://docs.oracle.com/javase/jp/7/api/java/util/Objects.html">Javadocを参照</a>してもらうとして、
 私はrequireNonNullメソッドをよく利用しています。
 いろいろなプロジェクトでメソッドの引数チェックの方法がマチマチだったのが、
 このメソッドのおかげで引数チェック方法が統一できたのが画期的でした。
 Lombokの@NonNullアノテーションでチェックすればいいじゃない？という話もありますが&hellip;(^^;</p>
-
 <p>その昔、メソッドの引数がnullだった場合に、IllegalArgumentExceptionをスローすべきか、
 NullPointerExceptionをスローすべきかという議論があったのですが、
 java.util.ObjectsクラスのrequireNonNullメソッドがNullPointerExceptionをスローするので、
 この議論はNullPointerExceptionの勝ちですかね (^^;</p>
-
 <p>そして現在Java8がリリースされているわけですが、
 さらに3つのメソッドが追加されました。</p>
-
 <ul>
 <li>static boolean isNull(Object obj)</li>
 <li>static boolean nonNull(Object obj)</li>
-<li>static <T> T   requireNonNull(T obj, Supplier<String> messageSupplier)</li>
+<li>static <!-- raw HTML omitted --> T   requireNonNull(T obj, Supplier<!-- raw HTML omitted --> messageSupplier)</li>
 </ul>
-
 <p>順当に利用頻度が高そうなメソッドが追加されています。
 Supplierを第二引数に取るrequireNonNullメソッドの説明には「メッセージ・サプライヤを作成するコストが文字列メッセージを単に直接作成するコストよりも小さいことを考慮」
 とありますが、サプライヤを生成するコストより文字列メッセージを生成するコストが上回るのはどのぐらいの文字列を生成しようとした場合ですかね？あとでちゃんと調べてみたいと思います。</p>
-
 <p>まだApache-CommonsのObjectUilsクラスには及びませんが、
-だいぶ使い勝手が良くなってきているのではないでしょうか。<br />
+だいぶ使い勝手が良くなってきているのではないでしょうか。<br>
 ぜひ、皆さんも使ってみてください。</p>
-
 <p>メリークリスマス！</p>
 
       

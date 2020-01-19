@@ -78,112 +78,78 @@
       </div>
     </div>
     <article>
-      
-
-<p>Angular2のアプリをIntelliJ IDEAで動かすまでの試行錯誤の記録です。</p>
-
-<!-- more -->
-
+      <p>Angular2のアプリをIntelliJ IDEAで動かすまでの試行錯誤の記録です。</p>
+<!-- raw HTML omitted -->
 <h2 id="環境">環境</h2>
-
 <ul>
 <li>macOS Sierra</li>
 <li>IntelliJ IDEA 2016.3</li>
 </ul>
-
 <h2 id="angular2のインストール">Angular2のインストール</h2>
-
 <p>Angular2を動かすのにはNode.jsが必要なので、最初にNode.jsをインストールします。
 macOSの場合、homebrewでnodebrewを入れるのが良さそうです。
 nodebrewはNode.jsのバージョン管理システムだそうです。</p>
-
 <pre><code>$brew install nodebrew
 </code></pre>
-
 <p>nodebrewインストール直後だと、カレントのNode.jsが選択されていないため、
 Node.jsのコマンドを打ってもそんなコマンドはないと怒られてしまいます。
 そこで、カレントのNode.jsを選択します。
 選択方法ですが、まずインストールされているNode.jsのバージョンを知る必要があるので、
 下記コマンドを実行し、バージョンリストを表示します。</p>
-
 <pre><code>$nodebrew list
 </code></pre>
-
 <p>バージョンが表示されたら、利用したいバージョンを指定した下記コマンドを実行します。
 私の環境ではv7.3.0がインストールされていたので、これをカレントにします。</p>
-
 <pre><code>$nodebrew use v7.3.0
 </code></pre>
-
 <p>これでNode.jsが使えるようになりました。</p>
-
 <p>次に目的のAngular2をインストールするわけですが、
 ここではコマンドラインツールであるangular-cliをインストールします。
 インストールはnpm(Node Package Manager)を使います。</p>
-
 <pre><code>$npm install -g angular-cli
 </code></pre>
-
 <p>これでAngular2アプリを作る準備ができました。</p>
-
 <h2 id="angular2アプリを作る">Angular2アプリを作る</h2>
-
 <p>早速アプリを作りたいのですが、IntelliJ IDEAではAngularプロジェクトを作るメニューはありません。
 プラグイン等であるのかもしれませんが、プレーンな状態ではできないので、
 Angular-cliを使って雛形のプロジェクトを作成します。
 プロジェクトを作りたいフォルダに移動して下記コマンドを実行します。</p>
-
 <pre><code>$ng new angular-start
 </code></pre>
-
 <p>これで雛形のアプリが作成されました。
 angular-startフォルダに移動して下記コマンドを実行すると、<code>http://localhost:4200/</code>で最初の画面が表示されます。</p>
-
 <pre><code>$ng serve
 </code></pre>
-
 <h2 id="intellij-ideaに読み込む">IntelliJ IDEAに読み込む</h2>
-
 <p>ここまでの作業でAngular2の動作するアプリはできましたが、
 IntelliJ IDEAでの編集はまだできません。
 IntelliJ IDEAで編集するために下記手順でプロジェクトを読み込みます。</p>
-
 <ol>
 <li>File -&gt; New -&gt; Project from Existing Sources&hellip; を選択してangular-startフォルダを選択する</li>
 <li>Import ProjectダイアログでCreate Project from existing sourcesを選択してNextボタンをクリックする</li>
 <li>以降は何も変更せず、Nextボタンをクリックする</li>
 <li>Finishボタンが表示されたらそれをクリックする</li>
 </ol>
-
 <p>これでソースの読み込みは完了しました。</p>
-
 <h2 id="intellij-ideaで実行する">IntelliJ IDEAで実行する</h2>
-
 <p>Run -&gt; Edit Configurations&hellip; を選択してRun/Debug Configurationsダイアログを表示します。
 下記イメージではnpmの実行設定を既に作成した状態になります。</p>
-
-<p><img src="/images/post_image_42.png" alt="" /></p>
-
+<p><img src="/images/post_image_42.png" alt=""></p>
 <p>イメージ右側のNode Interpreterの部分、選択された状態となっていますが、
 これはIntelliJ IDEAにNodeJSプラグインをインストールしていないと選択されません。
 ですので、事前にNodeJSプラグインをインストールする必要があります。</p>
-
 <p>package.json, Scripts, Argumentsの部分が空白となっていると思うので、
 イメージ内で設定しているように設定します。
 これで実行する準備が整いました。
 実行するとコマンドラインで<code>ng serve</code>とした時と同様のログがコンソールに出力されるのが確認できると思います。
 最初の時と同じように、起動後<code>http://localhost:4200</code>にアクセスすることで最初の画面を表示することができます。</p>
-
 <h2 id="まとめ">まとめ</h2>
-
 <p>コマンドラインからプロジェクトを作った後にIntelliJ IDEAに読み込ませるのがちょっと面倒です。
 プラグインでAngular2のプロジェクトが作れるようになると良いのですが、
 今の所できなさそうです。（どこかにあるのかな？）
 ただし、一度読み込ませてしまえば、後は使い慣れたIntelliJ IDEA上で編集ができるし、
 補完も効くので開発効率が良さそうです。</p>
-
 <h2 id="参考">参考</h2>
-
 <ul>
 <li><a href="https://www.gitbook.com/book/albatrosary/start-angular/details">Start Angular</a></li>
 </ul>

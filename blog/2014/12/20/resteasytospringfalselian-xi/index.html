@@ -80,108 +80,88 @@
       </div>
     </div>
     <article>
-      
-
-<p><a href="http://qiita.com/advent-calendar/2014/javaee">Java EE Advent Calendar 2014</a>の20日の記事です。<br />
-昨日は<a href="https://twitter.com/yoshioterada">@yoshioterada</a>さんの「<a href="http://yoshio3.com/2014/12/19/java-ee-8-new-features/">Java EE 8 の新機能概要のご紹介</a>」でした。<br />
+      <p><a href="http://qiita.com/advent-calendar/2014/javaee">Java EE Advent Calendar 2014</a>の20日の記事です。<br>
+昨日は<a href="https://twitter.com/yoshioterada">@yoshioterada</a>さんの「<a href="http://yoshio3.com/2014/12/19/java-ee-8-new-features/">Java EE 8 の新機能概要のご紹介</a>」でした。<br>
 明日は<a href="https://twitter.com/suke_masa">@suke_masa</a>さんです。</p>
-
 <p>Jersey-1.8を使ったアプリを最新の2.14に置き換えようと思ったところが始まりです。
 サーバーがWildFlyだからRESTEasyが含まれているので、JerseyではなくRESTEasyを使えば良いのだけれども、
 アプリ内でJersey MultiPartを使っているのでひとまずバージョンアップを試みたのですが、
 いろいろ問題があって結局RESTEasyに置き換えました。</p>
-
 <p>実際の運用はTomcatを使っているので、Tomcatでも動作する設定を考慮しています。
 なので、WildFlyオンリーで考えた場合は不要な設定があるかもしれません。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <h2 id="環境">環境</h2>
-
 <ul>
 <li>OS: Mac OSX Yosemite 10.10</li>
 <li>Java: Java™ SE Runtime Environment (build 1.8.0-b132)</li>
 <li>メモリ: 4GB</li>
 <li>WildFly 8.0.0.Final</li>
 </ul>
-
-<h2 id="pom-xml">pom.xml</h2>
-
+<h2 id="pomxml">pom.xml</h2>
 <p>下記のdiendencyが必要です。JettisonじゃなくてJacksonを使いたいのでそのdependencyも追加しています。
 あとファイルアップロードも使いたいので、<code>resteasy-multipart-provider</code>も入れています。
 <code>resteasy-spring</code>に依存してRESTEasyのコアライブラリは入るので定義の必要ありません。
 Tomcatの場合、サーバにはJAX-RSの実装は入っていないのでscopeはcompileを指定します。
 WildFlyの場合はscopeをcompileにすると起動時にエラーが発生するのでprovidedを指定します。
 これは既にRESTEasyがサーバに含まれているから。</p>
-
-<pre><code class="language-xml">&lt;dependency&gt;
-    &lt;groupId&gt;org.jboss.resteasy&lt;/groupId&gt;
-    &lt;artifactId&gt;resteasy-servlet-initializer&lt;/artifactId&gt;
-    &lt;version&gt;3.0.10.Final&lt;/version&gt;
-    &lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.jboss.resteasy&lt;/groupId&gt;
-    &lt;artifactId&gt;resteasy-multipart-provider&lt;/artifactId&gt;
-    &lt;version&gt;3.0.10.Final&lt;/version&gt;
-    &lt;scope&gt;provided&lt;/scope&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.jboss.resteasy&lt;/groupId&gt;
-    &lt;artifactId&gt;resteasy-jackson-provider&lt;/artifactId&gt;
-    &lt;version&gt;3.0.10.Final&lt;/version&gt;
-&lt;/dependency&gt;
-&lt;dependency&gt;
-    &lt;groupId&gt;org.jboss.resteasy&lt;/groupId&gt;
-    &lt;artifactId&gt;resteasy-spring&lt;/artifactId&gt;
-    &lt;version&gt;3.0.10.Final&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-
-<h2 id="web-xml">web.xml</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.jboss.resteasy<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>resteasy-servlet-initializer<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.0.10.Final<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.jboss.resteasy<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>resteasy-multipart-provider<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.0.10.Final<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>provided<span style="color:#f92672">&lt;/scope&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.jboss.resteasy<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>resteasy-jackson-provider<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.0.10.Final<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.jboss.resteasy<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>resteasy-spring<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.0.10.Final<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><h2 id="webxml">web.xml</h2>
 <p>web.xml には下記を追加します。
 url-pattarnが<code>/*</code>以外の場合は<code>resteasy.servlet.mapping.prefix</code>の設定が必要です。
 <code>resteasy.scan</code>で自動的にJAX-RSのコンポーネントをスキャンする設定ができるのですが、
 springと連携する場合は自動スキャンはしちゃダメ。
 自動スキャンしようとすると<code>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</code>でエラーになります。</p>
-
 <p>ということは、@Providerとか@PathがついたクラスはすべてSpringのコンポーネントにしておく必要があります。
 あとApplicationのサブクラスはなくても大丈夫です。</p>
-
 <p><code>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener</code>を追加しているので、
 <code>org.springframework.web.context.ContextLoaderListener</code>は指定しちゃダメ。
 指定すると起動に失敗します。</p>
-
-<pre><code class="language-xml">  &lt;context-param&gt;
-    &lt;param-name&gt;resteasy.servlet.mapping.prefix&lt;/param-name&gt;
-    &lt;param-value&gt;/rest&lt;/param-value&gt;
-  &lt;/context-param&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml">  <span style="color:#f92672">&lt;context-param</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;param-name</span><span style="color:#f92672">&gt;</span>resteasy.servlet.mapping.prefix<span style="color:#f92672">&lt;/param-name&gt;</span>
+    <span style="color:#f92672">&lt;param-value</span><span style="color:#f92672">&gt;</span>/rest<span style="color:#f92672">&lt;/param-value&gt;</span>
+  <span style="color:#f92672">&lt;/context-param&gt;</span>
   
-  &lt;listener&gt;
-    &lt;listener-class&gt;org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap&lt;/listener-class&gt;
-  &lt;/listener&gt;
+  <span style="color:#f92672">&lt;listener</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;listener-class</span><span style="color:#f92672">&gt;</span>org.jboss.resteasy.plugins.server.servlet.ResteasyBootstrap<span style="color:#f92672">&lt;/listener-class&gt;</span>
+  <span style="color:#f92672">&lt;/listener&gt;</span>
 
-  &lt;listener&gt;
-    &lt;listener-class&gt;org.jboss.resteasy.plugins.spring.SpringContextLoaderListener&lt;/listener-class&gt;
-  &lt;/listener&gt;
+  <span style="color:#f92672">&lt;listener</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;listener-class</span><span style="color:#f92672">&gt;</span>org.jboss.resteasy.plugins.spring.SpringContextLoaderListener<span style="color:#f92672">&lt;/listener-class&gt;</span>
+  <span style="color:#f92672">&lt;/listener&gt;</span>
   
-  &lt;servlet&gt;
-    &lt;servlet-name&gt;Resteasy&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher&lt;/servlet-class&gt;
-  &lt;/servlet&gt;
-  &lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;Resteasy&lt;/servlet-name&gt;
-    &lt;url-pattern&gt;/rest/*&lt;/url-pattern&gt;
-  &lt;/servlet-mapping&gt;
-</code></pre>
-
-<h2 id="まとめ">まとめ</h2>
-
+  <span style="color:#f92672">&lt;servlet</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>Resteasy<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+    <span style="color:#f92672">&lt;servlet-class</span><span style="color:#f92672">&gt;</span>org.jboss.resteasy.plugins.server.servlet.HttpServletDispatcher<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+  <span style="color:#f92672">&lt;/servlet&gt;</span>
+  <span style="color:#f92672">&lt;servlet-mapping</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>Resteasy<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+    <span style="color:#f92672">&lt;url-pattern</span><span style="color:#f92672">&gt;</span>/rest/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+  <span style="color:#f92672">&lt;/servlet-mapping&gt;</span>
+</code></pre></div><h2 id="まとめ">まとめ</h2>
 <p>これでJAX-RSのリソースクラスにも@AutowiredでDIできるようになります。
 RESTEasyのドキュメントに詳細に書いてあるんだけど、web.xmlの設定方法がServletのバージョンを考慮したパターンとか
 いろいろありすぎて逆に困る。結局いろいろ試した末に上記の設定にたどり着きました。</p>
-
 <p>同じようなことをしようとしている人の何かの参考になれば。</p>
 
       

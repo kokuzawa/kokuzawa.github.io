@@ -78,156 +78,124 @@
       </div>
     </div>
     <article>
-      
-
-<p>この記事は<a href="http://www.adventar.org/calendars/145">Java Advent Calendar 2013</a>の22日目の記事です。<br />
-昨日は<a href="https://twitter.com/nagaseyasuhito">@nagaseyasuhito</a>さんの「<a href="http://www.nagaseyasuhito.net/2013/12/21/368/">mvn siteのtips三連発</a>」でした。<br />
+      <p>この記事は<a href="http://www.adventar.org/calendars/145">Java Advent Calendar 2013</a>の22日目の記事です。<br>
+昨日は<a href="https://twitter.com/nagaseyasuhito">@nagaseyasuhito</a>さんの「<a href="http://www.nagaseyasuhito.net/2013/12/21/368/">mvn siteのtips三連発</a>」でした。<br>
 明日は monzou さんです。</p>
-
-<p>ファイルアップロードを実現するために何を使っていますか？<br />
+<p>ファイルアップロードを実現するために何を使っていますか？<br>
 私はもっぱらJAX-RSを使っています。</p>
-
 <p>ファイルアップロードはAX-RSの仕様には含まれていないのですが、ほとんどの実装でサポートされているようです。
 その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。</p>
-
-<p>今回利用したJerseyはGlassFish4に含まれているものを利用します。<br />
+<p>今回利用したJerseyはGlassFish4に含まれているものを利用します。<br>
 ライブラリとしては以下のjarになります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.glassfish.jersey.media<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>jersey-media-multipart<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.4.1<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><p>さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">http-equiv</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Content-Type&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/html; charset=UTF-8&#34;</span>/&gt;
+    &lt;<span style="color:#f92672">title</span>&gt;JAX-RS upload multiple files example&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+    &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">enctype</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;multipart/form-data&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rest/upload/multipleFiles&#34;</span>&gt;
+        &lt;<span style="color:#f92672">div</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span>/&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+        &lt;<span style="color:#f92672">div</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span>/&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+        &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Upload&#34;</span>&gt;
+    &lt;/<span style="color:#f92672">form</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>で、実際にリクエストを受け取るJavaのコード。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi.resources<span style="color:#f92672">;</span>
 
-<pre><code class="language-xml">&lt;dependency&gt;
-    &lt;groupId&gt;org.glassfish.jersey.media&lt;/groupId&gt;
-    &lt;artifactId&gt;jersey-media-multipart&lt;/artifactId&gt;
-    &lt;version&gt;2.4.1&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
+<span style="color:#f92672">import</span> org.glassfish.jersey.media.multipart.FormDataBodyPart<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.glassfish.jersey.media.multipart.FormDataParam<span style="color:#f92672">;</span>
 
-<p>さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。</p>
+<span style="color:#f92672">import</span> javax.ws.rs.Consumes<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.POST<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.Path<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.Produces<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.core.MediaType<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.io.InputStream<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.nio.file.Files<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.nio.file.Paths<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.List<span style="color:#f92672">;</span>
 
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;/&gt;
-    &lt;title&gt;JAX-RS upload multiple files example&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;form enctype=&quot;multipart/form-data&quot; method=&quot;post&quot; action=&quot;rest/upload/multipleFiles&quot;&gt;
-        &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt;
-        &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot;/&gt;&lt;/div&gt;
-        &lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;
-    &lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>で、実際にリクエストを受け取るJavaのコード。</p>
-
-<pre><code class="language-java">package org.katsumi.resources;
-
-import org.glassfish.jersey.media.multipart.FormDataBodyPart;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.List;
-
-/**
- * 複数ファイルのアップロードサンプル
- * @author Katsumi
- * @since 2013/12/21
- */
-@Path(&quot;/upload&quot;)
-public class Upload
-{
-    @POST
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path(&quot;/multipleFiles&quot;)
-    public String upload(@FormDataParam(&quot;file&quot;)List&lt;FormDataBodyPart&gt; bodyParts) throws IOException
-    {
-        for (FormDataBodyPart part : bodyParts) {
-            Files.copy(part.getValueAs(InputStream.class),
-                    Paths.get(&quot;/Users/Katsumi/Downloads&quot;, part.getFormDataContentDisposition().getFileName()));
-        }
-        return &quot;finish!!&quot;;
-    }
-}
-</code></pre>
-
-<p>fileフィールドの値は、@FormDataParam(&ldquo;file&rdquo;)アノテーションを引数につけることで受け取ることができます。
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * 複数ファイルのアップロードサンプル
+</span><span style="color:#75715e"> * @author Katsumi
+</span><span style="color:#75715e"> * @since 2013/12/21
+</span><span style="color:#75715e"> */</span>
+<span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/upload&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Upload</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@POST</span>
+    <span style="color:#a6e22e">@Consumes</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">MULTIPART_FORM_DATA</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN</span><span style="color:#f92672">)</span>
+    <span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/multipleFiles&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">upload</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@FormDataParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;file&#34;</span><span style="color:#f92672">)</span>List<span style="color:#f92672">&lt;</span>FormDataBodyPart<span style="color:#f92672">&gt;</span> bodyParts<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>FormDataBodyPart part <span style="color:#f92672">:</span> bodyParts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            Files<span style="color:#f92672">.</span><span style="color:#a6e22e">copy</span><span style="color:#f92672">(</span>part<span style="color:#f92672">.</span><span style="color:#a6e22e">getValueAs</span><span style="color:#f92672">(</span>InputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>
+                    Paths<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/Users/Katsumi/Downloads&#34;</span><span style="color:#f92672">,</span> part<span style="color:#f92672">.</span><span style="color:#a6e22e">getFormDataContentDisposition</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getFileName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;finish!!&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>fileフィールドの値は、@FormDataParam(&ldquo;file&rdquo;)アノテーションを引数につけることで受け取ることができます。
 また、今回は複数のファイルを受け取るので、引数の方を<code>java.util.List</code>にしています。
 <code>FormDataBodyPart</code>に実際のファイルの情報が含まれているので、ここから必要なものを取り出します。</p>
-
 <p>ネットで検索すると、ファイルのアップロードを受け取る際に、
 <code>InputStream</code>と<code>FormDataContentDisposition</code>の2つをパラメータとして受け取るサンプルが良く見つかりますが、
 <code>FormDataBodyPart</code>にはこの2つの情報が含まれているので、こちらを利用した方が良いのではないかと思います。</p>
-
-<p>ちなみに、<code>FormDataBodyPart</code>から<code>InputStream</code>を取り出すには<code>getValueAs(InputStream.class)</code>を利用します。<br />
+<p>ちなみに、<code>FormDataBodyPart</code>から<code>InputStream</code>を取り出すには<code>getValueAs(InputStream.class)</code>を利用します。<br>
 ここがちょっと分かりにくいところかもしれません。</p>
-
 <p>あと、このコードだと、日本語ファイル名の場合に文字化けしてしまうので適切なエンコードが必要になりますが、
 文字コードの変換部分は今回の本質的な部分ではないので割愛します。</p>
-
-<p>もう一点、今回の実装で注意する部分があります。<br />
+<p>もう一点、今回の実装で注意する部分があります。<br>
 JAX-RSのリソースクラスをweb.xmlで登録しているのですが、マルチパートを処理するに当たり登録対象として
 <code>org.glassfish.jersey.media.multipart.MultiPartFeature</code>クラスを含める必要あるようです。
 ですので、web.xmlの該当部分は下記のような宣言としています。</p>
-
-<pre><code class="language-xml">&lt;servlet&gt;
-    &lt;servlet-name&gt;MyApplication&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
-    &lt;init-param&gt;
-        &lt;param-name&gt;jersey.config.server.provider.classnames&lt;/param-name&gt;
-        &lt;param-value&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;servlet</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>MyApplication<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+    <span style="color:#f92672">&lt;servlet-class</span><span style="color:#f92672">&gt;</span>org.glassfish.jersey.servlet.ServletContainer<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+    <span style="color:#f92672">&lt;init-param</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;param-name</span><span style="color:#f92672">&gt;</span>jersey.config.server.provider.classnames<span style="color:#f92672">&lt;/param-name&gt;</span>
+        <span style="color:#f92672">&lt;param-value</span><span style="color:#f92672">&gt;</span>
             org.katsumi.resources.Upload,
             org.glassfish.jersey.media.multipart.MultiPartFeature
-        &lt;/param-value&gt;
-    &lt;/init-param&gt;
-&lt;/servlet&gt;
-</code></pre>
-
-<p>完全なコードは<a href="https://bitbucket.org/kokuzawa/jaxrs-rs-upload-multiple-files/src">Bitbacket</a>にアップしています。</p>
-
+        <span style="color:#f92672">&lt;/param-value&gt;</span>
+    <span style="color:#f92672">&lt;/init-param&gt;</span>
+<span style="color:#f92672">&lt;/servlet&gt;</span>
+</code></pre></div><p>完全なコードは<a href="https://bitbucket.org/kokuzawa/jaxrs-rs-upload-multiple-files/src">Bitbacket</a>にアップしています。</p>
 <h2 id="ちょっと発展">ちょっと発展</h2>
-
-<p>HTML5ではファイルインプットフィールドにmultiple属性が追加されました。<br />
+<p>HTML5ではファイルインプットフィールドにmultiple属性が追加されました。<br>
 これを使うと、一つのファイルフィールドで複数のファイルを設定できるようになります。</p>
-
 <p>HTMLをmultipleに変更します。</p>
-
-<pre><code class="language-html">&lt;!DOCTYPE html&gt;
-&lt;html&gt;
-&lt;head&gt;
-    &lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8&quot;/&gt;
-    &lt;title&gt;JAX-RS upload multiple files example&lt;/title&gt;
-&lt;/head&gt;
-&lt;body&gt;
-    &lt;form enctype=&quot;multipart/form-data&quot; method=&quot;post&quot; 
-          action=&quot;rest/upload/multipleFiles&quot;&gt;
-        &lt;div&gt;&lt;input type=&quot;file&quot; name=&quot;file&quot; multiple=&quot;multiple&quot;/&gt;&lt;/div&gt;
-        &lt;input type=&quot;submit&quot; value=&quot;Upload&quot;&gt;
-    &lt;/form&gt;
-&lt;/body&gt;
-&lt;/html&gt;
-</code></pre>
-
-<p>ファイルを複数選択します。</p>
-
-<p><img src="/images/post_image_27.png" alt="" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
+&lt;<span style="color:#f92672">html</span>&gt;
+&lt;<span style="color:#f92672">head</span>&gt;
+    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">http-equiv</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Content-Type&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;text/html; charset=UTF-8&#34;</span>/&gt;
+    &lt;<span style="color:#f92672">title</span>&gt;JAX-RS upload multiple files example&lt;/<span style="color:#f92672">title</span>&gt;
+&lt;/<span style="color:#f92672">head</span>&gt;
+&lt;<span style="color:#f92672">body</span>&gt;
+    &lt;<span style="color:#f92672">form</span> <span style="color:#a6e22e">enctype</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;multipart/form-data&#34;</span> <span style="color:#a6e22e">method</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post&#34;</span> 
+          <span style="color:#a6e22e">action</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;rest/upload/multipleFiles&#34;</span>&gt;
+        &lt;<span style="color:#f92672">div</span>&gt;&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;file&#34;</span> <span style="color:#a6e22e">multiple</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;multiple&#34;</span>/&gt;&lt;/<span style="color:#f92672">div</span>&gt;
+        &lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">type</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;submit&#34;</span> <span style="color:#a6e22e">value</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;Upload&#34;</span>&gt;
+    &lt;/<span style="color:#f92672">form</span>&gt;
+&lt;/<span style="color:#f92672">body</span>&gt;
+&lt;/<span style="color:#f92672">html</span>&gt;
+</code></pre></div><p>ファイルを複数選択します。</p>
+<p><img src="/images/post_image_27.png" alt=""></p>
 <p>Uploadボタンをクリックするとファイルが無事アップロードできました。
 Javaのコードの修正は必要ないですね。当たり前と言えば当たり前なのですが&hellip; :P</p>
-
 <p>ファイルアップロードというと面倒な処理を書かないといけないと思うかもしれませんが、
 JAX-RSというかJerseyを利用すると、このように簡単にアップロードを行うことができます。</p>
-
 <p>皆さんも試してみてはいかがでしょうか？</p>
-
 <p>Enjoy!</p>
 
       

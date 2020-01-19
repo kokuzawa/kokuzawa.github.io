@@ -82,174 +82,145 @@
       </div>
     </div>
     <article>
-      
-
-<p><a href="http://atnd.org/events/33783">JavaEE Advent Calendar 2012</a>の15日目のエントリーです。<br />
-昨日は<a href="https://twitter.com/yoshioterada">@yoshioterada</a>さんの<a href="http://yoshio3.com/2012/12/14/javaee7-websocket-client-with-javafx/">Java EE 7 WebSocket Client Sample Application with JavaFX</a>です。<br />
+      <p><a href="http://atnd.org/events/33783">JavaEE Advent Calendar 2012</a>の15日目のエントリーです。<br>
+昨日は<a href="https://twitter.com/yoshioterada">@yoshioterada</a>さんの<a href="http://yoshio3.com/2012/12/14/javaee7-websocket-client-with-javafx/">Java EE 7 WebSocket Client Sample Application with JavaFX</a>です。<br>
 明日は<a href="https://twitter.com/akirakoyasu">@akirakoyasu</a>さんです。</p>
-
 <h2 id="普段は使わないjmsを使う">普段は使わないJMSを使う</h2>
-
 <p>おそらくJMSの本来の利用方法は非同期通信を利用した分散処理なのだと思うけど、今回はそんな高尚な目的ではなく、単純なメッセンジャーとして利用します。
 世の中のどの位のプロジェクトでJMSが利用されているのか分からないけど、JavaEEの仕様にJMSが含まれているにも関わらず、今まで本格的に利用した事がありません。
 分散処理をするケースがあるプロジェクトに参加した事が無いのか、またはサーバがいつもTomcatだからなのか。
 おそらく後者なのだと思うけど、ということはつまり分散処理の必要がないプロジェクトということなんだと思います。</p>
-
 <p>そんな事もあって、JMSの知識が皆無だったわけですが、
 JavaEEのアドベンドカレンダーをやるに当たって何か普段は触らないようなことをやりたいなと思い立ち、JMSを使ってみる事にしました。</p>
-
 <h2 id="必要なもの">必要なもの</h2>
-
 <ul>
 <li>GlassFish-3.1.2.2</li>
 <li>jms-api-1.1-rev-1.jar</li>
 </ul>
-
-<pre><code class="language-xml">&lt;dependency&gt;
-  &lt;groupId&gt;javax.jms&lt;/groupId&gt;
-  &lt;artifactId&gt;jms-api&lt;/artifactId&gt;
-  &lt;version&gt;1.1-rev-1&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-
-<ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>javax.jms<span style="color:#f92672">&lt;/groupId&gt;</span>
+  <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>jms-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+  <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.1-rev-1<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><ul>
 <li>imq-4.5.2.jar</li>
 </ul>
-
-<pre><code class="language-xml">&lt;dependency&gt;
-  &lt;groupId&gt;org.glassfish.mq&lt;/groupId&gt;
-  &lt;artifactId&gt;imq&lt;/artifactId&gt;
-  &lt;version&gt;4.5.2&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre>
-
-<p>JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.glassfish.mq<span style="color:#f92672">&lt;/groupId&gt;</span>
+  <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>imq<span style="color:#f92672">&lt;/artifactId&gt;</span>
+  <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.5.2<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;/dependency&gt;</span>
+</code></pre></div><p>JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、
 今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。
 また、OpenMQにアクセスする為に2つのライブラリが必要になります。jms-apiとimqです。Mavenリポジトリに登録されているので、
 こちらも容易に入手可能です。</p>
-
 <h2 id="事前準備">事前準備</h2>
-
 <p>GlassFishを起動しておく必要があります。ポートとして7676を利用するので、GlassFishがローカルではなく、リモート環境にある場合は、
 ポートへのアクセスを許可する必要があるかもしれません。</p>
-
 <h2 id="メッセージプロデューサーを作る">メッセージプロデューサーを作る</h2>
-
 <p>メッセージを送信するプロデューサーを作ります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> jp.co.baykraft.jmsexample<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package jp.co.baykraft.jmsexample;
+<span style="color:#f92672">import</span> com.sun.messaging.ConnectionConfiguration<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> com.sun.messaging.QueueConnectionFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.JMSException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.Queue<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.QueueConnection<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.QueueSender<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.QueueSession<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.TextMessage<span style="color:#f92672">;</span>
 
-import com.sun.messaging.ConnectionConfiguration;
-import com.sun.messaging.QueueConnectionFactory;
-import javax.jms.JMSException;
-import javax.jms.Queue;
-import javax.jms.QueueConnection;
-import javax.jms.QueueSender;
-import javax.jms.QueueSession;
-import javax.jms.TextMessage;
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * メッセージを送信するクラスです。
+</span><span style="color:#75715e"> * @author Katsumi
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Sender</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException
+    <span style="color:#f92672">{</span>
+        QueueConnectionFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueueConnectionFactory<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        factory<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span>ConnectionConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">imqAddressList</span><span style="color:#f92672">,</span> 
+            <span style="color:#e6db74">&#34;localhost:7676&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        QueueConnection connection <span style="color:#f92672">=</span> factory<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        QueueSession session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> 
+            QueueSession<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KQueue&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-/**
- * メッセージを送信するクラスです。
- * @author Katsumi
- */
-public class Sender
-{
-    public static void main(String... args) throws JMSException
-    {
-        QueueConnectionFactory factory = new QueueConnectionFactory();
-        factory.setProperty(ConnectionConfiguration.imqAddressList, 
-            &quot;localhost:7676&quot;);
-        QueueConnection connection = factory.createQueueConnection();
-        QueueSession session = connection.createQueueSession(false, 
-            QueueSession.AUTO_ACKNOWLEDGE);
-        Queue queue = session.createQueue(&quot;KQueue&quot;);
+        QueueSender sender <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createSender</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        TextMessage message <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createTextMessage</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        message<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;メッセージ&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        sender<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>message<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        QueueSender sender = session.createSender(queue);
-        TextMessage message = session.createTextMessage();
-        message.setText(&quot;メッセージ&quot;);
-        sender.send(message);
+        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        connection.close();
-
-        System.out.println(&quot;Finished.&quot;);
-    }
-}
-</code></pre>
-
-<p><code>session.createQueue(&quot;KQueue&quot;)</code>でKQueueという文字列を指定していますが、これは任意の文字列です。
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Finished.&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><code>session.createQueue(&quot;KQueue&quot;)</code>でKQueueという文字列を指定していますが、これは任意の文字列です。
 メッセージを受信する側でも同じ文字列を指定してメッセージを受け取ります。</p>
-
 <h2 id="メッセージコンシューマを作る">メッセージコンシューマを作る</h2>
-
 <p>次にメッセージを受信するコンシューマを作ります。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> jp.co.baykraft.jmsexample<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package jp.co.baykraft.jmsexample;
+<span style="color:#f92672">import</span> com.sun.messaging.ConnectionConfiguration<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> com.sun.messaging.QueueConnectionFactory<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.logging.Level<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.logging.Logger<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.JMSException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.Message<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.MessageListener<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.Queue<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.QueueConnection<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.QueueReceiver<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.QueueSession<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.jms.TextMessage<span style="color:#f92672">;</span>
 
-import com.sun.messaging.ConnectionConfiguration;
-import com.sun.messaging.QueueConnectionFactory;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageListener;
-import javax.jms.Queue;
-import javax.jms.QueueConnection;
-import javax.jms.QueueReceiver;
-import javax.jms.QueueSession;
-import javax.jms.TextMessage;
+<span style="color:#75715e">/**
+</span><span style="color:#75715e"> * メッセージを受診するクラスです。
+</span><span style="color:#75715e"> * @author Katsumi
+</span><span style="color:#75715e"> */</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Receiver</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException
+    <span style="color:#f92672">{</span>
+        QueueConnectionFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueueConnectionFactory<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        factory<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span>ConnectionConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">imqAddressList</span><span style="color:#f92672">,</span> 
+            <span style="color:#e6db74">&#34;localhost:7676&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        QueueConnection connection <span style="color:#f92672">=</span> factory<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        QueueSession session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> 
+            QueueSession<span style="color:#f92672">.</span><span style="color:#a6e22e">CLIENT_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KQueue&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-/**
- * メッセージを受診するクラスです。
- * @author Katsumi
- */
-public class Receiver
-{
-    public static void main(String... args) throws JMSException
-    {
-        QueueConnectionFactory factory = new QueueConnectionFactory();
-        factory.setProperty(ConnectionConfiguration.imqAddressList, 
-            &quot;localhost:7676&quot;);
-        QueueConnection connection = factory.createQueueConnection();
-        QueueSession session = connection.createQueueSession(false, 
-            QueueSession.CLIENT_ACKNOWLEDGE);
-        Queue queue = session.createQueue(&quot;KQueue&quot;);
+        QueueReceiver receiver <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createReceiver</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        receiver<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessageListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MessageListener<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            <span style="color:#a6e22e">@Override</span>
+            <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onMessage</span><span style="color:#f92672">(</span>Message msg<span style="color:#f92672">)</span>
+            <span style="color:#f92672">{</span>
+                <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                    TextMessage message <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextMessage<span style="color:#f92672">)</span> msg<span style="color:#f92672">;</span>
+                    message<span style="color:#f92672">.</span><span style="color:#a6e22e">acknowledge</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>message<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+                <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>JMSException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                    Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Receiver<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+                          <span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>Level<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERE</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#f92672">}</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        QueueReceiver receiver = session.createReceiver(queue);
-        receiver.setMessageListener(new MessageListener() {
-            @Override
-            public void onMessage(Message msg)
-            {
-                try {
-                    TextMessage message = (TextMessage) msg;
-                    message.acknowledge();
-                    System.out.println(message.getText());
-                }
-                catch (JMSException ex) {
-                    Logger.getLogger(Receiver.class.getName())
-                          .log(Level.SEVERE, null, ex);
-                }
-            }
-        });
-
-        connection.start();
-    }
-}
-</code></pre>
-
-<h2 id="動かしてみよう">動かしてみよう</h2>
-
+        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="動かしてみよう">動かしてみよう</h2>
 <p>さて、コードも作ったので動かしてみます。
 送信するメッセージはキューに溜め込まれるので、コンシューマを起動しておかなくても大丈夫です。
 まずはプロデューサーを起動すると、「メッセージ」という文字列がメッセージプロバイダに送られます。</p>
-
 <p>次にコンシューマを起動します。
 コンシューマを起動すると、メッセージプロバイダのKQueueに溜め込まれたメッセージが受信されます。
 コンシューマのコードの<code>QueueSession.CLIENT_ACKNOWLEDGE</code>の指定ですが、この指定の場合、
 コンシューマ側で<code>TextMessage#acknowledge()</code>メソッドを呼び出すまで、キュー上のメッセージは削除されません。
 コンシューマ側の処理が失敗した場合はキュー上のメッセージを削除したくないのでこの指定にしています。</p>
-
 <h2 id="まとめ">まとめ</h2>
-
 <p>GlassFishを起動するだけでメッセージプロバイダが起動されるのは非常に便利です。
 メッセージプロバイダを起動しておけば、簡単なメッセージの送受信アプリが作れます。
 キューの名前をコンシューマ毎に切り替えれば、複数クライアントのアプリも出来そうです。

@@ -77,19 +77,12 @@
     </div>
     <article>
       <p>Java6 と Java8 で振る舞いが変わっていたのでメモ。</p>
-
 <p>Java6 では下記コードがエラーにならず結果が出力されます。</p>
-
-<pre><code class="language-java">System.out.println(java.sql.Timestamp.valueOf(&quot;2016-13-01&quot;)); // 2017-01-01
-</code></pre>
-
-<p>ところが Java8 だと下記のエラーが発生します。</p>
-
-<pre><code class="language-java">Exception in thread &quot;main&quot; java.lang.IllegalArgumentException: Timestamp format must be yyyy-mm-dd hh:mm:ss[.fffffffff]
-	at java.sql.Timestamp.valueOf(Timestamp.java:204)
-</code></pre>
-
-<p>もちろん存在しない日付、例えば 2016-12-32 などを指定した場合にもエラーとなります。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>java<span style="color:#f92672">.</span><span style="color:#a6e22e">sql</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Timestamp</span><span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;2016-13-01&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span> <span style="color:#75715e">// 2017-01-01
+</span></code></pre></div><p>ところが Java8 だと下記のエラーが発生します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">Exception in thread <span style="color:#e6db74">&#34;main&#34;</span> java<span style="color:#f92672">.</span><span style="color:#a6e22e">lang</span><span style="color:#f92672">.</span><span style="color:#a6e22e">IllegalArgumentException</span><span style="color:#f92672">:</span> Timestamp format must be yyyy<span style="color:#f92672">-</span>mm<span style="color:#f92672">-</span>dd hh<span style="color:#f92672">:</span>mm<span style="color:#f92672">:</span>ss<span style="color:#f92672">[</span><span style="color:#f92672">.</span><span style="color:#a6e22e">fffffffff</span><span style="color:#f92672">]</span>
+	at java<span style="color:#f92672">.</span><span style="color:#a6e22e">sql</span><span style="color:#f92672">.</span><span style="color:#a6e22e">Timestamp</span><span style="color:#f92672">.</span><span style="color:#a6e22e">valueOf</span><span style="color:#f92672">(</span>Timestamp<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>204<span style="color:#f92672">)</span>
+</code></pre></div><p>もちろん存在しない日付、例えば 2016-12-32 などを指定した場合にもエラーとなります。
 Java6 から Java7 になる際に <code>java.sql.Timestamp</code> に対してかなりの数のバグフィックスが行われたようで、
 おそらくその修正のどこかで振る舞いが変わったのだと思います。</p>
 

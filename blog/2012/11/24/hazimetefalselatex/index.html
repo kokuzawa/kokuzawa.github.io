@@ -78,27 +78,19 @@
       </div>
     </div>
     <article>
-      
-
-<p>LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。
+      <p>LaTeXって良く目にするんだけれども、それが何なのか、文書作成用の何か程度の知識しかなかった。
 何がきっかけだったのかすっかり忘れてしまったけど、今日LaTeXを使ってみようと思い立ち、利用するための環境設定を色々と調べたので、その記録を書き記しておこうと思う。</p>
-
 <h2 id="latexって何">LaTeXって何？</h2>
-
 <blockquote>
 <p>LATEX（ラテック、ラテフ、レイテック、レイテックス）とは、レスリー・ランポート (英: Leslie Lamport) によって開発されたテキストベースの組版処理システムである。電子組版ソフトウェア TEX にマクロパッケージを組み込むことによって構築されており、単体の TEX に比べて、より手軽に組版を行うことができるようになっている。なお、LATEX を基にアスキーが日本語処理に対応させたものとして日本語 LATEX が、さらに縦組み処理にも対応させたものとして pLATEX がある。</p>
 </blockquote>
-
 <p><a href="http://ja.wikipedia.org/wiki/LaTeX">Wikipedia</a>によれば、組版処理システムということらしい。Wordとかの所謂文書スタイルを制御するものと考えれば良さそう。
 ただ、これだけではLaTeXが一体なんなのかがぼんやりとしか分からない。
 やっぱり実際に触ってみた方が良さそうだ。</p>
-
 <h2 id="macにlatexをインストールする">MacにLaTeXをインストールする</h2>
-
 <p>MacでLaTexを使うには何をインストールしたら良いのか？
 調べたところ、pTeXというのを入れれば良く、これは縦組み処理も対応したpLATEXと同じもの。
 早速インストールしてみよう。インストーラを見つけるよりは、MacPortsを利用した方が早いんじゃないのかと思い、MacPortsで検索してみる。</p>
-
 <pre><code>&gt; sudo port search ptex
 
 pTeX @20110314 (tex, print, textproc, japanese)
@@ -107,15 +99,11 @@ pTeX @20110314 (tex, print, textproc, japanese)
 ptex-sfmacros @0 (tex, print, japanese)
     Tategumi/Tateyoko/Kunten packages written by Shinsaku Fujita.
 </code></pre>
-
 <p>2つ見つけたけど、1つ目の方だろう。インストールする場合はオプションをつけた方が良いとのこと。</p>
-
 <pre><code>&gt; sodo port install pTeX +utf8 +motif
 </code></pre>
-
 <p>長い&hellip;。とても時間がかかるので最初にコーヒーを淹れておけばよかった。ゆっくり飲みながら気長に待つ。
 インストールが終わったら、ちゃんとインストールがされたか確認する。</p>
-
 <pre><code>&gt; platex -version
 
 TeX 3.141592-p3.1.10 (utf8.euc) (Web2C 7.5.4)
@@ -131,58 +119,41 @@ named COPYING and the pTeX source.
 Primary author of TeX: D.E. Knuth.
 Kpathsea written by Karl Berry and others.
 </code></pre>
-
 <p>ああ、やっとインストールできた。</p>
-
 <h2 id="使ってみよう">使ってみよう</h2>
-
 <p>LaTeXを使うには、まず素となるテキストを作る必要がある。</p>
-
 <pre><code>\documentclass[a4paper,12pt]{jarticle}
 \begin{document}
 本文です。
 \end{document}
 </code></pre>
-
 <p>firstdoc.texという名前で保存。tex拡張子はおそらく慣習？
 これをplatexでコンパイルする。コンパイルという言葉が正しいかどうかは分からないけど。</p>
-
 <pre><code>&gt; platex firstdoc.tex
 </code></pre>
-
 <p>すると、拡張子がDVIの中間ファイルが生成される。
 このファイルはプレビューすることができて、どんな組版になったのかを確認できるようだ。</p>
-
 <pre><code>&gt; xdvi firstdoc.dvi
 
 Error: Can't open display:
 </code></pre>
-
 <p>エラーが出た。Macの場合、ターミナルでプレビューを見ようとしてもダメらしく、
 プレビューを見るにはX11をインストールする必要があるらしい。
 今更X11はインストールしたくないので、別の方法で確認してみようと思う。</p>
-
 <pre><code>&gt; dvipdf firstdoc.dvi
 </code></pre>
-
 <p>これは、PDFファイルを生成するためのコマンド。実行するとPDFファイルが生成されるので、それを開く。</p>
-
 <pre><code>&gt; open firstdoc.pdf
 </code></pre>
-
 <p>これでプレビューアプリでfirstdoc.pdfを開くことができる。
 PDFは開いたままファイルを修正して、platex -&gt; dvipdf でもう一回PDFを生成すると、
 開いているPDFが更新される。これで組版の確認をすることができるようになった。</p>
-
 <h2 id="まとめ">まとめ</h2>
-
 <p>たいした内容を書かなくても、それっぽいドキュメントを作ることができるのはありがたい。
 あと、文章を作る行程がプログラミングのようで、これもなかなか楽しいし、
 素となるファイルがバイナリではないので、版数管理もし易そうだ。
 組版をするにはいろいろと覚えることが多そうだけど、それを差し引いてもすばらしい。</p>
-
 <h2 id="参考サイト">参考サイト</h2>
-
 <p><a href="http://keizai.xrea.jp/latex/tutorial/index.html">http://keizai.xrea.jp/latex/tutorial/index.html</a></p>
 
       

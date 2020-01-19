@@ -76,42 +76,27 @@
       </div>
     </div>
     <article>
-      
-
-<p>NetBeansだとsun-web.xmlとして自動生成されるファイルのことです。
-JavaEE6の<a href="http://docs.oracle.com/javaee/6/tutorial/doc/javaeetutorial6.pdf" target="_blank">ドキュメント</a>を読む限り、
+      <p>NetBeansだとsun-web.xmlとして自動生成されるファイルのことです。
+JavaEE6の<!-- raw HTML omitted -->ドキュメント<!-- raw HTML omitted -->を読む限り、
 glassfish-web.xmlが正式名称のようですが&hellip;。</p>
-
 <p>このファイル、通常は必要ないのですが、GlassFishのBASIC認証とかDIGEST認証にJDBCレルムを使おうとすると必要になります。
 XMLファイルなので、DTDのパスとか&hellip;まあその辺の入力が面倒な訳で、テンプレートは検索すれば見つかりますけど、出来ればIntelliJで生成できないかなと。</p>
-
 <h2 id="手順">手順</h2>
-
 <p>画面上部のツールバーからProject Structureを選択。もしくはCmd+;</p>
-
-<p><img src="/images/post_image_6.png" alt="" /></p>
-
+<p><img src="/images/post_image_6.png" alt=""></p>
 <p>表示された画面からModules-&gt;Webと選択し、右ペイン中にあるAdd Aplication Server specific descriptorボタンをクリック。</p>
-
-<p><img src="/images/post_image_7.png" alt="" /></p>
-
+<p><img src="/images/post_image_7.png" alt=""></p>
 <p>表示されたポップアップのApplication ServerをGlassfish Serverに、Descriptorは選択肢が2つで最後にOracleとなっている方を選択。
 (以下のイメージでは既にOracleを設定済みなのでSunしか表示されていない。)</p>
-
-<p><img src="/images/post_image_8.png" alt="" /></p>
-
+<p><img src="/images/post_image_8.png" alt=""></p>
 <p>これでglassfish-web.xmlのテンプレートが自動生成される。</p>
-
 <p><strong>glassfish-web.xml:</strong></p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE glassfish-web-app PUBLIC &quot;-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN&quot;
-    &quot;http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd&quot;&gt;
-&lt;glassfish-web-app&gt;
-&lt;/glassfish-web-app&gt;
-</code></pre>
-
-<p>あとはここに必要な記述を追加して行くだけ。IntelliJは補完が強力なので、ここまでファイルが出来てくれれば後は楽。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE glassfish-web-app PUBLIC &#34;-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN&#34;
+</span><span style="color:#75715e">    &#34;http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd&#34;&gt;</span>
+<span style="color:#f92672">&lt;glassfish-web-app</span><span style="color:#f92672">&gt;</span>
+<span style="color:#f92672">&lt;/glassfish-web-app&gt;</span>
+</code></pre></div><p>あとはここに必要な記述を追加して行くだけ。IntelliJは補完が強力なので、ここまでファイルが出来てくれれば後は楽。</p>
 
       
       

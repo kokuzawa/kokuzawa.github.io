@@ -78,201 +78,172 @@
       </div>
     </div>
     <article>
-      
-
-<p>この記事は <a href="http://www.adventar.org/calendars/380">JavaFX Advent Calendar 2014</a> の6日目です。<br />
-昨日は<a href="http://www.adventar.org/users/5558">soutoku</a>さんの<a href="http://soutoku.hatenablog.com/entry/2014/12/05/013342">JavaFX:WYSIWYGエディタを作る</a>でした。<br />
+      <p>この記事は <a href="http://www.adventar.org/calendars/380">JavaFX Advent Calendar 2014</a> の6日目です。<br>
+昨日は<a href="http://www.adventar.org/users/5558">soutoku</a>さんの<a href="http://soutoku.hatenablog.com/entry/2014/12/05/013342">JavaFX:WYSIWYGエディタを作る</a>でした。<br>
 明日は<a href="https://twitter.com/backpaper0">@backpaper0</a>さんです。</p>
-
 <p>JavaFX 楽しいですよね。</p>
-
 <p>JavaFXには標準でWebページを表示するためのWebViewクラスがあり、これを使えばいろいろなことができます。
 今回はこのWebViewクラスを使ってMarkdownエディタを作ってみることにします。
 MarkdownといえばGitHubとかでも利用している人が多いかと思いますが、文書を記述するための軽量マークアップ言語です。
 Markdownでテキストを入力し、それをパースしてWebViewに表示するという簡単な動作をするアプリケーションです。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <h2 id="環境">環境</h2>
-
 <ul>
 <li>OS: Mac OSX Yosemite 10.10</li>
 <li>メモリ: 4GB</li>
 <li>Java: Java SE Runtime Environment (build 1.8.0-b132)</li>
 <li>markdown4j-2.2-cj-1.0</li>
 </ul>
-
 <p>Markdownのパースには<a href="https://code.google.com/p/markdown4j/">markdown4j</a>を使うことにしました。</p>
-
 <h2 id="実際に動かしてみる">実際に動かしてみる</h2>
-
 <p>実際に動作している動画です。</p>
-
-<iframe width="420" height="315" src="https://www.youtube.com/embed/zjFR_In-gik" frameborder="0" allowfullscreen></iframe>
-
+<!-- raw HTML omitted -->
 <h2 id="fxmlで外枠を作る">FXMLで外枠を作る</h2>
-
 <p>外枠を作るのはFXMLで書けばよいので簡単です。
 IntelliJ IDEA 14 を使っているのでインラインScene Builderも使えますが&hellip;という状態なので
 スタンドアロンのScene Builderを使いました。
 ささっと作ったFXMLは以下のようになりました。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-
-&lt;?import javafx.scene.control.*?&gt;
-&lt;?import javafx.scene.layout.*?&gt;
-&lt;?import javafx.scene.text.TextFlow?&gt;
-&lt;BorderPane maxHeight=&quot;-Infinity&quot;
-            maxWidth=&quot;-Infinity&quot;
-            minHeight=&quot;-Infinity&quot;
-            minWidth=&quot;-Infinity&quot;
-            prefHeight=&quot;400.0&quot;
-            prefWidth=&quot;600.0&quot;
-            xmlns=&quot;http://javafx.com/javafx/8&quot; xmlns:fx=&quot;http://javafx.com/fxml/1&quot;
-	    fx:controller=&quot;sample.Controller&quot;&gt;
-   &lt;center&gt;
-      &lt;SplitPane dividerPositions=&quot;0.5&quot;
-                 orientation=&quot;VERTICAL&quot;
-                 prefHeight=&quot;200.0&quot;
-                 prefWidth=&quot;160.0&quot;
-                 BorderPane.alignment=&quot;CENTER&quot;&gt;
-        &lt;items&gt;
-          &lt;AnchorPane minHeight=&quot;0.0&quot; minWidth=&quot;0.0&quot; prefHeight=&quot;100.0&quot; prefWidth=&quot;160.0&quot;&gt;
-               &lt;children&gt;
-                  &lt;TextArea fx:id=&quot;textArea&quot;
-		            prefHeight=&quot;200.0&quot;
-                            prefWidth=&quot;200.0&quot;
-                            AnchorPane.bottomAnchor=&quot;0.0&quot;
-                            AnchorPane.leftAnchor=&quot;0.0&quot;
-                            AnchorPane.rightAnchor=&quot;0.0&quot;
-                            AnchorPane.topAnchor=&quot;0.0&quot;&gt;
-		  &lt;/TextArea&gt;
-               &lt;/children&gt;
-               &lt;padding&gt;
-                  &lt;Insets bottom=&quot;5.0&quot; left=&quot;5.0&quot; right=&quot;5.0&quot; top=&quot;5.0&quot; /&gt;
-               &lt;/padding&gt;
-            &lt;/AnchorPane&gt;
-          &lt;AnchorPane minHeight=&quot;0.0&quot; minWidth=&quot;0.0&quot; prefHeight=&quot;100.0&quot; prefWidth=&quot;160.0&quot;&gt;
-               &lt;children&gt;
-                  &lt;WebView fx:id=&quot;webView&quot;
-                           prefHeight=&quot;200.0&quot; 
-                           prefWidth=&quot;200.0&quot; 
-                           AnchorPane.bottomAnchor=&quot;0.0&quot; 
-                           AnchorPane.leftAnchor=&quot;0.0&quot; 
-                           AnchorPane.rightAnchor=&quot;0.0&quot; 
-                           AnchorPane.topAnchor=&quot;0.0&quot; /&gt;
-               &lt;/children&gt;
-               &lt;padding&gt;
-                  &lt;Insets bottom=&quot;5.0&quot; left=&quot;5.0&quot; right=&quot;5.0&quot; top=&quot;5.0&quot; /&gt;
-               &lt;/padding&gt;
-            &lt;/AnchorPane&gt;
-        &lt;/items&gt;
-      &lt;/SplitPane&gt;
-   &lt;/center&gt;
-   &lt;top&gt;
-      &lt;MenuBar BorderPane.alignment=&quot;CENTER&quot;&gt;
-        &lt;menus&gt;
-          &lt;Menu mnemonicParsing=&quot;false&quot; text=&quot;File&quot;&gt;
-            &lt;items&gt;
-              &lt;MenuItem mnemonicParsing=&quot;false&quot; text=&quot;Close&quot; /&gt;
-            &lt;/items&gt;
-          &lt;/Menu&gt;
-          &lt;Menu mnemonicParsing=&quot;false&quot; text=&quot;Edit&quot;&gt;
-            &lt;items&gt;
-              &lt;MenuItem mnemonicParsing=&quot;false&quot; text=&quot;Delete&quot; /&gt;
-            &lt;/items&gt;
-          &lt;/Menu&gt;
-          &lt;Menu mnemonicParsing=&quot;false&quot; text=&quot;Help&quot;&gt;
-            &lt;items&gt;
-              &lt;MenuItem mnemonicParsing=&quot;false&quot; text=&quot;About&quot; /&gt;
-            &lt;/items&gt;
-          &lt;/Menu&gt;
-        &lt;/menus&gt;
-      &lt;/MenuBar&gt;
-   &lt;/top&gt;
-&lt;/BorderPane&gt;
-</code></pre>
-
-<p>BorderPaneのtopに配置しているMenuBarは飾りです (^^;<br />
+<span style="color:#75715e">&lt;?import javafx.scene.control.*?&gt;</span>
+<span style="color:#75715e">&lt;?import javafx.scene.layout.*?&gt;</span>
+<span style="color:#75715e">&lt;?import javafx.scene.text.TextFlow?&gt;</span>
+<span style="color:#f92672">&lt;BorderPane</span> <span style="color:#a6e22e">maxHeight=</span><span style="color:#e6db74">&#34;-Infinity&#34;</span>
+            <span style="color:#a6e22e">maxWidth=</span><span style="color:#e6db74">&#34;-Infinity&#34;</span>
+            <span style="color:#a6e22e">minHeight=</span><span style="color:#e6db74">&#34;-Infinity&#34;</span>
+            <span style="color:#a6e22e">minWidth=</span><span style="color:#e6db74">&#34;-Infinity&#34;</span>
+            <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;400.0&#34;</span>
+            <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;600.0&#34;</span>
+            <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://javafx.com/javafx/8&#34;</span> <span style="color:#a6e22e">xmlns:fx=</span><span style="color:#e6db74">&#34;http://javafx.com/fxml/1&#34;</span>
+	    <span style="color:#a6e22e">fx:controller=</span><span style="color:#e6db74">&#34;sample.Controller&#34;</span><span style="color:#f92672">&gt;</span>
+   <span style="color:#f92672">&lt;center</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;SplitPane</span> <span style="color:#a6e22e">dividerPositions=</span><span style="color:#e6db74">&#34;0.5&#34;</span>
+                 <span style="color:#a6e22e">orientation=</span><span style="color:#e6db74">&#34;VERTICAL&#34;</span>
+                 <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;200.0&#34;</span>
+                 <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;160.0&#34;</span>
+                 <span style="color:#a6e22e">BorderPane.alignment=</span><span style="color:#e6db74">&#34;CENTER&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;items</span><span style="color:#f92672">&gt;</span>
+          <span style="color:#f92672">&lt;AnchorPane</span> <span style="color:#a6e22e">minHeight=</span><span style="color:#e6db74">&#34;0.0&#34;</span> <span style="color:#a6e22e">minWidth=</span><span style="color:#e6db74">&#34;0.0&#34;</span> <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;100.0&#34;</span> <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;160.0&#34;</span><span style="color:#f92672">&gt;</span>
+               <span style="color:#f92672">&lt;children</span><span style="color:#f92672">&gt;</span>
+                  <span style="color:#f92672">&lt;TextArea</span> <span style="color:#a6e22e">fx:id=</span><span style="color:#e6db74">&#34;textArea&#34;</span>
+		            <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;200.0&#34;</span>
+                            <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;200.0&#34;</span>
+                            <span style="color:#a6e22e">AnchorPane.bottomAnchor=</span><span style="color:#e6db74">&#34;0.0&#34;</span>
+                            <span style="color:#a6e22e">AnchorPane.leftAnchor=</span><span style="color:#e6db74">&#34;0.0&#34;</span>
+                            <span style="color:#a6e22e">AnchorPane.rightAnchor=</span><span style="color:#e6db74">&#34;0.0&#34;</span>
+                            <span style="color:#a6e22e">AnchorPane.topAnchor=</span><span style="color:#e6db74">&#34;0.0&#34;</span><span style="color:#f92672">&gt;</span>
+		  <span style="color:#f92672">&lt;/TextArea&gt;</span>
+               <span style="color:#f92672">&lt;/children&gt;</span>
+               <span style="color:#f92672">&lt;padding</span><span style="color:#f92672">&gt;</span>
+                  <span style="color:#f92672">&lt;Insets</span> <span style="color:#a6e22e">bottom=</span><span style="color:#e6db74">&#34;5.0&#34;</span> <span style="color:#a6e22e">left=</span><span style="color:#e6db74">&#34;5.0&#34;</span> <span style="color:#a6e22e">right=</span><span style="color:#e6db74">&#34;5.0&#34;</span> <span style="color:#a6e22e">top=</span><span style="color:#e6db74">&#34;5.0&#34;</span> <span style="color:#f92672">/&gt;</span>
+               <span style="color:#f92672">&lt;/padding&gt;</span>
+            <span style="color:#f92672">&lt;/AnchorPane&gt;</span>
+          <span style="color:#f92672">&lt;AnchorPane</span> <span style="color:#a6e22e">minHeight=</span><span style="color:#e6db74">&#34;0.0&#34;</span> <span style="color:#a6e22e">minWidth=</span><span style="color:#e6db74">&#34;0.0&#34;</span> <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;100.0&#34;</span> <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;160.0&#34;</span><span style="color:#f92672">&gt;</span>
+               <span style="color:#f92672">&lt;children</span><span style="color:#f92672">&gt;</span>
+                  <span style="color:#f92672">&lt;WebView</span> <span style="color:#a6e22e">fx:id=</span><span style="color:#e6db74">&#34;webView&#34;</span>
+                           <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;200.0&#34;</span> 
+                           <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;200.0&#34;</span> 
+                           <span style="color:#a6e22e">AnchorPane.bottomAnchor=</span><span style="color:#e6db74">&#34;0.0&#34;</span> 
+                           <span style="color:#a6e22e">AnchorPane.leftAnchor=</span><span style="color:#e6db74">&#34;0.0&#34;</span> 
+                           <span style="color:#a6e22e">AnchorPane.rightAnchor=</span><span style="color:#e6db74">&#34;0.0&#34;</span> 
+                           <span style="color:#a6e22e">AnchorPane.topAnchor=</span><span style="color:#e6db74">&#34;0.0&#34;</span> <span style="color:#f92672">/&gt;</span>
+               <span style="color:#f92672">&lt;/children&gt;</span>
+               <span style="color:#f92672">&lt;padding</span><span style="color:#f92672">&gt;</span>
+                  <span style="color:#f92672">&lt;Insets</span> <span style="color:#a6e22e">bottom=</span><span style="color:#e6db74">&#34;5.0&#34;</span> <span style="color:#a6e22e">left=</span><span style="color:#e6db74">&#34;5.0&#34;</span> <span style="color:#a6e22e">right=</span><span style="color:#e6db74">&#34;5.0&#34;</span> <span style="color:#a6e22e">top=</span><span style="color:#e6db74">&#34;5.0&#34;</span> <span style="color:#f92672">/&gt;</span>
+               <span style="color:#f92672">&lt;/padding&gt;</span>
+            <span style="color:#f92672">&lt;/AnchorPane&gt;</span>
+        <span style="color:#f92672">&lt;/items&gt;</span>
+      <span style="color:#f92672">&lt;/SplitPane&gt;</span>
+   <span style="color:#f92672">&lt;/center&gt;</span>
+   <span style="color:#f92672">&lt;top</span><span style="color:#f92672">&gt;</span>
+      <span style="color:#f92672">&lt;MenuBar</span> <span style="color:#a6e22e">BorderPane.alignment=</span><span style="color:#e6db74">&#34;CENTER&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;menus</span><span style="color:#f92672">&gt;</span>
+          <span style="color:#f92672">&lt;Menu</span> <span style="color:#a6e22e">mnemonicParsing=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">text=</span><span style="color:#e6db74">&#34;File&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;items</span><span style="color:#f92672">&gt;</span>
+              <span style="color:#f92672">&lt;MenuItem</span> <span style="color:#a6e22e">mnemonicParsing=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">text=</span><span style="color:#e6db74">&#34;Close&#34;</span> <span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;/items&gt;</span>
+          <span style="color:#f92672">&lt;/Menu&gt;</span>
+          <span style="color:#f92672">&lt;Menu</span> <span style="color:#a6e22e">mnemonicParsing=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">text=</span><span style="color:#e6db74">&#34;Edit&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;items</span><span style="color:#f92672">&gt;</span>
+              <span style="color:#f92672">&lt;MenuItem</span> <span style="color:#a6e22e">mnemonicParsing=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">text=</span><span style="color:#e6db74">&#34;Delete&#34;</span> <span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;/items&gt;</span>
+          <span style="color:#f92672">&lt;/Menu&gt;</span>
+          <span style="color:#f92672">&lt;Menu</span> <span style="color:#a6e22e">mnemonicParsing=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">text=</span><span style="color:#e6db74">&#34;Help&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;items</span><span style="color:#f92672">&gt;</span>
+              <span style="color:#f92672">&lt;MenuItem</span> <span style="color:#a6e22e">mnemonicParsing=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">text=</span><span style="color:#e6db74">&#34;About&#34;</span> <span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;/items&gt;</span>
+          <span style="color:#f92672">&lt;/Menu&gt;</span>
+        <span style="color:#f92672">&lt;/menus&gt;</span>
+      <span style="color:#f92672">&lt;/MenuBar&gt;</span>
+   <span style="color:#f92672">&lt;/top&gt;</span>
+<span style="color:#f92672">&lt;/BorderPane&gt;</span>
+</code></pre></div><p>BorderPaneのtopに配置しているMenuBarは飾りです (^^;<br>
 本体はBorderPaneのcenterにSplitPaneを配置し、上半分にTextArea、下半分にWebViewを表示します。</p>
-
 <h2 id="コントローラを作る">コントローラを作る</h2>
-
 <p>この画面を操作するためのコントローラクラスを作ります。
 コントローラがやることは、TextAreaに入力された値をパースしてWebViewに表示することです。
 今回はTextAreaにイベントを張って、イベント発生毎にWebViewの内容を書き換える方法ではなく、
 TextAreaのテキストプロパティにChangeListenerを設定し、値の変化を検知してWebViewを書き換えるようにします。
 本当はWebView側にコンテンツをバインドできるプロパティが存在すればバインドを使いたいところです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> sample<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package sample;
+<span style="color:#f92672">import</span> javafx.fxml.FXML<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.fxml.Initializable<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.scene.control.TextArea<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javafx.scene.web.WebView<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.markdown4j.Markdown4jProcessor<span style="color:#f92672">;</span>
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.TextArea;
-import javafx.scene.web.WebView;
-import org.markdown4j.Markdown4jProcessor;
+<span style="color:#f92672">import</span> java.io.IOException<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.net.URL<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> java.util.ResourceBundle<span style="color:#f92672">;</span>
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Controller</span> <span style="color:#66d9ef">implements</span> Initializable
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@FXML</span>
+    <span style="color:#66d9ef">private</span> TextArea textArea<span style="color:#f92672">;</span>
 
-public class Controller implements Initializable
-{
-    @FXML
-    private TextArea textArea;
+    <span style="color:#a6e22e">@FXML</span>
+    <span style="color:#66d9ef">private</span> WebView webView<span style="color:#f92672">;</span>
 
-    @FXML
-    private WebView webView;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources)
-    {
-        textArea.textProperty().addListener((observable, oldValue, newValue) -&gt; {
-            try {
-                webView.getEngine().loadContent(new Markdown4jProcessor().process(newValue));
-            }
-            catch (StringIndexOutOfBoundsException | IOException e) {
-                webView.getEngine().loadContent(newValue);
-            }
-        });
-    }
-}
-</code></pre>
-
-<p>ChangeListenerを設定するためには<code>TextArea#textProperty()</code>メソッドからStringPropertyを取得し、
+    <span style="color:#a6e22e">@Override</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initialize</span><span style="color:#f92672">(</span>URL location<span style="color:#f92672">,</span> ResourceBundle resources<span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        textArea<span style="color:#f92672">.</span><span style="color:#a6e22e">textProperty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addListener</span><span style="color:#f92672">(</span><span style="color:#f92672">(</span>observable<span style="color:#f92672">,</span> oldValue<span style="color:#f92672">,</span> newValue<span style="color:#f92672">)</span> <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+            <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+                webView<span style="color:#f92672">.</span><span style="color:#a6e22e">getEngine</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">loadContent</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Markdown4jProcessor<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>newValue<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+            <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>StringIndexOutOfBoundsException <span style="color:#f92672">|</span> IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+                webView<span style="color:#f92672">.</span><span style="color:#a6e22e">getEngine</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">loadContent</span><span style="color:#f92672">(</span>newValue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#f92672">}</span>
+        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>ChangeListenerを設定するためには<code>TextArea#textProperty()</code>メソッドからStringPropertyを取得し、
 そのプロパティの持つ<code>addListener</code>を使用します。
 値の変更を検知するとChangeListenerのchangedメソッドがコールされるので、
 ここでWebViewに対してHTMLを設定するようにします。
 入力された文字列は<code>Markdown4jProcessor#process(String)</code>メソッドを経由してHTMLに変換されます。</p>
-
 <p><code>WebView#loadContent(String)</code>メソッドには<code>WebView#loadContent(String, String)</code>という引数を２つ取るメソッドも存在します。
 引数が２つのほうは、第二引数にコンテンツタイプを指定できます。引数が１つのほうは内部で引数が２つメソッドを呼び出しいて、
-第二引数には&rdquo;text/html&rdquo;を渡しています。ですので、デフォルトではHTMLを表示することになりますね。</p>
-
+第二引数には&quot;text/html&quot;を渡しています。ですので、デフォルトではHTMLを表示することになりますね。</p>
 <h2 id="まとめとちょっと考察">まとめとちょっと考察</h2>
-
 <p>これでシンプルなMarkdownエディタができました。
 実は、ChangeListenerの代わりにInvalidationListenerを使うこともできます。
 ChangeListenerとInvalidationListenerの違いは下記のサイトを参考にさせてもらいました。</p>
-
 <ul>
 <li><a href="http://skrb.hatenablog.com/entry/2013/09/08/174826">JavaFX in the Box:JavaFX Hands on Lab</a></li>
 <li><a href="http://d.hatena.ne.jp/nodamushi/20141012/1413136054">プログラムdeタマゴ:JavaFXのInvalidationListenerやChangeListenerやObservableListやBindingについて</a></li>
 </ul>
-
-<pre><code class="language-java">textArea.textProperty().addListener(observable -&gt; {
-    final String value = ((StringProperty) observable).get();
-    try {
-        webView.getEngine().loadContent(new Markdown4jProcessor().process(value));
-    }
-    catch (StringIndexOutOfBoundsException | IOException e) {
-        webView.getEngine().loadContent(value);
-    }
-});
-</code></pre>
-
-<p>ただ、InvalidationListenerを使うと次のような問題が発生します。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">textArea<span style="color:#f92672">.</span><span style="color:#a6e22e">textProperty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">addListener</span><span style="color:#f92672">(</span>observable <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">final</span> String value <span style="color:#f92672">=</span> <span style="color:#f92672">(</span><span style="color:#f92672">(</span>StringProperty<span style="color:#f92672">)</span> observable<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
+        webView<span style="color:#f92672">.</span><span style="color:#a6e22e">getEngine</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">loadContent</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> Markdown4jProcessor<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">process</span><span style="color:#f92672">(</span>value<span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>StringIndexOutOfBoundsException <span style="color:#f92672">|</span> IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        webView<span style="color:#f92672">.</span><span style="color:#a6e22e">getEngine</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">loadContent</span><span style="color:#f92672">(</span>value<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>ただ、InvalidationListenerを使うと次のような問題が発生します。</p>
 <p>日本語入力においてChangeListenerだと確定前文字が入力された場合だけイベントが呼ばれるのですが、
 InvalidationListenerだと確定前文字が入力された時と入力文字を確定した場合の2度イベントが発生します。
 正確には、一回の値変更でイベントが2度発生するので計4回のイベントを受け取る形です。

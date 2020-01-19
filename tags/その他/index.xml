@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>その他 on KATSUMI KOKUZAWA&#39;S BLOG</title>
@@ -17,9 +16,8 @@
       <pubDate>Thu, 08 Jan 2015 23:39:37 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2015/01/08/aizu-online-judge/</guid>
-      <description>&lt;p&gt;面白いサイトを見つけた。アルゴリズムに対する問題があり、その回答を評価してくれる。&lt;br /&gt;
+      <description>&lt;p&gt;面白いサイトを見つけた。アルゴリズムに対する問題があり、その回答を評価してくれる。&lt;br&gt;
 対応言語は C, Java, D, Ruby, Python, PHP, JavaScript がある。&lt;/p&gt;
-
 &lt;p&gt;&lt;a href=&#34;http://judge.u-aizu.ac.jp/onlinejudge/index.jsp&#34;&gt;http://judge.u-aizu.ac.jp/onlinejudge/index.jsp&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>

@@ -80,161 +80,124 @@
       </div>
     </div>
     <article>
-      
-
-<p>WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。
+      <p>WildFly Swarmのサイトにも記載されていますが、WildFly Swarmは自己完結型のJava microservicesを作成するのに役立つプロジェクトとのこと。
 この分野だとSpring Bootの方が運用実績もあり、先行しているようですが、
 将来的にはEJBも使いたいのでWildFly Swarmの方を使ってみます。
 WildFly Swarmは一つのモジュールというわけではなく、JavaEEの仕様毎に複数のモジュールに分かれていて、
 自分の必要なモジュールを取り込んで利用する形になるようです。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <h2 id="jaxrsを組み込む">JAXRSを組み込む</h2>
-
 <p>今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。
 2015年11月時点での最新バージョンは1.0.0.Alpha5です。
 pom.xmlに下記のdependencyを追加します。</p>
-
-<pre><code class="language-xml">&lt;dependency&gt;
-    &lt;groupId&gt;org.wildfly.swarm&lt;/groupId&gt;
-    &lt;artifactId&gt;wildfly-swarm-jaxrs&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0.Alpha5&lt;/version&gt;
-&lt;dependency&gt;
-</code></pre>
-
-<p>これを依存グラフで見てみると&hellip;依存がすごいです（笑）</p>
-
-<p><img src="/images/post_image_39.png" alt="" /></p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-jaxrs<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+</code></pre></div><p>これを依存グラフで見てみると&hellip;依存がすごいです（笑）</p>
+<p><img src="/images/post_image_39.png" alt=""></p>
 <p>JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、
 下記のpluginもpom.xmlに追加します。</p>
-
-<pre><code class="language-xml">&lt;plugin&gt;
-    &lt;groupId&gt;org.wildfly.swarm&lt;/groupId&gt;
-    &lt;artifactId&gt;wildfly-swarm-plugin&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0.Alpha5&lt;/version&gt;
-    &lt;executions&gt;
-        &lt;execution&gt;
-            &lt;goals&gt;
-                &lt;goal&gt;package&lt;/goal&gt;
-            &lt;/goals&gt;
-        &lt;/execution&gt;
-    &lt;/executions&gt;
-&lt;/plugin&gt;
-</code></pre>
-
-<h2 id="jaxrsアプリケーションを作る">JAXRSアプリケーションを作る</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;executions</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;execution</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;goals</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#f92672">&lt;goal</span><span style="color:#f92672">&gt;</span>package<span style="color:#f92672">&lt;/goal&gt;</span>
+            <span style="color:#f92672">&lt;/goals&gt;</span>
+        <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+<span style="color:#f92672">&lt;/plugin&gt;</span>
+</code></pre></div><h2 id="jaxrsアプリケーションを作る">JAXRSアプリケーションを作る</h2>
 <p>WildFly Swarmの設定が一通り終わったので、次はJAXRSアプリケーションを作ります。
 特別なことはなく、普通のJAXRSアプリケーションです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package org.katsumi;
+<span style="color:#f92672">import</span> javax.ws.rs.ApplicationPath<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.core.Application<span style="color:#f92672">;</span>
 
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
+<span style="color:#a6e22e">@ApplicationPath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/rest&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyApplication</span> <span style="color:#66d9ef">extends</span> Application
+<span style="color:#f92672">{</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi<span style="color:#f92672">;</span>
 
-@ApplicationPath(&quot;/rest&quot;)
-public class MyApplication extends Application
-{
-}
-</code></pre>
+<span style="color:#f92672">import</span> javax.ws.rs.GET<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.Path<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package org.katsumi;
-
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-
-@Path(&quot;/hello&quot;)
-public class HelloResource
-{
-    @GET
-    public String hello()
-    {
-        return &quot;Hello World!&quot;;
-    }
-}
-</code></pre>
-
-<h2 id="どうやってうごかすの">どうやってうごかすの？</h2>
-
-<p>JAXRSアプリケーションも作ったけれどどうやって動かすのか？<br />
+<span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/hello&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloResource</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@GET</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello World!&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="どうやってうごかすの">どうやってうごかすの？</h2>
+<p>JAXRSアプリケーションも作ったけれどどうやって動かすのか？<br>
 WildFly Swarmでは通常のJavaアプリケーションのようにmainメソッドから動かします。
 そのため、mainメソッドを持つクラスを新たに作成します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package org.katsumi;
+<span style="color:#f92672">import</span> org.jboss.shrinkwrap.api.ShrinkWrap<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.wildfly.swarm.container.Container<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> org.wildfly.swarm.jaxrs.JAXRSArchive<span style="color:#f92672">;</span>
 
-import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.wildfly.swarm.container.Container;
-import org.wildfly.swarm.jaxrs.JAXRSArchive;
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Main</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#f92672">{</span>
+        <span style="color:#75715e">// コンテナの生成
+</span><span style="color:#75715e"></span>        <span style="color:#75715e">// Archiveを生成する前にインスタンス化しておかないと実行時にエラーが発生
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">final</span> Container container <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Container<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-public class Main
-{
-    public static void main(String... args) throws Exception
-    {
-        // コンテナの生成
-        // Archiveを生成する前にインスタンス化しておかないと実行時にエラーが発生
-        final Container container = new Container();
+        <span style="color:#75715e">// ShrinkWrapで仮想アーカイブを作成
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">final</span> JAXRSArchive archive <span style="color:#f92672">=</span> ShrinkWrap<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>JAXRSArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        archive<span style="color:#f92672">.</span><span style="color:#a6e22e">addClass</span><span style="color:#f92672">(</span>MyApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        archive<span style="color:#f92672">.</span><span style="color:#a6e22e">addClass</span><span style="color:#f92672">(</span>HelloResource<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        archive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAllDependencies</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-        // ShrinkWrapで仮想アーカイブを作成
-        final JAXRSArchive archive = ShrinkWrap.create(JAXRSArchive.class);
-        archive.addClass(MyApplication.class);
-        archive.addClass(HelloResource.class);
-        archive.addAllDependencies();
-
-        container.start().deploy(archive);
-    }
-}
-</code></pre>
-
-<p>mainメソッド内では、ShrinkWrapを利用して生成した仮想アーカイブを起動したコンテナにデプロイします。
+        container<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">deploy</span><span style="color:#f92672">(</span>archive<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>mainメソッド内では、ShrinkWrapを利用して生成した仮想アーカイブを起動したコンテナにデプロイします。
 コード中のコメントにも書きましたが、アーカイブを作る前にコンテナをインスタンス化しておかないと、
 実行時にエラーになります。これで半日悩んだ..orz</p>
-
 <p>で、ここで作ったMainクラスをswarm-pluginに教える必要があります。
 設定を追加したwildfly-swarm-pluginが下記になります。</p>
-
-<pre><code class="language-xml">&lt;plugin&gt;
-    &lt;groupId&gt;org.wildfly.swarm&lt;/groupId&gt;
-    &lt;artifactId&gt;wildfly-swarm-plugin&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0.Alpha5&lt;/version&gt;
-    &lt;configuration&gt;
-        &lt;mainClass&gt;org.katsumi.Main&lt;/mainClass&gt;
-    &lt;/configuration&gt;
-    &lt;executions&gt;
-        &lt;execution&gt;
-            &lt;goals&gt;
-                &lt;goal&gt;package&lt;/goal&gt;
-            &lt;/goals&gt;
-        &lt;/execution&gt;
-    &lt;/executions&gt;
-&lt;/plugin&gt;
-</code></pre>
-
-<p>Mavenでビルド後に下記の方法で実行することができます。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;mainClass</span><span style="color:#f92672">&gt;</span>org.katsumi.Main<span style="color:#f92672">&lt;/mainClass&gt;</span>
+    <span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#f92672">&lt;executions</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;execution</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;goals</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#f92672">&lt;goal</span><span style="color:#f92672">&gt;</span>package<span style="color:#f92672">&lt;/goal&gt;</span>
+            <span style="color:#f92672">&lt;/goals&gt;</span>
+        <span style="color:#f92672">&lt;/execution&gt;</span>
+    <span style="color:#f92672">&lt;/executions&gt;</span>
+<span style="color:#f92672">&lt;/plugin&gt;</span>
+</code></pre></div><p>Mavenでビルド後に下記の方法で実行することができます。</p>
 <h3 id="ideの場合">IDEの場合</h3>
-
 <p>Mainクラスを実行</p>
-
 <h3 id="mavenを利用する場合">Mavenを利用する場合</h3>
-
 <pre><code>mvn wildfly-swarm:run
 </code></pre>
-
 <h3 id="jarファイルを実行する場合">Jarファイルを実行する場合</h3>
-
 <pre><code>jar -jar target/projectname-swarm.jar
 </code></pre>
-
 <h2 id="余談">余談</h2>
-
 <p>今回のアプリですが、IntelliJ IDEA 15で作っています。
 インストールしたままの環境でMavenビルドをしたのですが、下記エラーが発生してビルドができない状態でした。</p>
-
 <pre><code>java.lang.NoClassDefFoundError: org/eclipse/aether/RepositorySystemSession
 </code></pre>
-
 <p>原因はMavenのバージョンが古いためで、IntellijにデフォルトでバンドルされているMavenのバージョンは3.0.5であり、
 このバージョンではエラーが発生するので、別途バージョン3.2.5をインストールしてそれを参照するようにしました。</p>
 

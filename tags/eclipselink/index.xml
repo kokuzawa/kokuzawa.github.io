@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Eclipselink on KATSUMI KOKUZAWA&#39;S BLOG</title>
+    <title>EclipseLink on KATSUMI KOKUZAWA&#39;S BLOG</title>
     <link>https://kokuzawa.github.io/tags/eclipselink/</link>
-    <description>Recent content in Eclipselink on KATSUMI KOKUZAWA&#39;S BLOG</description>
+    <description>Recent content in EclipseLink on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sun, 27 Jan 2013 12:08:00 +0900</lastBuildDate>
@@ -17,65 +16,44 @@
       <pubDate>Sun, 27 Jan 2013 12:08:00 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2013/01/27/performance-of-jpa/</guid>
-      <description>
-
-&lt;p&gt;JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。
+      <description>&lt;p&gt;JPAはJavaSE上でも動作するので、DBアクセスをする場合、最近はもっぱらJDBCではなくJPAを利用している。
 サーバサイドを利用しない、クライアントアプリでDBアクセスをするのは、主にデータ移行ツールとかが多く、
 ひとつのトランザクション内で処理されるレコード数が数万レコードになる事が多い。&lt;/p&gt;
-
 &lt;p&gt;数万レコードを移行する為に、JPAを利用した移行ツールを作り、実データでテストをしたところ、
 想定外のパフォーマンス劣化が発生し、その解決に幾分か時間が掛かってしまった。
 そのため、パフォーマンスが劣化する状況とその解決方法を簡易に示す為の簡易なコードを作成、備忘録として残しておく。&lt;/p&gt;
-
 &lt;h2 id=&#34;アプリ構成&#34;&gt;アプリ構成&lt;/h2&gt;
-
 &lt;p&gt;JavaはJDK7、JPAの実装はEclipseLink-2.3.2を利用。DBはDerby。&lt;/p&gt;
-
 &lt;h2 id=&#34;コード&#34;&gt;コード&lt;/h2&gt;
-
 &lt;p&gt;検証に利用するコードは下記の通り。
 Bookエンティティを1万レコード永続化する。この際、永続化だけではパフォーマンスの劣化を確認できないため、
 永続化されたBookエンティティのうち、&lt;code&gt;bookname=&#39;name1&#39;&lt;/code&gt;のレコードを抽出する。
 また、検証に利用する為に、ループ1回の処理時間(ms)をファイルに出力する。&lt;/p&gt;
-
-&lt;script src=&#34;https://gist.github.com/kokuzawa/4646983.js&#34;&gt;&lt;/script&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;検証&#34;&gt;検証&lt;/h2&gt;
-
 &lt;p&gt;まず改善前の結果。縦軸は処理時間(ms)、横軸は回数。
 約5,000回で一度速度が改善しているが、全体的に右肩上がりで処理時間が劣化している。
 簡易なコードであり、処理時間が数msのため、このままでも致命的な状況にならないかもしれないが、
 tachされたエンティティの数が増加すると、それに比例して劣化していく。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_4.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_4.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;p&gt;次に改善後の結果。
 約5,000回で速度が改善するのは同じだが、一定速度以上の劣化は起こらず安定している。&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_5.png&#34; alt=&#34;&#34; /&gt;&lt;/p&gt;
-
+&lt;p&gt;&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_5.png&#34; alt=&#34;&#34;&gt;&lt;/p&gt;
 &lt;h2 id=&#34;改善方法&#34;&gt;改善方法&lt;/h2&gt;
-
 &lt;p&gt;では、何をすれば改善するのか。
 結論から言えば、エンティティをdetachすれば良い。
 detachすることによってエンティティはエンティティマネージャの管理外になり、通常のJavaのオブジェクトになる。
 そのため、同期のためのオーバヘッドがなくなり、パフォーマンスが改善するのだと考えられるが確証はないので、
 あとでEclipseLinkのソースコードを確認してみようと思う。
 ただし、これによりDBとの同期は行えなくなるため、detachをする位置には注意が必要。&lt;/p&gt;
-
 &lt;p&gt;検証コードでは、ループ内の最後に下記2行を追加した。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-java&#34;&gt;em.flush();
-em.clear();
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;&lt;code&gt;em.flush()&lt;/code&gt;を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;em&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;flush&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+em&lt;span style=&#34;color:#f92672&#34;&gt;.&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;clear&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;(&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;)&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;em.flush()&lt;/code&gt;を呼び出しているのは、Bookエンティティが永続化される前にdetachされるのを回避するため。
 ただし、これも注意が必要で、リレーション関係のあるエンティティを両方とも永続化しようとするケース等で、
 片方をpersist、他方をpersistする前にflushしてしまうと、他方の永続化時にエラーが発生してしまう。&lt;/p&gt;
-
 &lt;p&gt;ちなみにflushやclearに関しては次の本が詳しい。&lt;/p&gt;
-
-&lt;iframe src=&#34;http://rcm-jp.amazon.co.jp/e/cm?lt1=_blank&amp;bc1=FFFFFF&amp;IS2=1&amp;bg1=FFFFFF&amp;fc1=000000&amp;lc1=0000FF&amp;t=moonwhaleblog-22&amp;o=9&amp;p=8&amp;l=as1&amp;m=amazon&amp;f=ifr&amp;ref=qf_sp_asin_til&amp;asins=4798124605&#34; style=&#34;width:120px;height:240px;&#34; scrolling=&#34;no&#34; marginwidth=&#34;0&#34; marginheight=&#34;0&#34; frameborder=&#34;0&#34;&gt;&lt;/iframe&gt;
+&lt;!-- raw HTML omitted --&gt;
 </description>
     </item>
     

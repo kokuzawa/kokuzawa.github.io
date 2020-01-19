@@ -81,44 +81,31 @@
       <p>JAX-RSでExcelファイルをダウンロードする際にストリームを直接触る必要があって、
 どうすればストリームにアクセスできるかちょっと調べてみました。
 Excelファイルの生成にはApache POIを使っています。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <p>Apache POIでExcelファイルを生成する場合、下記のようなコードを書きます。</p>
-
-<pre><code class="language-java">final Workbook wb = new HSSFWorkbook();
-final FileOutputStream fileOut = new FileOutputStream(&quot;workbook.xls&quot;);
-wb.write(fileOut);
-fileOut.close();
-</code></pre>
-
-<p>生成したファイルをファイルとして保存せずにServletでダウンロードしようとした場合、
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Workbook wb <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HSSFWorkbook<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">final</span> FileOutputStream fileOut <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;workbook.xls&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+wb<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>fileOut<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+fileOut<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>生成したファイルをファイルとして保存せずにServletでダウンロードしようとした場合、
 そのコードは下記のように<code>HttpServletResponse#getOutputStream()</code>でアウトプットストリームを取得し、
 レスポンスボディに対してストリーミング処理をすることになります。</p>
-
-<pre><code class="language-java">final Workbook wb = new HSSFWorkbook();
-final FileOutputStream fileOut = new FileOutputStream(response.getOutputStream());
-wb.write(fileOut);
-fileOut.close();
-</code></pre>
-
-<p>ここからが本題です。<br />
-JAX-RSでファイルをダウンロードするにはどうしたら良いのか。<br />
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Workbook wb <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HSSFWorkbook<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">final</span> FileOutputStream fileOut <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> FileOutputStream<span style="color:#f92672">(</span>response<span style="color:#f92672">.</span><span style="color:#a6e22e">getOutputStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+wb<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>fileOut<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+fileOut<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>ここからが本題です。<br>
+JAX-RSでファイルをダウンロードするにはどうしたら良いのか。<br>
 通常のファイルの場合は下記のようなコードを書くことで実現できます。</p>
-
-<pre><code class="language-java">final File file = new File(&quot;workbook.xls&quot;);
-return Response.ok(file).build();
-</code></pre>
-
-<p>Servletでのダウンロードのように、
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> File file <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;workbook.xls&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span>file<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div><p>Servletでのダウンロードのように、
 レスポンスボディに対してストリーミング処理をする場合は<code>javax.ws.rs.core.StreamingOutput</code>クラスを利用します。
 そのコードは下記のようになります。</p>
-
-<pre><code class="language-java">final Workbook wb = new HSSFWorkbook();
-final StreamingOutput so = out -&gt; wb.write(out);
-return Response.ok(stream).build();
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Workbook wb <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HSSFWorkbook<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">final</span> StreamingOutput so <span style="color:#f92672">=</span> out <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> wb<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>out<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span>stream<span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</code></pre></div>
       
       
       

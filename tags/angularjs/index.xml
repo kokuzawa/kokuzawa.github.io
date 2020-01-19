@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Angularjs on KATSUMI KOKUZAWA&#39;S BLOG</title>
+    <title>AngularJS on KATSUMI KOKUZAWA&#39;S BLOG</title>
     <link>https://kokuzawa.github.io/tags/angularjs/</link>
-    <description>Recent content in Angularjs on KATSUMI KOKUZAWA&#39;S BLOG</description>
+    <description>Recent content in AngularJS on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
     <lastBuildDate>Sat, 10 May 2014 18:50:20 +0900</lastBuildDate>
@@ -17,96 +16,72 @@
       <pubDate>Sat, 10 May 2014 18:50:20 +0900</pubDate>
       
       <guid>https://kokuzawa.github.io/blog/2014/05/10/chu-metefalseangularjs/</guid>
-      <description>
-
-&lt;p&gt;AngularJS + JAX-RS + JPA でアプリを作ってます。
+      <description>&lt;p&gt;AngularJS + JAX-RS + JPA でアプリを作ってます。
 今回 AngularJS を初めて使っているんですがとても便利ですね。
 どの辺りがと言われると、具体的に答えられるほど使い込んでいないので答えに窮するのですが、
 今分かっている範囲では、テストが簡単にできるのが良い感じです。&lt;/p&gt;
-
-&lt;!-- MORE --&gt;
-
+&lt;!-- raw HTML omitted --&gt;
 &lt;h2 id=&#34;基本&#34;&gt;基本&lt;/h2&gt;
-
 &lt;p&gt;AngularJS を利用するためには当たり前ですが、jsファイルを呼び出す必要があります。
 これは AngularJS の&lt;a href=&#34;https://angularjs.org&#34;&gt;公式サイト&lt;/a&gt;からダウンロードできるので、そこから取得しました。
 ダウンロードしたファイルを任意の場所に配置し、下記を &lt;code&gt;head&lt;/code&gt; タグの間に追加します。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;あと、下記の &lt;code&gt;ng-app&lt;/code&gt; を忘れずに &lt;code&gt;html&lt;/code&gt; タグに追加します。
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;angular.js&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;あと、下記の &lt;code&gt;ng-app&lt;/code&gt; を忘れずに &lt;code&gt;html&lt;/code&gt; タグに追加します。
 これは、このページが AngularJS のページだよと宣言するためのディレクティブだそうです。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html ng-app&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;初期値の設定&#34;&gt;初期値の設定&lt;/h2&gt;
-
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ng-app&lt;/span&gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;初期値の設定&#34;&gt;初期値の設定&lt;/h2&gt;
 &lt;p&gt;AngularJS は &lt;code&gt;ng-repeat&lt;/code&gt; というディレクティブを利用することで繰り返し処理をすることができます。
 繰り返し処理で出力するデータは下記のように &lt;code&gt;ng-init&lt;/code&gt; を利用して初期値を設定することができます。
 まあ、下記のコードだと繰り返し処理をさせる意味はあまりないのですが&amp;hellip;。&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html ng-app&amp;gt;
-  &amp;lt;head&amp;gt;
-    &amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    &amp;lt;div ng-init=&amp;quot;names = [&#39;Taro&#39;, &#39;Jiro&#39;, &#39;Hanako&#39;]&amp;quot;&amp;gt;
-      &amp;lt;div ng-repeat=&amp;quot;name in names&amp;quot;&amp;gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ng-app&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;head&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;angular.js&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+  &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;head&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ng-init&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;names = [&amp;#39;Taro&amp;#39;, &amp;#39;Jiro&amp;#39;, &amp;#39;Hanako&amp;#39;]&amp;#34;&lt;/span&gt;&amp;gt;
+      &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ng-repeat&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name in names&amp;#34;&lt;/span&gt;&amp;gt;
         {{name}}
-      &amp;lt;/div&amp;gt;
-    &amp;lt;/div&amp;gt;
-  &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;これを実行すると以下のような画面が表示されます。&lt;/p&gt;
-
+      &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
+    &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
+  &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;これを実行すると以下のような画面が表示されます。&lt;/p&gt;
 &lt;pre&gt;&lt;code&gt;Taro
 Jiro
 Hanako
 &lt;/code&gt;&lt;/pre&gt;
-
 &lt;p&gt;とても簡単です。
 ここで表示している Taro, Jiro, Hanako の値を API から取得して表示しようとした場合は下記のようなコードになります。&lt;/p&gt;
-
 &lt;p&gt;{% raw %}&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ng-app&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;myApp&amp;#34;&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;head&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;angular.js&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;src&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;angular-resource.js&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+      &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;myApp&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;angular&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;module&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;myApp&amp;#39;&lt;/span&gt;, [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;ngResource&amp;#39;&lt;/span&gt;]);
 
-&lt;pre&gt;&lt;code class=&#34;language-html&#34;&gt;&amp;lt;html ng-app=&amp;quot;myApp&amp;quot;&amp;gt;
-  &amp;lt;head&amp;gt;
-    &amp;lt;script src=&amp;quot;angular.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-    &amp;lt;script src=&amp;quot;angular-resource.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
-    &amp;lt;script&amp;gt;
-      var myApp = angular.module(&#39;myApp&#39;, [&#39;ngResource&#39;]);
-
-      myApp.factory(&#39;testService&#39;, [&#39;$resource&#39;, function($resource)
+      &lt;span style=&#34;color:#a6e22e&#34;&gt;myApp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;factory&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;testService&amp;#39;&lt;/span&gt;, [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;$resource&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;$resource&lt;/span&gt;)
       {
-        return $resource(&#39;/test/rest/names&#39;, {query: {method: &#39;GET&#39;, isArray: true}});
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;$resource&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;/test/rest/names&amp;#39;&lt;/span&gt;, {&lt;span style=&#34;color:#a6e22e&#34;&gt;query&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; {&lt;span style=&#34;color:#a6e22e&#34;&gt;method&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;GET&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;isArray&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;true&lt;/span&gt;}});
       }]);
 
-      myApp.controller(&#39;myCtrl&#39;, [&#39;testService&#39;, &#39;$scope&#39;, function(testService, $scope)
+      &lt;span style=&#34;color:#a6e22e&#34;&gt;myApp&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;controller&lt;/span&gt;(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;myCtrl&amp;#39;&lt;/span&gt;, [&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;testService&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;$scope&amp;#39;&lt;/span&gt;, &lt;span style=&#34;color:#66d9ef&#34;&gt;function&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;testService&lt;/span&gt;, &lt;span style=&#34;color:#a6e22e&#34;&gt;$scope&lt;/span&gt;)
       {
-        $scope.names = testService.query();
+        &lt;span style=&#34;color:#a6e22e&#34;&gt;$scope&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;names&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;testService&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;query&lt;/span&gt;();
       }]);
-    &amp;lt;/script&amp;gt;
-  &amp;lt;/head&amp;gt;
-  &amp;lt;body&amp;gt;
-    &amp;lt;div ng-controller=&amp;quot;myCtrl&amp;quot;&amp;gt;
-      &amp;lt;div ng-repeat=&amp;quot;name in names&amp;quot;&amp;gt;
+    &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;script&lt;/span&gt;&amp;gt;
+  &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;head&lt;/span&gt;&amp;gt;
+  &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;&amp;gt;
+    &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ng-controller&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;myCtrl&amp;#34;&lt;/span&gt;&amp;gt;
+      &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;ng-repeat&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;name in names&amp;#34;&lt;/span&gt;&amp;gt;
         {{name}}
-      &amp;lt;/div&amp;gt;
-    &amp;lt;/div&amp;gt;
-  &amp;lt;/body&amp;gt;
-&amp;lt;/html&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;{% endraw %}&lt;/p&gt;
-
+      &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
+    &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;div&lt;/span&gt;&amp;gt;
+  &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;body&lt;/span&gt;&amp;gt;
+&amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;html&lt;/span&gt;&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;{% endraw %}&lt;/p&gt;
 &lt;h3 id=&#34;参考&#34;&gt;参考&lt;/h3&gt;
-
 &lt;p&gt;以下のサイトを参考にしました。&lt;/p&gt;
-
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&#34;https://angularjs.org&#34;&gt;AngularJS 公式サイト&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&#34;http://dotinstall.com/lessons/basic_angularjs&#34;&gt;ドットインストール - AngularJS入門&lt;/a&gt;&lt;/li&gt;

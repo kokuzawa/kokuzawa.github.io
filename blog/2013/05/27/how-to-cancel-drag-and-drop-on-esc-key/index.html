@@ -76,106 +76,92 @@
       </div>
     </div>
     <article>
-      
-
-<p>Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。<br />
+      <p>Flex-4.5.1で、ツリーノードのDrag and DropをEscキーでキャンセルしてみよう、という話です。<br>
 標準機能としてはありませんが、これ以降のバージョンで対応されている可能性もあるという前提になります。</p>
-
 <p>実はDrag and DropをEscキーを使ってキャンセルできることは知りませんでした。
 Windowsでもできるようですが、普段使っているMacでもできることにさっき気がついたぐらいなので、
 そんな操作を利用している人は少ないのではないかと思ってました。
 ですが、検索してみると意外と多くの人が利用しているようです。</p>
-
 <h2 id="実装する">実装する</h2>
-
 <p>機能が無いので実装することにします。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<span style="color:#f92672">&lt;s:Application</span> <span style="color:#a6e22e">xmlns:fx=</span><span style="color:#e6db74">&#34;http://ns.adobe.com/mxml/2009&#34;</span>
+               <span style="color:#a6e22e">xmlns:s=</span><span style="color:#e6db74">&#34;library://ns.adobe.com/flex/spark&#34;</span>
+               <span style="color:#a6e22e">xmlns:mx=</span><span style="color:#e6db74">&#34;library://ns.adobe.com/flex/mx&#34;</span>
+               <span style="color:#a6e22e">creationComplete=</span><span style="color:#e6db74">&#34;creationComplete(event)&#34;</span><span style="color:#f92672">&gt;</span>
 
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;s:Application xmlns:fx=&quot;http://ns.adobe.com/mxml/2009&quot;
-               xmlns:s=&quot;library://ns.adobe.com/flex/spark&quot;
-               xmlns:mx=&quot;library://ns.adobe.com/flex/mx&quot;
-               creationComplete=&quot;creationComplete(event)&quot;&gt;
+    <span style="color:#f92672">&lt;fx:Script</span><span style="color:#f92672">&gt;</span><span style="color:#75715e">&lt;![CDATA[
+</span><span style="color:#75715e">        import mx.events.FlexEvent;
+</span><span style="color:#75715e">        import mx.managers.DragManager;
+</span><span style="color:#75715e">        import mx.managers.dragClasses.DragProxy;
+</span><span style="color:#75715e">
+</span><span style="color:#75715e">        protected function creationComplete(event:FlexEvent):void
+</span><span style="color:#75715e">        {
+</span><span style="color:#75715e">            addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
+</span><span style="color:#75715e">            {
+</span><span style="color:#75715e">                if (event.keyCode == Keyboard.ESCAPE) {
+</span><span style="color:#75715e">                    DragManager.acceptDragDrop(null);
+</span><span style="color:#75715e">                    myTree.hideDropFeedback(null);
+</span><span style="color:#75715e">                    myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
+</span><span style="color:#75715e">                    var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
+</span><span style="color:#75715e">                    if (dragProxy) {
+</span><span style="color:#75715e">                        dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
+</span><span style="color:#75715e">                    }
+</span><span style="color:#75715e">                }
+</span><span style="color:#75715e">            });
+</span><span style="color:#75715e">        }
+</span><span style="color:#75715e">        ]]&gt;</span><span style="color:#f92672">&lt;/fx:Script&gt;</span>
 
-    &lt;fx:Script&gt;&lt;![CDATA[
-        import mx.events.FlexEvent;
-        import mx.managers.DragManager;
-        import mx.managers.dragClasses.DragProxy;
+    <span style="color:#f92672">&lt;s:layout</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;s:HorizontalLayout</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/s:layout&gt;</span>
 
-        protected function creationComplete(event:FlexEvent):void
-        {
-            addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
-            {
-                if (event.keyCode == Keyboard.ESCAPE) {
-                    DragManager.acceptDragDrop(null);
-                    myTree.hideDropFeedback(null);
-                    myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
-                    var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
-                    if (dragProxy) {
-                        dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
-                    }
-                }
-            });
-        }
-        ]]&gt;&lt;/fx:Script&gt;
+    <span style="color:#f92672">&lt;mx:Tree</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;myTree&#34;</span>
+             <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;200&#34;</span>
+             <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;300&#34;</span>
+             <span style="color:#a6e22e">dragMoveEnabled=</span><span style="color:#e6db74">&#34;true&#34;</span>
+             <span style="color:#a6e22e">dragEnabled=</span><span style="color:#e6db74">&#34;true&#34;</span>
+             <span style="color:#a6e22e">dropEnabled=</span><span style="color:#e6db74">&#34;true&#34;</span>
+             <span style="color:#a6e22e">labelField=</span><span style="color:#e6db74">&#34;@label&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;mx:XMLListCollection</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;treeData&#34;</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;fx:XMLList</span><span style="color:#f92672">&gt;</span>
+                <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;Mail Box&#34;</span><span style="color:#f92672">&gt;</span>
+                    <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;Inbox&#34;</span><span style="color:#f92672">&gt;</span>
+                        <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;AAAAA&#34;</span><span style="color:#f92672">/&gt;</span>
+                        <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;BBBBB&#34;</span><span style="color:#f92672">/&gt;</span>
+                        <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;CCCCC&#34;</span><span style="color:#f92672">/&gt;</span>
+                    <span style="color:#f92672">&lt;/node&gt;</span>
+                    <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;Outbox&#34;</span><span style="color:#f92672">&gt;</span>
+                        <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;DDDDD&#34;</span><span style="color:#f92672">/&gt;</span>
+                        <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;EEEEE&#34;</span><span style="color:#f92672">/&gt;</span>
+                    <span style="color:#f92672">&lt;/node&gt;</span>
+                <span style="color:#f92672">&lt;/node&gt;</span>
+            <span style="color:#f92672">&lt;/fx:XMLList&gt;</span>
+        <span style="color:#f92672">&lt;/mx:XMLListCollection&gt;</span>
+    <span style="color:#f92672">&lt;/mx:Tree&gt;</span>
 
-    &lt;s:layout&gt;
-        &lt;s:HorizontalLayout/&gt;
-    &lt;/s:layout&gt;
-
-    &lt;mx:Tree id=&quot;myTree&quot;
-             width=&quot;200&quot;
-             height=&quot;300&quot;
-             dragMoveEnabled=&quot;true&quot;
-             dragEnabled=&quot;true&quot;
-             dropEnabled=&quot;true&quot;
-             labelField=&quot;@label&quot;&gt;
-        &lt;mx:XMLListCollection id=&quot;treeData&quot;&gt;
-            &lt;fx:XMLList&gt;
-                &lt;node label=&quot;Mail Box&quot;&gt;
-                    &lt;node label=&quot;Inbox&quot;&gt;
-                        &lt;node label=&quot;AAAAA&quot;/&gt;
-                        &lt;node label=&quot;BBBBB&quot;/&gt;
-                        &lt;node label=&quot;CCCCC&quot;/&gt;
-                    &lt;/node&gt;
-                    &lt;node label=&quot;Outbox&quot;&gt;
-                        &lt;node label=&quot;DDDDD&quot;/&gt;
-                        &lt;node label=&quot;EEEEE&quot;/&gt;
-                    &lt;/node&gt;
-                &lt;/node&gt;
-            &lt;/fx:XMLList&gt;
-        &lt;/mx:XMLListCollection&gt;
-    &lt;/mx:Tree&gt;
-
-&lt;/s:Application&gt;
-</code></pre>
-
-<p>大したことはしてなくて、重要なのは下記の部分。</p>
-
-<pre><code class="language-javascript">addEventListener(KeyboardEvent.KEY_DOWN, function (event:KeyboardEvent):void
+<span style="color:#f92672">&lt;/s:Application&gt;</span>
+</code></pre></div><p>大したことはしてなくて、重要なのは下記の部分。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-javascript" data-lang="javascript"><span style="color:#a6e22e">addEventListener</span>(<span style="color:#a6e22e">KeyboardEvent</span>.<span style="color:#a6e22e">KEY_DOWN</span>, <span style="color:#66d9ef">function</span> (<span style="color:#a6e22e">event</span><span style="color:#f92672">:</span><span style="color:#a6e22e">KeyboardEvent</span>)<span style="color:#f92672">:</span><span style="color:#66d9ef">void</span>
 {
-    if (event.keyCode == Keyboard.ESCAPE) {
-        DragManager.acceptDragDrop(null);
-        myTree.hideDropFeedback(null);
-        myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));
-        var dragProxy:DragProxy = DragManager.mx_internal::dragProxy;
-        if (dragProxy) {
-            dragProxy.mouseUpHandler(new MouseEvent(MouseEvent.MOUSE_UP));
+    <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">event</span>.<span style="color:#a6e22e">keyCode</span> <span style="color:#f92672">==</span> <span style="color:#a6e22e">Keyboard</span>.<span style="color:#a6e22e">ESCAPE</span>) {
+        <span style="color:#a6e22e">DragManager</span>.<span style="color:#a6e22e">acceptDragDrop</span>(<span style="color:#66d9ef">null</span>);
+        <span style="color:#a6e22e">myTree</span>.<span style="color:#a6e22e">hideDropFeedback</span>(<span style="color:#66d9ef">null</span>);
+        <span style="color:#a6e22e">myTree</span>.<span style="color:#a6e22e">dispatchEvent</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MouseEvent</span>(<span style="color:#a6e22e">MouseEvent</span>.<span style="color:#a6e22e">MOUSE_UP</span>));
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">dragProxy</span><span style="color:#f92672">:</span><span style="color:#a6e22e">DragProxy</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">DragManager</span>.<span style="color:#a6e22e">mx_internal</span><span style="color:#f92672">:</span><span style="color:#f92672">:</span><span style="color:#a6e22e">dragProxy</span>;
+        <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">dragProxy</span>) {
+            <span style="color:#a6e22e">dragProxy</span>.<span style="color:#a6e22e">mouseUpHandler</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MouseEvent</span>(<span style="color:#a6e22e">MouseEvent</span>.<span style="color:#a6e22e">MOUSE_UP</span>));
         }
     }
 });
-</code></pre>
-
-<p>簡単に説明すると、まず、ツリーコンポーネントの上以外でもEscキーをハンドリングする必要があるので、キーイベントのリスナーはApplicationに付けます。
+</code></pre></div><p>簡単に説明すると、まず、ツリーコンポーネントの上以外でもEscキーをハンドリングする必要があるので、キーイベントのリスナーはApplicationに付けます。
 で、Escが叩かれたらdrag-and-dropをキャンセルさせるためにコンポーネントに通知します。</p>
-
 <p><code>DragManager.acceptDragDrop(null);</code>でドロップを無効に、ドラッグすると移動先にラインが表示されるので、
 <code>myTree.hideDropFeedback(null);</code>でラインを消します。
 ドラッグ中はマウスをダウンしたままなので、キャンセルに合わせてツリーコンポーネントに対して
 <code>myTree.dispatchEvent(new MouseEvent(MouseEvent.MOUSE_UP));</code>を通知します。</p>
-
 <p>そのあとがちょっと特殊で、mx_internalでDragManagerの内部変数を参照し、マウスアップイベントを通知します。
 この通知が無いと、ドラッグ操作をキャンセルしたと認識されません。</p>
-
 <p>もっと良いやり方や、最新バージョンだと出来るよとか教えて頂けると嬉しいです :D</p>
 
       

@@ -80,19 +80,14 @@
     <article>
       <p>GlassFish-4を使ってみたらJerseyのパッケージが変わってた。
 GlassFish-3.1.2.2までは以下のようにcom.sunパッケージにあるJerseyのサーブレットがロードできていたけど、</p>
-
-<pre><code class="language-xml">&lt;servlet-name&gt;jersey-serlvet&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;com.sun.jersey.spi.container.servlet.ServletContainer&lt;/servlet-class&gt;
-&lt;/servlet&gt;
-</code></pre>
-
-<p>GlassFish-4ではcom.sunパッケージにJerseyはなく、org.glassfishのパッケージとなっている。</p>
-
-<pre><code class="language-xml">&lt;servlet-name&gt;jersey-serlvet&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;org.glassfish.jersey.servlet.ServletContainer&lt;/servlet-class&gt;
-&lt;/servlet&gt;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>jersey-serlvet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+    <span style="color:#f92672">&lt;servlet-class</span><span style="color:#f92672">&gt;</span>com.sun.jersey.spi.container.servlet.ServletContainer<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+<span style="color:#f92672">&lt;/servlet&gt;</span>
+</code></pre></div><p>GlassFish-4ではcom.sunパッケージにJerseyはなく、org.glassfishのパッケージとなっている。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>jersey-serlvet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+    <span style="color:#f92672">&lt;servlet-class</span><span style="color:#f92672">&gt;</span>org.glassfish.jersey.servlet.ServletContainer<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+<span style="color:#f92672">&lt;/servlet&gt;</span>
+</code></pre></div>
       
       
       

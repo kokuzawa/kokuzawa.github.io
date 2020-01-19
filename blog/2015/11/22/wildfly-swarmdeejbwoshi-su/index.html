@@ -80,126 +80,99 @@
       </div>
     </div>
     <article>
-      
-
-<p>WildFly Swarmを試すのも今日で３回目です。
+      <p>WildFly Swarmを試すのも今日で３回目です。
 だんだんと実装方法に慣れてきました。
 この辺で当初の目的であったWildFly SwarmでEJBを使ってみたいと思います。
 EJBが使えないのならSpring Bootで全然構わないわけで、
 EJBが使えるかどうかはとても大事なところです。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <h2 id="ejbを組み込む">EJBを組み込む</h2>
-
 <p>EJBのモジュールを組み込みます。
 よくよく考えてみると、EJBだけでは動きを確認するのが大変なので、
 リクエストの受け口だけはJAXRSで作ります。
 なので、JAXRSのモジュールも合わせて組み込みます。</p>
-
 <p>また、JAXRSのリソースから<code>@Inject</code>でEJBをDIするにはWeldも必要です。
 そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。</p>
-
-<pre><code class="language-xml">&lt;dependencies&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.wildfly.swarm&lt;/groupId&gt;
-        &lt;artifactId&gt;wildfly-swarm-jaxrs-weld&lt;/artifactId&gt;
-        &lt;version&gt;1.0.0.Alpha5&lt;/version&gt;
-    &lt;/dependency&gt;
-    &lt;dependency&gt;
-        &lt;groupId&gt;org.wildfly.swarm&lt;/groupId&gt;
-        &lt;artifactId&gt;wildfly-swarm-ejb&lt;/artifactId&gt;
-        &lt;version&gt;1.0.0.Alpha5&lt;/version&gt;
-    &lt;/dependency&gt;
-&lt;/dependencies&gt;
-</code></pre>
-
-<h2 id="ejbを使ったアプリケーションを作る">EJBを使ったアプリケーションを作る</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-jaxrs-weld<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-ejb<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/dependency&gt;</span>
+<span style="color:#f92672">&lt;/dependencies&gt;</span>
+</code></pre></div><h2 id="ejbを使ったアプリケーションを作る">EJBを使ったアプリケーションを作る</h2>
 <p>まずはEJBです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi.ejb<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package org.katsumi.ejb;
+<span style="color:#f92672">import</span> javax.ejb.Stateless<span style="color:#f92672">;</span>
 
-import javax.ejb.Stateless;
+<span style="color:#a6e22e">@Stateless</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloEjb</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">say</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello!&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>EJBを呼び出すRESTリソースです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi.ejb<span style="color:#f92672">;</span>
 
-@Stateless
-public class HelloEjb
-{
-    public String say()
-    {
-        return &quot;Hello!&quot;;
-    }
-}
-</code></pre>
+<span style="color:#f92672">import</span> javax.inject.Inject<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.GET<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.Path<span style="color:#f92672">;</span>
 
-<p>EJBを呼び出すRESTリソースです。</p>
+<span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/hello&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloResource</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Inject</span>
+    <span style="color:#66d9ef">private</span> HelloEjb helloEjb<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">package org.katsumi.ejb;
+    <span style="color:#a6e22e">@GET</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">return</span> helloEjb<span style="color:#f92672">.</span><span style="color:#a6e22e">say</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi.ejb<span style="color:#f92672">;</span>
 
-import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
+<span style="color:#f92672">import</span> javax.ws.rs.ApplicationPath<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.ws.rs.core.Application<span style="color:#f92672">;</span>
 
-@Path(&quot;/hello&quot;)
-public class HelloResource
-{
-    @Inject
-    private HelloEjb helloEjb;
-
-    @GET
-    public String hello()
-    {
-        return helloEjb.say();
-    }
-}
-</code></pre>
-
-<pre><code class="language-java">package org.katsumi.ejb;
-
-import javax.ws.rs.ApplicationPath;
-import javax.ws.rs.core.Application;
-
-@ApplicationPath(&quot;/rest&quot;)
-public class MyApplication extends Application
-{
-}
-</code></pre>
-
-<h2 id="実行する">実行する</h2>
-
+<span style="color:#a6e22e">@ApplicationPath</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/rest&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">MyApplication</span> <span style="color:#66d9ef">extends</span> Application
+<span style="color:#f92672">{</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><h2 id="実行する">実行する</h2>
 <p>今回はMainクラスを作るのではなく、Warファイルを生成し、
 それを実行する形にします。
 まずpom.xmlのpackagingをwarにします。</p>
-
 <pre><code>&lt;packaging&gt;war&lt;/packaging&gt;
 </code></pre>
-
 <p>さらにwarファイルを生成するので下記のプラグインをpom.xmlに追加します。</p>
-
-<pre><code class="language-xml">&lt;plugins&gt;
-    &lt;plugin&gt;
-        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
-        &lt;artifactId&gt;maven-war-plugin&lt;/artifactId&gt;
-        &lt;version&gt;2.6&lt;/version&gt;
-        &lt;configuration&gt;
-            &lt;failOnMissingWebXml&gt;false&lt;/failOnMissingWebXml&gt;
-        &lt;/configuration&gt;
-    &lt;/plugin&gt;
-    &lt;plugin&gt;
-        &lt;groupId&gt;org.wildfly.swarm&lt;/groupId&gt;
-        &lt;artifactId&gt;wildfly-swarm-plugin&lt;/artifactId&gt;
-        &lt;version&gt;${version.wildfly-swarm}&lt;/version&gt;
-    &lt;/plugin&gt;
-&lt;/plugins&gt;
-</code></pre>
-
-<p>準備ができたので下記のコマンドで実行します。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-war-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.6<span style="color:#f92672">&lt;/version&gt;</span>
+        <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;failOnMissingWebXml</span><span style="color:#f92672">&gt;</span>false<span style="color:#f92672">&lt;/failOnMissingWebXml&gt;</span>
+        <span style="color:#f92672">&lt;/configuration&gt;</span>
+    <span style="color:#f92672">&lt;/plugin&gt;</span>
+    <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>${version.wildfly-swarm}<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;/plugin&gt;</span>
+<span style="color:#f92672">&lt;/plugins&gt;</span>
+</code></pre></div><p>準備ができたので下記のコマンドで実行します。</p>
 <pre><code>mvn wildfly-swarm:run
 </code></pre>
-
 <h2 id="まとめ">まとめ</h2>
-
 <p>WildFLy SwarmでEJBも問題なく呼び出せることがわかりました。
 あとはJPAを使うことができれば、システム開発で使う一通りの機能が使えること確認できそうです。</p>
 

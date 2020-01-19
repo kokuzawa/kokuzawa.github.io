@@ -78,15 +78,10 @@
       </div>
     </div>
     <article>
-      
-
-<p>Java8を入れたらGlassFishに付属しているDerbyが起動できなくなっていたので、下記を<code>$JAVA_HONE/jre/lib/security/java.policy</code>に追記しました。</p>
-
+      <p>Java8を入れたらGlassFishに付属しているDerbyが起動できなくなっていたので、下記を<code>$JAVA_HONE/jre/lib/security/java.policy</code>に追記しました。</p>
 <pre><code>permission java.net.SocketPermission &quot;localhost:1527&quot;, &quot;listen,resolve&quot;;
 </code></pre>
-
 <h2 id="参考">参考</h2>
-
 <ul>
 <li><a href="http://d.hatena.ne.jp/seraphy/20140214">Java7u51以降でApache Derbyのネットワークサーバを使う場合の設定</a></li>
 </ul>

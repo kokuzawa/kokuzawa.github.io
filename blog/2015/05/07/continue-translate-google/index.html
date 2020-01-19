@@ -79,50 +79,40 @@
     </div>
     <article>
       <p>先日書いたコードがiOSのSafariで上手く動きませんでした。</p>
-
 <p><a href="http://kokuzawa.github.io/blog/2015/05/03/translate-google/">Googleのテキスト読み上げAPIを組み込む</a></p>
-
 <p>子供向けなのでiPhoneまたはiPadで音声が再生されないと困ります。
 いろいろ調べたけれど、JavaScriptから呼び出す方法がわからないので
 勝手知ったるJavaの世界に取り込んでiOSのSafariでも音声が再生されるようにしました。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <p>下記がそのコードです。</p>
-
-<pre><code class="language-java">@Path(&quot;/tts&quot;)
-public class TTSResource
-{
-    @GET
-    @Produces(&quot;audio/mpeg&quot;)
-    public Response textToSpeech(@QueryParam(&quot;text&quot;) String text) throws IOException
-    {
-        final URL url = new URL(&quot;http://translate.google.com/translate_tts?tl=en&amp;q=&quot; + text);
-        final URLConnection connection = url.openConnection();
-        connection.setRequestProperty(&quot;User-Agent&quot;, &quot;Mozilla&quot;);
-        return Response.ok(connection.getInputStream()).build();
-    }
-}
-</code></pre>
-
-<p>JAX-RSでGoogle Translateの結果をそのままレスポンスとして返すようにしています。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/tts&#34;</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">TTSResource</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@GET</span>
+    <span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;audio/mpeg&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> Response <span style="color:#a6e22e">textToSpeech</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@QueryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;text&#34;</span><span style="color:#f92672">)</span> String text<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">final</span> URL url <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> URL<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://translate.google.com/translate_tts?tl=en&amp;q=&#34;</span> <span style="color:#f92672">+</span> text<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> URLConnection connection <span style="color:#f92672">=</span> url<span style="color:#f92672">.</span><span style="color:#a6e22e">openConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">setRequestProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;User-Agent&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Mozilla&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> Response<span style="color:#f92672">.</span><span style="color:#a6e22e">ok</span><span style="color:#f92672">(</span>connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>JAX-RSでGoogle Translateの結果をそのままレスポンスとして返すようにしています。
 User-Agentを指定していないと上手く動きません。
 ここで気がついたのですがUser-Agentで振る舞いが変わるようなので、
 もしかしたらiOSからのアクセスの場合にもUser-Agentを偽装できれば音声が再生されるのかもしれないです。</p>
-
 <p>先日の記事にも書きましたがクライアント側（javaScript）は下記のようになります。</p>
-
-<pre><code class="language-html">&lt;h:outputScript&gt;
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">&lt;<span style="color:#f92672">h:outputScript</span>&gt;
 function play() {
     var voice = new Audio();
-    voice.src = &quot;${request.contextPath}/rest/tts?text=one&quot;;
+    voice.src = &#34;${request.contextPath}/rest/tts?text=one&#34;;
     voice.play();
 }
-&lt;/h:outputScript&gt;
+&lt;/<span style="color:#f92672">h:outputScript</span>&gt;
 
-&lt;a href=&quot;javascript:play()&quot;&gt;音声&lt;/a&gt;
-</code></pre>
-
+&lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;javascript:play()&#34;</span>&gt;音声&lt;/<span style="color:#f92672">a</span>&gt;
+</code></pre></div>
       
       
       

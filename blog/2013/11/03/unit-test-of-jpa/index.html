@@ -78,19 +78,14 @@
       </div>
     </div>
     <article>
-      
-
-<p>JPAで作ったデータアクセスクラスのテストをJUnitで作る際に、EntityManagerの扱いが問題になってきます。
+      <p>JPAで作ったデータアクセスクラスのテストをJUnitで作る際に、EntityManagerの扱いが問題になってきます。
 プロダクトコードだと、PersistenceUnitのtransactionTypeをJTAとするため、
 この設定のままユニットテストを実行には、APサーバが起動している必要があります。
 この状態だとJenkinsに食わせたりするときに色々大変だし、
 そもそもテスト用にはデータベースを別にしたいので、設定をテスト時だけ書き直す必要が出てきて面倒です。
 そこでプロダクトコードとテストコードで参照するPersistenceUnitを変更するようにしてみました。</p>
-
 <h2 id="ファイル構成">ファイル構成</h2>
-
 <p>ファイルは下記のように、プロダクトコードとテストコード用にそれぞれpersistence.xmlを用意します。</p>
-
 <pre><code>root
  └ src
    ├ main
@@ -106,117 +101,96 @@
       └ resources
          └ META-INF
             └ persistence.xml
-</code></pre>
-
-<p>プロダクトコードのpersistence.xmlはこんな感じ。
+</code></pre><p>プロダクトコードのpersistence.xmlはこんな感じ。
 transaction-typeをJTAにしているので、jta-data-sourceにAPサーバで設定したデータソース名を指定しています。</p>
-
 <p><strong>persistence.xml:</strong></p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot; version=&quot;2.0&quot;&gt;
-    &lt;persistence-unit name=&quot;mytestPU&quot; transaction-type=&quot;JTA&quot;&gt;
-        &lt;jta-data-source&gt;jdbc/mytest&lt;/jta-data-source&gt;
-        &lt;properties&gt;
-            &lt;property name=&quot;eclipselink.ddl-generation&quot; value=&quot;create-tables&quot;/&gt;
-        &lt;/properties&gt;
-    &lt;/persistence-unit&gt;
-&lt;/persistence&gt;
-</code></pre>
-
-<p>テストコードのpersistence.xmlはこんな感じ。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;persistence</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/persistence&#34;</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;persistence-unit</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;mytestPU&#34;</span> <span style="color:#a6e22e">transaction-type=</span><span style="color:#e6db74">&#34;JTA&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;jta-data-source</span><span style="color:#f92672">&gt;</span>jdbc/mytest<span style="color:#f92672">&lt;/jta-data-source&gt;</span>
+        <span style="color:#f92672">&lt;properties</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;eclipselink.ddl-generation&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;create-tables&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/properties&gt;</span>
+    <span style="color:#f92672">&lt;/persistence-unit&gt;</span>
+<span style="color:#f92672">&lt;/persistence&gt;</span>
+</code></pre></div><p>テストコードのpersistence.xmlはこんな感じ。
 プロダクトコードとは違い、APサーバが起動していなくてもユニットテストが実行できるように
 transaction-typeをRESOURCE_LOCALにしています。</p>
-
 <p><strong>persistence.xml:</strong></p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;persistence xmlns=&quot;http://java.sun.com/xml/ns/persistence&quot; version=&quot;2.0&quot;&gt;
-    &lt;persistence-unit name=&quot;mytestTPU&quot; transaction-type=&quot;RESOURCE_LOCAL&quot;&gt;
-        &lt;provider&gt;org.eclipse.persistence.jpa.PersistenceProvider&lt;/provider&gt;
-        &lt;class&gt;org.mytest.entity.Account&lt;/class&gt;
-        &lt;properties&gt;
-            &lt;property name=&quot;javax.persistence.jdbc.driver&quot; value=&quot;org.postgresql.Driver&quot;/&gt;
-            &lt;property name=&quot;javax.persistence.jdbc.url&quot; value=&quot;jdbc:postgresql://localhost:5432/mytest_test&quot;/&gt;
-            &lt;property name=&quot;javax.persistence.jdbc.user&quot; value=&quot;demo&quot;/&gt;
-            &lt;property name=&quot;javax.persistence.jdbc.password&quot; value=&quot;demo&quot;/&gt;
-            &lt;property name=&quot;eclipselink.ddl-generation&quot; value=&quot;drop-and-create-tables&quot;/&gt;
-        &lt;/properties&gt;
-    &lt;/persistence-unit&gt;
-&lt;/persistence&gt;
-</code></pre>
-
-<p>あとは下記のコードを用意します。</p>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#f92672">&lt;persistence</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/persistence&#34;</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;persistence-unit</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;mytestTPU&#34;</span> <span style="color:#a6e22e">transaction-type=</span><span style="color:#e6db74">&#34;RESOURCE_LOCAL&#34;</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;provider</span><span style="color:#f92672">&gt;</span>org.eclipse.persistence.jpa.PersistenceProvider<span style="color:#f92672">&lt;/provider&gt;</span>
+        <span style="color:#f92672">&lt;class</span><span style="color:#f92672">&gt;</span>org.mytest.entity.Account<span style="color:#f92672">&lt;/class&gt;</span>
+        <span style="color:#f92672">&lt;properties</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.driver&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;org.postgresql.Driver&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.url&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;jdbc:postgresql://localhost:5432/mytest_test&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.user&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;demo&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.password&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;demo&#34;</span><span style="color:#f92672">/&gt;</span>
+            <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;eclipselink.ddl-generation&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;drop-and-create-tables&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/properties&gt;</span>
+    <span style="color:#f92672">&lt;/persistence-unit&gt;</span>
+<span style="color:#f92672">&lt;/persistence&gt;</span>
+</code></pre></div><p>あとは下記のコードを用意します。</p>
 <p><strong>Account.java:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Entity</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Account</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Id</span>
+    <span style="color:#a6e22e">@GeneratedValue</span><span style="color:#f92672">(</span>strategy <span style="color:#f92672">=</span> GenerationType<span style="color:#f92672">.</span><span style="color:#a6e22e">IDENTITY</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> Long accountId<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> String email<span style="color:#f92672">;</span>
+    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><strong>AccountFacade.java:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RequestScoped</span>
+<span style="color:#a6e22e">@Transactional</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AccountFacade</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@PersistentContext</span><span style="color:#f92672">(</span>unitName <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;mytestPU&#34;</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">private</span> EntityManager em<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">@Entity
-public class Account
-{
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long accountId;
-    private String email;
-    ...
-}
-</code></pre>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>Account account<span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>account<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        em<span style="color:#f92672">.</span><span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>account<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p><strong>AccountFacadeTest.java:</strong></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AccountFacadeTest</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">private</span> EntityManager em<span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> AccountFacade accountFacade <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AccountFacade<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<p><strong>AccountFacade.java:</strong></p>
+    <span style="color:#a6e22e">@Before</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#f92672">{</span>
+        em <span style="color:#f92672">=</span> Persistence<span style="color:#f92672">.</span><span style="color:#a6e22e">createEntityManagerFactory</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mytestTPU&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">createEntityManager</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        accountFacade<span style="color:#f92672">.</span><span style="color:#a6e22e">em</span> <span style="color:#f92672">=</span> em<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-<pre><code class="language-java">@RequestScoped
-@Transactional
-public class AccountFacade
-{
-    @PersistentContext(unitName = &quot;mytestPU&quot;)
-    private EntityManager em;
+    <span style="color:#a6e22e">@After</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#f92672">{</span>
+        em<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
 
-    public void persist(Account account)
-    {
-        Objects.requireNonNull(account);
-        em.persist(account);
-    }
-}
-</code></pre>
+    <span style="color:#a6e22e">@Test</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testPersist</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">final</span> Account account <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Account<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;xxxxx@hoge.com&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<p><strong>AccountFacadeTest.java:</strong></p>
+        em<span style="color:#f92672">.</span><span style="color:#a6e22e">getTransaction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">begin</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        accountFacade<span style="color:#f92672">.</span><span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>account<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        em<span style="color:#f92672">.</span><span style="color:#a6e22e">getTransaction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">commit</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
 
-<pre><code class="language-java">public class AccountFacadeTest
-{
-    private EntityManager em;
-    private AccountFacade accountFacade = new AccountFacade();
-
-    @Before
-    public void setUp() throws Exception
-    {
-        em = Persistence.createEntityManagerFactory(&quot;mytestTPU&quot;).createEntityManager();
-        accountFacade.em = em;
-    }
-
-    @After
-    public void tearDown() throws Exception
-    {
-        em.close();
-    }
-
-    @Test
-    public void testPersist() throws Exception
-    {
-        final Account account = new Account(&quot;xxxxx@hoge.com&quot;);
-
-        em.getTransaction().begin();
-        accountFacade.persist(account);
-        em.getTransaction().commit();
-
-        assert account.getAccountId() &gt; 0;
-    }
-}
-</code></pre>
-
-<p>テストコードではmytestTPUからEntityManagerを生成します。
+        <span style="color:#66d9ef">assert</span> account<span style="color:#f92672">.</span><span style="color:#a6e22e">getAccountId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>テストコードではmytestTPUからEntityManagerを生成します。
 プロダクトコードでは@Transactionalでトランザクションを管理していますが、
 テストコードでは@Transactionalでのトランザクション管理はできないので、
 トランザクション制御のためのコードを書く必要があります。</p>
-
 <p>Best Regards.</p>
 
       

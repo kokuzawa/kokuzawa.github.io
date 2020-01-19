@@ -78,50 +78,33 @@
       </div>
     </div>
     <article>
-      
-
-<p><a href="http://freemarker.org/">FreeMarker-2.3.23</a>でinterpolation部分をそのまま出力したい。</p>
-
+      <p><a href="http://freemarker.org/">FreeMarker-2.3.23</a>でinterpolation部分をそのまま出力したい。</p>
 <p>ただし、テンプレート文字列部分はユーザが自由に入力ができて、さらに、それがFreeMarkerのテンプレートだとは認識していない場合を想定。
 つまり、ユーザが<code>${hello}</code>と入力したら、出力結果は<code>${hello}</code>となって欲しい。
 調べてみると、下記のようにinterpolation部分を<code>${r&quot;...&quot;}</code>で括ればそのまま出力されるみたい。</p>
-
 <p><strong>TEMPLATE:</strong></p>
-
 <pre><code>${r&quot;${hello}&quot;}
 </code></pre>
-
 <p><strong>OUTPUT:</strong></p>
-
 <pre><code>${hello}
 </code></pre>
-
 <p>ということは、ユーザの入力した文字列からinterpolation部分を抽出して、<code>${r&quot;...&quot;}</code>で括るように置換してあげればよさそうだけど、
 ユーザが<code>${hello</code>としか入力しない場合に置換できないし、interpolation部分だけでなく、
 <code>&lt;#if&gt;</code>などの制御タグもそのまま出力しなければならないので、この方法はあまり現実的ではなさそう。
 で、FreeMarkerのマニュアルを眺めてみると、<code>noparse</code>という項があってそれをみたら「あ、これだ！」となった。
 下記のように書くとそのまま出力される。</p>
-
 <p><strong>TEMPLATE:</strong></p>
-
 <pre><code>&lt;#noparse&gt;
   &lt;#if greet&gt;
     ${hello}
   &lt;/#if&gt;
 &lt;/#noparse&gt;
-</code></pre>
-
-<p><strong>OUTPUT:</strong></p>
-
+</code></pre><p><strong>OUTPUT:</strong></p>
 <pre><code>&lt;#if greet&gt;
   ${hello}
 &lt;/#if&gt;
-</code></pre>
-
-<p>これならユーザが入力した部分を<code>&lt;#noparse&gt;</code>で括ってしまえばいいだけなので簡単。</p>
-
+</code></pre><p>これならユーザが入力した部分を<code>&lt;#noparse&gt;</code>で括ってしまえばいいだけなので簡単。</p>
 <h2 id="参考サイト">参考サイト</h2>
-
 <ul>
 <li><a href="http://stackoverflow.com/questions/5207613/how-to-output-expression-in-freemarker-without-it-being-interpreted">How to output ${expression} in Freemarker without it being interpreted?</a></li>
 <li><a href="http://freemarker.org/docs/ref_directive_noparse.html">FreeMarker.org#noparse</a></li>

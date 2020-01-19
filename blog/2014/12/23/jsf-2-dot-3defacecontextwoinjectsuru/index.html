@@ -83,89 +83,75 @@
       <p>JSF-2.3の新しい機能として、UIViewRoot, ViewMap, ApplicationMap, ExternalContext, FacesContextがInjectできるようになります。
 この記事ではFacesContextの古い取得方法である<code>FacesContext.getCurrentInstance()</code>と、
 Injectを利用した取得方法のサンプルを記載します。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <p>サンプルでは画面のボタンをクリックすると、<code>&lt;h:messages/&gt;</code>タグと<code>FacesContext.addMessage(String, FacesMessage)</code>を利用して
 同じ画面上にインフォメーションメッセージを表示します。</p>
-
 <p>最初にFacesContextの古い取得方法を利用したManaged Beanです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> javax.enterprise.context.RequestScoped<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.faces.application.FacesMessage<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.faces.context.FacesContext<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.inject.Inject<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.inject.Named<span style="color:#f92672">;</span>
 
-<pre><code class="language-java">import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
+<span style="color:#a6e22e">@Named</span>
+<span style="color:#a6e22e">@RequestScoped</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IndexBean</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doClick</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        <span style="color:#66d9ef">final</span> FacesContext context <span style="color:#f92672">=</span> FacesContext<span style="color:#f92672">.</span><span style="color:#a6e22e">getCurrentInstance</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        context<span style="color:#f92672">.</span><span style="color:#a6e22e">addMessage</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> FacesMessage<span style="color:#f92672">(</span>FacesMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERITY_INFO</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;summary&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;detail&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>次にInjectを利用してFacesContextを取得するManaged Beanです。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> javax.enterprise.context.RequestScoped<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.faces.application.FacesMessage<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.faces.context.FacesContext<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.inject.Inject<span style="color:#f92672">;</span>
+<span style="color:#f92672">import</span> javax.inject.Named<span style="color:#f92672">;</span>
 
-@Named
-@RequestScoped
-public class IndexBean
-{
-    public void doClick()
-    {
-        final FacesContext context = FacesContext.getCurrentInstance();
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, &quot;summary&quot;, &quot;detail&quot;));
-    }
-}
-</code></pre>
+<span style="color:#a6e22e">@Named</span>
+<span style="color:#a6e22e">@RequestScoped</span>
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IndexBean</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#a6e22e">@Inject</span>
+    <span style="color:#66d9ef">private</span> FacesContext context<span style="color:#f92672">;</span>
 
-<p>次にInjectを利用してFacesContextを取得するManaged Beanです。</p>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doClick</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#f92672">{</span>
+        context<span style="color:#f92672">.</span><span style="color:#a6e22e">addMessage</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> FacesMessage<span style="color:#f92672">(</span>FacesMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERITY_INFO</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;summary&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;detail&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>画面に表示するXHTMLは下記のようにしています。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE html
+</span><span style="color:#75715e">        PUBLIC &#34;-//W3C//DTD XHTML 1.0 Transitional//EN&#34;
+</span><span style="color:#75715e">        &#34;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&#34;&gt;</span>
 
-<pre><code class="language-java">import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
-import javax.inject.Inject;
-import javax.inject.Named;
+<span style="color:#f92672">&lt;html</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.w3.org/1999/xhtml&#34;</span>
+      <span style="color:#a6e22e">xmlns:h=</span><span style="color:#e6db74">&#34;http://java.sun.com/jsf/html&#34;</span><span style="color:#f92672">&gt;</span>
 
-@Named
-@RequestScoped
-public class IndexBean
-{
-    @Inject
-    private FacesContext context;
+<span style="color:#f92672">&lt;h:head</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;title</span><span style="color:#f92672">&gt;</span>Simple JSF Facelets page<span style="color:#f92672">&lt;/title&gt;</span>
+<span style="color:#f92672">&lt;/h:head&gt;</span>
 
-    public void doClick()
-    {
-        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, &quot;summary&quot;, &quot;detail&quot;));
-    }
-}
-</code></pre>
+<span style="color:#f92672">&lt;h:body</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;h:form</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;h:messages</span> <span style="color:#a6e22e">showDetail=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;h:commandButton</span> <span style="color:#a6e22e">actionListener=</span><span style="color:#e6db74">&#34;#{indexBean.doClick}&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;OK&#34;</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;/h:form&gt;</span>
+<span style="color:#f92672">&lt;/h:body&gt;</span>
 
-<p>画面に表示するXHTMLは下記のようにしています。</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE html
-        PUBLIC &quot;-//W3C//DTD XHTML 1.0 Transitional//EN&quot;
-        &quot;http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd&quot;&gt;
-
-&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;
-      xmlns:h=&quot;http://java.sun.com/jsf/html&quot;&gt;
-
-&lt;h:head&gt;
-    &lt;title&gt;Simple JSF Facelets page&lt;/title&gt;
-&lt;/h:head&gt;
-
-&lt;h:body&gt;
-    &lt;h:form&gt;
-        &lt;h:messages showDetail=&quot;true&quot;/&gt;
-        &lt;h:commandButton actionListener=&quot;#{indexBean.doClick}&quot; value=&quot;OK&quot;/&gt;
-    &lt;/h:form&gt;
-&lt;/h:body&gt;
-
-&lt;/html&gt;
-</code></pre>
-
-<p>このアプリをWildFly-8.0.0.Finalにデプロイします。
+<span style="color:#f92672">&lt;/html&gt;</span>
+</code></pre></div><p>このアプリをWildFly-8.0.0.Finalにデプロイします。
 WildFlyにはJSFの実装が含まれているので、JSF-2.3が含まれるアプリをデプロイすると起動時にエラーになってしまいます。
 そこで、アプリに含まれるJSF実装を利用させるために、下記の設定をweb.xmlに追加します。
 パラメータを追加するだけで利用する実装を切り替えてくれるので便利ですね。</p>
-
-<pre><code class="language-xml">&lt;context-param&gt;
-    &lt;param-name&gt;org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL&lt;/param-name&gt;
-    &lt;param-value&gt;true&lt;/param-value&gt;
-&lt;/context-param&gt;
-</code></pre>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;context-param</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;param-name</span><span style="color:#f92672">&gt;</span>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL<span style="color:#f92672">&lt;/param-name&gt;</span>
+    <span style="color:#f92672">&lt;param-value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/param-value&gt;</span>
+<span style="color:#f92672">&lt;/context-param&gt;</span>
+</code></pre></div>
       
       
       

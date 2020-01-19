@@ -81,12 +81,9 @@
     </div>
     <article>
       <p>どのバージョンからなのかはわからないが、Hibernate-4.3.8.Finalではpersistence.xmlのproviderに記載するHibernateのプロバイダクラスがdeprecatedになっていた。</p>
-
 <pre><code>&lt;provider&gt;org.hibernate.ejb.HibernatePersistence&lt;/provider&gt;
 </code></pre>
-
 <p>上記を下記に置き換える必要がある。</p>
-
 <pre><code>&lt;provider&gt;org.hibernate.jpa.HibernatePersistenceProvider&lt;/provider&gt;
 </code></pre>
 

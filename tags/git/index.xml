@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Git on KATSUMI KOKUZAWA&#39;S BLOG</title>
@@ -155,23 +154,16 @@ sudo chgrp -R www-data /var/www/git/hoge.git&lt;/code&gt;&lt;/pre&gt;
       
       <guid>https://kokuzawa.github.io/blog/2013/03/11/delete-all-of-git-branches/</guid>
       <description>&lt;p&gt;ブランチがこんな感じにある場合を想定します。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;$ git branch
 TEST-001
 TEST-002
 master
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;TEST-001とTEST-002の作業は終わったので、ブランチを削除したい。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;TEST-001とTEST-002の作業は終わったので、ブランチを削除したい。
 ただ、ブランチ削除のコマンドを2回実行するのは面倒。
 そんなときは次のコマンドを実行すると一括で削除可能です。&lt;/p&gt;
-
 &lt;pre&gt;&lt;code&gt;$ git branch | grep TEST | xargs git branch -d
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;ブランチを削除する場合、ブランチ名にワイルドカードが使えません。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ブランチを削除する場合、ブランチ名にワイルドカードが使えません。
 なので、コマンドをパイプでつなげて一括削除を実現します。&lt;/p&gt;
-
 &lt;p&gt;便利ですね :)&lt;/p&gt;
 </description>
     </item>

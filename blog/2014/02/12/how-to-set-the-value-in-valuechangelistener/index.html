@@ -82,40 +82,32 @@
 このイベントは、コンポーネントのValueChangeListenerによって発行されます。
 ValueChangEventを利用してテキストフィールドに入力された値の検証を行っているのですが、
 値が不正だった場合に、エラーを表示するのではなく正常な値を設定したい場合があります。</p>
-
-<!-- MORE -->
-
+<!-- raw HTML omitted -->
 <p>このとき、単純にValueChangeListenerの中でテキストフィールドのプロパティに値を設定しても、画面には反映されません。
 これは、ValueChangeEventがJSFのライフサイクルのUpdate Model Valuesフェーズの前に呼ばれるからであり、
 ValueChangeListenerで設定した値はUpdate Model Valuesフェーズで入力値によって上書きされてしまうからです。</p>
-
 <p>これを解決するには、ValueChangeListenerにおいて、ちょっとした工夫が必要です。
 以下にその例を示します。</p>
-
-<pre><code class="language-java">public void valueChangeListener(ValueChangeEvent event)
-{
-    if (event.getPhaseId() == PhaseId.UPDATE_MODEL_VALUES) {
-        property = &quot;9:00&quot;;
-    }
-    else {
-        String value = (String) event.getNewValue();
-        if (false == value.matches(&quot;([0-9]{1,2}|1[0-9]|2[0-3]):[0-5][0-9]&quot;) {
-            event.setPhaseId(PhaseId.UPDATE_MODEL_VALUES);
-            event.queue();
-        }
-    }
-}
-</code></pre>
-
-<p>この例では、時間の入力に対する検証を行い、不正な値が入力された場合にデフォルト値である「9:00」を設定しています。
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">valueChangeListener</span><span style="color:#f92672">(</span>ValueChangeEvent event<span style="color:#f92672">)</span>
+<span style="color:#f92672">{</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>event<span style="color:#f92672">.</span><span style="color:#a6e22e">getPhaseId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> PhaseId<span style="color:#f92672">.</span><span style="color:#a6e22e">UPDATE_MODEL_VALUES</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        property <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;9:00&#34;</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">}</span>
+    <span style="color:#66d9ef">else</span> <span style="color:#f92672">{</span>
+        String value <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>String<span style="color:#f92672">)</span> event<span style="color:#f92672">.</span><span style="color:#a6e22e">getNewValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">false</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> value<span style="color:#f92672">.</span><span style="color:#a6e22e">matches</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;([0-9]{1,2}|1[0-9]|2[0-3]):[0-5][0-9]&#34;</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+            event<span style="color:#f92672">.</span><span style="color:#a6e22e">setPhaseId</span><span style="color:#f92672">(</span>PhaseId<span style="color:#f92672">.</span><span style="color:#a6e22e">UPDATE_MODEL_VALUES</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            event<span style="color:#f92672">.</span><span style="color:#a6e22e">queue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">}</span>
+    <span style="color:#f92672">}</span>
+<span style="color:#f92672">}</span>
+</code></pre></div><p>この例では、時間の入力に対する検証を行い、不正な値が入力された場合にデフォルト値である「9:00」を設定しています。
 値の検証をUpdate Model Valuesフェーズの前に実施し、値が不正である場合には、ValueChangeEventをUpdate Model Valuesフェーズにエンキューします。
 このようにすることで、Update Model Valuesフェーズでもう一度ValueChangeListenerが呼び出されます。
 二度ValueChangeListenerが呼ばれることになるので、イベントのフェーズIDを判定し、
 Update Model Valuesフェーズで呼ばれた場合にデフォルト値を設定することで画面にその値を反映させます。</p>
-
 <p>JSFは、ライフサイクルを知っていないと対処が難しい場合があるのがちょっといけてないですね&hellip;。
 というわけで何かの参考になれば幸いです。</p>
-
 <p>Enjoy !</p>
 
       

@@ -78,68 +78,48 @@
       </div>
     </div>
     <article>
-      
-
-<p>JSF 2.3 では新しい機能として Websocket が追加されます。<br />
+      <p>JSF 2.3 では新しい機能として Websocket が追加されます。<br>
 JSF 2.3 はまだリリースされていませんが、先日 JSF 2.3-m09 が公開されたので、
 これを使って Websocket を試してみようと思います。</p>
-
-<!-- more -->
-
+<!-- raw HTML omitted -->
 <h2 id="環境">環境</h2>
-
 <ul>
 <li>macOS Sierra</li>
-<li>Java&trade; SE Runtime Environment (build 1.8.0_91-b14)</li>
+<li>Java(TM) SE Runtime Environment (build 1.8.0_91-b14)</li>
 <li>WildFly 10.1.0.Final</li>
 <li>Payara Server 4.1.1.164</li>
 </ul>
-
 <h2 id="はじめに">はじめに</h2>
-
 <p>今回やったことは下記に書いてあることそのままです。</p>
-
 <p><a href="http://blog.payara.fish/jsf-2.3-the-websocket-quickstart-under-payara-server">http://blog.payara.fish/jsf-2.3-the-websocket-quickstart-under-payara-server</a></p>
-
 <p>ボタンをクリックすることでサーバサイドから時間を取得してそれを表示するアプリを作ります。
 アプリの作り方は上記サイトを見てもらえばわかると思うので、ここでは上記のサイトには書かれていない、
 JavaEE8に対応していない現状のAPサーバで JSF 2.3 を有効にする方法について説明します。</p>
-
-<h2 id="wildfly-10-1-0-final-で試す">WildFly 10.1.0.Final で試す</h2>
-
+<h2 id="wildfly-1010final-で試す">WildFly 10.1.0.Final で試す</h2>
 <p>まず、普段利用している WildFly で動かそうとしてみました。
 WildFly で JSF 2.3 を有効にするためには、WildFly が内包する JSF を無効にする必要があります。
 無効にする方法は、下記の記述をした <code>WEB-INF/jboss-deployment-structure.xml</code> を用意します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
+<span style="color:#f92672">&lt;jboss-deployment-structure</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;urn:jboss:deployment-structure:1.2&#34;</span><span style="color:#f92672">&gt;</span>
 
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot;?&gt;
-&lt;jboss-deployment-structure xmlns=&quot;urn:jboss:deployment-structure:1.2&quot;&gt;
+    <span style="color:#f92672">&lt;deployment</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;exclude-subsystems</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;subsystem</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jsf&#34;</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;/exclude-subsystems&gt;</span>
+    <span style="color:#f92672">&lt;/deployment&gt;</span>
 
-    &lt;deployment&gt;
-        &lt;exclude-subsystems&gt;
-            &lt;subsystem name=&quot;jsf&quot;/&gt;
-        &lt;/exclude-subsystems&gt;
-    &lt;/deployment&gt;
-
-&lt;/jboss-deployment-structure&gt;
-</code></pre>
-
-<p>JSF 2.3 の jar ファイルは <code>WEB-INF/lib</code> フォルダに配置します。
+<span style="color:#f92672">&lt;/jboss-deployment-structure&gt;</span>
+</code></pre></div><p>JSF 2.3 の jar ファイルは <code>WEB-INF/lib</code> フォルダに配置します。
 この状態で WildFly にデプロイし、表示した画面でボタンをクリックすると下記のエラーが発生してしまいます。</p>
-
 <pre><code>Caused by: javax.faces.el.EvaluationException: javax.el.PropertyNotFoundException: /index.xhtml @15,73 action=&quot;#{pushBean.clockAction}&quot;: Target Unreachable, identifier 'pushBean' resolved to null
 	at javax.faces.component.MethodBindingMethodExpressionAdapter.invoke(MethodBindingMethodExpressionAdapter.java:94)
 	at com.sun.faces.application.ActionListenerImpl.processAction(ActionListenerImpl.java:102)
-</code></pre>
-
-<p>ApplicationScoped を付与した PushBean クラスがインスタンス化されていないようです。
+</code></pre><p>ApplicationScoped を付与した PushBean クラスがインスタンス化されていないようです。
 スコープを変えたり、色々試してみたのですが動作は変わらないので諦めました。
 動かす方法をご存知でしたら教えて頂けると嬉しいです。</p>
-
 <h2 id="payara-server-で試す">Payara Server で試す</h2>
-
 <p>参考にしたサイトは Payara を使っているので、次に Payara で試してみることにしました。
 Payara も JSF を内包しているので何もせずにデプロイすると下記エラーが発生します。</p>
-
 <pre><code>Caused by: java.lang.reflect.MalformedParameterizedTypeException
 	at sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl.validateConstructorArguments(ParameterizedTypeImpl.java:58)
 	at sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl.&lt;init&gt;(ParameterizedTypeImpl.java:51)
@@ -156,33 +136,25 @@ Payara も JSF を内包しているので何もせずにデプロイすると�
 	at javax.enterprise.util.TypeLiteral.getType(TypeLiteral.java:66)
 	at com.sun.faces.cdi.CdiUtils.&lt;clinit&gt;(CdiUtils.java:76)
 	... 65 more
-</code></pre>
-
-<p>Payara が内包する JSF を無効にする方法がわからなかったのですが、
+</code></pre><p>Payara が内包する JSF を無効にする方法がわからなかったのですが、
 Payara の場合は視点が違っていて、内包する JSF を無効にするのではなく、
 Bundle した JSF を有効にする設定をしなければならないようです。
 Bundle した JSF を有効にする方法は下記の記述をした <code>WEB-INF/glassfish-web.xml</code> を用意します。</p>
-
-<pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE glassfish-web-app PUBLIC
-        &quot;-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN&quot;
-        &quot;http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd&quot;&gt;
-&lt;glassfish-web-app&gt;
-    &lt;class-loader delegate=&quot;false&quot; /&gt;
-    &lt;property name=&quot;useBundledJsf&quot; value=&quot;true&quot; /&gt;
-&lt;/glassfish-web-app&gt;
-</code></pre>
-
-<h2 id="まとめ">まとめ</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
+<span style="color:#75715e">&lt;!DOCTYPE glassfish-web-app PUBLIC
+</span><span style="color:#75715e">        &#34;-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN&#34;
+</span><span style="color:#75715e">        &#34;http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd&#34;&gt;</span>
+<span style="color:#f92672">&lt;glassfish-web-app</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;class-loader</span> <span style="color:#a6e22e">delegate=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;useBundledJsf&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#f92672">/&gt;</span>
+<span style="color:#f92672">&lt;/glassfish-web-app&gt;</span>
+</code></pre></div><h2 id="まとめ">まとめ</h2>
 <p>設定さえわかれば何も難しい話ではなかったんですが、
 設定方法がわからなくて時間がかかってしまいました。
 特に Payara の方は全然情報が見つからなくて苦戦&hellip;。
 基本的にはリリースされてJavaEE8対応されたAPサーバで動かすことになるので知らなくても問題ないわけですが、
 早期に試そうとすると色々とハードルがあり大変です。まあそれが楽しかったりするんですけどね。</p>
-
 <h2 id="参考">参考</h2>
-
 <ul>
 <li><a href="http://blog.payara.fish/jsf-2.3-the-websocket-quickstart-under-payara-server">JSF 2.3 - The WebSocket Quickstart under Payara Server</a></li>
 <li><a href="http://stackoverflow.com/questions/10782528/how-to-update-mojarra-version-in-glassfish">How to update Mojarra version in GlassFish</a></li>

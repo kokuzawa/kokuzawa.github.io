@@ -80,37 +80,23 @@
       </div>
     </div>
     <article>
-      
-
-<p>今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。</p>
-
-<!-- MORE -->
-
+      <p>今回は WildFly 8.0.0.Final を利用してJdbcRealmを試してみます。</p>
+<!-- raw HTML omitted -->
 <h2 id="wildfly-の設定">WildFly の設定</h2>
-
-<p>WildFly 8.0.0.Final に JDBCRealm を構築します。<br />
+<p>WildFly 8.0.0.Final に JDBCRealm を構築します。<br>
 まず、PostgreSQL を使ってとてもシンプルなテーブル構成を作ります。</p>
-
-<p><img src="/images/post_image_28.png" alt="" /></p>
-
+<p><img src="/images/post_image_28.png" alt=""></p>
 <p>Security Domain を追加します。
 追加は WildFly の GUI コンソールから行います。
 追加する Security Domain は Name: app, Cache Type: default です。</p>
-
-<p><img src="/images/post_image_29.png" alt="" /></p>
-
+<p><img src="/images/post_image_29.png" alt=""></p>
 <p>追加した Security Domain を開き、Login Module を追加します。
 追加する Login Modile は Code: Database, Flg: required です。</p>
-
-<p><img src="/images/post_image_30.png" alt="" /></p>
-
+<p><img src="/images/post_image_30.png" alt=""></p>
 <p>追加した Login Module に Module Option を追加します。</p>
-
-<p><img src="/images/post_image_31.png" alt="" /></p>
-
+<p><img src="/images/post_image_31.png" alt=""></p>
 <p>追加する Module Option は下記表になります。
 dsJndiName で指定するのは事前に登録した Datasource です。</p>
-
 <table>
 <thead>
 <tr>
@@ -118,82 +104,62 @@ dsJndiName で指定するのは事前に登録した Datasource です。</p>
 <th align="left">Value</th>
 </tr>
 </thead>
-
 <tbody>
 <tr>
 <td align="left">dsJndiName</td>
 <td align="left">java:/jdbc/realmSample</td>
 </tr>
-
 <tr>
 <td align="left">hashAlgorithm</td>
 <td align="left">SHA-256</td>
 </tr>
-
 <tr>
 <td align="left">hashEncoding</td>
 <td align="left">HEX</td>
 </tr>
-
 <tr>
 <td align="left">principalsQuery</td>
 <td align="left">SELECT password FROM accounts WHERE email = ?</td>
 </tr>
-
 <tr>
 <td align="left">rolesQuery</td>
 <td align="left">SELECT r.rolename, &lsquo;Roles&rsquo; FROM roles r, accounts a WHERE r.accountid = a.accountid AND a.email = ?</td>
 </tr>
 </tbody>
 </table>
-
 <h2 id="データの投入">データの投入</h2>
-
 <p>最初に作ったテーブルにデータを投入します。
 パスワードに設定するのは、SHA256で暗号化、HEXエンコードした文字列です。
 ここでは &lsquo;test&rsquo; という文字列をパスワードにしています。</p>
-
-<pre><code class="language-sql">INSERT INTO accounts (email, password) VALUES ('hoge', '9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08');
-INSERT INTO roles (rolename, accountid) VALUES ('MEMBER', 1);
-</code></pre>
-
-<h2 id="jboss-web-xml-の設定">jboss-web.xml の設定</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> accounts (email, password) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">hoge</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08</span><span style="color:#e6db74">&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> roles (rolename, accountid) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">MEMBER</span><span style="color:#e6db74">&#39;</span>, <span style="color:#ae81ff">1</span>);
+</code></pre></div><h2 id="jboss-webxml-の設定">jboss-web.xml の設定</h2>
 <p>追加した Security Domain を利用するために、jboss-web.xml へ Security Domain を指定します。</p>
-
-<pre><code class="language-xml">&lt;security-domain&gt;app&lt;/security-domain&gt;
-</code></pre>
-
-<h2 id="web-xml-の設定">web.xml の設定</h2>
-
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;security-domain</span><span style="color:#f92672">&gt;</span>app<span style="color:#f92672">&lt;/security-domain&gt;</span>
+</code></pre></div><h2 id="webxml-の設定">web.xml の設定</h2>
 <p>BASIC認証が行われるように web.xml を設定します。</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;security-role</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;role-name</span><span style="color:#f92672">&gt;</span>MEMBER<span style="color:#f92672">&lt;/role-name&gt;</span>
+<span style="color:#f92672">&lt;/security-role&gt;</span>
 
-<pre><code class="language-xml">&lt;security-role&gt;
-    &lt;role-name&gt;MEMBER&lt;/role-name&gt;
-&lt;/security-role&gt;
+<span style="color:#f92672">&lt;security-constraint</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;web-resource-collection</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;web-resource-name</span><span style="color:#f92672">&gt;</span>Member Resource<span style="color:#f92672">&lt;/web-resource-name&gt;</span>
+        <span style="color:#f92672">&lt;url-pattern</span><span style="color:#f92672">&gt;</span>/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+    <span style="color:#f92672">&lt;/web-resource-collection&gt;</span>
+    <span style="color:#f92672">&lt;auth-constraint</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;role-name</span><span style="color:#f92672">&gt;</span>MEMBER<span style="color:#f92672">&lt;/role-name&gt;</span>
+    <span style="color:#f92672">&lt;/auth-constraint&gt;</span>
+<span style="color:#f92672">&lt;/security-constraint&gt;</span>
 
-&lt;security-constraint&gt;
-    &lt;web-resource-collection&gt;
-        &lt;web-resource-name&gt;Member Resource&lt;/web-resource-name&gt;
-        &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-    &lt;/web-resource-collection&gt;
-    &lt;auth-constraint&gt;
-        &lt;role-name&gt;MEMBER&lt;/role-name&gt;
-    &lt;/auth-constraint&gt;
-&lt;/security-constraint&gt;
-
-&lt;login-config&gt;
-    &lt;auth-method&gt;BASIC&lt;/auth-method&gt;
-    &lt;realm-name&gt;Authentication&lt;/realm-name&gt;
-&lt;/login-config&gt;
-</code></pre>
-
-<p>これですべての設定が完了です。
+<span style="color:#f92672">&lt;login-config</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;auth-method</span><span style="color:#f92672">&gt;</span>BASIC<span style="color:#f92672">&lt;/auth-method&gt;</span>
+    <span style="color:#f92672">&lt;realm-name</span><span style="color:#f92672">&gt;</span>Authentication<span style="color:#f92672">&lt;/realm-name&gt;</span>
+<span style="color:#f92672">&lt;/login-config&gt;</span>
+</code></pre></div><p>これですべての設定が完了です。
 WildFly にアプリをデプロイしてアクセスするとBASIC認証のダイアログが表示されると思います。
 そこで事前に登録したアカウント情報を入力すると認証に成功するはずです。</p>
-
-<hr />
-
+<hr>
 <ul>
 <li>Oct 28, 2014 脱字修正</li>
 </ul>
