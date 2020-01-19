@@ -1,0 +1,68 @@
+---
+title: "[Python] Bottleを試したメモ"
+date: 2020-01-19T12:05:25+09:00
+tags: ["Python", "Bottle"]
+draft: true
+---
+
+https://bottlepy.org/docs/dev/index.html[Bottle]を試したメモ。
+
+== 環境
+
+* macOS Catalina
+* Python 3.7.3
+
+== 仮想環境作成
+
+[source,sh]
+----
+python3 -m venv $HOME/work/bottle
+source $HOME/work/bottle/bin/activate
+----
+
+== Bottleインストール
+
+[source,sh]
+----
+pip install -U bottle
+----
+
+== API コード
+
+.bottle_sample.py
+[source,py]
+----
+from bottle import run, get, request, response
+import json
+
+notes = [ 
+        {'id':1, 'note':'メモ1'},
+        {'id':2, 'note':'メモ2'},
+        {'id':3, 'note':'メモ3'},
+]
+
+@get('/notes')
+def get_notes():
+        response.headers['Content-Type'] = 'application/json;charset=UTF-8'
+        response.headers['Cache-Control'] = 'no-cache'
+        return json.dumps(notes, ensure_ascii=False)
+
+run(host='localhost', port=8081, debug=True, reloader=True)
+----
+
+json.dumps()で `ensure_ascii=False` を指定しないと日本語がUnicodeとして出力されてしまう。
+
+== 実行
+
+[source,sh]
+----
+python3 bottle_sample.py
+----
+
+== 確認
+
+[source,sh]
+----
+curl http://localhost:8081/notes
+----
+
