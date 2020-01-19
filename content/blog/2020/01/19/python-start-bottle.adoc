@@ -66,3 +66,18 @@ python3 bottle_sample.py
 curl http://localhost:8081/notes
 ----
 
+== 仮想環境をDeactivate
+
+[source,sh]
+----
+deactivate
+----
+
+再度仮想環境を使う場合はactivateすれば良い。
+
+[source,sh]
+----
+source $HOME/work/bottle/bin/activate
+----
+
+
