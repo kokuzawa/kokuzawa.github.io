@@ -2,7 +2,7 @@
 title: "[Python] Bottleを試したメモ"
 date: 2020-01-19T12:05:25+09:00
 tags: ["Python", "Bottle"]
-draft: true
+draft: false
 ---
 
 https://bottlepy.org/docs/dev/index.html[Bottle]を試したメモ。
