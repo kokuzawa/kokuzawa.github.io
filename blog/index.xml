@@ -5,10 +5,294 @@
     <description>Recent content in Blogs on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Sun, 19 Jan 2020 12:05:25 +0900</lastBuildDate>
+    <lastBuildDate>Wed, 22 Jan 2020 10:34:27 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[Python] Flaskを試したメモ</title>
+      <link>https://kokuzawa.github.io/blog/2020/01/22/python-start-flask/</link>
+      <pubDate>Wed, 22 Jan 2020 10:34:27 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2020/01/22/python-start-flask/</guid>
+      <description>&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://flask.palletsprojects.com/&#34;&gt;Flask&lt;/a&gt;を試したメモ。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_環境&#34;&gt;環境&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;ulist&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;macOS Catalina&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Python 3.7.3&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_仮想環境作成&#34;&gt;仮想環境作成&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;python3 -m venv $HOME/work/flask
+source $HOME/work/flask/bin/activate&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_flaskインストール&#34;&gt;Flaskインストール&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;pip install -U flask&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_apiコード&#34;&gt;APIコード&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;title&#34;&gt;flask_sample.py&lt;/div&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-py&#34; data-lang=&#34;py&#34;&gt;from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route(&#39;/hello/&amp;lt;name&amp;gt;&#39;, methods=[&#39;GET&#39;])
+def hello(name):
+    return &#39;Hello %s&#39; % name
+
+
+app.run(host=&#39;localhost&#39;, port=8081, debug=True, threaded=True)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;app.run()で &lt;code&gt;threaded=True&lt;/code&gt; を指定することでマルチスレッドに対応する。&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_実行&#34;&gt;実行&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;python3 flask_sample.py&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_確認&#34;&gt;確認&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;curl http://localhost:8081/hello/katsumi&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_仮想環境をdeactivate&#34;&gt;仮想環境をDeactivate&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;deactivate&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div class=&#34;sect1&#34;&gt;
+&lt;h2 id=&#34;_負荷をかけてみる&#34;&gt;負荷をかけてみる&lt;/h2&gt;
+&lt;div class=&#34;sectionbody&#34;&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;&lt;a href=&#34;https://gatling.io&#34;&gt;Gatling&lt;/a&gt;で負荷をかけてみる。
+100 Users/秒で試した。&lt;/p&gt;
+&lt;/div&gt;
+&lt;table class=&#34;tableblock frame-all grid-all stretch&#34;&gt;
+&lt;caption class=&#34;title&#34;&gt;Table 1. Flask, threaded=True&lt;/caption&gt;
+&lt;colgroup&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1436%;&#34;&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34; rowspan=&#34;2&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Requests&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34; colspan=&#34;5&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Executions&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34; colspan=&#34;8&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Response Time (ms)&lt;/p&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Total&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;OK&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;KO&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;% KO&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Req/s&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Min&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;50th pct&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;75th pct&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;95th pct&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;99th pct&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Max&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Mean&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Std Dev&lt;/p&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Global Information&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;100&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;100&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;0&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;0%&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;100&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;139&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;370&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;390&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;409&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;421&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;424&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;364&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;45&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;request_0&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;100&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;100&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;0&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;0%&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;100&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;139&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;370&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;390&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;409&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;421&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;424&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;364&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;45&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;同じ条件でBottleを使った下記コードを実行してみる。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-py&#34; data-lang=&#34;py&#34;&gt;from bottle import run, get
+
+
+@get(&#39;/hello/&amp;lt;name&amp;gt;&#39;)
+def hello(name):
+    return &#39;Hello %s&#39; % name
+
+
+run(host=&#39;localhost&#39;, port=8081, debug=True, reloader=True)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;table class=&#34;tableblock frame-all grid-all stretch&#34;&gt;
+&lt;caption class=&#34;title&#34;&gt;Table 2. Bottle&lt;/caption&gt;
+&lt;colgroup&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;&gt;
+&lt;col style=&#34;width: 7.1436%;&#34;&gt;
+&lt;/colgroup&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34; rowspan=&#34;2&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Requests&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34; colspan=&#34;5&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Executions&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34; colspan=&#34;8&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Response Time (ms)&lt;/p&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Total&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;OK&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;KO&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;% KO&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Req/s&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Min&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;50th pct&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;75th pct&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;95th pct&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;99th pct&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Max&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Mean&lt;/p&gt;&lt;/th&gt;
+&lt;th class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Std Dev&lt;/p&gt;&lt;/th&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;Global Information&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;100&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;58&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;42&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;42%&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;50&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;135&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;498&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;628&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;847&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;1241&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;1245&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;530&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;230&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td class=&#34;tableblock halign-left valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;request_0&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;100&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;58&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;42&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;42%&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;50&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;135&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;498&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;628&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;847&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;1241&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;1245&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;530&lt;/p&gt;&lt;/td&gt;
+&lt;td class=&#34;tableblock halign-right valign-top&#34;&gt;&lt;p class=&#34;tableblock&#34;&gt;230&lt;/p&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;div class=&#34;paragraph&#34;&gt;
+&lt;p&gt;Bottleの場合、58リクエストしか成功しない。調子が良い？と78リクエストぐらい成功するけど、
+何度か試しても100リクエストが成功することはなかった。
+下記エラーが出ているので、コネクション数が足りなくなったのだとは思うけど、どこで設定するんだろう。
+あとで調べてみよう。&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;listingblock&#34;&gt;
+&lt;div class=&#34;content&#34;&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;i.n.c.AbstractChannel$AnnotatedSocketException: Connection reset by peer: localhost/127.0.0.1:8081&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
     
     <item>
       <title>[Python] Bottleを試したメモ</title>
