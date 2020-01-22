@@ -1,0 +1,116 @@
+---
+title: "[Python] Flaskを試したメモ"
+date: 2020-01-22T10:34:27+09:00
+tags: ["Python", "Flask"]
+draft: false
+---
+
+https://flask.palletsprojects.com/[Flask]を試したメモ。
+
+== 環境
+
+* macOS Catalina
+* Python 3.7.3
+
+== 仮想環境作成
+
+[source,sh]
+----
+python3 -m venv $HOME/work/flask
+source $HOME/work/flask/bin/activate
+----
+
+== Flaskインストール
+
+[source,sh]
+----
+pip install -U flask
+----
+
+== APIコード
+
+.flask_sample.py
+[source,py]
+----
+from flask import Flask
+
+app = Flask(__name__)
+
+
+@app.route('/hello/<name>', methods=['GET'])
+def hello(name):
+    return 'Hello %s' % name
+
+
+app.run(host='localhost', port=8081, debug=True, threaded=True)
+----
+
+app.run()で `threaded=True` を指定することでマルチスレッドに対応する。
+
+== 実行
+
+[source,sh]
+----
+python3 flask_sample.py
+----
+
+== 確認
+
+[source,sh]
+----
+curl http://localhost:8081/hello/katsumi
+----
+
+== 仮想環境をDeactivate
+
+[source,sh]
+----
+deactivate
+----
+
+== 負荷をかけてみる
+
+https://gatling.io[Gatling]で負荷をかけてみる。
+100 Users/秒で試した。
+
+.Flask, threaded=True
+|===
+.2+h| Requests 5+h| Executions 8+h| Response Time (ms)
+h| Total h| OK h| KO h| % KO h| Req/s h| Min h| 50th pct h| 75th pct h| 95th pct h| 99th pct h| Max h| Mean h| Std Dev
+| Global Information >| 100 >| 100 >| 0 >| 0% >| 100 >| 139 >| 370 >| 390 >| 409 >| 421 >| 424 >| 364 >| 45
+| request_0 >| 100 >| 100 >| 0 >| 0% >| 100 >| 139 >| 370 >| 390 >| 409 >| 421 >| 424 >| 364 >| 45
+|===
+
+同じ条件でBottleを使った下記コードを実行してみる。
+
+[source,py]
+----
+from bottle import run, get
+
+
+@get('/hello/<name>')
+def hello(name):
+    return 'Hello %s' % name
+
+
+run(host='localhost', port=8081, debug=True, reloader=True)
+----
+
+.Bottle
+|===
+.2+h| Requests 5+h| Executions 8+h| Response Time (ms)
+h| Total h| OK h| KO h| % KO h| Req/s h| Min h| 50th pct h| 75th pct h| 95th pct h| 99th pct h| Max h| Mean h| Std Dev
+| Global Information >| 100 >| 58 >| 42 >| 42% >| 50 >| 135 >| 498 >| 628 >| 847 >| 1241 >| 1245 >| 530 >| 230
+| request_0 >| 100 >| 58 >| 42 >| 42% >| 50 >| 135 >| 498 >| 628 >| 847 >| 1241 >| 1245 >| 530 >| 230
+|===
+
+Bottleの場合、58リクエストしか成功しない。調子が良い？と78リクエストぐらい成功するけど、
+何度か試しても100リクエストが成功することはなかった。
+下記エラーが出ているので、コネクション数が足りなくなったのだとは思うけど、どこで設定するんだろう。
+あとで調べてみよう。
+
+[source,java]
+----
+i.n.c.AbstractChannel$AnnotatedSocketException: Connection reset by peer: localhost/127.0.0.1:8081
+----
+
