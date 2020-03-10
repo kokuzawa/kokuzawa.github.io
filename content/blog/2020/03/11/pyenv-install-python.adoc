@@ -1,0 +1,96 @@
+---
+title: "[Python] バージョン3.8.1をインストール"
+date: 2020-03-11T01:48:46+09:00
+tags: ["Python", "pyenv"]
+draft: false
+---
+
+== 環境
+
+* macOS Catalina
+
+== やりたいこと
+
+Python-3.8.1のインストール。
+
+== やったこと
+
+Homebrewで以前インストールしたPython-3.7.6をアップグレードしようとした。
+
+[source,sh]
+----
+$ brew upgrade python
+----
+
+最新版3.7.6がインストールされていると言われる。
+HomebrewでインストールできるPythonの一覧を表示すると `python@3.8` というのがあった。
+これをインストールすれば良いのでは。ということでインストールしてみる。
+
+[source,sh]
+----
+$ brew install python@3.8
+----
+
+インストールが完了したのでバージョンを確認する。
+
+[source,sh]
+----
+$ python --version
+Python 3.7.6
+----
+
+おいマジか。色々調べたところ `pyenv` を入れるとバージョンの管理が容易なようだ。
+
+[source,sh]
+----
+$ brew install pyenv
+----
+
+インストールが完了したので、インストール可能なPythonのバージョンを調べる。
+
+[source,sh]
+----
+$ pyenv install --list
+----
+
+`3.8.1` がインストールできるようなのでこれをインストールする。
+
+[source,sh]
+----
+$ pyenv install 3.8.1
+----
+
+インストールされたバージョンを利用するように設定する。
+
+[source,sh]
+----
+$ pyenv global 3.8.1
+  system
+* 3.8.1 (set by /Users/Katsumi/.pyenv/version)
+----
+
+ではバージョンを確認してみる。
+
+[source,sh]
+----
+$ python --version
+Python 3.7.6
+----
+
+は？
+
+どうやら.bash_profileに `eval "$(pyenv init -)"` を追記すれば良いらしい。
+というわけで、追記後に `source .bash_profile` してバージョンを確認する。
+
+[source,sh]
+----
+$ python --version
+Python 3.8.1
+----
+
+よし。
+
+== 参考
+
+* https://github.com/pyenv/pyenv#homebrew-on-mac-os-x[pyenv/pyenv]
+
