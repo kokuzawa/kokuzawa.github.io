@@ -3,32 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://kokuzawa.github.io/blog/2020/03/11/pyenv-install-python/</loc>
+    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/blog/</loc>
+    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/</loc>
+    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/tags/pyenv/</loc>
+    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/tags/python/</loc>
+    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/tags/</loc>
+    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://kokuzawa.github.io/blog/2020/01/22/python-start-flask/</loc>
     <lastmod>2020-01-22T10:34:27+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kokuzawa.github.io/blog/</loc>
-    <lastmod>2020-01-22T10:34:27+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://kokuzawa.github.io/tags/flask/</loc>
-    <lastmod>2020-01-22T10:34:27+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://kokuzawa.github.io/</loc>
-    <lastmod>2020-01-22T10:34:27+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://kokuzawa.github.io/tags/python/</loc>
-    <lastmod>2020-01-22T10:34:27+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://kokuzawa.github.io/tags/</loc>
     <lastmod>2020-01-22T10:34:27+09:00</lastmod>
   </url>
   
