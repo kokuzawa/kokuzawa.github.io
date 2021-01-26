@@ -127,18 +127,18 @@ source $HOME/work/bottle/bin/activate</code></pre>
 import json
 
 notes = [
-        {'id':1, 'note':'メモ1'},
-        {'id':2, 'note':'メモ2'},
-        {'id':3, 'note':'メモ3'},
+        {&#39;id&#39;:1, &#39;note&#39;:&#39;メモ1&#39;},
+        {&#39;id&#39;:2, &#39;note&#39;:&#39;メモ2&#39;},
+        {&#39;id&#39;:3, &#39;note&#39;:&#39;メモ3&#39;},
 ]
 
-@get('/notes')
+@get(&#39;/notes&#39;)
 def get_notes():
-        response.headers['Content-Type'] = 'application/json;charset=UTF-8'
-        response.headers['Cache-Control'] = 'no-cache'
+        response.headers[&#39;Content-Type&#39;] = &#39;application/json;charset=UTF-8&#39;
+        response.headers[&#39;Cache-Control&#39;] = &#39;no-cache&#39;
         return json.dumps(notes, ensure_ascii=False)
 
-run(host='localhost', port=8081, debug=True, reloader=True)</code></pre>
+run(host=&#39;localhost&#39;, port=8081, debug=True, reloader=True)</code></pre>
 </div>
 </div>
 <div class="paragraph">

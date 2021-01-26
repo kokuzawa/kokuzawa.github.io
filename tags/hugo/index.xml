@@ -20,7 +20,7 @@
 &lt;h2 id=&#34;_step_1_hugoをインストール&#34;&gt;Step 1: Hugoをインストール&lt;/h2&gt;
 &lt;div class=&#34;sectionbody&#34;&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;macOSでHomebrewがインストールされていることが前提です。&lt;br&gt;
+&lt;p&gt;macOSでHomebrewがインストールされていることが前提です。&lt;br/&gt;
 brewを使ってHugoをインストールします。&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;
@@ -73,7 +73,7 @@ $ git clone https://github.com/digitalcraftsman/hugo-cactus-theme.git&lt;/code&g
 &lt;div class=&#34;listingblock&#34;&gt;
 &lt;div class=&#34;title&#34;&gt;config.toml&lt;/div&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;theme = &#34;hugo-cactus-theme&#34;&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;theme = &amp;#34;hugo-cactus-theme&amp;#34;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
@@ -83,8 +83,8 @@ $ git clone https://github.com/digitalcraftsman/hugo-cactus-theme.git&lt;/code&g
 &lt;div class=&#34;title&#34;&gt;config.toml&lt;/div&gt;
 &lt;div class=&#34;content&#34;&gt;
 &lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-toml&#34; data-lang=&#34;toml&#34;&gt;[params]
-name = &#34;Katsumi Kokuzawa&#34;
-bio = &#34;Programmer&#34;&lt;/code&gt;&lt;/pre&gt;
+name = &amp;#34;Katsumi Kokuzawa&amp;#34;
+bio = &amp;#34;Programmer&amp;#34;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;

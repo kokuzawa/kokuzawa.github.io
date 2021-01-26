@@ -89,17 +89,17 @@
 </code></pre>
 <p>Mavenを利用している場合は、下記をpom.xmlに追加することで、
 ビルド時にMANIFEST.MFに追加することができます。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-jar-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.4<span style="color:#f92672">&lt;/version&gt;</span>
-            <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-                <span style="color:#f92672">&lt;archive</span><span style="color:#f92672">&gt;</span>
-                    <span style="color:#f92672">&lt;manifestEntries</span><span style="color:#f92672">&gt;</span>
-                        <span style="color:#f92672">&lt;Permissions</span><span style="color:#f92672">&gt;</span>all-permissions<span style="color:#f92672">&lt;/Permissions&gt;</span>
-                        <span style="color:#f92672">&lt;Codebase</span><span style="color:#f92672">&gt;</span>*<span style="color:#f92672">&lt;/Codebase&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+        <span style="color:#f92672">&lt;plugin&gt;</span>
+            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId&gt;</span>maven-jar-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;version&gt;</span>2.4<span style="color:#f92672">&lt;/version&gt;</span>
+            <span style="color:#f92672">&lt;configuration&gt;</span>
+                <span style="color:#f92672">&lt;archive&gt;</span>
+                    <span style="color:#f92672">&lt;manifestEntries&gt;</span>
+                        <span style="color:#f92672">&lt;Permissions&gt;</span>all-permissions<span style="color:#f92672">&lt;/Permissions&gt;</span>
+                        <span style="color:#f92672">&lt;Codebase&gt;</span>*<span style="color:#f92672">&lt;/Codebase&gt;</span>
                     <span style="color:#f92672">&lt;/manifestEntries&gt;</span>
                 <span style="color:#f92672">&lt;/archive&gt;</span>
             <span style="color:#f92672">&lt;/configuration&gt;</span>
@@ -109,7 +109,7 @@
 </code></pre></div><p>Antであれば下記で同様のことができます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;target</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;dist&#34;</span><span style="color:#f92672">&gt;</span>
     <span style="color:#f92672">&lt;jar</span> <span style="color:#a6e22e">destfile=</span><span style="color:#e6db74">&#34;${basedir}/out/sample.jar&#34;</span> <span style="color:#a6e22e">basedir=</span><span style="color:#e6db74">&#34;${basedir}/out/classes/&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;manifest</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;manifest&gt;</span>
             <span style="color:#f92672">&lt;attribute</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Permissions&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;all-permissions&#34;</span><span style="color:#f92672">/&gt;</span>
             <span style="color:#f92672">&lt;attribute</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;Codebase&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;*&#34;</span><span style="color:#f92672">/&gt;</span>
         <span style="color:#f92672">&lt;/manifest&gt;</span>

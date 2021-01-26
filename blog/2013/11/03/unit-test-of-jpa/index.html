@@ -107,8 +107,8 @@ transaction-typeをJTAにしているので、jta-data-sourceにAPサーバで�
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 <span style="color:#f92672">&lt;persistence</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/persistence&#34;</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">&gt;</span>
     <span style="color:#f92672">&lt;persistence-unit</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;mytestPU&#34;</span> <span style="color:#a6e22e">transaction-type=</span><span style="color:#e6db74">&#34;JTA&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;jta-data-source</span><span style="color:#f92672">&gt;</span>jdbc/mytest<span style="color:#f92672">&lt;/jta-data-source&gt;</span>
-        <span style="color:#f92672">&lt;properties</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;jta-data-source&gt;</span>jdbc/mytest<span style="color:#f92672">&lt;/jta-data-source&gt;</span>
+        <span style="color:#f92672">&lt;properties&gt;</span>
             <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;eclipselink.ddl-generation&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;create-tables&#34;</span><span style="color:#f92672">/&gt;</span>
         <span style="color:#f92672">&lt;/properties&gt;</span>
     <span style="color:#f92672">&lt;/persistence-unit&gt;</span>
@@ -120,9 +120,9 @@ transaction-typeをRESOURCE_LOCALにしています。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34; encoding=&#34;UTF-8&#34;?&gt;</span>
 <span style="color:#f92672">&lt;persistence</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://java.sun.com/xml/ns/persistence&#34;</span> <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;2.0&#34;</span><span style="color:#f92672">&gt;</span>
     <span style="color:#f92672">&lt;persistence-unit</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;mytestTPU&#34;</span> <span style="color:#a6e22e">transaction-type=</span><span style="color:#e6db74">&#34;RESOURCE_LOCAL&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;provider</span><span style="color:#f92672">&gt;</span>org.eclipse.persistence.jpa.PersistenceProvider<span style="color:#f92672">&lt;/provider&gt;</span>
-        <span style="color:#f92672">&lt;class</span><span style="color:#f92672">&gt;</span>org.mytest.entity.Account<span style="color:#f92672">&lt;/class&gt;</span>
-        <span style="color:#f92672">&lt;properties</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;provider&gt;</span>org.eclipse.persistence.jpa.PersistenceProvider<span style="color:#f92672">&lt;/provider&gt;</span>
+        <span style="color:#f92672">&lt;class&gt;</span>org.mytest.entity.Account<span style="color:#f92672">&lt;/class&gt;</span>
+        <span style="color:#f92672">&lt;properties&gt;</span>
             <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.driver&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;org.postgresql.Driver&#34;</span><span style="color:#f92672">/&gt;</span>
             <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.url&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;jdbc:postgresql://localhost:5432/mytest_test&#34;</span><span style="color:#f92672">/&gt;</span>
             <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;javax.persistence.jdbc.user&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;demo&#34;</span><span style="color:#f92672">/&gt;</span>
@@ -140,7 +140,7 @@ transaction-typeをRESOURCE_LOCALにしています。</p>
     <span style="color:#a6e22e">@GeneratedValue</span><span style="color:#f92672">(</span>strategy <span style="color:#f92672">=</span> GenerationType<span style="color:#f92672">.</span><span style="color:#a6e22e">IDENTITY</span><span style="color:#f92672">)</span>
     <span style="color:#66d9ef">private</span> Long accountId<span style="color:#f92672">;</span>
     <span style="color:#66d9ef">private</span> String email<span style="color:#f92672">;</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><strong>AccountFacade.java:</strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@RequestScoped</span>
@@ -152,39 +152,39 @@ transaction-typeをRESOURCE_LOCALにしています。</p>
 
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>Account account<span style="color:#f92672">)</span>
     <span style="color:#f92672">{</span>
-        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>account<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        em<span style="color:#f92672">.</span><span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>account<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        Objects<span style="color:#f92672">.</span><span style="color:#a6e22e">requireNonNull</span><span style="color:#f92672">(</span>account<span style="color:#f92672">);</span>
+        em<span style="color:#f92672">.</span><span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>account<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><strong>AccountFacadeTest.java:</strong></p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AccountFacadeTest</span>
 <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">private</span> EntityManager em<span style="color:#f92672">;</span>
-    <span style="color:#66d9ef">private</span> AccountFacade accountFacade <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AccountFacade<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> AccountFacade accountFacade <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> AccountFacade<span style="color:#f92672">();</span>
 
     <span style="color:#a6e22e">@Before</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setUp</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception
     <span style="color:#f92672">{</span>
-        em <span style="color:#f92672">=</span> Persistence<span style="color:#f92672">.</span><span style="color:#a6e22e">createEntityManagerFactory</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mytestTPU&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">createEntityManager</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        em <span style="color:#f92672">=</span> Persistence<span style="color:#f92672">.</span><span style="color:#a6e22e">createEntityManagerFactory</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;mytestTPU&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">createEntityManager</span><span style="color:#f92672">();</span>
         accountFacade<span style="color:#f92672">.</span><span style="color:#a6e22e">em</span> <span style="color:#f92672">=</span> em<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@After</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">tearDown</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception
     <span style="color:#f92672">{</span>
-        em<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        em<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testPersist</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testPersist</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception
     <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> Account account <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Account<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;xxxxx@hoge.com&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> Account account <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Account<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;xxxxx@hoge.com&#34;</span><span style="color:#f92672">);</span>
 
-        em<span style="color:#f92672">.</span><span style="color:#a6e22e">getTransaction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">begin</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        accountFacade<span style="color:#f92672">.</span><span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>account<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        em<span style="color:#f92672">.</span><span style="color:#a6e22e">getTransaction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">commit</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        em<span style="color:#f92672">.</span><span style="color:#a6e22e">getTransaction</span><span style="color:#f92672">().</span><span style="color:#a6e22e">begin</span><span style="color:#f92672">();</span>
+        accountFacade<span style="color:#f92672">.</span><span style="color:#a6e22e">persist</span><span style="color:#f92672">(</span>account<span style="color:#f92672">);</span>
+        em<span style="color:#f92672">.</span><span style="color:#a6e22e">getTransaction</span><span style="color:#f92672">().</span><span style="color:#a6e22e">commit</span><span style="color:#f92672">();</span>
 
-        <span style="color:#66d9ef">assert</span> account<span style="color:#f92672">.</span><span style="color:#a6e22e">getAccountId</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">assert</span> account<span style="color:#f92672">.</span><span style="color:#a6e22e">getAccountId</span><span style="color:#f92672">()</span> <span style="color:#f92672">&gt;</span> 0<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>テストコードではmytestTPUからEntityManagerを生成します。

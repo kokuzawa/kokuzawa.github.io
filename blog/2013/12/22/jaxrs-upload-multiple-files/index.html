@@ -87,10 +87,10 @@
 その実装の中から、今回はJerseyを使った複数ファイルのアップロードについて紹介しようかと思います。</p>
 <p>今回利用したJerseyはGlassFish4に含まれているものを利用します。<br>
 ライブラリとしては以下のjarになります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.glassfish.jersey.media<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>jersey-media-multipart<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.4.1<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.glassfish.jersey.media<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>jersey-media-multipart<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>2.4.1<span style="color:#f92672">&lt;/version&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>さっそくHTMLから。複数のファイルをアップロードするので同じnameのfileフィールドを用意します。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
@@ -139,8 +139,8 @@
     <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">upload</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@FormDataParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;file&#34;</span><span style="color:#f92672">)</span>List<span style="color:#f92672">&lt;</span>FormDataBodyPart<span style="color:#f92672">&gt;</span> bodyParts<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException
     <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>FormDataBodyPart part <span style="color:#f92672">:</span> bodyParts<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            Files<span style="color:#f92672">.</span><span style="color:#a6e22e">copy</span><span style="color:#f92672">(</span>part<span style="color:#f92672">.</span><span style="color:#a6e22e">getValueAs</span><span style="color:#f92672">(</span>InputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span>
-                    Paths<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/Users/Katsumi/Downloads&#34;</span><span style="color:#f92672">,</span> part<span style="color:#f92672">.</span><span style="color:#a6e22e">getFormDataContentDisposition</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getFileName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            Files<span style="color:#f92672">.</span><span style="color:#a6e22e">copy</span><span style="color:#f92672">(</span>part<span style="color:#f92672">.</span><span style="color:#a6e22e">getValueAs</span><span style="color:#f92672">(</span>InputStream<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">),</span>
+                    Paths<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/Users/Katsumi/Downloads&#34;</span><span style="color:#f92672">,</span> part<span style="color:#f92672">.</span><span style="color:#a6e22e">getFormDataContentDisposition</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getFileName</span><span style="color:#f92672">()));</span>
         <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;finish!!&#34;</span><span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
@@ -159,12 +159,12 @@
 JAX-RSのリソースクラスをweb.xmlで登録しているのですが、マルチパートを処理するに当たり登録対象として
 <code>org.glassfish.jersey.media.multipart.MultiPartFeature</code>クラスを含める必要あるようです。
 ですので、web.xmlの該当部分は下記のような宣言としています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;servlet</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>MyApplication<span style="color:#f92672">&lt;/servlet-name&gt;</span>
-    <span style="color:#f92672">&lt;servlet-class</span><span style="color:#f92672">&gt;</span>org.glassfish.jersey.servlet.ServletContainer<span style="color:#f92672">&lt;/servlet-class&gt;</span>
-    <span style="color:#f92672">&lt;init-param</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;param-name</span><span style="color:#f92672">&gt;</span>jersey.config.server.provider.classnames<span style="color:#f92672">&lt;/param-name&gt;</span>
-        <span style="color:#f92672">&lt;param-value</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;servlet&gt;</span>
+    <span style="color:#f92672">&lt;servlet-name&gt;</span>MyApplication<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+    <span style="color:#f92672">&lt;servlet-class&gt;</span>org.glassfish.jersey.servlet.ServletContainer<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+    <span style="color:#f92672">&lt;init-param&gt;</span>
+        <span style="color:#f92672">&lt;param-name&gt;</span>jersey.config.server.provider.classnames<span style="color:#f92672">&lt;/param-name&gt;</span>
+        <span style="color:#f92672">&lt;param-value&gt;</span>
             org.katsumi.resources.Upload,
             org.glassfish.jersey.media.multipart.MultiPartFeature
         <span style="color:#f92672">&lt;/param-value&gt;</span>

@@ -85,10 +85,10 @@
 <h2 id="jsfを組み込む">JSFを組み込む</h2>
 <p>仕様毎にモジュールが分かれているので、JAXRSの時と同じく、今回はJSFのモジュールを取り込みます。
 あと、ここで特に記載はしませんがwildfly-swarm-pluginももちろん設定する必要があります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-jsf<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>wildfly-swarm-jsf<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><h2 id="jsfアプリケーションを作る">JSFアプリケーションを作る</h2>
 <p>JSFアプリケーションを作ると言ってもJavaのコードを書くわけではなく、
@@ -112,19 +112,19 @@
 </span><span style="color:#e6db74">         http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd&#34;</span>
          <span style="color:#a6e22e">version=</span><span style="color:#e6db74">&#34;3.1&#34;</span><span style="color:#f92672">&gt;</span>
 
-    <span style="color:#f92672">&lt;context-param</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;param-name</span><span style="color:#f92672">&gt;</span>javax.faces.PROJECT_STAGE<span style="color:#f92672">&lt;/param-name&gt;</span>
-        <span style="color:#f92672">&lt;param-value</span><span style="color:#f92672">&gt;</span>Development<span style="color:#f92672">&lt;/param-value&gt;</span>
+    <span style="color:#f92672">&lt;context-param&gt;</span>
+        <span style="color:#f92672">&lt;param-name&gt;</span>javax.faces.PROJECT_STAGE<span style="color:#f92672">&lt;/param-name&gt;</span>
+        <span style="color:#f92672">&lt;param-value&gt;</span>Development<span style="color:#f92672">&lt;/param-value&gt;</span>
     <span style="color:#f92672">&lt;/context-param&gt;</span>
     
-    <span style="color:#f92672">&lt;servlet</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>Faces Servlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
-        <span style="color:#f92672">&lt;servlet-class</span><span style="color:#f92672">&gt;</span>javax.faces.webapp.FacesServlet<span style="color:#f92672">&lt;/servlet-class&gt;</span>
-        <span style="color:#f92672">&lt;load-on-startup</span><span style="color:#f92672">&gt;</span>1<span style="color:#f92672">&lt;/load-on-startup&gt;</span>
+    <span style="color:#f92672">&lt;servlet&gt;</span>
+        <span style="color:#f92672">&lt;servlet-name&gt;</span>Faces Servlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+        <span style="color:#f92672">&lt;servlet-class&gt;</span>javax.faces.webapp.FacesServlet<span style="color:#f92672">&lt;/servlet-class&gt;</span>
+        <span style="color:#f92672">&lt;load-on-startup&gt;</span>1<span style="color:#f92672">&lt;/load-on-startup&gt;</span>
     <span style="color:#f92672">&lt;/servlet&gt;</span>
-    <span style="color:#f92672">&lt;servlet-mapping</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;servlet-name</span><span style="color:#f92672">&gt;</span>Faces Servlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
-        <span style="color:#f92672">&lt;url-pattern</span><span style="color:#f92672">&gt;</span>*.xhtml<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+    <span style="color:#f92672">&lt;servlet-mapping&gt;</span>
+        <span style="color:#f92672">&lt;servlet-name&gt;</span>Faces Servlet<span style="color:#f92672">&lt;/servlet-name&gt;</span>
+        <span style="color:#f92672">&lt;url-pattern&gt;</span>*.xhtml<span style="color:#f92672">&lt;/url-pattern&gt;</span>
     <span style="color:#f92672">&lt;/servlet-mapping&gt;</span>
 <span style="color:#f92672">&lt;/web-app&gt;</span>
 </code></pre></div><h2 id="動かす">動かす</h2>
@@ -139,18 +139,18 @@
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Main</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
     <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> Container container <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Container<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> Container container <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Container<span style="color:#f92672">();</span>
 
-        <span style="color:#66d9ef">final</span> WARArchive warArchive <span style="color:#f92672">=</span> ShrinkWrap<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>WARArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> WARArchive warArchive <span style="color:#f92672">=</span> ShrinkWrap<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>WARArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
         warArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAsWebResource</span><span style="color:#f92672">(</span>
-                <span style="color:#66d9ef">new</span> ClassLoaderAsset<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;index.xhtml&#34;</span><span style="color:#f92672">,</span> Main<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;index.xhtml&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">new</span> ClassLoaderAsset<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;index.xhtml&#34;</span><span style="color:#f92672">,</span> Main<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">()),</span> <span style="color:#e6db74">&#34;index.xhtml&#34;</span><span style="color:#f92672">);</span>
         warArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAsWebInfResource</span><span style="color:#f92672">(</span>
-                <span style="color:#66d9ef">new</span> ClassLoaderAsset<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;WEB-INF/web.xml&#34;</span><span style="color:#f92672">,</span> Main<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;web.xml&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        warArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAllDependencies</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">new</span> ClassLoaderAsset<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;WEB-INF/web.xml&#34;</span><span style="color:#f92672">,</span> Main<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getClassLoader</span><span style="color:#f92672">()),</span> <span style="color:#e6db74">&#34;web.xml&#34;</span><span style="color:#f92672">);</span>
+        warArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAllDependencies</span><span style="color:#f92672">();</span>
 
-        container<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">deploy</span><span style="color:#f92672">(</span>warArchive<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        container<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">().</span><span style="color:#a6e22e">deploy</span><span style="color:#f92672">(</span>warArchive<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>実行方法は下記の３通りです。</p>
@@ -169,10 +169,10 @@
 	at org<span style="color:#f92672">.</span><span style="color:#a6e22e">jboss</span><span style="color:#f92672">.</span><span style="color:#a6e22e">threads</span><span style="color:#f92672">.</span><span style="color:#a6e22e">JBossThread</span><span style="color:#f92672">.</span><span style="color:#a6e22e">run</span><span style="color:#f92672">(</span>JBossThread<span style="color:#f92672">.</span><span style="color:#a6e22e">java</span><span style="color:#f92672">:</span>320<span style="color:#f92672">)</span>
 </code></pre></div><p>これは<code>wildfly-swarm-weld</code>を取り込んでいないためなので、
 下記の記述をpom.xmlに追加します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-weld<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>wildfly-swarm-weld<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;&lt;/version&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><h2 id="まとめ">まとめ</h2>
 <p>ドキュメントを読んだだけではWeldが必要には見えなくて、

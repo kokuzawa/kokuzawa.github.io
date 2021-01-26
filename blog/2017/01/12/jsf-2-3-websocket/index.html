@@ -102,8 +102,8 @@ WildFly で JSF 2.3 を有効にするためには、WildFly が内包する JSF
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#75715e">&lt;?xml version=&#34;1.0&#34;?&gt;</span>
 <span style="color:#f92672">&lt;jboss-deployment-structure</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;urn:jboss:deployment-structure:1.2&#34;</span><span style="color:#f92672">&gt;</span>
 
-    <span style="color:#f92672">&lt;deployment</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;exclude-subsystems</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;deployment&gt;</span>
+        <span style="color:#f92672">&lt;exclude-subsystems&gt;</span>
             <span style="color:#f92672">&lt;subsystem</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;jsf&#34;</span><span style="color:#f92672">/&gt;</span>
         <span style="color:#f92672">&lt;/exclude-subsystems&gt;</span>
     <span style="color:#f92672">&lt;/deployment&gt;</span>
@@ -144,7 +144,7 @@ Bundle した JSF を有効にする方法は下記の記述をした <code>WEB-
 <span style="color:#75715e">&lt;!DOCTYPE glassfish-web-app PUBLIC
 </span><span style="color:#75715e">        &#34;-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN&#34;
 </span><span style="color:#75715e">        &#34;http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd&#34;&gt;</span>
-<span style="color:#f92672">&lt;glassfish-web-app</span><span style="color:#f92672">&gt;</span>
+<span style="color:#f92672">&lt;glassfish-web-app&gt;</span>
     <span style="color:#f92672">&lt;class-loader</span> <span style="color:#a6e22e">delegate=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#f92672">/&gt;</span>
     <span style="color:#f92672">&lt;property</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;useBundledJsf&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;true&#34;</span> <span style="color:#f92672">/&gt;</span>
 <span style="color:#f92672">&lt;/glassfish-web-app&gt;</span>

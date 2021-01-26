@@ -128,12 +128,12 @@ source $HOME/work/flask/bin/activate</code></pre>
 app = Flask(__name__)
 
 
-@app.route('/hello/&lt;name&gt;', methods=['GET'])
+@app.route(&#39;/hello/&lt;name&gt;&#39;, methods=[&#39;GET&#39;])
 def hello(name):
-    return 'Hello %s' % name
+    return &#39;Hello %s&#39; % name
 
 
-app.run(host='localhost', port=8081, debug=True, threaded=True)</code></pre>
+app.run(host=&#39;localhost&#39;, port=8081, debug=True, threaded=True)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -181,20 +181,20 @@ app.run(host='localhost', port=8081, debug=True, threaded=True)</code></pre>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Flask, threaded=True</caption>
 <colgroup>
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1436%;">
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1436%;"/>
 </colgroup>
 <tbody>
 <tr>
@@ -259,31 +259,31 @@ app.run(host='localhost', port=8081, debug=True, threaded=True)</code></pre>
 <pre class="highlight"><code class="language-py" data-lang="py">from bottle import run, get
 
 
-@get('/hello/&lt;name&gt;')
+@get(&#39;/hello/&lt;name&gt;&#39;)
 def hello(name):
-    return 'Hello %s' % name
+    return &#39;Hello %s&#39; % name
 
 
-run(host='localhost', port=8081, debug=True, reloader=True)</code></pre>
+run(host=&#39;localhost&#39;, port=8081, debug=True, reloader=True)</code></pre>
 </div>
 </div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 2. Bottle</caption>
 <colgroup>
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1428%;">
-<col style="width: 7.1436%;">
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1428%;"/>
+<col style="width: 7.1436%;"/>
 </colgroup>
 <tbody>
 <tr>

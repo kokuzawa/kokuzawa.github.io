@@ -35,7 +35,7 @@ Remote Debugの機能を使ってIntelliJ IDEA上で設定したブレークポ�
 &lt;p&gt;macOS 10.14.4&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
-&lt;p&gt;openjdk version &#34;11.0.1&#34; 2018-10-16&lt;/p&gt;
+&lt;p&gt;openjdk version &amp;#34;11.0.1&amp;#34; 2018-10-16&lt;/p&gt;
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;IntelliJ IDEA 2019.1&lt;/p&gt;
@@ -52,7 +52,7 @@ Remote Debugの機能を使ってIntelliJ IDEA上で設定したブレークポ�
 &lt;/div&gt;
 &lt;div class=&#34;imageblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_44.png&#34; alt=&#34;post image 44&#34; width=&#34;300&#34;&gt;
+&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_44.png&#34; alt=&#34;post image 44&#34; width=&#34;&#34; height=&#34;300&#34;/&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
@@ -60,7 +60,7 @@ Remote Debugの機能を使ってIntelliJ IDEA上で設定したブレークポ�
 &lt;/div&gt;
 &lt;div class=&#34;imageblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_45.png&#34; alt=&#34;post image 45&#34;&gt;
+&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_45.png&#34; alt=&#34;post image 45&#34;/&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -70,12 +70,12 @@ Remote Debugの機能を使ってIntelliJ IDEA上で設定したブレークポ�
 &lt;div class=&#34;sectionbody&#34;&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
 &lt;p&gt;作成した設定で &lt;code&gt;thorntail:run&lt;/code&gt; を実行します。
-実行後にメニューから Run &amp;#8594; Attach to Process&amp;#8230;&amp;#8203; を選択します。
+実行後にメニューから Run → Attach to Process…​ を選択します。
 thorntailの起動に問題がなければ下記のようなダイアログが表示されるはずです。&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;imageblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_46.png&#34; alt=&#34;post image 46&#34;&gt;
+&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_46.png&#34; alt=&#34;post image 46&#34;/&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
@@ -84,7 +84,7 @@ Webサービスを呼び出すと、設定したブレークポイントで停�
 &lt;/div&gt;
 &lt;div class=&#34;imageblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_47.png&#34; alt=&#34;post image 47&#34;&gt;
+&lt;img src=&#34;https://kokuzawa.github.io/images/post_image_47.png&#34; alt=&#34;post image 47&#34;/&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;
@@ -93,7 +93,7 @@ Webサービスを呼び出すと、設定したブレークポイントで停�
 &lt;h2 id=&#34;_まとめ&#34;&gt;まとめ&lt;/h2&gt;
 &lt;div class=&#34;sectionbody&#34;&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;デバッグ実行から普通にデバッグできればいいのに&amp;#8230;&amp;#8203;&lt;/p&gt;
+&lt;p&gt;デバッグ実行から普通にデバッグできればいいのに…​&lt;/p&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;

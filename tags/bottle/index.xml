@@ -65,18 +65,18 @@ source $HOME/work/bottle/bin/activate&lt;/code&gt;&lt;/pre&gt;
 import json
 
 notes = [
-        {&#39;id&#39;:1, &#39;note&#39;:&#39;メモ1&#39;},
-        {&#39;id&#39;:2, &#39;note&#39;:&#39;メモ2&#39;},
-        {&#39;id&#39;:3, &#39;note&#39;:&#39;メモ3&#39;},
+        {&amp;#39;id&amp;#39;:1, &amp;#39;note&amp;#39;:&amp;#39;メモ1&amp;#39;},
+        {&amp;#39;id&amp;#39;:2, &amp;#39;note&amp;#39;:&amp;#39;メモ2&amp;#39;},
+        {&amp;#39;id&amp;#39;:3, &amp;#39;note&amp;#39;:&amp;#39;メモ3&amp;#39;},
 ]
 
-@get(&#39;/notes&#39;)
+@get(&amp;#39;/notes&amp;#39;)
 def get_notes():
-        response.headers[&#39;Content-Type&#39;] = &#39;application/json;charset=UTF-8&#39;
-        response.headers[&#39;Cache-Control&#39;] = &#39;no-cache&#39;
+        response.headers[&amp;#39;Content-Type&amp;#39;] = &amp;#39;application/json;charset=UTF-8&amp;#39;
+        response.headers[&amp;#39;Cache-Control&amp;#39;] = &amp;#39;no-cache&amp;#39;
         return json.dumps(notes, ensure_ascii=False)
 
-run(host=&#39;localhost&#39;, port=8081, debug=True, reloader=True)&lt;/code&gt;&lt;/pre&gt;
+run(host=&amp;#39;localhost&amp;#39;, port=8081, debug=True, reloader=True)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;

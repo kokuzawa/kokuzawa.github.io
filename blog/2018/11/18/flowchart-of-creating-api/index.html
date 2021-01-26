@@ -103,7 +103,7 @@ APIを作成する上であまり利用しないものはあえて無視して�
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="/images/FlowchartOfCreatingAPI.svg" alt="FlowchartOfCreatingAPI">
+<img src="/images/FlowchartOfCreatingAPI.svg" alt="FlowchartOfCreatingAPI"/>
 </div>
 <div class="title">Figure 1. Flowchart of Creating RESTful API</div>
 </div>
@@ -171,32 +171,32 @@ Basic認証とかです。
     orientation = portrait;
     edge_layout = flowchart;
 
-    Action [label="Start", shape=flowchart.terminator];
-    Method [label="Method", shape=flowchart.condition];
-    Validation [label="入力値検証", shape=flowchart.condition];
-    Authentication [label="認証", shape=flowchart.condition];
-    Authorization [label="認可", shape=flowchart.condition];
-    Process [label="処理", shape=flowchart.condition];
-    Async [label="非同期", shape=flowchart.condition];
-    Content [label="返却\nデータ無", shape=flowchart.condition];
-    New [label="新規登録\nデータ", shape=flowchart.condition];
-    400 [label="400", shape=flowchart.terminator, color=pink];
-    401 [label="401", shape=flowchart.terminator, color=pink];
-    403 [label="403", shape=flowchart.terminator, color=pink];
-    404 [label="404", shape=flowchart.terminator, color=pink];
-    409 [label="409", shape=flowchart.terminator, color=pink];
-    500 [label="500", shape=flowchart.terminator, color=pink];
-    202 [label="202", shape=flowchart.terminator, color=lightblue];
-    200 [label="200", shape=flowchart.terminator, color=lightblue];
-    201 [label="201", shape=flowchart.terminator, color=lightblue];
-    204 [label="204", shape=flowchart.terminator, color=lightblue];
+    Action [label=&#34;Start&#34;, shape=flowchart.terminator];
+    Method [label=&#34;Method&#34;, shape=flowchart.condition];
+    Validation [label=&#34;入力値検証&#34;, shape=flowchart.condition];
+    Authentication [label=&#34;認証&#34;, shape=flowchart.condition];
+    Authorization [label=&#34;認可&#34;, shape=flowchart.condition];
+    Process [label=&#34;処理&#34;, shape=flowchart.condition];
+    Async [label=&#34;非同期&#34;, shape=flowchart.condition];
+    Content [label=&#34;返却\nデータ無&#34;, shape=flowchart.condition];
+    New [label=&#34;新規登録\nデータ&#34;, shape=flowchart.condition];
+    400 [label=&#34;400&#34;, shape=flowchart.terminator, color=pink];
+    401 [label=&#34;401&#34;, shape=flowchart.terminator, color=pink];
+    403 [label=&#34;403&#34;, shape=flowchart.terminator, color=pink];
+    404 [label=&#34;404&#34;, shape=flowchart.terminator, color=pink];
+    409 [label=&#34;409&#34;, shape=flowchart.terminator, color=pink];
+    500 [label=&#34;500&#34;, shape=flowchart.terminator, color=pink];
+    202 [label=&#34;202&#34;, shape=flowchart.terminator, color=lightblue];
+    200 [label=&#34;200&#34;, shape=flowchart.terminator, color=lightblue];
+    201 [label=&#34;201&#34;, shape=flowchart.terminator, color=lightblue];
+    204 [label=&#34;204&#34;, shape=flowchart.terminator, color=lightblue];
 
     // Action
     Action -&gt; Method;
-    Method -&gt; GET[label="取得"];
-    Method -&gt; POST[label="登録"];
-    Method -&gt; PUT[label="更新"];
-    Method -&gt; DELETE[label="削除"];
+    Method -&gt; GET[label=&#34;取得&#34;];
+    Method -&gt; POST[label=&#34;登録&#34;];
+    Method -&gt; PUT[label=&#34;更新&#34;];
+    Method -&gt; DELETE[label=&#34;削除&#34;];
 
     // Method
     GET -&gt; Validation;

@@ -6,7 +6,7 @@
   
   <meta charset="UTF-8">
   <title>
-    [JSF] ブラウザキャッシュを無効にする | KATSUMI KOKUZAWA&#39;S BLOG
+    [Homebrew] psycopg2-binaryインストールの問題 | KATSUMI KOKUZAWA&#39;S BLOG
   </title>
 
 
@@ -14,7 +14,7 @@
   <meta name="viewport" content="width=device-width,user-scalable=no,maximum-scale=1,initial-scale=1">
 
   
-  <link rel="canonical" href="https://kokuzawa.github.io/blog/2018/08/08/disable-browser-caching-in-jsf/"/>
+  <link rel="canonical" href="https://kokuzawa.github.io/blog/2021/01/26/install-problems-of-psycopg2-binary/"/>
 
   
   <link rel="stylesheet" href="/css/sanitize.css">
@@ -67,69 +67,45 @@
   
   <main id="single" role="main">
     <div class="article-header">
-      <h1>[JSF] ブラウザキャッシュを無効にする</h1>
+      <h1>[Homebrew] psycopg2-binaryインストールの問題</h1>
       <div class="meta">
-        Aug 8, 2018 &nbsp;
+        Jan 26, 2021 &nbsp;
         
-          #<a href="/tags/java">Java</a>&nbsp;
+          #<a href="/tags/homebrew">Homebrew</a>&nbsp;
         
-          #<a href="/tags/jsf">JSF</a>&nbsp;
+          #<a href="/tags/python">Python</a>&nbsp;
         
       </div>
     </div>
     <article>
-      <div class="paragraph">
-<p>JSFでブラウザのキャッシュを無効にする方法。JSFでプロジェクトを始めるたびに検索するのがいい加減面倒になった、というわけでメモ。
-<code>javax.faces.event.PhaseListener</code> を実装したクラスで処理するので、一つ作っておけば全てのレスポンスに適用されます。
-作ったクラスは faces-config.xml に登録します。
-以下、必要最低限のコード。</p>
-</div>
-<div class="listingblock">
-<div class="title">CacheControlPhaseListener.java</div>
-<div class="content">
-<pre class="highlight"><code class="language-java" data-lang="java">package io.github.kokuzawa.faces;
-
-import javax.faces.context.FacesContext;
-import javax.faces.event.PhaseEvent;
-import javax.faces.event.PhaseId;
-import javax.faces.event.PhaseListener;
-import javax.servlet.http.HttpServletResponse;
-
-public class CacheControlPhaseListener implements PhaseListener
-{
-    @Override
-    public void afterPhase(PhaseEvent phaseEvent)
-    {
-    }
-
-    @Override
-    public void beforePhase(PhaseEvent phaseEvent)
-    {
-        final FacesContext facesContext = phaseEvent.getFacesContext();
-        final HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
-        response.addHeader(&#34;Pragma&#34;, &#34;no-cache&#34;);
-        response.addHeader(&#34;Cache-Control&#34;, &#34;no-cache&#34;);
-        response.addHeader(&#34;Cache-Control&#34;, &#34;no-store&#34;);
-        response.addHeader(&#34;Cache-Control&#34;, &#34;must-revalidate&#34;);
-        response.addHeader(&#34;Expires&#34;, &#34;Mon, 8 Aug 2006 10:00:00 GMT&#34;);
-    }
-
-    @Override
-    public PhaseId getPhaseId()
-    {
-        return PhaseId.RENDER_RESPONSE;
-    }
-}</code></pre>
-</div>
-</div>
-<div class="listingblock">
-<div class="title">faces-config.xml</div>
-<div class="content">
-<pre class="highlight"><code class="language-xml" data-lang="xml">&lt;lifecycle&gt;
-    &lt;phase-listener&gt;io.github.kokuzawa.faces.CacheControlPhaseListener&lt;/phase-listener&gt;
-&lt;/lifecycle&gt;</code></pre>
-</div>
-</div>
+      <h2 id="環境">環境</h2>
+<ul>
+<li>OS: MacOS Big Sur</li>
+<li>チップ: Apple M1</li>
+<li>メモリ: 16GB</li>
+<li>Python-3.8.2</li>
+</ul>
+<h2 id="やりたいこと">やりたいこと</h2>
+<p>homebrewでpsycopg2-binaryをインストールしたい。</p>
+<h2 id="やったこと">やったこと</h2>
+<p>以下のコマンドを実行。</p>
+<pre><code>brew install psycopg2-binary
+</code></pre><p>以下のエラー（抜粋）が発生。</p>
+<pre><code>3.8/psycopg/typecast.o -L/opt/homebrew/lib -lpq -lssl -lcrypto -o build/lib.macosx-10.14.6-arm64-3.8/psycopg2/_psycopg.cpython-38-darwin.so
+    ld: library not found for -lssl
+    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+    error: command 'clang' failed with exit status 1
+    ----------------------------------------
+</code></pre><h2 id="解決方法">解決方法</h2>
+<p>.zshrcに以下を追加。</p>
+<pre><code>export LDFLAGS=&quot;-L/opt/homebrew/opt/openssl/lib&quot;
+export CPPFLAGS=&quot;-I/opt/homebrew/opt/openssl/include&quot;
+</code></pre><p>ただし、opensslがインストールされている前提。インストールされていない場合は下記コマンドで事前にopensslをインストールしておく。</p>
+<pre><code>brew install openssl
+</code></pre><h2 id="参考">参考</h2>
+<ul>
+<li><a href="https://stackoverflow.com/questions/26288042/error-installing-psycopg2-library-not-found-for-lssl">error installing psycopg2, library not found for -lssl</a></li>
+</ul>
 
       
       
@@ -157,10 +133,8 @@ public class CacheControlPhaseListener implements PhaseListener
   
   <nav class="pagination-single">
     
-      <span class="previous">&larr; <a href="https://kokuzawa.github.io/blog/2018/09/16/start-react/" rel="prev">[React] REST APIを呼び出す</a></span>
     
-    
-      <span class="next"><a href="https://kokuzawa.github.io/blog/2018/07/20/wildfly-ee8-configuration/" rel="next">[WildFly] EE8プレビューモードで起動する</a> &rarr;</span>
+      <span class="next"><a href="https://kokuzawa.github.io/blog/2020/03/11/pyenv-install-python/" rel="next">[Python] バージョン3.8.1をインストール</a> &rarr;</span>
     
   </nav>
 

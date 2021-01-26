@@ -1,0 +1,52 @@
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Homebrew on KATSUMI KOKUZAWA&#39;S BLOG</title>
+    <link>https://kokuzawa.github.io/tags/homebrew/</link>
+    <description>Recent content in Homebrew on KATSUMI KOKUZAWA&#39;S BLOG</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>ja-jp</language>
+    <lastBuildDate>Tue, 26 Jan 2021 23:20:29 +0900</lastBuildDate>
+    
+        <atom:link href="https://kokuzawa.github.io/tags/homebrew/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[Homebrew] psycopg2-binaryインストールの問題</title>
+      <link>https://kokuzawa.github.io/blog/2021/01/26/install-problems-of-psycopg2-binary/</link>
+      <pubDate>Tue, 26 Jan 2021 23:20:29 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2021/01/26/install-problems-of-psycopg2-binary/</guid>
+      <description>&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;OS: MacOS Big Sur&lt;/li&gt;
+&lt;li&gt;チップ: Apple M1&lt;/li&gt;
+&lt;li&gt;メモリ: 16GB&lt;/li&gt;
+&lt;li&gt;Python-3.8.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
+&lt;p&gt;homebrewでpsycopg2-binaryをインストールしたい。&lt;/p&gt;
+&lt;h2 id=&#34;やったこと&#34;&gt;やったこと&lt;/h2&gt;
+&lt;p&gt;以下のコマンドを実行。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;brew install psycopg2-binary
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;以下のエラー（抜粋）が発生。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;3.8/psycopg/typecast.o -L/opt/homebrew/lib -lpq -lssl -lcrypto -o build/lib.macosx-10.14.6-arm64-3.8/psycopg2/_psycopg.cpython-38-darwin.so
+    ld: library not found for -lssl
+    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+    error: command &#39;clang&#39; failed with exit status 1
+    ----------------------------------------
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;解決方法&#34;&gt;解決方法&lt;/h2&gt;
+&lt;p&gt;.zshrcに以下を追加。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export LDFLAGS=&amp;quot;-L/opt/homebrew/opt/openssl/lib&amp;quot;
+export CPPFLAGS=&amp;quot;-I/opt/homebrew/opt/openssl/include&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ただし、opensslがインストールされている前提。インストールされていない場合は下記コマンドで事前にopensslをインストールしておく。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;brew install openssl
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://stackoverflow.com/questions/26288042/error-installing-psycopg2-library-not-found-for-lssl&#34;&gt;error installing psycopg2, library not found for -lssl&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
+

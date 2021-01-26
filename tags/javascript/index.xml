@@ -51,14 +51,14 @@
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;body onload=&#34;login()&#34;&amp;gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;body onload=&amp;#34;login()&amp;#34;&amp;gt;
 &amp;lt;script&amp;gt;
   function login() {
       var xhr = new XMLHttpRequest();
-      xhr.open(&#34;GET&#34;, &#34;http://localhost/content.thml&#34;,
-               false, &#34;userid&#34;, &#34;password&#34;); &lt;b class=&#34;conum&#34;&gt;(1)&lt;/b&gt;
+      xhr.open(&amp;#34;GET&amp;#34;, &amp;#34;http://localhost/content.thml&amp;#34;,
+               false, &amp;#34;userid&amp;#34;, &amp;#34;password&amp;#34;); &lt;b class=&#34;conum&#34;&gt;(1)&lt;/b&gt;
       xhr.send(null);
-      location.href = &#34;http://localhost/content.html&#34;; &lt;b class=&#34;conum&#34;&gt;(2)&lt;/b&gt;
+      location.href = &amp;#34;http://localhost/content.html&amp;#34;; &lt;b class=&#34;conum&#34;&gt;(2)&lt;/b&gt;
   }
 &amp;lt;/script&amp;gt;
 &amp;lt;/body&amp;gt;&lt;/code&gt;&lt;/pre&gt;

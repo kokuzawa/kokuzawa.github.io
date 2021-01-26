@@ -5,10 +5,47 @@
     <description>Recent content in Python on KATSUMI KOKUZAWA&#39;S BLOG</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>ja-jp</language>
-    <lastBuildDate>Wed, 11 Mar 2020 01:48:46 +0900</lastBuildDate>
+    <lastBuildDate>Tue, 26 Jan 2021 23:20:29 +0900</lastBuildDate>
     
         <atom:link href="https://kokuzawa.github.io/tags/python/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>[Homebrew] psycopg2-binaryインストールの問題</title>
+      <link>https://kokuzawa.github.io/blog/2021/01/26/install-problems-of-psycopg2-binary/</link>
+      <pubDate>Tue, 26 Jan 2021 23:20:29 +0900</pubDate>
+      
+      <guid>https://kokuzawa.github.io/blog/2021/01/26/install-problems-of-psycopg2-binary/</guid>
+      <description>&lt;h2 id=&#34;環境&#34;&gt;環境&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;OS: MacOS Big Sur&lt;/li&gt;
+&lt;li&gt;チップ: Apple M1&lt;/li&gt;
+&lt;li&gt;メモリ: 16GB&lt;/li&gt;
+&lt;li&gt;Python-3.8.2&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;やりたいこと&#34;&gt;やりたいこと&lt;/h2&gt;
+&lt;p&gt;homebrewでpsycopg2-binaryをインストールしたい。&lt;/p&gt;
+&lt;h2 id=&#34;やったこと&#34;&gt;やったこと&lt;/h2&gt;
+&lt;p&gt;以下のコマンドを実行。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;brew install psycopg2-binary
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;以下のエラー（抜粋）が発生。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;3.8/psycopg/typecast.o -L/opt/homebrew/lib -lpq -lssl -lcrypto -o build/lib.macosx-10.14.6-arm64-3.8/psycopg2/_psycopg.cpython-38-darwin.so
+    ld: library not found for -lssl
+    clang: error: linker command failed with exit code 1 (use -v to see invocation)
+    error: command &#39;clang&#39; failed with exit status 1
+    ----------------------------------------
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;解決方法&#34;&gt;解決方法&lt;/h2&gt;
+&lt;p&gt;.zshrcに以下を追加。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;export LDFLAGS=&amp;quot;-L/opt/homebrew/opt/openssl/lib&amp;quot;
+export CPPFLAGS=&amp;quot;-I/opt/homebrew/opt/openssl/include&amp;quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;ただし、opensslがインストールされている前提。インストールされていない場合は下記コマンドで事前にopensslをインストールしておく。&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;brew install openssl
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;参考&#34;&gt;参考&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://stackoverflow.com/questions/26288042/error-installing-psycopg2-library-not-found-for-lssl&#34;&gt;error installing psycopg2, library not found for -lssl&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+    </item>
     
     <item>
       <title>[Python] バージョン3.8.1をインストール</title>
@@ -113,7 +150,7 @@ Python 3.7.6&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;は？&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;どうやら.bash_profileに &lt;code&gt;eval &#34;$(pyenv init -)&#34;&lt;/code&gt; を追記すれば良いらしい。
+&lt;p&gt;どうやら.bash_profileに &lt;code&gt;eval &amp;#34;$(pyenv init -)&amp;#34;&lt;/code&gt; を追記すれば良いらしい。
 というわけで、追記後に &lt;code&gt;source .bash_profile&lt;/code&gt; してバージョンを確認する。&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;
@@ -198,12 +235,12 @@ source $HOME/work/flask/bin/activate&lt;/code&gt;&lt;/pre&gt;
 app = Flask(__name__)
 
 
-@app.route(&#39;/hello/&amp;lt;name&amp;gt;&#39;, methods=[&#39;GET&#39;])
+@app.route(&amp;#39;/hello/&amp;lt;name&amp;gt;&amp;#39;, methods=[&amp;#39;GET&amp;#39;])
 def hello(name):
-    return &#39;Hello %s&#39; % name
+    return &amp;#39;Hello %s&amp;#39; % name
 
 
-app.run(host=&#39;localhost&#39;, port=8081, debug=True, threaded=True)&lt;/code&gt;&lt;/pre&gt;
+app.run(host=&amp;#39;localhost&amp;#39;, port=8081, debug=True, threaded=True)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
@@ -251,20 +288,20 @@ app.run(host=&#39;localhost&#39;, port=8081, debug=True, threaded=True)&lt;/code
 &lt;table class=&#34;tableblock frame-all grid-all stretch&#34;&gt;
 &lt;caption class=&#34;title&#34;&gt;Table 1. Flask, threaded=True&lt;/caption&gt;
 &lt;colgroup&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1436%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1436%;&#34;/&gt;
 &lt;/colgroup&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
@@ -329,31 +366,31 @@ app.run(host=&#39;localhost&#39;, port=8081, debug=True, threaded=True)&lt;/code
 &lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-py&#34; data-lang=&#34;py&#34;&gt;from bottle import run, get
 
 
-@get(&#39;/hello/&amp;lt;name&amp;gt;&#39;)
+@get(&amp;#39;/hello/&amp;lt;name&amp;gt;&amp;#39;)
 def hello(name):
-    return &#39;Hello %s&#39; % name
+    return &amp;#39;Hello %s&amp;#39; % name
 
 
-run(host=&#39;localhost&#39;, port=8081, debug=True, reloader=True)&lt;/code&gt;&lt;/pre&gt;
+run(host=&amp;#39;localhost&amp;#39;, port=8081, debug=True, reloader=True)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;table class=&#34;tableblock frame-all grid-all stretch&#34;&gt;
 &lt;caption class=&#34;title&#34;&gt;Table 2. Bottle&lt;/caption&gt;
 &lt;colgroup&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1428%;&#34;&gt;
-&lt;col style=&#34;width: 7.1436%;&#34;&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1428%;&#34;/&gt;
+&lt;col style=&#34;width: 7.1436%;&#34;/&gt;
 &lt;/colgroup&gt;
 &lt;tbody&gt;
 &lt;tr&gt;
@@ -481,18 +518,18 @@ source $HOME/work/bottle/bin/activate&lt;/code&gt;&lt;/pre&gt;
 import json
 
 notes = [
-        {&#39;id&#39;:1, &#39;note&#39;:&#39;メモ1&#39;},
-        {&#39;id&#39;:2, &#39;note&#39;:&#39;メモ2&#39;},
-        {&#39;id&#39;:3, &#39;note&#39;:&#39;メモ3&#39;},
+        {&amp;#39;id&amp;#39;:1, &amp;#39;note&amp;#39;:&amp;#39;メモ1&amp;#39;},
+        {&amp;#39;id&amp;#39;:2, &amp;#39;note&amp;#39;:&amp;#39;メモ2&amp;#39;},
+        {&amp;#39;id&amp;#39;:3, &amp;#39;note&amp;#39;:&amp;#39;メモ3&amp;#39;},
 ]
 
-@get(&#39;/notes&#39;)
+@get(&amp;#39;/notes&amp;#39;)
 def get_notes():
-        response.headers[&#39;Content-Type&#39;] = &#39;application/json;charset=UTF-8&#39;
-        response.headers[&#39;Cache-Control&#39;] = &#39;no-cache&#39;
+        response.headers[&amp;#39;Content-Type&amp;#39;] = &amp;#39;application/json;charset=UTF-8&amp;#39;
+        response.headers[&amp;#39;Cache-Control&amp;#39;] = &amp;#39;no-cache&amp;#39;
         return json.dumps(notes, ensure_ascii=False)
 
-run(host=&#39;localhost&#39;, port=8081, debug=True, reloader=True)&lt;/code&gt;&lt;/pre&gt;
+run(host=&amp;#39;localhost&amp;#39;, port=8081, debug=True, reloader=True)&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;

@@ -97,10 +97,10 @@ Injectを利用した取得方法のサンプルを記載します。</p>
 <span style="color:#a6e22e">@RequestScoped</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IndexBean</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doClick</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doClick</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> FacesContext context <span style="color:#f92672">=</span> FacesContext<span style="color:#f92672">.</span><span style="color:#a6e22e">getCurrentInstance</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        context<span style="color:#f92672">.</span><span style="color:#a6e22e">addMessage</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> FacesMessage<span style="color:#f92672">(</span>FacesMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERITY_INFO</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;summary&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;detail&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> FacesContext context <span style="color:#f92672">=</span> FacesContext<span style="color:#f92672">.</span><span style="color:#a6e22e">getCurrentInstance</span><span style="color:#f92672">();</span>
+        context<span style="color:#f92672">.</span><span style="color:#a6e22e">addMessage</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> FacesMessage<span style="color:#f92672">(</span>FacesMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERITY_INFO</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;summary&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;detail&#34;</span><span style="color:#f92672">));</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>次にInjectを利用してFacesContextを取得するManaged Beanです。</p>
@@ -117,9 +117,9 @@ Injectを利用した取得方法のサンプルを記載します。</p>
     <span style="color:#a6e22e">@Inject</span>
     <span style="color:#66d9ef">private</span> FacesContext context<span style="color:#f92672">;</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doClick</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">doClick</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
-        context<span style="color:#f92672">.</span><span style="color:#a6e22e">addMessage</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> FacesMessage<span style="color:#f92672">(</span>FacesMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERITY_INFO</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;summary&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;detail&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        context<span style="color:#f92672">.</span><span style="color:#a6e22e">addMessage</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">new</span> FacesMessage<span style="color:#f92672">(</span>FacesMessage<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERITY_INFO</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;summary&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;detail&#34;</span><span style="color:#f92672">));</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>画面に表示するXHTMLは下記のようにしています。</p>
@@ -131,12 +131,12 @@ Injectを利用した取得方法のサンプルを記載します。</p>
 <span style="color:#f92672">&lt;html</span> <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://www.w3.org/1999/xhtml&#34;</span>
       <span style="color:#a6e22e">xmlns:h=</span><span style="color:#e6db74">&#34;http://java.sun.com/jsf/html&#34;</span><span style="color:#f92672">&gt;</span>
 
-<span style="color:#f92672">&lt;h:head</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;title</span><span style="color:#f92672">&gt;</span>Simple JSF Facelets page<span style="color:#f92672">&lt;/title&gt;</span>
+<span style="color:#f92672">&lt;h:head&gt;</span>
+    <span style="color:#f92672">&lt;title&gt;</span>Simple JSF Facelets page<span style="color:#f92672">&lt;/title&gt;</span>
 <span style="color:#f92672">&lt;/h:head&gt;</span>
 
-<span style="color:#f92672">&lt;h:body</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;h:form</span><span style="color:#f92672">&gt;</span>
+<span style="color:#f92672">&lt;h:body&gt;</span>
+    <span style="color:#f92672">&lt;h:form&gt;</span>
         <span style="color:#f92672">&lt;h:messages</span> <span style="color:#a6e22e">showDetail=</span><span style="color:#e6db74">&#34;true&#34;</span><span style="color:#f92672">/&gt;</span>
         <span style="color:#f92672">&lt;h:commandButton</span> <span style="color:#a6e22e">actionListener=</span><span style="color:#e6db74">&#34;#{indexBean.doClick}&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;OK&#34;</span><span style="color:#f92672">/&gt;</span>
     <span style="color:#f92672">&lt;/h:form&gt;</span>
@@ -147,9 +147,9 @@ Injectを利用した取得方法のサンプルを記載します。</p>
 WildFlyにはJSFの実装が含まれているので、JSF-2.3が含まれるアプリをデプロイすると起動時にエラーになってしまいます。
 そこで、アプリに含まれるJSF実装を利用させるために、下記の設定をweb.xmlに追加します。
 パラメータを追加するだけで利用する実装を切り替えてくれるので便利ですね。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;context-param</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;param-name</span><span style="color:#f92672">&gt;</span>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL<span style="color:#f92672">&lt;/param-name&gt;</span>
-    <span style="color:#f92672">&lt;param-value</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/param-value&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;context-param&gt;</span>
+    <span style="color:#f92672">&lt;param-name&gt;</span>org.jboss.jbossfaces.WAR_BUNDLES_JSF_IMPL<span style="color:#f92672">&lt;/param-name&gt;</span>
+    <span style="color:#f92672">&lt;param-value&gt;</span>true<span style="color:#f92672">&lt;/param-value&gt;</span>
 <span style="color:#f92672">&lt;/context-param&gt;</span>
 </code></pre></div>
       

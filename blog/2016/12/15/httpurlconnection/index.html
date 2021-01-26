@@ -93,17 +93,17 @@
 インプットストリームが取れない場合は<code>IOException</code>が発生、
 エラーストリームが取れない場合はnullが返却されます。</p>
 <p>エラーストリームが取れない場合にインプットストリームを取得:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">InputStream stream <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getErrorStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">InputStream stream <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getErrorStream</span><span style="color:#f92672">();</span>
 <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">null</span> <span style="color:#f92672">=</span> stream<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    stream <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    stream <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">();</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>インプットストリームが取れない場合にエラーストリームを取得:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">InputStream stream<span style="color:#f92672">;</span>
 <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-    stream <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    stream <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">();</span>
 <span style="color:#f92672">}</span>
 <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-    stream <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getErrorStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    stream <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getErrorStream</span><span style="color:#f92672">();</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><h2 id="実際の問題">実際の問題</h2>
 <p>JAX-RSクライアントライブラリのresteasy-client 3.0.10が持つクラス、
@@ -111,18 +111,18 @@
 サーバが4xxのステータスコードを返却するとNullPointerExceptionが発生します。
 URLConnectionEngineの該当箇所のコードは下記のようになっています。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@Override</span>
-<span style="color:#66d9ef">protected</span> InputStream <span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">protected</span> InputStream <span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">()</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>stream <span style="color:#f92672">=</span><span style="color:#f92672">=</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span>stream <span style="color:#f92672">==</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">)</span>
     <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">try</span>
         <span style="color:#f92672">{</span>
             stream <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>status <span style="color:#f92672">&lt;</span> 300<span style="color:#f92672">)</span> <span style="color:#f92672">?</span> 
-                    connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">:</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getErrorStream</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getInputStream</span><span style="color:#f92672">()</span> <span style="color:#f92672">:</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">getErrorStream</span><span style="color:#f92672">();</span>
         <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span>
         <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span>e<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">throw</span> <span style="color:#66d9ef">new</span> RuntimeException<span style="color:#f92672">(</span>e<span style="color:#f92672">);</span>
         <span style="color:#f92672">}</span>
     <span style="color:#f92672">}</span>
 
@@ -130,10 +130,10 @@ URLConnectionEngineの該当箇所のコードは下記のようになってい�
 <span style="color:#f92672">}</span>
 
 <span style="color:#a6e22e">@Override</span>
-<span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">releaseConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException
+<span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">releaseConnection</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException
 <span style="color:#f92672">{</span>
-    getInputStream<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    connection<span style="color:#f92672">.</span><span style="color:#a6e22e">disconnect</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    getInputStream<span style="color:#f92672">().</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
+    connection<span style="color:#f92672">.</span><span style="color:#a6e22e">disconnect</span><span style="color:#f92672">();</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>ステータスコードが300未満の場合はインプットストリーム、300以上の場合はエラーストリームを取得し、
 その取得したストリームをクローズしようとしたところでNullPointerExceptionが発生する状況です。

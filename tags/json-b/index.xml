@@ -101,8 +101,8 @@ public class AppTest
     public void testToJson()
     {
         final Jsonb jsonb = JsonbBuilder.create();
-        final String result = jsonb.toJson(new User(&#34;katsumi&#34;, 40));
-        assertThat(result, is(&#34;{\&#34;age\&#34;:40,\&#34;name\&#34;:\&#34;katsumi\&#34;}&#34;));
+        final String result = jsonb.toJson(new User(&amp;#34;katsumi&amp;#34;, 40));
+        assertThat(result, is(&amp;#34;{\&amp;#34;age\&amp;#34;:40,\&amp;#34;name\&amp;#34;:\&amp;#34;katsumi\&amp;#34;}&amp;#34;));
     }
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -124,10 +124,10 @@ public class AppTest
     public void testFromJson()
     {
         final Jsonb jsonb = JsonbBuilder.create();
-        final String text = &#34;{\&#34;age\&#34;:40,\&#34;name\&#34;:\&#34;katsumi\&#34;}&#34;;
+        final String text = &amp;#34;{\&amp;#34;age\&amp;#34;:40,\&amp;#34;name\&amp;#34;:\&amp;#34;katsumi\&amp;#34;}&amp;#34;;
         final User user = jsonb.fromJson(text, User.class);
         assertThat(user.getAge(), is(40));
-        assertThat(user.getName(), is(&#34;katsumi&#34;));
+        assertThat(user.getName(), is(&amp;#34;katsumi&amp;#34;));
     }
 }&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -140,7 +140,7 @@ JSON メッセージを Java オブジェクトに変換するためにはデフ
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;javax.json.bind.JsonbException: Can&#39;t create instance of a class: class org.katsumi.User, No default constructor found.&lt;/code&gt;&lt;/pre&gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;javax.json.bind.JsonbException: Can&amp;#39;t create instance of a class: class org.katsumi.User, No default constructor found.&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
@@ -156,8 +156,8 @@ import javax.json.bind.annotation.JsonbProperty;
 
     @JsonbCreator
     public User(
-            @JsonbProperty(&#34;name&#34;) String name,
-            @JsonbProperty(&#34;age&#34;) int age)
+            @JsonbProperty(&amp;#34;name&amp;#34;) String name,
+            @JsonbProperty(&amp;#34;age&amp;#34;) int age)
     {
         this.name = name;
         this.age = age;

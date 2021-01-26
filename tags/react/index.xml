@@ -48,7 +48,7 @@
 &lt;h2 id=&#34;_プロジェクトを作る&#34;&gt;プロジェクトを作る&lt;/h2&gt;
 &lt;div class=&#34;sectionbody&#34;&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;はじめにReactプロジェクトを作ります。&lt;br&gt;
+&lt;p&gt;はじめにReactプロジェクトを作ります。&lt;br/&gt;
 下記コマンドで &lt;code&gt;start-react&lt;/code&gt; フォルダにプロジェクトが生成されます。&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;
@@ -108,8 +108,8 @@
 &lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-js&#34; data-lang=&#34;js&#34;&gt;constructor(props) {
     super(props);
     this.state = {
-        zipcode: &#39;&#39;,
-        address: &#39;&#39;
+        zipcode: &amp;#39;&amp;#39;,
+        address: &amp;#39;&amp;#39;
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -121,7 +121,7 @@ handleChange(e) {
 
 handleSubmit(e) {
     fetch(`https://api.zipaddress.net/?zipcode=${this.state.zipcode}`, {
-        mode: &#39;cors&#39;
+        mode: &amp;#39;cors&amp;#39;
     })
         .then((response) =&amp;gt; {
             return response.json();
@@ -140,7 +140,7 @@ handleSubmit(e) {
 &lt;div class=&#34;listingblock&#34;&gt;
 &lt;div class=&#34;title&#34;&gt;書き換え前&lt;/div&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;p className=&#34;App-intro&#34;&amp;gt;
+&lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;p className=&amp;#34;App-intro&amp;#34;&amp;gt;
   To get started, edit &amp;lt;code&amp;gt;src/App.js&amp;lt;/code&amp;gt; and save to reload.
 &amp;lt;/p&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -149,9 +149,9 @@ handleSubmit(e) {
 &lt;div class=&#34;title&#34;&gt;書き換え後&lt;/div&gt;
 &lt;div class=&#34;content&#34;&gt;
 &lt;pre class=&#34;highlight&#34;&gt;&lt;code class=&#34;language-html&#34; data-lang=&#34;html&#34;&gt;&amp;lt;form onSubmit={this.handleSubmit}&amp;gt;
-    &amp;lt;p className=&#34;App-intro&#34;&amp;gt;
-        &amp;lt;input type=&#34;text&#34; value={this.state.zipcode} onChange={this.handleChange}/&amp;gt;
-        &amp;lt;input type=&#34;submit&#34; value=&#34;検索&#34;/&amp;gt;
+    &amp;lt;p className=&amp;#34;App-intro&amp;#34;&amp;gt;
+        &amp;lt;input type=&amp;#34;text&amp;#34; value={this.state.zipcode} onChange={this.handleChange}/&amp;gt;
+        &amp;lt;input type=&amp;#34;submit&amp;#34; value=&amp;#34;検索&amp;#34;/&amp;gt;
     &amp;lt;/p&amp;gt;
 &amp;lt;/form&amp;gt;
 &amp;lt;p&amp;gt;{this.state.address}&amp;lt;/p&amp;gt;&lt;/code&gt;&lt;/pre&gt;

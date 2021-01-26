@@ -93,15 +93,15 @@ maven-assembly-plugin は pom.xml とは別に個別の設定ファイルが必�
           <span style="color:#a6e22e">xmlns:xsi=</span><span style="color:#e6db74">&#34;http://www.w3.org/2001/XMLSchema-instance&#34;</span>
           <span style="color:#a6e22e">xsi:schemaLocation=</span><span style="color:#e6db74">&#34;http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2
 </span><span style="color:#e6db74">                              http://maven.apache.org/xsd/assembly-1.1.2.xsd&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;id</span><span style="color:#f92672">&gt;</span>distribution<span style="color:#f92672">&lt;/id&gt;</span>
-    <span style="color:#f92672">&lt;formats</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;format</span><span style="color:#f92672">&gt;</span>zip<span style="color:#f92672">&lt;/format&gt;</span>
+    <span style="color:#f92672">&lt;id&gt;</span>distribution<span style="color:#f92672">&lt;/id&gt;</span>
+    <span style="color:#f92672">&lt;formats&gt;</span>
+        <span style="color:#f92672">&lt;format&gt;</span>zip<span style="color:#f92672">&lt;/format&gt;</span>
     <span style="color:#f92672">&lt;/formats&gt;</span>
-    <span style="color:#f92672">&lt;dependencySets</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;dependencyset</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;unpack</span><span style="color:#f92672">&gt;</span>false<span style="color:#f92672">&lt;/unpack&gt;</span>
-            <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>runtime<span style="color:#f92672">&lt;/scope&gt;</span>
-            <span style="color:#f92672">&lt;outputDirectory</span><span style="color:#f92672">&gt;</span>/out<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
+    <span style="color:#f92672">&lt;dependencySets&gt;</span>
+        <span style="color:#f92672">&lt;dependencyset&gt;</span>
+            <span style="color:#f92672">&lt;unpack&gt;</span>false<span style="color:#f92672">&lt;/unpack&gt;</span>
+            <span style="color:#f92672">&lt;scope&gt;</span>runtime<span style="color:#f92672">&lt;/scope&gt;</span>
+            <span style="color:#f92672">&lt;outputDirectory&gt;</span>/out<span style="color:#f92672">&lt;/outputDirectory&gt;</span>
         <span style="color:#f92672">&lt;/dependencyset&gt;</span>
     <span style="color:#f92672">&lt;/dependencySets&gt;</span>
 <span style="color:#f92672">&lt;/assembly&gt;</span>
@@ -111,15 +111,15 @@ scope は、Maven の dependency の scope と同じ意味なので、必要な�
 outputDirectory は zip の出力先を指定する。</p>
 <p>次にpom.xmlにプラグインの追加とdistribution.xmlの場所を定義する必要がある。</p>
 <p><strong>pom.xml:</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-            <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-assembly-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-            <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.2.1<span style="color:#f92672">&lt;/version&gt;</span>
-            <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-                <span style="color:#f92672">&lt;descriptors</span><span style="color:#f92672">&gt;</span>
-                    <span style="color:#f92672">&lt;descriptor</span><span style="color:#f92672">&gt;</span>distributions.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+        <span style="color:#f92672">&lt;plugin&gt;</span>
+            <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+            <span style="color:#f92672">&lt;artifactId&gt;</span>maven-assembly-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+            <span style="color:#f92672">&lt;version&gt;</span>2.2.1<span style="color:#f92672">&lt;/version&gt;</span>
+            <span style="color:#f92672">&lt;configuration&gt;</span>
+                <span style="color:#f92672">&lt;descriptors&gt;</span>
+                    <span style="color:#f92672">&lt;descriptor&gt;</span>distributions.xml<span style="color:#f92672">&lt;/descriptor&gt;</span>
                 <span style="color:#f92672">&lt;/descriptors&gt;</span>
             <span style="color:#f92672">&lt;/configuration&gt;</span>
         <span style="color:#f92672">&lt;/plugin&gt;</span>
@@ -127,37 +127,37 @@ outputDirectory は zip の出力先を指定する。</p>
 <span style="color:#f92672">&lt;/build&gt;</span>
 </code></pre></div><p>Spring Framework のライブラリはリポジトリを別途指定する必要があるので、それを pom.xml に定義する。</p>
 <p><strong>pom.xml:</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;repositories</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;repository</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;id</span><span style="color:#f92672">&gt;</span>com.springsource.repository.bundles.release<span style="color:#f92672">&lt;/id&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;url</span><span style="color:#f92672">&gt;</span>http://repository.springsource.com/maven/bundles/release<span style="color:#f92672">&lt;/url&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;repositories&gt;</span>
+    <span style="color:#f92672">&lt;repository&gt;</span>
+        <span style="color:#f92672">&lt;id&gt;</span>com.springsource.repository.bundles.release<span style="color:#f92672">&lt;/id&gt;</span>
+        <span style="color:#f92672">&lt;name&gt;</span>SpringSource Enterprise Bundle Repository - SpringSource Bundle Releases<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;url&gt;</span>http://repository.springsource.com/maven/bundles/release<span style="color:#f92672">&lt;/url&gt;</span>
     <span style="color:#f92672">&lt;/repository&gt;</span>
-    <span style="color:#f92672">&lt;repository</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;id</span><span style="color:#f92672">&gt;</span>com.springsource.repository.bundle.external<span style="color:#f92672">&lt;/id&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>SpringSource Enterprise Bundle Repository - External Bundle Releases<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;url</span><span style="color:#f92672">&gt;</span>http://repository.springsource.com/maven/bundles/external<span style="color:#f92672">&lt;/url&gt;</span>
+    <span style="color:#f92672">&lt;repository&gt;</span>
+        <span style="color:#f92672">&lt;id&gt;</span>com.springsource.repository.bundle.external<span style="color:#f92672">&lt;/id&gt;</span>
+        <span style="color:#f92672">&lt;name&gt;</span>SpringSource Enterprise Bundle Repository - External Bundle Releases<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;url&gt;</span>http://repository.springsource.com/maven/bundles/external<span style="color:#f92672">&lt;/url&gt;</span>
     <span style="color:#f92672">&lt;/repository&gt;</span>
-    <span style="color:#f92672">&lt;repository</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;id</span><span style="color:#f92672">&gt;</span>com.springsource.repository.libraries.release<span style="color:#f92672">&lt;/id&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>SpringSource Enterprise Bundle Repository - SpringSource Library Releases<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;url</span><span style="color:#f92672">&gt;</span>http://repository.springsource.com/maven/libraries/release<span style="color:#f92672">&lt;/url&gt;</span>
+    <span style="color:#f92672">&lt;repository&gt;</span>
+        <span style="color:#f92672">&lt;id&gt;</span>com.springsource.repository.libraries.release<span style="color:#f92672">&lt;/id&gt;</span>
+        <span style="color:#f92672">&lt;name&gt;</span>SpringSource Enterprise Bundle Repository - SpringSource Library Releases<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;url&gt;</span>http://repository.springsource.com/maven/libraries/release<span style="color:#f92672">&lt;/url&gt;</span>
     <span style="color:#f92672">&lt;/repository&gt;</span>
-    <span style="color:#f92672">&lt;repository</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;id</span><span style="color:#f92672">&gt;</span>com.springsource.repository.libraries.external<span style="color:#f92672">&lt;/id&gt;</span>
-        <span style="color:#f92672">&lt;name</span><span style="color:#f92672">&gt;</span>SpringSource Enterprise Bundle Repository - External Library Releases<span style="color:#f92672">&lt;/name&gt;</span>
-        <span style="color:#f92672">&lt;url</span><span style="color:#f92672">&gt;</span>http://repository.springsource.com/maven/libraries/external<span style="color:#f92672">&lt;/url&gt;</span>
+    <span style="color:#f92672">&lt;repository&gt;</span>
+        <span style="color:#f92672">&lt;id&gt;</span>com.springsource.repository.libraries.external<span style="color:#f92672">&lt;/id&gt;</span>
+        <span style="color:#f92672">&lt;name&gt;</span>SpringSource Enterprise Bundle Repository - External Library Releases<span style="color:#f92672">&lt;/name&gt;</span>
+        <span style="color:#f92672">&lt;url&gt;</span>http://repository.springsource.com/maven/libraries/external<span style="color:#f92672">&lt;/url&gt;</span>
     <span style="color:#f92672">&lt;/repository&gt;</span>
 <span style="color:#f92672">&lt;/repositories&gt;</span>
 </code></pre></div><p>あとは Spring framework の実体を指す dependency を追加すれば完成。
 これは<a href="http://ebr.springsource.com/repository/app/library/version/detail?name=org.springframework.spring&amp;version=3.2.3.RELEASE">ここ</a>を
 参考にすれば良いと思う。</p>
 <p><strong>pom.xml:</strong></p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>org.springframework.spring-library<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;type</span><span style="color:#f92672">&gt;</span>libd<span style="color:#f92672">&lt;/type&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.2.3.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.springframework<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>org.springframework.spring-library<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;type&gt;</span>libd<span style="color:#f92672">&lt;/type&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>3.2.3.RELEASE<span style="color:#f92672">&lt;/version&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>これでpom.xmlが完成したので、あとは以下のコマンドを実行すればdistribution.xmlで定義したoutディレクトリに
 Spring Frameworkのjarファイル一式が含まれたzipファイルが生成されるはず。</p>

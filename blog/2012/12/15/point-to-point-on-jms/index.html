@@ -97,18 +97,18 @@ JavaEEのアドベンドカレンダーをやるに当たって何か普段は�
 <li>GlassFish-3.1.2.2</li>
 <li>jms-api-1.1-rev-1.jar</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>javax.jms<span style="color:#f92672">&lt;/groupId&gt;</span>
-  <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>jms-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
-  <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.1-rev-1<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+  <span style="color:#f92672">&lt;groupId&gt;</span>javax.jms<span style="color:#f92672">&lt;/groupId&gt;</span>
+  <span style="color:#f92672">&lt;artifactId&gt;</span>jms-api<span style="color:#f92672">&lt;/artifactId&gt;</span>
+  <span style="color:#f92672">&lt;version&gt;</span>1.1-rev-1<span style="color:#f92672">&lt;/version&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><ul>
 <li>imq-4.5.2.jar</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.glassfish.mq<span style="color:#f92672">&lt;/groupId&gt;</span>
-  <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>imq<span style="color:#f92672">&lt;/artifactId&gt;</span>
-  <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.5.2<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+  <span style="color:#f92672">&lt;groupId&gt;</span>org.glassfish.mq<span style="color:#f92672">&lt;/groupId&gt;</span>
+  <span style="color:#f92672">&lt;artifactId&gt;</span>imq<span style="color:#f92672">&lt;/artifactId&gt;</span>
+  <span style="color:#f92672">&lt;version&gt;</span>4.5.2<span style="color:#f92672">&lt;/version&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>JMSを利用する為には、メッセージプロバイダが必要になります。プロバイダにはOpenMQ, MQSeries, SonicMQなどがありますが、
 今回は導入が簡単なOpenMQを利用します。OpenMQはGlassFishに付属してインストールされます。インストール時に特に何かを意識する必要はありません。
@@ -136,24 +136,24 @@ JavaEEのアドベンドカレンダーをやるに当たって何か普段は�
 </span><span style="color:#75715e"> */</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Sender</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException
     <span style="color:#f92672">{</span>
-        QueueConnectionFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueueConnectionFactory<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        QueueConnectionFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueueConnectionFactory<span style="color:#f92672">();</span>
         factory<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span>ConnectionConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">imqAddressList</span><span style="color:#f92672">,</span> 
-            <span style="color:#e6db74">&#34;localhost:7676&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        QueueConnection connection <span style="color:#f92672">=</span> factory<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#e6db74">&#34;localhost:7676&#34;</span><span style="color:#f92672">);</span>
+        QueueConnection connection <span style="color:#f92672">=</span> factory<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueConnection</span><span style="color:#f92672">();</span>
         QueueSession session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> 
-            QueueSession<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KQueue&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            QueueSession<span style="color:#f92672">.</span><span style="color:#a6e22e">AUTO_ACKNOWLEDGE</span><span style="color:#f92672">);</span>
+        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KQueue&#34;</span><span style="color:#f92672">);</span>
 
-        QueueSender sender <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createSender</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        TextMessage message <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createTextMessage</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        message<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;メッセージ&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        sender<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>message<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        QueueSender sender <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createSender</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">);</span>
+        TextMessage message <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createTextMessage</span><span style="color:#f92672">();</span>
+        message<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;メッセージ&#34;</span><span style="color:#f92672">);</span>
+        sender<span style="color:#f92672">.</span><span style="color:#a6e22e">send</span><span style="color:#f92672">(</span>message<span style="color:#f92672">);</span>
 
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
 
-        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Finished.&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Finished.&#34;</span><span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>session.createQueue(&quot;KQueue&quot;)</code>でKQueueという文字列を指定していますが、これは任意の文字列です。
@@ -181,34 +181,34 @@ JavaEEのアドベンドカレンダーをやるに当たって何か普段は�
 </span><span style="color:#75715e"> */</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Receiver</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> JMSException
     <span style="color:#f92672">{</span>
-        QueueConnectionFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueueConnectionFactory<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        QueueConnectionFactory factory <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> QueueConnectionFactory<span style="color:#f92672">();</span>
         factory<span style="color:#f92672">.</span><span style="color:#a6e22e">setProperty</span><span style="color:#f92672">(</span>ConnectionConfiguration<span style="color:#f92672">.</span><span style="color:#a6e22e">imqAddressList</span><span style="color:#f92672">,</span> 
-            <span style="color:#e6db74">&#34;localhost:7676&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        QueueConnection connection <span style="color:#f92672">=</span> factory<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#e6db74">&#34;localhost:7676&#34;</span><span style="color:#f92672">);</span>
+        QueueConnection connection <span style="color:#f92672">=</span> factory<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueConnection</span><span style="color:#f92672">();</span>
         QueueSession session <span style="color:#f92672">=</span> connection<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueueSession</span><span style="color:#f92672">(</span><span style="color:#66d9ef">false</span><span style="color:#f92672">,</span> 
-            QueueSession<span style="color:#f92672">.</span><span style="color:#a6e22e">CLIENT_ACKNOWLEDGE</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KQueue&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            QueueSession<span style="color:#f92672">.</span><span style="color:#a6e22e">CLIENT_ACKNOWLEDGE</span><span style="color:#f92672">);</span>
+        Queue queue <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createQueue</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;KQueue&#34;</span><span style="color:#f92672">);</span>
 
-        QueueReceiver receiver <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createReceiver</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        receiver<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessageListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MessageListener<span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
+        QueueReceiver receiver <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span><span style="color:#a6e22e">createReceiver</span><span style="color:#f92672">(</span>queue<span style="color:#f92672">);</span>
+        receiver<span style="color:#f92672">.</span><span style="color:#a6e22e">setMessageListener</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> MessageListener<span style="color:#f92672">()</span> <span style="color:#f92672">{</span>
             <span style="color:#a6e22e">@Override</span>
             <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">onMessage</span><span style="color:#f92672">(</span>Message msg<span style="color:#f92672">)</span>
             <span style="color:#f92672">{</span>
                 <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
                     TextMessage message <span style="color:#f92672">=</span> <span style="color:#f92672">(</span>TextMessage<span style="color:#f92672">)</span> msg<span style="color:#f92672">;</span>
-                    message<span style="color:#f92672">.</span><span style="color:#a6e22e">acknowledge</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>message<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    message<span style="color:#f92672">.</span><span style="color:#a6e22e">acknowledge</span><span style="color:#f92672">();</span>
+                    System<span style="color:#f92672">.</span><span style="color:#a6e22e">out</span><span style="color:#f92672">.</span><span style="color:#a6e22e">println</span><span style="color:#f92672">(</span>message<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">());</span>
                 <span style="color:#f92672">}</span>
                 <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>JMSException ex<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Receiver<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
-                          <span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>Level<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERE</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>Receiver<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">())</span>
+                          <span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>Level<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERE</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">,</span> ex<span style="color:#f92672">);</span>
                 <span style="color:#f92672">}</span>
             <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">});</span>
 
-        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        connection<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><h2 id="動かしてみよう">動かしてみよう</h2>

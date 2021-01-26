@@ -43,7 +43,7 @@ Windowsでもできるようですが、普段使っているMacでもできる�
                &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:mx=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;library://ns.adobe.com/flex/mx&amp;#34;&lt;/span&gt;
                &lt;span style=&#34;color:#a6e22e&#34;&gt;creationComplete=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;creationComplete(event)&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
 
-    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;fx:Script&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;![CDATA[
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;fx:Script&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;![CDATA[
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        import mx.events.FlexEvent;
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        import mx.managers.DragManager;
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        import mx.managers.dragClasses.DragProxy;
@@ -65,8 +65,8 @@ Windowsでもできるようですが、普段使っているMacでもできる�
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        }
 &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;        ]]&amp;gt;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/fx:Script&amp;gt;&lt;/span&gt;
 
-    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:layout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
-        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:HorizontalLayout&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:layout&amp;gt;&lt;/span&gt;
+        &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;s:HorizontalLayout/&amp;gt;&lt;/span&gt;
     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;/s:layout&amp;gt;&lt;/span&gt;
 
     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;mx:Tree&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;myTree&amp;#34;&lt;/span&gt;
@@ -77,7 +77,7 @@ Windowsでもできるようですが、普段使っているMacでもできる�
              &lt;span style=&#34;color:#a6e22e&#34;&gt;dropEnabled=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;true&amp;#34;&lt;/span&gt;
              &lt;span style=&#34;color:#a6e22e&#34;&gt;labelField=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;@label&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
         &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;mx:XMLListCollection&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;id=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;treeData&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
-            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;fx:XMLList&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+            &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;fx:XMLList&amp;gt;&lt;/span&gt;
                 &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Mail Box&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
                     &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Inbox&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
                         &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;node&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;label=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;AAAAA&amp;#34;&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;/&amp;gt;&lt;/span&gt;
@@ -101,7 +101,7 @@ Windowsでもできるようですが、普段使っているMacでもできる�
         &lt;span style=&#34;color:#a6e22e&#34;&gt;DragManager&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;acceptDragDrop&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;);
         &lt;span style=&#34;color:#a6e22e&#34;&gt;myTree&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;hideDropFeedback&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;null&lt;/span&gt;);
         &lt;span style=&#34;color:#a6e22e&#34;&gt;myTree&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;dispatchEvent&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MouseEvent&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;MouseEvent&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MOUSE_UP&lt;/span&gt;));
-        &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;DragProxy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;DragManager&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;mx_internal&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;;
+        &lt;span style=&#34;color:#66d9ef&#34;&gt;var&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;:&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;DragProxy&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;DragManager&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;mx_internal&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;&lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;;
         &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (&lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;) {
             &lt;span style=&#34;color:#a6e22e&#34;&gt;dragProxy&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;mouseUpHandler&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;new&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MouseEvent&lt;/span&gt;(&lt;span style=&#34;color:#a6e22e&#34;&gt;MouseEvent&lt;/span&gt;.&lt;span style=&#34;color:#a6e22e&#34;&gt;MOUSE_UP&lt;/span&gt;));
         }

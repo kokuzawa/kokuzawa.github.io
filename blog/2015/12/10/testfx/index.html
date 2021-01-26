@@ -115,11 +115,11 @@ TestFXはJUnitの延長上でテストができそうなので期待できそう
 <p><a href="https://github.com/kokuzawa/javafx-test">https://github.com/kokuzawa/javafx-test</a></p>
 <h2 id="testfxを設定">TestFXを設定</h2>
 <p>Mavenプロジェクトでは下記のDependencyを追加します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.loadui<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>testFx<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.1.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.loadui<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>testFx<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>3.1.2<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;scope&gt;</span>test<span style="color:#f92672">&lt;/scope&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><h2 id="テストを書く">テストを書く</h2>
 <p>対象のテストクラスは、TestFXを使うために<code>org.loadui.testfx.GuiTest</code>クラスを継承します。
@@ -142,23 +142,23 @@ TestFXはJUnitの延長上でテストができそうなので期待できそう
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">IndexControllerTest</span> <span style="color:#66d9ef">extends</span> GuiTest
 <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> Parent <span style="color:#a6e22e">getRootNode</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">protected</span> Parent <span style="color:#a6e22e">getRootNode</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
-            <span style="color:#66d9ef">return</span> FXMLLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span>getClass<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getResource</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;index.fxml&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            <span style="color:#66d9ef">return</span> FXMLLoader<span style="color:#f92672">.</span><span style="color:#a6e22e">load</span><span style="color:#f92672">(</span>getClass<span style="color:#f92672">().</span><span style="color:#a6e22e">getResource</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;index.fxml&#34;</span><span style="color:#f92672">));</span>
         <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">catch</span> <span style="color:#f92672">(</span>IOException e<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-            Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>IndexControllerTest<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>Level<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERE</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            Logger<span style="color:#f92672">.</span><span style="color:#a6e22e">getLogger</span><span style="color:#f92672">(</span>IndexControllerTest<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getName</span><span style="color:#f92672">()).</span><span style="color:#a6e22e">log</span><span style="color:#f92672">(</span>Level<span style="color:#f92672">.</span><span style="color:#a6e22e">SEVERE</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;&#34;</span><span style="color:#f92672">,</span> e<span style="color:#f92672">);</span>
             <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
         <span style="color:#f92672">}</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@Test</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSay</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">testSay</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> Node node <span style="color:#f92672">=</span> find<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#button&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        click<span style="color:#f92672">(</span>node<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        assertThat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#greeting&#34;</span><span style="color:#f92672">,</span> hasText<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello World!&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> Node node <span style="color:#f92672">=</span> find<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#button&#34;</span><span style="color:#f92672">);</span>
+        click<span style="color:#f92672">(</span>node<span style="color:#f92672">);</span>
+        assertThat<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;#greeting&#34;</span><span style="color:#f92672">,</span> hasText<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello World!&#34;</span><span style="color:#f92672">));</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>テストメソッドは普通にJUnitの形式です。

@@ -93,16 +93,16 @@ EJBが使えるかどうかはとても大事なところです。</p>
 なので、JAXRSのモジュールも合わせて組み込みます。</p>
 <p>また、JAXRSのリソースから<code>@Inject</code>でEJBをDIするにはWeldも必要です。
 そのため、JAXRSのモジュールはwildfly-swarm-jaxrs-weldを利用することにします。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-jaxrs-weld<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>wildfly-swarm-jaxrs-weld<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
     <span style="color:#f92672">&lt;/dependency&gt;</span>
-    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-ejb<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>wildfly-swarm-ejb<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
     <span style="color:#f92672">&lt;/dependency&gt;</span>
 <span style="color:#f92672">&lt;/dependencies&gt;</span>
 </code></pre></div><h2 id="ejbを使ったアプリケーションを作る">EJBを使ったアプリケーションを作る</h2>
@@ -114,7 +114,7 @@ EJBが使えるかどうかはとても大事なところです。</p>
 <span style="color:#a6e22e">@Stateless</span>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloEjb</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">say</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">say</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello!&#34;</span><span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
@@ -133,9 +133,9 @@ EJBが使えるかどうかはとても大事なところです。</p>
     <span style="color:#66d9ef">private</span> HelloEjb helloEjb<span style="color:#f92672">;</span>
 
     <span style="color:#a6e22e">@GET</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> helloEjb<span style="color:#f92672">.</span><span style="color:#a6e22e">say</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> helloEjb<span style="color:#f92672">.</span><span style="color:#a6e22e">say</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">package</span> org.katsumi.ejb<span style="color:#f92672">;</span>
@@ -154,19 +154,19 @@ EJBが使えるかどうかはとても大事なところです。</p>
 <pre><code>&lt;packaging&gt;war&lt;/packaging&gt;
 </code></pre>
 <p>さらにwarファイルを生成するので下記のプラグインをpom.xmlに追加します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-war-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.6<span style="color:#f92672">&lt;/version&gt;</span>
-        <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;failOnMissingWebXml</span><span style="color:#f92672">&gt;</span>false<span style="color:#f92672">&lt;/failOnMissingWebXml&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugins&gt;</span>
+    <span style="color:#f92672">&lt;plugin&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>maven-war-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>2.6<span style="color:#f92672">&lt;/version&gt;</span>
+        <span style="color:#f92672">&lt;configuration&gt;</span>
+            <span style="color:#f92672">&lt;failOnMissingWebXml&gt;</span>false<span style="color:#f92672">&lt;/failOnMissingWebXml&gt;</span>
         <span style="color:#f92672">&lt;/configuration&gt;</span>
     <span style="color:#f92672">&lt;/plugin&gt;</span>
-    <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>${version.wildfly-swarm}<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;plugin&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>wildfly-swarm-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>${version.wildfly-swarm}<span style="color:#f92672">&lt;/version&gt;</span>
     <span style="color:#f92672">&lt;/plugin&gt;</span>
 <span style="color:#f92672">&lt;/plugins&gt;</span>
 </code></pre></div><p>準備ができたので下記のコマンドで実行します。</p>

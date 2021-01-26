@@ -110,28 +110,28 @@ HTTPプロトコルでpush通信を実現するため、SSEではサーバから
 <h2 id="実装の説明">実装の説明</h2>
 <p>Mavenを利用しているので、最初に下記のDependencyを追加します。
 2015/12/10時点のMaven Centralの最新版は2.22.1のようです。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-  <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.glassfish.jersey.media<span style="color:#f92672">&lt;/groupId&gt;</span>
-  <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>jersey-media-sse<span style="color:#f92672">&lt;/artifactId&gt;</span>
-  <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.22.1<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+  <span style="color:#f92672">&lt;groupId&gt;</span>org.glassfish.jersey.media<span style="color:#f92672">&lt;/groupId&gt;</span>
+  <span style="color:#f92672">&lt;artifactId&gt;</span>jersey-media-sse<span style="color:#f92672">&lt;/artifactId&gt;</span>
+  <span style="color:#f92672">&lt;version&gt;</span>2.22.1<span style="color:#f92672">&lt;/version&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>サーバ側のリソースはMIMEタイプに<code>text/event-stream</code>を設定する他に、
 <code>org.glassfish.jersey.media.sse.EventOutput</code>を返却する必要があります。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@GET</span>
 <span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span>SseFeature<span style="color:#f92672">.</span><span style="color:#a6e22e">SERVER_SENT_EVENTS</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> EventOutput <span style="color:#a6e22e">getServerSentEvents</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> EventOutput <span style="color:#a6e22e">getServerSentEvents</span><span style="color:#f92672">()</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span>
+    <span style="color:#f92672">...</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>EventOutput</code>を返却するだけだと、クライアントとの接続が確立しているだけの状態なので、
 実際にクライアントに送信するデータを書き込む必要があります。
 書き込みは<code>EventOutput#write(OutboundEvent)</code>で行います。
 単純には下記のような実装になります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> EventOutput eventOutput <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EventOutput<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-<span style="color:#66d9ef">final</span> OutboundEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span> builder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> OutboundEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-builder<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message-to-client&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-builder<span style="color:#f92672">.</span><span style="color:#a6e22e">data</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Hello world !&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-eventOutput<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>builder<span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> EventOutput eventOutput <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EventOutput<span style="color:#f92672">();</span>
+<span style="color:#66d9ef">final</span> OutboundEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span> builder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> OutboundEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span><span style="color:#f92672">();</span>
+builder<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message-to-client&#34;</span><span style="color:#f92672">);</span>
+builder<span style="color:#f92672">.</span><span style="color:#a6e22e">data</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;Hello world !&#34;</span><span style="color:#f92672">);</span>
+eventOutput<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>builder<span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">());</span>
 </code></pre></div><p><code>builder.name(...)</code>で指定している文字列はクライアント側でイベントのマッピングをするために利用します。</p>
 <p>今回クライアントはJavascriptにします。
 JavascriptでSSEを利用するには<code>EventSource</code>クラスを利用します。
@@ -154,15 +154,15 @@ addEventListenerでサーバからのイベントをハンドリングします�
 <code>EventOutput</code>はクライアントごとにインスタンスが必要なので、
 接続が確立した<code>EventOutput</code>を格納するためのリストも合わせて定義します。
 これらを踏まえて下記のコードを作ります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>EventOutput<span style="color:#f92672">&gt;</span> eventOutputs <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;</span><span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">private</span> List<span style="color:#f92672">&lt;</span>EventOutput<span style="color:#f92672">&gt;</span> eventOutputs <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> ArrayList<span style="color:#f92672">&lt;&gt;();</span>
 
 <span style="color:#a6e22e">@GET</span>
 <span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;events&#34;</span><span style="color:#f92672">)</span>
 <span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span>SseFeature<span style="color:#f92672">.</span><span style="color:#a6e22e">SERVER_SENT_EVENTS</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> EventOutput <span style="color:#a6e22e">getServerSentEvents</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+<span style="color:#66d9ef">public</span> EventOutput <span style="color:#a6e22e">getServerSentEvents</span><span style="color:#f92672">()</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">final</span> EventOutput eventOutput <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EventOutput<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-    eventOutputs<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>eventOutput<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">final</span> EventOutput eventOutput <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> EventOutput<span style="color:#f92672">();</span>
+    eventOutputs<span style="color:#f92672">.</span><span style="color:#a6e22e">add</span><span style="color:#f92672">(</span>eventOutput<span style="color:#f92672">);</span>
     <span style="color:#66d9ef">return</span> eventOutput<span style="color:#f92672">;</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>次に登録をするためのサービスを作ります。が、実際に何かを登録するのは実装が面倒なので、
@@ -170,13 +170,13 @@ addEventListenerでサーバからのイベントをハンドリングします�
 こんな感じです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#a6e22e">@PUT</span>
 <span style="color:#a6e22e">@Path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;put&#34;</span><span style="color:#f92672">)</span>
-<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">putData</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> IOException
+<span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">putData</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> IOException
 <span style="color:#f92672">{</span>
     <span style="color:#66d9ef">for</span> <span style="color:#f92672">(</span>EventOutput eventOutput <span style="color:#f92672">:</span> eventOutputs<span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> OutboundEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span> builder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> OutboundEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        builder<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message-to-client&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        builder<span style="color:#f92672">.</span><span style="color:#a6e22e">data</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;登録された！&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        eventOutput<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>builder<span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> OutboundEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span> builder <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> OutboundEvent<span style="color:#f92672">.</span><span style="color:#a6e22e">Builder</span><span style="color:#f92672">();</span>
+        builder<span style="color:#f92672">.</span><span style="color:#a6e22e">name</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;message-to-client&#34;</span><span style="color:#f92672">);</span>
+        builder<span style="color:#f92672">.</span><span style="color:#a6e22e">data</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;登録された！&#34;</span><span style="color:#f92672">);</span>
+        eventOutput<span style="color:#f92672">.</span><span style="color:#a6e22e">write</span><span style="color:#f92672">(</span>builder<span style="color:#f92672">.</span><span style="color:#a6e22e">build</span><span style="color:#f92672">());</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>これでサービス側は実装完了です。

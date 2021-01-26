@@ -97,8 +97,8 @@
 ちなみに、URLの最後に付けるのと、<code>setRequestProperty</code>での設定と両方の指定がある場合は、
 <code>setRequestProperty</code>の方が優先されます。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> HttpURLConnection connection <span style="color:#f92672">=</span> 
-    <span style="color:#f92672">(</span>HttpURLConnection<span style="color:#f92672">)</span> <span style="color:#66d9ef">new</span> URL<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost/mycontext&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">openConnection</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-connection<span style="color:#f92672">.</span><span style="color:#a6e22e">setRequestProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Cookie&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;JSESSIONID=&#34;</span> <span style="color:#f92672">+</span> sessionid<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#f92672">(</span>HttpURLConnection<span style="color:#f92672">)</span> <span style="color:#66d9ef">new</span> URL<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost/mycontext&#34;</span><span style="color:#f92672">).</span><span style="color:#a6e22e">openConnection</span><span style="color:#f92672">();</span>
+connection<span style="color:#f92672">.</span><span style="color:#a6e22e">setRequestProperty</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Cookie&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;JSESSIONID=&#34;</span> <span style="color:#f92672">+</span> sessionid<span style="color:#f92672">);</span>
 </code></pre></div><p>このリクエストがJWSからの最初のリクエストでは無く、かつ最初のリクエストでjsessionidを明示的に送っていない場合、
 Cookieには2つのjsessionidが設定された状態でリクエストされます。
 サーバではこの2つのjsessionidのうち、最初に設定されている方を有効と見なして処理が行われます。
@@ -108,7 +108,7 @@ Cookieには2つのjsessionidが設定された状態でリクエストされま
 <p>自動で設定されるcookieは<code>CookieHandler</code>で設定されるようです。
 なので、この<code>CookieHandler</code>を機能させなくすれば、cookieが自動で設定されなくなるはず。
 というわけで、下記のコードを追加します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">CookieHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">setDefault</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java">CookieHandler<span style="color:#f92672">.</span><span style="color:#a6e22e">setDefault</span><span style="color:#f92672">(</span><span style="color:#66d9ef">null</span><span style="color:#f92672">);</span>
 </code></pre></div><p>これでcookieの自動設定が行われないはずなのですが、実はこのメソッド、セキュリティが
 all-permissionsでないと、<code>AccessControlException</code>がスローされてしまいます。
 JWSでall-permissionsにするには、jarファイルに署名しなければなりません。</p>

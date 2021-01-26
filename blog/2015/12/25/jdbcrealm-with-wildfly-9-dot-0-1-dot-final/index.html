@@ -88,7 +88,7 @@
 <h2 id="差分">差分</h2>
 <p>WildFly 8.0.0.Finalの時の設定:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;security-domain</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;app&#34;</span> <span style="color:#a6e22e">cache-type=</span><span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;authentication</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;authentication&gt;</span>
         <span style="color:#f92672">&lt;login-module</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;app_auth&#34;</span> <span style="color:#a6e22e">code=</span><span style="color:#e6db74">&#34;Database&#34;</span> <span style="color:#a6e22e">flag=</span><span style="color:#e6db74">&#34;required&#34;</span><span style="color:#f92672">&gt;</span>
             <span style="color:#f92672">&lt;module-option</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;dsJndiName&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;java:jboss/datasources/ExampleDS&#34;</span><span style="color:#f92672">/&gt;</span>
             <span style="color:#f92672">&lt;module-option</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;principalsQuery&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&#34;</span><span style="color:#f92672">/&gt;</span>
@@ -100,7 +100,7 @@
 <span style="color:#f92672">&lt;/security-domain&gt;</span>
 </code></pre></div><p>WildFly 9.0.1.Finalの設定:</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;security-domain</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;app&#34;</span> <span style="color:#a6e22e">cache-type=</span><span style="color:#e6db74">&#34;default&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;authentication</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;authentication&gt;</span>
         <span style="color:#f92672">&lt;login-module</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;app_auth&#34;</span> <span style="color:#a6e22e">code=</span><span style="color:#e6db74">&#34;Database&#34;</span> <span style="color:#a6e22e">flag=</span><span style="color:#e6db74">&#34;required&#34;</span><span style="color:#f92672">&gt;</span>
             <span style="color:#f92672">&lt;module-option</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;dsJndiName&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;java:jboss/datasources/ExampleDS&#34;</span><span style="color:#f92672">/&gt;</span>
             <span style="color:#f92672">&lt;module-option</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;principalsQuery&#34;</span> <span style="color:#a6e22e">value=</span><span style="color:#e6db74">&#34;SELECT PASSWORD FROM ACCOUNTS WHERE EMAIL = ?&#34;</span><span style="color:#f92672">/&gt;</span>

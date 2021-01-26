@@ -100,30 +100,30 @@ dsJndiName で指定するのは事前に登録した Datasource です。</p>
 <table>
 <thead>
 <tr>
-<th align="left">Key</th>
-<th align="left">Value</th>
+<th style="text-align:left">Key</th>
+<th style="text-align:left">Value</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="left">dsJndiName</td>
-<td align="left">java:/jdbc/realmSample</td>
+<td style="text-align:left">dsJndiName</td>
+<td style="text-align:left">java:/jdbc/realmSample</td>
 </tr>
 <tr>
-<td align="left">hashAlgorithm</td>
-<td align="left">SHA-256</td>
+<td style="text-align:left">hashAlgorithm</td>
+<td style="text-align:left">SHA-256</td>
 </tr>
 <tr>
-<td align="left">hashEncoding</td>
-<td align="left">HEX</td>
+<td style="text-align:left">hashEncoding</td>
+<td style="text-align:left">HEX</td>
 </tr>
 <tr>
-<td align="left">principalsQuery</td>
-<td align="left">SELECT password FROM accounts WHERE email = ?</td>
+<td style="text-align:left">principalsQuery</td>
+<td style="text-align:left">SELECT password FROM accounts WHERE email = ?</td>
 </tr>
 <tr>
-<td align="left">rolesQuery</td>
-<td align="left">SELECT r.rolename, &lsquo;Roles&rsquo; FROM roles r, accounts a WHERE r.accountid = a.accountid AND a.email = ?</td>
+<td style="text-align:left">rolesQuery</td>
+<td style="text-align:left">SELECT r.rolename, &lsquo;Roles&rsquo; FROM roles r, accounts a WHERE r.accountid = a.accountid AND a.email = ?</td>
 </tr>
 </tbody>
 </table>
@@ -131,30 +131,30 @@ dsJndiName で指定するのは事前に登録した Datasource です。</p>
 <p>最初に作ったテーブルにデータを投入します。
 パスワードに設定するのは、SHA256で暗号化、HEXエンコードした文字列です。
 ここでは &lsquo;test&rsquo; という文字列をパスワードにしています。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> accounts (email, password) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">hoge</span><span style="color:#e6db74">&#39;</span>, <span style="color:#e6db74">&#39;</span><span style="color:#e6db74">9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08</span><span style="color:#e6db74">&#39;</span>);
-<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> roles (rolename, accountid) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;</span><span style="color:#e6db74">MEMBER</span><span style="color:#e6db74">&#39;</span>, <span style="color:#ae81ff">1</span>);
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-sql" data-lang="sql"><span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> accounts (email, password) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;hoge&#39;</span>, <span style="color:#e6db74">&#39;9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08&#39;</span>);
+<span style="color:#66d9ef">INSERT</span> <span style="color:#66d9ef">INTO</span> roles (rolename, accountid) <span style="color:#66d9ef">VALUES</span> (<span style="color:#e6db74">&#39;MEMBER&#39;</span>, <span style="color:#ae81ff">1</span>);
 </code></pre></div><h2 id="jboss-webxml-の設定">jboss-web.xml の設定</h2>
 <p>追加した Security Domain を利用するために、jboss-web.xml へ Security Domain を指定します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;security-domain</span><span style="color:#f92672">&gt;</span>app<span style="color:#f92672">&lt;/security-domain&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;security-domain&gt;</span>app<span style="color:#f92672">&lt;/security-domain&gt;</span>
 </code></pre></div><h2 id="webxml-の設定">web.xml の設定</h2>
 <p>BASIC認証が行われるように web.xml を設定します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;security-role</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;role-name</span><span style="color:#f92672">&gt;</span>MEMBER<span style="color:#f92672">&lt;/role-name&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;security-role&gt;</span>
+    <span style="color:#f92672">&lt;role-name&gt;</span>MEMBER<span style="color:#f92672">&lt;/role-name&gt;</span>
 <span style="color:#f92672">&lt;/security-role&gt;</span>
 
-<span style="color:#f92672">&lt;security-constraint</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;web-resource-collection</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;web-resource-name</span><span style="color:#f92672">&gt;</span>Member Resource<span style="color:#f92672">&lt;/web-resource-name&gt;</span>
-        <span style="color:#f92672">&lt;url-pattern</span><span style="color:#f92672">&gt;</span>/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
+<span style="color:#f92672">&lt;security-constraint&gt;</span>
+    <span style="color:#f92672">&lt;web-resource-collection&gt;</span>
+        <span style="color:#f92672">&lt;web-resource-name&gt;</span>Member Resource<span style="color:#f92672">&lt;/web-resource-name&gt;</span>
+        <span style="color:#f92672">&lt;url-pattern&gt;</span>/*<span style="color:#f92672">&lt;/url-pattern&gt;</span>
     <span style="color:#f92672">&lt;/web-resource-collection&gt;</span>
-    <span style="color:#f92672">&lt;auth-constraint</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;role-name</span><span style="color:#f92672">&gt;</span>MEMBER<span style="color:#f92672">&lt;/role-name&gt;</span>
+    <span style="color:#f92672">&lt;auth-constraint&gt;</span>
+        <span style="color:#f92672">&lt;role-name&gt;</span>MEMBER<span style="color:#f92672">&lt;/role-name&gt;</span>
     <span style="color:#f92672">&lt;/auth-constraint&gt;</span>
 <span style="color:#f92672">&lt;/security-constraint&gt;</span>
 
-<span style="color:#f92672">&lt;login-config</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;auth-method</span><span style="color:#f92672">&gt;</span>BASIC<span style="color:#f92672">&lt;/auth-method&gt;</span>
-    <span style="color:#f92672">&lt;realm-name</span><span style="color:#f92672">&gt;</span>Authentication<span style="color:#f92672">&lt;/realm-name&gt;</span>
+<span style="color:#f92672">&lt;login-config&gt;</span>
+    <span style="color:#f92672">&lt;auth-method&gt;</span>BASIC<span style="color:#f92672">&lt;/auth-method&gt;</span>
+    <span style="color:#f92672">&lt;realm-name&gt;</span>Authentication<span style="color:#f92672">&lt;/realm-name&gt;</span>
 <span style="color:#f92672">&lt;/login-config&gt;</span>
 </code></pre></div><p>これですべての設定が完了です。
 WildFly にアプリをデプロイしてアクセスするとBASIC認証のダイアログが表示されると思います。

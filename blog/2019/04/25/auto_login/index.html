@@ -111,14 +111,14 @@
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code class="language-html" data-lang="html">&lt;body onload="login()"&gt;
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;body onload=&#34;login()&#34;&gt;
 &lt;script&gt;
   function login() {
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", "http://localhost/content.thml",
-               false, "userid", "password"); <b class="conum">(1)</b>
+      xhr.open(&#34;GET&#34;, &#34;http://localhost/content.thml&#34;,
+               false, &#34;userid&#34;, &#34;password&#34;); <b class="conum">(1)</b>
       xhr.send(null);
-      location.href = "http://localhost/content.html"; <b class="conum">(2)</b>
+      location.href = &#34;http://localhost/content.html&#34;; <b class="conum">(2)</b>
   }
 &lt;/script&gt;
 &lt;/body&gt;</code></pre>

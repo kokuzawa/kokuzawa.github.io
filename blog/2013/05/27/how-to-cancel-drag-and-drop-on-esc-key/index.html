@@ -90,7 +90,7 @@ Windowsでもできるようですが、普段使っているMacでもできる�
                <span style="color:#a6e22e">xmlns:mx=</span><span style="color:#e6db74">&#34;library://ns.adobe.com/flex/mx&#34;</span>
                <span style="color:#a6e22e">creationComplete=</span><span style="color:#e6db74">&#34;creationComplete(event)&#34;</span><span style="color:#f92672">&gt;</span>
 
-    <span style="color:#f92672">&lt;fx:Script</span><span style="color:#f92672">&gt;</span><span style="color:#75715e">&lt;![CDATA[
+    <span style="color:#f92672">&lt;fx:Script&gt;</span><span style="color:#75715e">&lt;![CDATA[
 </span><span style="color:#75715e">        import mx.events.FlexEvent;
 </span><span style="color:#75715e">        import mx.managers.DragManager;
 </span><span style="color:#75715e">        import mx.managers.dragClasses.DragProxy;
@@ -112,8 +112,8 @@ Windowsでもできるようですが、普段使っているMacでもできる�
 </span><span style="color:#75715e">        }
 </span><span style="color:#75715e">        ]]&gt;</span><span style="color:#f92672">&lt;/fx:Script&gt;</span>
 
-    <span style="color:#f92672">&lt;s:layout</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;s:HorizontalLayout</span><span style="color:#f92672">/&gt;</span>
+    <span style="color:#f92672">&lt;s:layout&gt;</span>
+        <span style="color:#f92672">&lt;s:HorizontalLayout/&gt;</span>
     <span style="color:#f92672">&lt;/s:layout&gt;</span>
 
     <span style="color:#f92672">&lt;mx:Tree</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;myTree&#34;</span>
@@ -124,7 +124,7 @@ Windowsでもできるようですが、普段使っているMacでもできる�
              <span style="color:#a6e22e">dropEnabled=</span><span style="color:#e6db74">&#34;true&#34;</span>
              <span style="color:#a6e22e">labelField=</span><span style="color:#e6db74">&#34;@label&#34;</span><span style="color:#f92672">&gt;</span>
         <span style="color:#f92672">&lt;mx:XMLListCollection</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;treeData&#34;</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;fx:XMLList</span><span style="color:#f92672">&gt;</span>
+            <span style="color:#f92672">&lt;fx:XMLList&gt;</span>
                 <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;Mail Box&#34;</span><span style="color:#f92672">&gt;</span>
                     <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;Inbox&#34;</span><span style="color:#f92672">&gt;</span>
                         <span style="color:#f92672">&lt;node</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;AAAAA&#34;</span><span style="color:#f92672">/&gt;</span>
@@ -148,7 +148,7 @@ Windowsでもできるようですが、普段使っているMacでもできる�
         <span style="color:#a6e22e">DragManager</span>.<span style="color:#a6e22e">acceptDragDrop</span>(<span style="color:#66d9ef">null</span>);
         <span style="color:#a6e22e">myTree</span>.<span style="color:#a6e22e">hideDropFeedback</span>(<span style="color:#66d9ef">null</span>);
         <span style="color:#a6e22e">myTree</span>.<span style="color:#a6e22e">dispatchEvent</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MouseEvent</span>(<span style="color:#a6e22e">MouseEvent</span>.<span style="color:#a6e22e">MOUSE_UP</span>));
-        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">dragProxy</span><span style="color:#f92672">:</span><span style="color:#a6e22e">DragProxy</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">DragManager</span>.<span style="color:#a6e22e">mx_internal</span><span style="color:#f92672">:</span><span style="color:#f92672">:</span><span style="color:#a6e22e">dragProxy</span>;
+        <span style="color:#66d9ef">var</span> <span style="color:#a6e22e">dragProxy</span><span style="color:#f92672">:</span><span style="color:#a6e22e">DragProxy</span> <span style="color:#f92672">=</span> <span style="color:#a6e22e">DragManager</span>.<span style="color:#a6e22e">mx_internal</span><span style="color:#f92672">::</span><span style="color:#a6e22e">dragProxy</span>;
         <span style="color:#66d9ef">if</span> (<span style="color:#a6e22e">dragProxy</span>) {
             <span style="color:#a6e22e">dragProxy</span>.<span style="color:#a6e22e">mouseUpHandler</span>(<span style="color:#66d9ef">new</span> <span style="color:#a6e22e">MouseEvent</span>(<span style="color:#a6e22e">MouseEvent</span>.<span style="color:#a6e22e">MOUSE_UP</span>));
         }

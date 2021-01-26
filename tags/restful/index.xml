@@ -41,7 +41,7 @@ APIを作成する上であまり利用しないものはあえて無視して�
 &lt;/div&gt;
 &lt;div class=&#34;imageblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;img src=&#34;https://kokuzawa.github.io/images/FlowchartOfCreatingAPI.svg&#34; alt=&#34;FlowchartOfCreatingAPI&#34;&gt;
+&lt;img src=&#34;https://kokuzawa.github.io/images/FlowchartOfCreatingAPI.svg&#34; alt=&#34;FlowchartOfCreatingAPI&#34;/&gt;
 &lt;/div&gt;
 &lt;div class=&#34;title&#34;&gt;Figure 1. Flowchart of Creating RESTful API&lt;/div&gt;
 &lt;/div&gt;
@@ -109,32 +109,32 @@ Basic認証とかです。
     orientation = portrait;
     edge_layout = flowchart;
 
-    Action [label=&#34;Start&#34;, shape=flowchart.terminator];
-    Method [label=&#34;Method&#34;, shape=flowchart.condition];
-    Validation [label=&#34;入力値検証&#34;, shape=flowchart.condition];
-    Authentication [label=&#34;認証&#34;, shape=flowchart.condition];
-    Authorization [label=&#34;認可&#34;, shape=flowchart.condition];
-    Process [label=&#34;処理&#34;, shape=flowchart.condition];
-    Async [label=&#34;非同期&#34;, shape=flowchart.condition];
-    Content [label=&#34;返却\nデータ無&#34;, shape=flowchart.condition];
-    New [label=&#34;新規登録\nデータ&#34;, shape=flowchart.condition];
-    400 [label=&#34;400&#34;, shape=flowchart.terminator, color=pink];
-    401 [label=&#34;401&#34;, shape=flowchart.terminator, color=pink];
-    403 [label=&#34;403&#34;, shape=flowchart.terminator, color=pink];
-    404 [label=&#34;404&#34;, shape=flowchart.terminator, color=pink];
-    409 [label=&#34;409&#34;, shape=flowchart.terminator, color=pink];
-    500 [label=&#34;500&#34;, shape=flowchart.terminator, color=pink];
-    202 [label=&#34;202&#34;, shape=flowchart.terminator, color=lightblue];
-    200 [label=&#34;200&#34;, shape=flowchart.terminator, color=lightblue];
-    201 [label=&#34;201&#34;, shape=flowchart.terminator, color=lightblue];
-    204 [label=&#34;204&#34;, shape=flowchart.terminator, color=lightblue];
+    Action [label=&amp;#34;Start&amp;#34;, shape=flowchart.terminator];
+    Method [label=&amp;#34;Method&amp;#34;, shape=flowchart.condition];
+    Validation [label=&amp;#34;入力値検証&amp;#34;, shape=flowchart.condition];
+    Authentication [label=&amp;#34;認証&amp;#34;, shape=flowchart.condition];
+    Authorization [label=&amp;#34;認可&amp;#34;, shape=flowchart.condition];
+    Process [label=&amp;#34;処理&amp;#34;, shape=flowchart.condition];
+    Async [label=&amp;#34;非同期&amp;#34;, shape=flowchart.condition];
+    Content [label=&amp;#34;返却\nデータ無&amp;#34;, shape=flowchart.condition];
+    New [label=&amp;#34;新規登録\nデータ&amp;#34;, shape=flowchart.condition];
+    400 [label=&amp;#34;400&amp;#34;, shape=flowchart.terminator, color=pink];
+    401 [label=&amp;#34;401&amp;#34;, shape=flowchart.terminator, color=pink];
+    403 [label=&amp;#34;403&amp;#34;, shape=flowchart.terminator, color=pink];
+    404 [label=&amp;#34;404&amp;#34;, shape=flowchart.terminator, color=pink];
+    409 [label=&amp;#34;409&amp;#34;, shape=flowchart.terminator, color=pink];
+    500 [label=&amp;#34;500&amp;#34;, shape=flowchart.terminator, color=pink];
+    202 [label=&amp;#34;202&amp;#34;, shape=flowchart.terminator, color=lightblue];
+    200 [label=&amp;#34;200&amp;#34;, shape=flowchart.terminator, color=lightblue];
+    201 [label=&amp;#34;201&amp;#34;, shape=flowchart.terminator, color=lightblue];
+    204 [label=&amp;#34;204&amp;#34;, shape=flowchart.terminator, color=lightblue];
 
     // Action
     Action -&amp;gt; Method;
-    Method -&amp;gt; GET[label=&#34;取得&#34;];
-    Method -&amp;gt; POST[label=&#34;登録&#34;];
-    Method -&amp;gt; PUT[label=&#34;更新&#34;];
-    Method -&amp;gt; DELETE[label=&#34;削除&#34;];
+    Method -&amp;gt; GET[label=&amp;#34;取得&amp;#34;];
+    Method -&amp;gt; POST[label=&amp;#34;登録&amp;#34;];
+    Method -&amp;gt; PUT[label=&amp;#34;更新&amp;#34;];
+    Method -&amp;gt; DELETE[label=&amp;#34;削除&amp;#34;];
 
     // Method
     GET -&amp;gt; Validation;

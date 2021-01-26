@@ -90,23 +90,23 @@ WildFly Swarmは一つのモジュールというわけではなく、JavaEEの�
 <p>今回は数あるモジュールの中からJAXRSのモジュールを利用してみます。
 2015年11月時点での最新バージョンは1.0.0.Alpha5です。
 pom.xmlに下記のdependencyを追加します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-jaxrs<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
-<span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>wildfly-swarm-jaxrs<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;dependency&gt;</span>
 </code></pre></div><p>これを依存グラフで見てみると&hellip;依存がすごいです（笑）</p>
 <p><img src="/images/post_image_39.png" alt=""></p>
 <p>JAXRSのモジュールを組み込んだだけではビルドしても実行できないので、
 下記のpluginもpom.xmlに追加します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;executions</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;execution</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;goals</span><span style="color:#f92672">&gt;</span>
-                <span style="color:#f92672">&lt;goal</span><span style="color:#f92672">&gt;</span>package<span style="color:#f92672">&lt;/goal&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>wildfly-swarm-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;executions&gt;</span>
+        <span style="color:#f92672">&lt;execution&gt;</span>
+            <span style="color:#f92672">&lt;goals&gt;</span>
+                <span style="color:#f92672">&lt;goal&gt;</span>package<span style="color:#f92672">&lt;/goal&gt;</span>
             <span style="color:#f92672">&lt;/goals&gt;</span>
         <span style="color:#f92672">&lt;/execution&gt;</span>
     <span style="color:#f92672">&lt;/executions&gt;</span>
@@ -132,7 +132,7 @@ pom.xmlに下記のdependencyを追加します。</p>
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloResource</span>
 <span style="color:#f92672">{</span>
     <span style="color:#a6e22e">@GET</span>
-    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;Hello World!&#34;</span><span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
@@ -149,19 +149,19 @@ WildFly Swarmでは通常のJavaアプリケーションのようにmainメソ�
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Main</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
     <span style="color:#f92672">{</span>
         <span style="color:#75715e">// コンテナの生成
 </span><span style="color:#75715e"></span>        <span style="color:#75715e">// Archiveを生成する前にインスタンス化しておかないと実行時にエラーが発生
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">final</span> Container container <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Container<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">final</span> Container container <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> Container<span style="color:#f92672">();</span>
 
         <span style="color:#75715e">// ShrinkWrapで仮想アーカイブを作成
-</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">final</span> JAXRSArchive archive <span style="color:#f92672">=</span> ShrinkWrap<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>JAXRSArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        archive<span style="color:#f92672">.</span><span style="color:#a6e22e">addClass</span><span style="color:#f92672">(</span>MyApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        archive<span style="color:#f92672">.</span><span style="color:#a6e22e">addClass</span><span style="color:#f92672">(</span>HelloResource<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        archive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAllDependencies</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+</span><span style="color:#75715e"></span>        <span style="color:#66d9ef">final</span> JAXRSArchive archive <span style="color:#f92672">=</span> ShrinkWrap<span style="color:#f92672">.</span><span style="color:#a6e22e">create</span><span style="color:#f92672">(</span>JAXRSArchive<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        archive<span style="color:#f92672">.</span><span style="color:#a6e22e">addClass</span><span style="color:#f92672">(</span>MyApplication<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        archive<span style="color:#f92672">.</span><span style="color:#a6e22e">addClass</span><span style="color:#f92672">(</span>HelloResource<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+        archive<span style="color:#f92672">.</span><span style="color:#a6e22e">addAllDependencies</span><span style="color:#f92672">();</span>
 
-        container<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">deploy</span><span style="color:#f92672">(</span>archive<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        container<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">().</span><span style="color:#a6e22e">deploy</span><span style="color:#f92672">(</span>archive<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>mainメソッド内では、ShrinkWrapを利用して生成した仮想アーカイブを起動したコンテナにデプロイします。
@@ -169,17 +169,17 @@ WildFly Swarmでは通常のJavaアプリケーションのようにmainメソ�
 実行時にエラーになります。これで半日悩んだ..orz</p>
 <p>で、ここで作ったMainクラスをswarm-pluginに教える必要があります。
 設定を追加したwildfly-swarm-pluginが下記になります。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>wildfly-swarm-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;mainClass</span><span style="color:#f92672">&gt;</span>org.katsumi.Main<span style="color:#f92672">&lt;/mainClass&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;plugin&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.wildfly.swarm<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>wildfly-swarm-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>1.0.0.Alpha5<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;configuration&gt;</span>
+        <span style="color:#f92672">&lt;mainClass&gt;</span>org.katsumi.Main<span style="color:#f92672">&lt;/mainClass&gt;</span>
     <span style="color:#f92672">&lt;/configuration&gt;</span>
-    <span style="color:#f92672">&lt;executions</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;execution</span><span style="color:#f92672">&gt;</span>
-            <span style="color:#f92672">&lt;goals</span><span style="color:#f92672">&gt;</span>
-                <span style="color:#f92672">&lt;goal</span><span style="color:#f92672">&gt;</span>package<span style="color:#f92672">&lt;/goal&gt;</span>
+    <span style="color:#f92672">&lt;executions&gt;</span>
+        <span style="color:#f92672">&lt;execution&gt;</span>
+            <span style="color:#f92672">&lt;goals&gt;</span>
+                <span style="color:#f92672">&lt;goal&gt;</span>package<span style="color:#f92672">&lt;/goal&gt;</span>
             <span style="color:#f92672">&lt;/goals&gt;</span>
         <span style="color:#f92672">&lt;/execution&gt;</span>
     <span style="color:#f92672">&lt;/executions&gt;</span>

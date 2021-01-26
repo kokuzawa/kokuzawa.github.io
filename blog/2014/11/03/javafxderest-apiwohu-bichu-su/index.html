@@ -107,7 +107,7 @@ RESTの実装にはJersey-2.8を利用します。</p>
     <span style="color:#a6e22e">@Produces</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN</span><span style="color:#f92672">)</span>
     <span style="color:#66d9ef">public</span> String <span style="color:#a6e22e">hello</span><span style="color:#f92672">(</span><span style="color:#a6e22e">@QueryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">)</span> String string<span style="color:#f92672">)</span>
     <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello %s!&#34;</span><span style="color:#f92672">,</span> string<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">return</span> String<span style="color:#f92672">.</span><span style="color:#a6e22e">format</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;Hello %s!&#34;</span><span style="color:#f92672">,</span> string<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><h2 id="flexからのrest-api呼び出し">FlexからのREST-API呼び出し</h2>
@@ -122,7 +122,7 @@ RESTの実装にはJersey-2.8を利用します。</p>
         <span style="color:#a6e22e">title=</span><span style="color:#e6db74">&#34;Hello World&#34;</span> 
         <span style="color:#a6e22e">width=</span><span style="color:#e6db74">&#34;230&#34;</span> 
         <span style="color:#a6e22e">height=</span><span style="color:#e6db74">&#34;80&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;fx:Declarations</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;fx:Declarations&gt;</span>
         <span style="color:#f92672">&lt;local:Controller</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;controller&#34;</span><span style="color:#f92672">/&gt;</span>
     <span style="color:#f92672">&lt;/fx:Declarations&gt;</span>
     <span style="color:#f92672">&lt;s:VGroup</span> <span style="color:#a6e22e">paddingBottom=</span><span style="color:#e6db74">&#34;10&#34;</span> 
@@ -131,7 +131,7 @@ RESTの実装にはJersey-2.8を利用します。</p>
               <span style="color:#a6e22e">paddingTop=</span><span style="color:#e6db74">&#34;10&#34;</span> 
               <span style="color:#a6e22e">gap=</span><span style="color:#e6db74">&#34;10&#34;</span> 
               <span style="color:#a6e22e">minHeight=</span><span style="color:#e6db74">&#34;0&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;s:HGroup</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;s:HGroup&gt;</span>
             <span style="color:#f92672">&lt;s:TextInput</span> <span style="color:#a6e22e">id=</span><span style="color:#e6db74">&#34;stringField&#34;</span><span style="color:#f92672">/&gt;</span>
             <span style="color:#f92672">&lt;s:Button</span> <span style="color:#a6e22e">label=</span><span style="color:#e6db74">&#34;Button&#34;</span> <span style="color:#a6e22e">click=</span><span style="color:#e6db74">&#34;{controller.buttonAction(event)}&#34;</span><span style="color:#f92672">/&gt;</span>
         <span style="color:#f92672">&lt;/s:HGroup&gt;</span>
@@ -190,30 +190,30 @@ RESTの実装にはJersey-2.8を利用します。</p>
           <span style="color:#a6e22e">xmlns=</span><span style="color:#e6db74">&#34;http://javafx.com/javafx/8&#34;</span> 
           <span style="color:#a6e22e">xmlns:fx=</span><span style="color:#e6db74">&#34;http://javafx.com/fxml/1&#34;</span> 
           <span style="color:#a6e22e">fx:controller=</span><span style="color:#e6db74">&#34;sample.Controller&#34;</span><span style="color:#f92672">&gt;</span>
-   <span style="color:#f92672">&lt;columnConstraints</span><span style="color:#f92672">&gt;</span>
+   <span style="color:#f92672">&lt;columnConstraints&gt;</span>
       <span style="color:#f92672">&lt;ColumnConstraints</span> <span style="color:#f92672">/&gt;</span>
       <span style="color:#f92672">&lt;ColumnConstraints</span> <span style="color:#a6e22e">minWidth=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;60.0&#34;</span> <span style="color:#f92672">/&gt;</span>
    <span style="color:#f92672">&lt;/columnConstraints&gt;</span>
-   <span style="color:#f92672">&lt;rowConstraints</span><span style="color:#f92672">&gt;</span>
+   <span style="color:#f92672">&lt;rowConstraints&gt;</span>
       <span style="color:#f92672">&lt;RowConstraints</span> <span style="color:#f92672">/&gt;</span>
       <span style="color:#f92672">&lt;RowConstraints</span> <span style="color:#a6e22e">minHeight=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;30.0&#34;</span> <span style="color:#f92672">/&gt;</span>
    <span style="color:#f92672">&lt;/rowConstraints&gt;</span>
-   <span style="color:#f92672">&lt;children</span><span style="color:#f92672">&gt;</span>
+   <span style="color:#f92672">&lt;children&gt;</span>
       <span style="color:#f92672">&lt;TextField</span> <span style="color:#a6e22e">fx:id=</span><span style="color:#e6db74">&#34;stringField&#34;</span> <span style="color:#a6e22e">prefHeight=</span><span style="color:#e6db74">&#34;26.0&#34;</span> <span style="color:#a6e22e">prefWidth=</span><span style="color:#e6db74">&#34;205.0&#34;</span> <span style="color:#f92672">/&gt;</span>
       <span style="color:#f92672">&lt;Button</span> <span style="color:#a6e22e">mnemonicParsing=</span><span style="color:#e6db74">&#34;false&#34;</span> <span style="color:#a6e22e">text=</span><span style="color:#e6db74">&#34;Button&#34;</span> <span style="color:#a6e22e">GridPane.columnIndex=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#a6e22e">onAction=</span><span style="color:#e6db74">&#34;#buttonAction&#34;</span><span style="color:#f92672">/&gt;</span>
       <span style="color:#f92672">&lt;Label</span> <span style="color:#a6e22e">fx:id=</span><span style="color:#e6db74">&#34;stringLabel&#34;</span> <span style="color:#a6e22e">GridPane.columnSpan=</span><span style="color:#e6db74">&#34;2&#34;</span> <span style="color:#a6e22e">GridPane.rowIndex=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#f92672">/&gt;</span>
    <span style="color:#f92672">&lt;/children&gt;</span>
-   <span style="color:#f92672">&lt;padding</span><span style="color:#f92672">&gt;</span>
+   <span style="color:#f92672">&lt;padding&gt;</span>
       <span style="color:#f92672">&lt;Insets</span> <span style="color:#a6e22e">bottom=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">left=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">right=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#a6e22e">top=</span><span style="color:#e6db74">&#34;10.0&#34;</span> <span style="color:#f92672">/&gt;</span>
    <span style="color:#f92672">&lt;/padding&gt;</span>
 <span style="color:#f92672">&lt;/GridPane&gt;</span>
 </code></pre></div><p>JavaによるREST-API呼び出しは、JAX-RSクライアントを利用するため、
 下記ライブラリを追加します。（Mavenの設定）</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.glassfish.jersey.core<span style="color:#f92672">&lt;/groupId&gt;</span>
-        <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>jersey-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
-        <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.8<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependencies&gt;</span>
+    <span style="color:#f92672">&lt;dependency&gt;</span>
+        <span style="color:#f92672">&lt;groupId&gt;</span>org.glassfish.jersey.core<span style="color:#f92672">&lt;/groupId&gt;</span>
+        <span style="color:#f92672">&lt;artifactId&gt;</span>jersey-client<span style="color:#f92672">&lt;/artifactId&gt;</span>
+        <span style="color:#f92672">&lt;version&gt;</span>2.8<span style="color:#f92672">&lt;/version&gt;</span>
     <span style="color:#f92672">&lt;/dependency&gt;</span>
 <span style="color:#f92672">&lt;/dependencies&gt;</span>
 </code></pre></div><p>画面をコントロールするコントローラクラスです。
@@ -235,19 +235,19 @@ RESTの実装にはJersey-2.8を利用します。</p>
     <span style="color:#a6e22e">@FXML</span>
     <span style="color:#66d9ef">private</span> Label stringLabel<span style="color:#f92672">;</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buttonAction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buttonAction</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">final</span> Client client <span style="color:#f92672">=</span> ClientBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">newClient</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        <span style="color:#66d9ef">final</span> Client client <span style="color:#f92672">=</span> ClientBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">newClient</span><span style="color:#f92672">();</span>
         <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
             <span style="color:#66d9ef">final</span> String result <span style="color:#f92672">=</span> client<span style="color:#f92672">.</span><span style="color:#a6e22e">target</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8080/jaxrs/rest&#34;</span><span style="color:#f92672">)</span>
                     <span style="color:#f92672">.</span><span style="color:#a6e22e">path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">queryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">,</span> stringField<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">queryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">,</span> stringField<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">())</span>
                     <span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN_TYPE</span><span style="color:#f92672">)</span>
-                    <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-            stringLabel<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                    <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
+            stringLabel<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>result<span style="color:#f92672">);</span>
         <span style="color:#f92672">}</span>
         <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
-            client<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+            client<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
         <span style="color:#f92672">}</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
@@ -259,26 +259,26 @@ Flexの方は非同期呼び出しであり、JavaFXの方は同期呼び出し�
 そこでJavaFXの方でも非同期呼び出しをさせてみたいと思います。</p>
 <p>JAX-RSクライアントには非同期呼び出しの仕組みがあるので、
 それを利用するようにREST-APIの呼び出し部分を下記のように書き換えました。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Client client <span style="color:#f92672">=</span> ClientBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">newClient</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#66d9ef">final</span> Client client <span style="color:#f92672">=</span> ClientBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">newClient</span><span style="color:#f92672">();</span>
 client<span style="color:#f92672">.</span><span style="color:#a6e22e">target</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8080/jaxrs/rest&#34;</span><span style="color:#f92672">)</span>
       <span style="color:#f92672">.</span><span style="color:#a6e22e">path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
-      <span style="color:#f92672">.</span><span style="color:#a6e22e">queryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">,</span> stringField<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">queryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">,</span> stringField<span style="color:#f92672">.</span><span style="color:#a6e22e">getText</span><span style="color:#f92672">())</span>
       <span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN_TYPE</span><span style="color:#f92672">)</span>
-      <span style="color:#f92672">.</span><span style="color:#a6e22e">async</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
-      <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> InvocationCallback<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">async</span><span style="color:#f92672">()</span>
+      <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#66d9ef">new</span> InvocationCallback<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;()</span>
       <span style="color:#f92672">{</span>
           <span style="color:#a6e22e">@Override</span>
           <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">completed</span><span style="color:#f92672">(</span>String result<span style="color:#f92672">)</span>
           <span style="color:#f92672">{</span>
-              stringLabel<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>result<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+              stringLabel<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span>result<span style="color:#f92672">);</span>
           <span style="color:#f92672">}</span>
 
           <span style="color:#a6e22e">@Override</span>
           <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">failed</span><span style="color:#f92672">(</span>Throwable throwable<span style="color:#f92672">)</span>
           <span style="color:#f92672">{</span>
-              throwable<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+              throwable<span style="color:#f92672">.</span><span style="color:#a6e22e">printStackTrace</span><span style="color:#f92672">();</span>
           <span style="color:#f92672">}</span>
-      <span style="color:#f92672">}</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+      <span style="color:#f92672">});</span>
 </code></pre></div><p>呼び出しチェーンに<code>async()</code>メソッドを追加します。
 結果は戻り値ではなく、<code>InvocationCallback&lt;T&gt;</code>インターフェースの<code>completed(T)</code>メソッドで受け取るようになります。
 また、呼び出し後にclientをクローズしてしまうと非同期によるレスポンスを受け取る前に接続が切れてしまいます。
@@ -305,37 +305,37 @@ client<span style="color:#f92672">.</span><span style="color:#a6e22e">target</sp
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">HelloService</span> <span style="color:#66d9ef">extends</span> Service<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">private</span> StringProperty string <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleStringProperty<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> StringProperty string <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> SimpleStringProperty<span style="color:#f92672">();</span>
 
-    <span style="color:#66d9ef">public</span> StringProperty <span style="color:#a6e22e">stringProperty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> StringProperty <span style="color:#a6e22e">stringProperty</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">return</span> string<span style="color:#f92672">;</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@Override</span>
-    <span style="color:#66d9ef">protected</span> Task<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">createTask</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">protected</span> Task<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">createTask</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
-        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Task<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+        <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">new</span> Task<span style="color:#f92672">&lt;</span>String<span style="color:#f92672">&gt;()</span>
         <span style="color:#f92672">{</span>
             <span style="color:#a6e22e">@Override</span>
-            <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">call</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+            <span style="color:#66d9ef">protected</span> String <span style="color:#a6e22e">call</span><span style="color:#f92672">()</span> <span style="color:#66d9ef">throws</span> Exception
             <span style="color:#f92672">{</span>
-                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">false</span> <span style="color:#f92672">=</span><span style="color:#f92672">=</span> string<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span> <span style="color:#f92672">{</span>
-                    <span style="color:#66d9ef">final</span> Client client <span style="color:#f92672">=</span> ClientBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">newClient</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">if</span> <span style="color:#f92672">(</span><span style="color:#66d9ef">false</span> <span style="color:#f92672">==</span> string<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">().</span><span style="color:#a6e22e">isEmpty</span><span style="color:#f92672">())</span> <span style="color:#f92672">{</span>
+                    <span style="color:#66d9ef">final</span> Client client <span style="color:#f92672">=</span> ClientBuilder<span style="color:#f92672">.</span><span style="color:#a6e22e">newClient</span><span style="color:#f92672">();</span>
                     <span style="color:#66d9ef">try</span> <span style="color:#f92672">{</span>
                         <span style="color:#66d9ef">return</span> client<span style="color:#f92672">.</span><span style="color:#a6e22e">target</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8080/jaxrs/rest&#34;</span><span style="color:#f92672">)</span>
                                 <span style="color:#f92672">.</span><span style="color:#a6e22e">path</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;hello&#34;</span><span style="color:#f92672">)</span>
-                                <span style="color:#f92672">.</span><span style="color:#a6e22e">queryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">,</span> string<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span>
+                                <span style="color:#f92672">.</span><span style="color:#a6e22e">queryParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;string&#34;</span><span style="color:#f92672">,</span> string<span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">())</span>
                                 <span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">(</span>MediaType<span style="color:#f92672">.</span><span style="color:#a6e22e">TEXT_PLAIN_TYPE</span><span style="color:#f92672">)</span>
-                                <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                                <span style="color:#f92672">.</span><span style="color:#a6e22e">get</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#a6e22e">class</span><span style="color:#f92672">);</span>
                     <span style="color:#f92672">}</span>
                     <span style="color:#66d9ef">finally</span> <span style="color:#f92672">{</span>
-                        client<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                        client<span style="color:#f92672">.</span><span style="color:#a6e22e">close</span><span style="color:#f92672">();</span>
                     <span style="color:#f92672">}</span>
                 <span style="color:#f92672">}</span>
                 <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">null</span><span style="color:#f92672">;</span>
             <span style="color:#f92672">}</span>
-        <span style="color:#f92672">}</span><span style="color:#f92672">;</span>
+        <span style="color:#f92672">};</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>作成したサービスクラスを利用するようにコントローラクラスを書き換えます。</p>
@@ -356,19 +356,19 @@ client<span style="color:#f92672">.</span><span style="color:#a6e22e">target</sp
     <span style="color:#a6e22e">@FXML</span>
     <span style="color:#66d9ef">private</span> Label stringLabel<span style="color:#f92672">;</span>
 
-    <span style="color:#66d9ef">private</span> HelloService service <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HelloService<span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+    <span style="color:#66d9ef">private</span> HelloService service <span style="color:#f92672">=</span> <span style="color:#66d9ef">new</span> HelloService<span style="color:#f92672">();</span>
 
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buttonAction</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span>
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">buttonAction</span><span style="color:#f92672">()</span>
     <span style="color:#f92672">{</span>
-        service<span style="color:#f92672">.</span><span style="color:#a6e22e">restart</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        service<span style="color:#f92672">.</span><span style="color:#a6e22e">restart</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 
     <span style="color:#a6e22e">@Override</span>
     <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">initialize</span><span style="color:#f92672">(</span>URL url<span style="color:#f92672">,</span> ResourceBundle resourceBundle<span style="color:#f92672">)</span>
     <span style="color:#f92672">{</span>
-        service<span style="color:#f92672">.</span><span style="color:#a6e22e">stringProperty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span>stringField<span style="color:#f92672">.</span><span style="color:#a6e22e">textProperty</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        service<span style="color:#f92672">.</span><span style="color:#a6e22e">setOnSucceeded</span><span style="color:#f92672">(</span>e <span style="color:#f92672">-</span><span style="color:#f92672">&gt;</span> stringLabel<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">(</span><span style="color:#f92672">(</span>String<span style="color:#f92672">)</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">getSource</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">.</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        service<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">(</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+        service<span style="color:#f92672">.</span><span style="color:#a6e22e">stringProperty</span><span style="color:#f92672">().</span><span style="color:#a6e22e">bind</span><span style="color:#f92672">(</span>stringField<span style="color:#f92672">.</span><span style="color:#a6e22e">textProperty</span><span style="color:#f92672">());</span>
+        service<span style="color:#f92672">.</span><span style="color:#a6e22e">setOnSucceeded</span><span style="color:#f92672">(</span>e <span style="color:#f92672">-&gt;</span> stringLabel<span style="color:#f92672">.</span><span style="color:#a6e22e">setText</span><span style="color:#f92672">((</span>String<span style="color:#f92672">)</span>e<span style="color:#f92672">.</span><span style="color:#a6e22e">getSource</span><span style="color:#f92672">().</span><span style="color:#a6e22e">getValue</span><span style="color:#f92672">()));</span>
+        service<span style="color:#f92672">.</span><span style="color:#a6e22e">start</span><span style="color:#f92672">();</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p><code>Initializable</code>インターフェースの<code>initialize(URL, ResourceBundle)</code>メソッド内で

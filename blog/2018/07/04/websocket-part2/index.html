@@ -81,7 +81,7 @@
     </div>
     <article>
       <div class="paragraph">
-<p><a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">以前</a>、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。<br>
+<p><a href="https://kokuzawa.github.io/blog/2017/01/12/jsf-2-3-websocket/">以前</a>、リリース前のJSF2.3を利用してWebsocketを試したことを書きました。<br/>
 その時はWildFlyで動かすことができなかったのですが、WildFlyも13.0.0.Finalになり、
 JSF2.3を含んだJavaEE8をプレビューモードで起動できるようになったので、もう一度Websocketを試してみることにします。</p>
 </div>
@@ -94,7 +94,7 @@ JSF2.3を含んだJavaEE8をプレビューモードで起動できるように�
 <p>macOS High Sierra</p>
 </li>
 <li>
-<p>Java&#8482; SE Runtime Environment (build 1.8.0_91-b14)</p>
+<p>Java™ SE Runtime Environment (build 1.8.0_91-b14)</p>
 </li>
 <li>
 <p>WildFly 13.0.0.Final</p>
@@ -107,7 +107,7 @@ JSF2.3を含んだJavaEE8をプレビューモードで起動できるように�
 <h2 id="_実装">実装</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>フルセットのコードは下記にあります。<br>
+<p>フルセットのコードは下記にあります。<br/>
 <a href="https://github.com/kokuzawa/sandbox/tree/master/websocket-example" class="bare">https://github.com/kokuzawa/sandbox/tree/master/websocket-example</a></p>
 </div>
 <div class="paragraph">
@@ -143,15 +143,15 @@ import java.util.Calendar;
 @ApplicationScoped
 public class PushBean implements Serializable
 {
-    @Push(channel = "clock")
+    @Push(channel = &#34;clock&#34;)
     private PushContext push;
 
     public void clockAction()
     {
         final Calendar now = Calendar.getInstance();
 
-        final String time = now.get(Calendar.HOUR_OF_DAY) + ":" +
-                now.get(Calendar.MINUTE) + ":" + now.get(Calendar.SECOND);
+        final String time = now.get(Calendar.HOUR_OF_DAY) + &#34;:&#34; +
+                now.get(Calendar.MINUTE) + &#34;:&#34; + now.get(Calendar.SECOND);
 
         push.send(time);
     }
@@ -165,11 +165,11 @@ public class PushBean implements Serializable
 <div class="listingblock">
 <div class="title">index.xhtml</div>
 <div class="content">
-<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;f:websocket channel="clock" onmessage="socketListener" /&gt;
+<pre class="highlight"><code class="language-xhtml" data-lang="xhtml">&lt;f:websocket channel=&#34;clock&#34; onmessage=&#34;socketListener&#34; /&gt;
 
-&lt;script type="text/javascript"&gt;
+&lt;script type=&#34;text/javascript&#34;&gt;
     function socketListener(message, channel, event) {
-        document.getElementById("clockId").innerHTML += message + "&amp;lt;br/&amp;gt;";
+        document.getElementById(&#34;clockId&#34;).innerHTML += message + &#34;&amp;lt;br/&amp;gt;&#34;;
     }
 &lt;/script&gt;</code></pre>
 </div>

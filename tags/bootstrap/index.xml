@@ -86,11 +86,11 @@ webapp/resources/bootstrapフォルダを作成し、alert.xhtmlファイルを�
       &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:cc&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://java.sun.com/jsf/composite&amp;#34;&lt;/span&gt;
       &lt;span style=&#34;color:#a6e22e&#34;&gt;xmlns:c&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;http://java.sun.com/jsp/jstl/core&amp;#34;&lt;/span&gt;&amp;gt;
 
-    &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!--&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; INTERFACE &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;--&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!-- INTERFACE --&amp;gt;&lt;/span&gt;
     &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;cc:interface&lt;/span&gt;&amp;gt;
     &amp;lt;/&lt;span style=&#34;color:#f92672&#34;&gt;cc:interface&lt;/span&gt;&amp;gt;
 
-    &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!--&lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt; IMPLEMENTATION &lt;/span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;--&amp;gt;&lt;/span&gt;
+    &lt;span style=&#34;color:#75715e&#34;&gt;&amp;lt;!-- IMPLEMENTATION --&amp;gt;&lt;/span&gt;
     &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;cc:implementation&lt;/span&gt;&amp;gt;
         &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;c:forEach&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;var&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;message&amp;#34;&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;items&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#{facesContext.messageList}&amp;#34;&lt;/span&gt;&amp;gt;
             &amp;lt;&lt;span style=&#34;color:#f92672&#34;&gt;c:if&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;test&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt;&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;#{message.severity == &amp;#39;ERROR 2&amp;#39;}&amp;#34;&lt;/span&gt;&amp;gt;
@@ -110,7 +110,7 @@ FacesMessageはFacesContext.messageListから取得します。
 コンポーネントはエラーメッセージが設定されている場合のみ表示します。
 エラーメッセージはFacesMessage.severityがFacesMessage.SEVERITY_ERRORのものになりますが、
 EL式ではStatic fieldを比較値として比較できません。
-そのため、FacesMessage.SEVERITY_ERRORの文字列表現である&#39;ERROR 2&#39;と比較し、一致するものをエラーメッセージとして判定します。
+そのため、FacesMessage.SEVERITY_ERRORの文字列表現である&amp;rsquo;ERROR 2&amp;rsquo;と比較し、一致するものをエラーメッセージとして判定します。
 また、複数設定されている場合を考慮して、forEachを利用し、FacesMessageの数だけAlertsコンポーネントを表示します。&lt;/p&gt;
 &lt;p&gt;配置したJSF合成コンポーネントは、http://java.sun.com/jsf/composite/bootstrap というネームスペースで利用できます。
 &lt;a href=&#34;http://java.sun.com/jsf/composite/&#34;&gt;http://java.sun.com/jsf/composite/&lt;/a&gt; にフォルダ名であるbootstrapを付けるだけです。&lt;/p&gt;

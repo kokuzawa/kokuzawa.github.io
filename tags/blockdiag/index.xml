@@ -63,9 +63,9 @@ blockdiag {
 &lt;/div&gt;
 &lt;div class=&#34;literalblock&#34;&gt;
 &lt;div class=&#34;content&#34;&gt;
-&lt;pre&gt;Failed to generate image: Could not find the &#39;blockdiag&#39;,
-&#39;blockdiag3&#39; executable in PATH; add it to the PATH
-or specify its location using the &#39;blockdiag&#39; document attribute
+&lt;pre&gt;Failed to generate image: Could not find the &amp;#39;blockdiag&amp;#39;,
+&amp;#39;blockdiag3&amp;#39; executable in PATH; add it to the PATH
+or specify its location using the &amp;#39;blockdiag&amp;#39; document attribute
 blockdiag {
   A -&amp;gt; B -&amp;gt; C -&amp;gt; D;
   A -&amp;gt; E -&amp;gt; F -&amp;gt; G;
@@ -95,7 +95,7 @@ blockdiag {
 &lt;div class=&#34;content&#34;&gt;
 &lt;pre class=&#34;highlight&#34;&gt;&lt;code&gt;:blockdiag: /usr/local/bin/blockdiag
 // ついでにフォントも指定してみる
-:blockdiag-fontpath: &#34;/System/Library/Fonts/Hiragino Sans GB.ttc&#34;&lt;/code&gt;&lt;/pre&gt;
+:blockdiag-fontpath: &amp;#34;/System/Library/Fonts/Hiragino Sans GB.ttc&amp;#34;&lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 &lt;/div&gt;
 &lt;/div&gt;

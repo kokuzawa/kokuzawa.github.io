@@ -113,7 +113,7 @@ Python 3.7.6&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;は？&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;paragraph&#34;&gt;
-&lt;p&gt;どうやら.bash_profileに &lt;code&gt;eval &#34;$(pyenv init -)&#34;&lt;/code&gt; を追記すれば良いらしい。
+&lt;p&gt;どうやら.bash_profileに &lt;code&gt;eval &amp;#34;$(pyenv init -)&amp;#34;&lt;/code&gt; を追記すれば良いらしい。
 というわけで、追記後に &lt;code&gt;source .bash_profile&lt;/code&gt; してバージョンを確認する。&lt;/p&gt;
 &lt;/div&gt;
 &lt;div class=&#34;listingblock&#34;&gt;

@@ -3,32 +3,42 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://kokuzawa.github.io/blog/2021/01/26/install-problems-of-psycopg2-binary/</loc>
+    <lastmod>2021-01-26T23:20:29+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/blog/</loc>
+    <lastmod>2021-01-26T23:20:29+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/tags/homebrew/</loc>
+    <lastmod>2021-01-26T23:20:29+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/</loc>
+    <lastmod>2021-01-26T23:20:29+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/tags/python/</loc>
+    <lastmod>2021-01-26T23:20:29+09:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://kokuzawa.github.io/tags/</loc>
+    <lastmod>2021-01-26T23:20:29+09:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://kokuzawa.github.io/blog/2020/03/11/pyenv-install-python/</loc>
     <lastmod>2020-03-11T01:48:46+09:00</lastmod>
   </url>
   
   <url>
-    <loc>https://kokuzawa.github.io/blog/</loc>
-    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://kokuzawa.github.io/</loc>
-    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://kokuzawa.github.io/tags/pyenv/</loc>
-    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://kokuzawa.github.io/tags/python/</loc>
-    <lastmod>2020-03-11T01:48:46+09:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://kokuzawa.github.io/tags/</loc>
     <lastmod>2020-03-11T01:48:46+09:00</lastmod>
   </url>
   

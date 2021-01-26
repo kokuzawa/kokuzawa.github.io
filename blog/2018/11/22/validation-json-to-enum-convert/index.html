@@ -113,7 +113,7 @@
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-@ApplicationPath("api")
+@ApplicationPath(&#34;api&#34;)
 public class MyApplication extends Application
 {
 }</code></pre>
@@ -131,7 +131,7 @@ import java.time.DayOfWeek;
 public class TestParam
 {
     @NotNull
-    @Pattern(regexp = "(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)")
+    @Pattern(regexp = &#34;(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)&#34;)
     private DayOfWeek dayOfWeek;
 
     public DayOfWeek getDayOfWeek()
@@ -164,7 +164,7 @@ import javax.ws.rs.core.Response;
 import java.time.DayOfWeek;
 import java.util.HashMap;
 
-@Path("/test")
+@Path(&#34;/test&#34;)
 public class TestResource
 {
     @POST
@@ -173,16 +173,16 @@ public class TestResource
     public Response postTest(@NotNull @Valid TestParam param)
     {
         final HashMap&lt;DayOfWeek, String&gt; map = new HashMap&lt;&gt;();
-        map.put(DayOfWeek.MONDAY, "月");
-        map.put(DayOfWeek.TUESDAY, "火");
-        map.put(DayOfWeek.WEDNESDAY, "水");
-        map.put(DayOfWeek.THURSDAY, "木");
-        map.put(DayOfWeek.FRIDAY, "金");
-        map.put(DayOfWeek.SATURDAY, "土");
-        map.put(DayOfWeek.SUNDAY, "日");
+        map.put(DayOfWeek.MONDAY, &#34;月&#34;);
+        map.put(DayOfWeek.TUESDAY, &#34;火&#34;);
+        map.put(DayOfWeek.WEDNESDAY, &#34;水&#34;);
+        map.put(DayOfWeek.THURSDAY, &#34;木&#34;);
+        map.put(DayOfWeek.FRIDAY, &#34;金&#34;);
+        map.put(DayOfWeek.SATURDAY, &#34;土&#34;);
+        map.put(DayOfWeek.SUNDAY, &#34;日&#34;);
 
         final HashMap&lt;String, String&gt; response = new HashMap&lt;&gt;();
-        response.put("dayOfWeek", map.get(param.getDayOfWeek()));
+        response.put(&#34;dayOfWeek&#34;, map.get(param.getDayOfWeek()));
         return Response.ok(response).build();
     }
 }</code></pre>
@@ -204,15 +204,15 @@ class TestResourceTest
     @Test
     void testJsonToEnum()
     {
-        RestAssured.baseURI = "http://localhost:8080/json-to-enum/api";
+        RestAssured.baseURI = &#34;http://localhost:8080/json-to-enum/api&#34;;
         RestAssured
                 .given()
                 .contentType(ContentType.JSON)
-                .body("{\"dayOfWeek\":\"MONDAYY\"}")
+                .body(&#34;{\&#34;dayOfWeek\&#34;:\&#34;MONDAYY\&#34;}&#34;)
                 .when()
-                .post("/test")
+                .post(&#34;/test&#34;)
                 .then()
-                .body("dayOfWeek", equalTo("月"));
+                .body(&#34;dayOfWeek&#34;, equalTo(&#34;月&#34;));
     }
 }</code></pre>
 </div>
@@ -254,7 +254,7 @@ import java.time.DayOfWeek;
 public class TestParam
 {
     @NotNull
-    @Pattern(regexp = "(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)")
+    @Pattern(regexp = &#34;(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)&#34;)
 -    private DayOfWeek dayOfWeek;
 +    private String dayOfWeek;
 
@@ -364,17 +364,17 @@ class TestResourceTest
     @Test
     void testJsonToEnum()
     {
-        RestAssured.baseURI = "http://localhost:8080/json-to-enum/api";
+        RestAssured.baseURI = &#34;http://localhost:8080/json-to-enum/api&#34;;
         RestAssured
                 .given()
                 .contentType(ContentType.JSON)
-                .body("{\"dayOfWeek\":\"MONDAYY\"}")
+                .body(&#34;{\&#34;dayOfWeek\&#34;:\&#34;MONDAYY\&#34;}&#34;)
                 .when()
-                .post("/test")
+                .post(&#34;/test&#34;)
                 .then()
--                .body("dayOfWeek", equalTo("月"))
-+                .body("message[0]", equalTo("must match \"(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\""))
-+                .body("path[0]", equalTo("test.arg0.dayOfWeek"));
+-                .body(&#34;dayOfWeek&#34;, equalTo(&#34;月&#34;))
++                .body(&#34;message[0]&#34;, equalTo(&#34;must match \&#34;(MONDAY|TUESDAY|WEDNESDAY|THURSDAY|FRIDAY|SATURDAY|SUNDAY)\&#34;&#34;))
++                .body(&#34;path[0]&#34;, equalTo(&#34;test.arg0.dayOfWeek&#34;));
     }
 }</code></pre>
 </div>

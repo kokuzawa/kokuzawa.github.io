@@ -102,21 +102,21 @@ ant での設定は下記の本を参考にすると簡単なのですが、こ�
 実行できるようになったので公開したいと思います。</p>
 <p>pom.xml の完全なファイルは<a href="https://bitbucket.org/kokuzawa/pomtemplate">こちら</a>。</p>
 <h2 id="指定したテストケースだけ実行">指定したテストケースだけ実行</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-	<span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-	    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-	    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-surefire-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-	    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.7.2<span style="color:#f92672">&lt;/version&gt;</span>
-	    <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-		<span style="color:#f92672">&lt;systemPropertyVariables</span><span style="color:#f92672">&gt;</span>
-		    <span style="color:#f92672">&lt;jdbc.driverClassName</span><span style="color:#f92672">&gt;</span>${jdbc.driverClassName}<span style="color:#f92672">&lt;/jdbc.driverClassName&gt;</span>
-		    <span style="color:#f92672">&lt;jdbc.url</span><span style="color:#f92672">&gt;</span>${jdbc.url}<span style="color:#f92672">&lt;/jdbc.url&gt;</span>
-		    <span style="color:#f92672">&lt;jdbc.username</span><span style="color:#f92672">&gt;</span>${jdbc.username}<span style="color:#f92672">&lt;/jdbc.username&gt;</span>
-		    <span style="color:#f92672">&lt;jdbc.password</span><span style="color:#f92672">&gt;</span>${jdbc.password}<span style="color:#f92672">&lt;/jdbc.password&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+	<span style="color:#f92672">&lt;plugin&gt;</span>
+	    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+	    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-surefire-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+	    <span style="color:#f92672">&lt;version&gt;</span>2.7.2<span style="color:#f92672">&lt;/version&gt;</span>
+	    <span style="color:#f92672">&lt;configuration&gt;</span>
+		<span style="color:#f92672">&lt;systemPropertyVariables&gt;</span>
+		    <span style="color:#f92672">&lt;jdbc.driverClassName&gt;</span>${jdbc.driverClassName}<span style="color:#f92672">&lt;/jdbc.driverClassName&gt;</span>
+		    <span style="color:#f92672">&lt;jdbc.url&gt;</span>${jdbc.url}<span style="color:#f92672">&lt;/jdbc.url&gt;</span>
+		    <span style="color:#f92672">&lt;jdbc.username&gt;</span>${jdbc.username}<span style="color:#f92672">&lt;/jdbc.username&gt;</span>
+		    <span style="color:#f92672">&lt;jdbc.password&gt;</span>${jdbc.password}<span style="color:#f92672">&lt;/jdbc.password&gt;</span>
 		<span style="color:#f92672">&lt;/systemPropertyVariables&gt;</span>
-		<span style="color:#f92672">&lt;includes</span><span style="color:#f92672">&gt;</span>
-		    <span style="color:#f92672">&lt;include</span><span style="color:#f92672">&gt;</span>**/*Test.java<span style="color:#f92672">&lt;/include&gt;</span>
+		<span style="color:#f92672">&lt;includes&gt;</span>
+		    <span style="color:#f92672">&lt;include&gt;</span>**/*Test.java<span style="color:#f92672">&lt;/include&gt;</span>
 		<span style="color:#f92672">&lt;/includes&gt;</span>
 	    <span style="color:#f92672">&lt;/configuration&gt;</span>
 	<span style="color:#f92672">&lt;/plugin&gt;</span>
@@ -126,16 +126,16 @@ ant での設定は下記の本を参考にすると簡単なのですが、こ�
 <code>systemPropertyVariables</code> の部分はおまけで、profiles からテスト用の DB 設定を取得しています。
 本質は <code>includes</code> の部分で、ここに実行したいテストクラスを記述します。</p>
 <h2 id="カバレッジの取得">カバレッジの取得</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-	<span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-	    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
-	    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>cobertura-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-	    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.5.2<span style="color:#f92672">&lt;/version&gt;</span>
-	    <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-		<span style="color:#f92672">&lt;check</span><span style="color:#f92672">/&gt;</span>
-		<span style="color:#f92672">&lt;formats</span><span style="color:#f92672">&gt;</span>
-		    <span style="color:#f92672">&lt;format</span><span style="color:#f92672">&gt;</span>xml<span style="color:#f92672">&lt;/format&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+	<span style="color:#f92672">&lt;plugin&gt;</span>
+	    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+	    <span style="color:#f92672">&lt;artifactId&gt;</span>cobertura-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+	    <span style="color:#f92672">&lt;version&gt;</span>2.5.2<span style="color:#f92672">&lt;/version&gt;</span>
+	    <span style="color:#f92672">&lt;configuration&gt;</span>
+		<span style="color:#f92672">&lt;check/&gt;</span>
+		<span style="color:#f92672">&lt;formats&gt;</span>
+		    <span style="color:#f92672">&lt;format&gt;</span>xml<span style="color:#f92672">&lt;/format&gt;</span>
 		<span style="color:#f92672">&lt;/formats&gt;</span>
 	    <span style="color:#f92672">&lt;/configuration&gt;</span>
 	<span style="color:#f92672">&lt;/plugin&gt;</span>
@@ -146,32 +146,32 @@ ant での設定は下記の本を参考にすると簡単なのですが、こ�
 また、<code>formats</code> に xml を指定していますが、何も指定していないと site に表示する html が生成されます。
 Jenkins で解析するので xml を出力するように指定します。</p>
 <h2 id="pmd-の取得">PMD の取得</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-	<span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-	    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-	    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-jxr-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-	    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.3<span style="color:#f92672">&lt;/version&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+	<span style="color:#f92672">&lt;plugin&gt;</span>
+	    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+	    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-jxr-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+	    <span style="color:#f92672">&lt;version&gt;</span>2.3<span style="color:#f92672">&lt;/version&gt;</span>
 	<span style="color:#f92672">&lt;/plugin&gt;</span>
-	<span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-	    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-	    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-pmd-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-	    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.1<span style="color:#f92672">&lt;/version&gt;</span>
+	<span style="color:#f92672">&lt;plugin&gt;</span>
+	    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+	    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-pmd-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+	    <span style="color:#f92672">&lt;version&gt;</span>3.1<span style="color:#f92672">&lt;/version&gt;</span>
 	<span style="color:#f92672">&lt;/plugin&gt;</span>
     <span style="color:#f92672">&lt;/plugins&gt;</span>
 <span style="color:#f92672">&lt;/build&gt;</span>
 
-<span style="color:#f92672">&lt;reporting</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-	    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-	    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-jxr-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-	    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.3<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;reporting&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+        <span style="color:#f92672">&lt;plugin&gt;</span>
+	    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+	    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-jxr-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+	    <span style="color:#f92672">&lt;version&gt;</span>2.3<span style="color:#f92672">&lt;/version&gt;</span>
 	<span style="color:#f92672">&lt;/plugin&gt;</span>
-	<span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-	    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
-	    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>maven-pmd-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-	    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>3.1<span style="color:#f92672">&lt;/version&gt;</span>
+	<span style="color:#f92672">&lt;plugin&gt;</span>
+	    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.maven.plugins<span style="color:#f92672">&lt;/groupId&gt;</span>
+	    <span style="color:#f92672">&lt;artifactId&gt;</span>maven-pmd-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+	    <span style="color:#f92672">&lt;version&gt;</span>3.1<span style="color:#f92672">&lt;/version&gt;</span>
 	<span style="color:#f92672">&lt;/plugin&gt;</span>
     <span style="color:#f92672">&lt;/plugins&gt;</span>
 <span style="color:#f92672">&lt;/repoting&gt;</span>
@@ -182,26 +182,26 @@ Jenkins で解析するので xml を出力するように指定します。</p>
 </ul>
 <p>CPD は PMD と同じ設定で生成することができるので、個別の設定は必要ありません。</p>
 <h2 id="findbugs-の実行">Findbugs の実行</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-	<span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-	    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
-	    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>findbugs-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-	    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.5.4<span style="color:#f92672">&lt;/version&gt;</span>
-	    <span style="color:#f92672">&lt;configuration</span><span style="color:#f92672">&gt;</span>
-		<span style="color:#f92672">&lt;effort</span><span style="color:#f92672">&gt;</span>Max<span style="color:#f92672">&lt;/effort&gt;</span>
-		<span style="color:#f92672">&lt;xmlOutput</span><span style="color:#f92672">&gt;</span>true<span style="color:#f92672">&lt;/xmlOutput&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;build&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+	<span style="color:#f92672">&lt;plugin&gt;</span>
+	    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+	    <span style="color:#f92672">&lt;artifactId&gt;</span>findbugs-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+	    <span style="color:#f92672">&lt;version&gt;</span>2.5.4<span style="color:#f92672">&lt;/version&gt;</span>
+	    <span style="color:#f92672">&lt;configuration&gt;</span>
+		<span style="color:#f92672">&lt;effort&gt;</span>Max<span style="color:#f92672">&lt;/effort&gt;</span>
+		<span style="color:#f92672">&lt;xmlOutput&gt;</span>true<span style="color:#f92672">&lt;/xmlOutput&gt;</span>
 	    <span style="color:#f92672">&lt;/configuration&gt;</span>
 	<span style="color:#f92672">&lt;/plugin&gt;</span>
     <span style="color:#f92672">&lt;/plugins&gt;</span>
 <span style="color:#f92672">&lt;/build&gt;</span>
 
-<span style="color:#f92672">&lt;reporting</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;plugins</span><span style="color:#f92672">&gt;</span>
-	<span style="color:#f92672">&lt;plugin</span><span style="color:#f92672">&gt;</span>
-	    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
-	    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>findbugs-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
-	    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>2.5.4<span style="color:#f92672">&lt;/version&gt;</span>
+<span style="color:#f92672">&lt;reporting&gt;</span>
+    <span style="color:#f92672">&lt;plugins&gt;</span>
+	<span style="color:#f92672">&lt;plugin&gt;</span>
+	    <span style="color:#f92672">&lt;groupId&gt;</span>org.codehaus.mojo<span style="color:#f92672">&lt;/groupId&gt;</span>
+	    <span style="color:#f92672">&lt;artifactId&gt;</span>findbugs-maven-plugin<span style="color:#f92672">&lt;/artifactId&gt;</span>
+	    <span style="color:#f92672">&lt;version&gt;</span>2.5.4<span style="color:#f92672">&lt;/version&gt;</span>
 	<span style="color:#f92672">&lt;/plugin&gt;</span>
     <span style="color:#f92672">&lt;/plugins&gt;</span>
 <span style="color:#f92672">&lt;/reporting&gt;</span>

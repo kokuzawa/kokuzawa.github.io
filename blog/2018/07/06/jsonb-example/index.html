@@ -163,8 +163,8 @@ public class AppTest
     public void testToJson()
     {
         final Jsonb jsonb = JsonbBuilder.create();
-        final String result = jsonb.toJson(new User("katsumi", 40));
-        assertThat(result, is("{\"age\":40,\"name\":\"katsumi\"}"));
+        final String result = jsonb.toJson(new User(&#34;katsumi&#34;, 40));
+        assertThat(result, is(&#34;{\&#34;age\&#34;:40,\&#34;name\&#34;:\&#34;katsumi\&#34;}&#34;));
     }
 }</code></pre>
 </div>
@@ -186,10 +186,10 @@ public class AppTest
     public void testFromJson()
     {
         final Jsonb jsonb = JsonbBuilder.create();
-        final String text = "{\"age\":40,\"name\":\"katsumi\"}";
+        final String text = &#34;{\&#34;age\&#34;:40,\&#34;name\&#34;:\&#34;katsumi\&#34;}&#34;;
         final User user = jsonb.fromJson(text, User.class);
         assertThat(user.getAge(), is(40));
-        assertThat(user.getName(), is("katsumi"));
+        assertThat(user.getName(), is(&#34;katsumi&#34;));
     }
 }</code></pre>
 </div>
@@ -202,7 +202,7 @@ JSON メッセージを Java オブジェクトに変換するためにはデフ
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlight"><code>javax.json.bind.JsonbException: Can't create instance of a class: class org.katsumi.User, No default constructor found.</code></pre>
+<pre class="highlight"><code>javax.json.bind.JsonbException: Can&#39;t create instance of a class: class org.katsumi.User, No default constructor found.</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -218,8 +218,8 @@ import javax.json.bind.annotation.JsonbProperty;
 
     @JsonbCreator
     public User(
-            @JsonbProperty("name") String name,
-            @JsonbProperty("age") int age)
+            @JsonbProperty(&#34;name&#34;) String name,
+            @JsonbProperty(&#34;age&#34;) int age)
     {
         this.name = name;
         this.age = age;

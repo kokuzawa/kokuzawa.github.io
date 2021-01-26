@@ -108,7 +108,7 @@
 <h2 id="_プロジェクトを作る">プロジェクトを作る</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>はじめにReactプロジェクトを作ります。<br>
+<p>はじめにReactプロジェクトを作ります。<br/>
 下記コマンドで <code>start-react</code> フォルダにプロジェクトが生成されます。</p>
 </div>
 <div class="listingblock">
@@ -168,8 +168,8 @@
 <pre class="highlight"><code class="language-js" data-lang="js">constructor(props) {
     super(props);
     this.state = {
-        zipcode: '',
-        address: ''
+        zipcode: &#39;&#39;,
+        address: &#39;&#39;
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -181,7 +181,7 @@ handleChange(e) {
 
 handleSubmit(e) {
     fetch(`https://api.zipaddress.net/?zipcode=${this.state.zipcode}`, {
-        mode: 'cors'
+        mode: &#39;cors&#39;
     })
         .then((response) =&gt; {
             return response.json();
@@ -200,7 +200,7 @@ handleSubmit(e) {
 <div class="listingblock">
 <div class="title">書き換え前</div>
 <div class="content">
-<pre class="highlight"><code class="language-html" data-lang="html">&lt;p className="App-intro"&gt;
+<pre class="highlight"><code class="language-html" data-lang="html">&lt;p className=&#34;App-intro&#34;&gt;
   To get started, edit &lt;code&gt;src/App.js&lt;/code&gt; and save to reload.
 &lt;/p&gt;</code></pre>
 </div>
@@ -209,9 +209,9 @@ handleSubmit(e) {
 <div class="title">書き換え後</div>
 <div class="content">
 <pre class="highlight"><code class="language-html" data-lang="html">&lt;form onSubmit={this.handleSubmit}&gt;
-    &lt;p className="App-intro"&gt;
-        &lt;input type="text" value={this.state.zipcode} onChange={this.handleChange}/&gt;
-        &lt;input type="submit" value="検索"/&gt;
+    &lt;p className=&#34;App-intro&#34;&gt;
+        &lt;input type=&#34;text&#34; value={this.state.zipcode} onChange={this.handleChange}/&gt;
+        &lt;input type=&#34;submit&#34; value=&#34;検索&#34;/&gt;
     &lt;/p&gt;
 &lt;/form&gt;
 &lt;p&gt;{this.state.address}&lt;/p&gt;</code></pre>

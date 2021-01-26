@@ -107,11 +107,11 @@ XMLではなく、それらのファイルを読み込ませてインデック�
 今回はJavaで書いたプログラムからファイルの登録を実行します。</p>
 <p>JavaからSolrにアクセスするにはApache Solrjというライブラリが必要です。
 これはMavenに登録されているのでそこから取得します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>org.apache.solr<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>solr-solrj<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>4.10.0<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>compile<span style="color:#f92672">&lt;/scope&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>org.apache.solr<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>solr-solrj<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>4.10.0<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;scope&gt;</span>compile<span style="color:#f92672">&lt;/scope&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>SolrjからPDFファイルを登録するサンプルコードです。</p>
 <div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="color:#f92672">import</span> org.apache.solr.client.solrj.SolrServer<span style="color:#f92672">;</span>
@@ -123,29 +123,29 @@ XMLではなく、それらのファイルを読み込ませてインデック�
 
 <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">App</span>
 <span style="color:#f92672">{</span>
-    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">.</span><span style="color:#f92672">.</span><span style="color:#f92672">.</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
+    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">main</span><span style="color:#f92672">(</span>String<span style="color:#f92672">...</span> args<span style="color:#f92672">)</span> <span style="color:#66d9ef">throws</span> Exception
     <span style="color:#f92672">{</span>
         <span style="color:#66d9ef">final</span> SolrServer solr <span style="color:#f92672">=</span> 
-                <span style="color:#66d9ef">new</span> HttpSolrServer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8983/solr/collection1&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">new</span> HttpSolrServer<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;http://localhost:8983/solr/collection1&#34;</span><span style="color:#f92672">);</span>
         <span style="color:#66d9ef">final</span> ContentStreamUpdateRequest update <span style="color:#f92672">=</span> 
-                <span style="color:#66d9ef">new</span> ContentStreamUpdateRequest<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/update/extract&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">new</span> ContentStreamUpdateRequest<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/update/extract&#34;</span><span style="color:#f92672">);</span>
         update<span style="color:#f92672">.</span><span style="color:#a6e22e">addFile</span><span style="color:#f92672">(</span>
-                <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/Users/Katsumi/Downloads/javamagazinevol16.pdf&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">,</span> 
-                <span style="color:#e6db74">&#34;application/pdf&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        update<span style="color:#f92672">.</span><span style="color:#a6e22e">setParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;literal.id&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;javamagazinevol16.pdf&#34;</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        update<span style="color:#f92672">.</span><span style="color:#a6e22e">setAction</span><span style="color:#f92672">(</span>AbstractUpdateRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">ACTION</span><span style="color:#f92672">.</span><span style="color:#a6e22e">COMMIT</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">)</span><span style="color:#f92672">;</span>
-        solr<span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">(</span>update<span style="color:#f92672">)</span><span style="color:#f92672">;</span>
+                <span style="color:#66d9ef">new</span> File<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;/Users/Katsumi/Downloads/javamagazinevol16.pdf&#34;</span><span style="color:#f92672">),</span> 
+                <span style="color:#e6db74">&#34;application/pdf&#34;</span><span style="color:#f92672">);</span>
+        update<span style="color:#f92672">.</span><span style="color:#a6e22e">setParam</span><span style="color:#f92672">(</span><span style="color:#e6db74">&#34;literal.id&#34;</span><span style="color:#f92672">,</span> <span style="color:#e6db74">&#34;javamagazinevol16.pdf&#34;</span><span style="color:#f92672">);</span>
+        update<span style="color:#f92672">.</span><span style="color:#a6e22e">setAction</span><span style="color:#f92672">(</span>AbstractUpdateRequest<span style="color:#f92672">.</span><span style="color:#a6e22e">ACTION</span><span style="color:#f92672">.</span><span style="color:#a6e22e">COMMIT</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">,</span> <span style="color:#66d9ef">true</span><span style="color:#f92672">);</span>
+        solr<span style="color:#f92672">.</span><span style="color:#a6e22e">request</span><span style="color:#f92672">(</span>update<span style="color:#f92672">);</span>
     <span style="color:#f92672">}</span>
 <span style="color:#f92672">}</span>
 </code></pre></div><p>ちょうど手元に以前ダウンロードした「Javaマガジン日本語版 vol16」があったので、
 それを登録しています。実行するとわかるのですがcommons-loggingのクラスがない旨を表すエラーがでます。
 Mavenの依存ライブラリには含まれていないようなのですが、内部で使っているのでしょうね。
 しょうがないので、commons-loggingも取得するようにMavenに追加します。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;groupId</span><span style="color:#f92672">&gt;</span>commons-logging<span style="color:#f92672">&lt;/groupId&gt;</span>
-    <span style="color:#f92672">&lt;artifactId</span><span style="color:#f92672">&gt;</span>commons-logging<span style="color:#f92672">&lt;/artifactId&gt;</span>
-    <span style="color:#f92672">&lt;version</span><span style="color:#f92672">&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
-    <span style="color:#f92672">&lt;scope</span><span style="color:#f92672">&gt;</span>runtime<span style="color:#f92672">&lt;/scope&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;dependency&gt;</span>
+    <span style="color:#f92672">&lt;groupId&gt;</span>commons-logging<span style="color:#f92672">&lt;/groupId&gt;</span>
+    <span style="color:#f92672">&lt;artifactId&gt;</span>commons-logging<span style="color:#f92672">&lt;/artifactId&gt;</span>
+    <span style="color:#f92672">&lt;version&gt;</span>1.2<span style="color:#f92672">&lt;/version&gt;</span>
+    <span style="color:#f92672">&lt;scope&gt;</span>runtime<span style="color:#f92672">&lt;/scope&gt;</span>
 <span style="color:#f92672">&lt;/dependency&gt;</span>
 </code></pre></div><p>再度実行すると今度はエラーも発生せずに正常に終了しました。
 登録したPDFファイルは66ページ、24.6MBですが、数秒で登録が終わりました。</p>
@@ -156,7 +156,7 @@ Mavenの依存ライブラリには含まれていないようなのですが、
 <p>PDFファイル中に「ストリーム」という単語があるので、これを検索条件（q）としています。
 また、検索結果フォーマット（wt）はxmlを指定します。他にjsonも指定できるようです。
 検索結果は以下のようになりました。</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;response</span><span style="color:#f92672">&gt;</span>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-xml" data-lang="xml"><span style="color:#f92672">&lt;response&gt;</span>
   <span style="color:#f92672">&lt;lst</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;responseHeader&#34;</span><span style="color:#f92672">&gt;</span>
     <span style="color:#f92672">&lt;int</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;status&#34;</span><span style="color:#f92672">&gt;</span>0<span style="color:#f92672">&lt;/int&gt;</span>
     <span style="color:#f92672">&lt;int</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;QTime&#34;</span><span style="color:#f92672">&gt;</span>1<span style="color:#f92672">&lt;/int&gt;</span>
@@ -166,18 +166,18 @@ Mavenの依存ライブラリには含まれていないようなのですが、
     <span style="color:#f92672">&lt;/lst&gt;</span>
   <span style="color:#f92672">&lt;/lst&gt;</span>
   <span style="color:#f92672">&lt;result</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;response&#34;</span> <span style="color:#a6e22e">numFound=</span><span style="color:#e6db74">&#34;1&#34;</span> <span style="color:#a6e22e">start=</span><span style="color:#e6db74">&#34;0&#34;</span><span style="color:#f92672">&gt;</span>
-    <span style="color:#f92672">&lt;doc</span><span style="color:#f92672">&gt;</span>
+    <span style="color:#f92672">&lt;doc&gt;</span>
       <span style="color:#f92672">&lt;arr</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;links&#34;</span><span style="color:#f92672">&gt;</span>...<span style="color:#f92672">&lt;/arr&gt;</span>
       <span style="color:#f92672">&lt;str</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;id&#34;</span><span style="color:#f92672">&gt;</span>javamagazinevol16.pdf<span style="color:#f92672">&lt;/str&gt;</span>
       <span style="color:#f92672">&lt;date</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;last_modified&#34;</span><span style="color:#f92672">&gt;</span>2014-05-21T07:44:33Z<span style="color:#f92672">&lt;/date&gt;</span>
       <span style="color:#f92672">&lt;arr</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;title&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;str</span><span style="color:#f92672">/&gt;</span>
+        <span style="color:#f92672">&lt;str/&gt;</span>
       <span style="color:#f92672">&lt;/arr&gt;</span>
       <span style="color:#f92672">&lt;arr</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;content_type&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;str</span><span style="color:#f92672">&gt;</span>application/pdf<span style="color:#f92672">&lt;/str&gt;</span>
+        <span style="color:#f92672">&lt;str&gt;</span>application/pdf<span style="color:#f92672">&lt;/str&gt;</span>
       <span style="color:#f92672">&lt;/arr&gt;</span>
       <span style="color:#f92672">&lt;arr</span> <span style="color:#a6e22e">name=</span><span style="color:#e6db74">&#34;content&#34;</span><span style="color:#f92672">&gt;</span>
-        <span style="color:#f92672">&lt;str</span><span style="color:#f92672">&gt;</span>
+        <span style="color:#f92672">&lt;str&gt;</span>
           JAVA //MARCH/APRIL 2014 / 注目のキーワ ドー： ラムダ式 / Nashorn / 日付と時間 / 組込み
           ...
 </code></pre></div><p>次回はJavaから文書検索をしてみたいと思います。</p>

@@ -152,7 +152,7 @@ WantedBy=sockets.target</code></pre>
 +        fastcgi_split_path_info ^(/git)(/.*);
 +        fastcgi_param SCRIPT_FILENAME /usr/lib/git-core/git-http-backend;
 +        fastcgi_param GIT_PROJECT_ROOT /var/www/git;
-+        fastcgi_param GIT_HTTP_EXPORT_ALL "";
++        fastcgi_param GIT_HTTP_EXPORT_ALL &#34;&#34;;
 +        fastcgi_param PATH_INFO $fastcgi_path_info;
 +        fastcgi_param REMOTE_USER $remote_user;
 +    }
